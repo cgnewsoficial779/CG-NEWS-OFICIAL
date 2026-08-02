@@ -9,24 +9,24 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
     html { scroll-behavior: smooth; }
-    html, body { width: 100%; min-height: 100vh; background-color: #f2f4f7; color: #1a1a1a; }
+    html, body { width: 100%; min-height: 100vh; background-color: #f4f6f9; color: #1a1a1a; }
 
     a, a:hover, a:focus, a:visited, a:active { text-decoration: none !important; border: none !important; outline: none !important; }
 
-    /* TOPO / HEADER G1 STYLE */
+    /* TOPO PRINCIPAL */
     .top-header { 
-      width: 100%; background-color: #11136c; color: #ffffff; padding: 15px 25px; 
+      width: 100%; background-color: #11136c; color: #ffffff; padding: 18px 30px; 
       display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 4px solid #cc0000;
+      border-bottom: 4px solid #cc0000; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
-    .menu-btn { font-size: 26px; cursor: pointer; background: none; border: none; color: #ffffff; }
+    .menu-btn { font-size: 28px; cursor: pointer; background: none; border: none; color: #ffffff; }
     .header-title { text-align: center; flex-grow: 1; }
-    .header-title h1 a { font-size: 30px; font-weight: 900; letter-spacing: 2px; color: #ffffff; text-transform: uppercase; }
+    .header-title h1 a { font-size: 32px; font-weight: 900; letter-spacing: 2px; color: #ffffff; text-transform: uppercase; }
 
     .login-top-btn {
-      background: #cc0000; color: #fff; font-size: 13px; font-weight: 700;
-      padding: 8px 14px; border-radius: 4px; border: none; cursor: pointer;
-      display: flex; align-items: center; gap: 6px; transition: background 0.2s;
+      background: #cc0000; color: #fff; font-size: 14px; font-weight: 700;
+      padding: 10px 18px; border-radius: 6px; border: none; cursor: pointer;
+      display: flex; align-items: center; gap: 8px; transition: background 0.2s;
     }
     .login-top-btn:hover { background: #a30000; }
 
@@ -34,84 +34,112 @@
     .side-menu {
       height: 100%; width: 0; position: fixed; z-index: 1000; top: 0; left: 0;
       background-color: #ffffff; overflow-x: hidden; transition: 0.3s;
-      box-shadow: 4px 0 15px rgba(0,0,0,0.3); padding-top: 20px;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.3); padding-top: 20px;
     }
     .side-menu-header { padding: 0 20px 15px; border-bottom: 2px solid #11136c; display: flex; justify-content: space-between; align-items: center; }
     .side-menu-header h2 { font-size: 18px; color: #11136c; font-weight: 800; }
     .close-btn { font-size: 28px; cursor: pointer; color: #11136c; border: none; background: none; }
-    .side-menu a { padding: 12px 20px; font-size: 15px; color: #11136c; font-weight: 700; display: block; cursor: pointer; }
-    .side-menu a:hover { background-color: #f2f4f7; }
+    .side-menu a { padding: 14px 20px; font-size: 16px; color: #11136c; font-weight: 700; display: block; cursor: pointer; }
+    .side-menu a:hover { background-color: #f2f4f7; color: #cc0000; }
 
-    /* LAYOUT PRINCIPAL DO SITE DE NOTÍCIAS */
-    .main-wrapper { display: flex; flex-wrap: wrap; max-width: 1200px; margin: 20px auto; padding: 0 15px; gap: 20px; }
-    .content-column { flex: 2; min-width: 300px; }
-    .sidebar-column { flex: 1; min-width: 260px; }
+    /* LAYOUT DO SITE PÚBLICO */
+    .main-wrapper { display: flex; flex-wrap: wrap; max-width: 1280px; margin: 30px auto; padding: 0 20px; gap: 30px; }
+    .content-column { flex: 2.5; min-width: 320px; }
+    .sidebar-column { flex: 1; min-width: 280px; }
 
-    .section-header { border-left: 5px solid #cc0000; padding-left: 10px; margin: 30px 0 15px; font-size: 18px; font-weight: 800; color: #11136c; text-transform: uppercase; }
-    .tag { display: inline-block; background-color: #cc0000; color: #ffffff; padding: 3px 8px; font-size: 10px; font-weight: 800; border-radius: 3px; margin-bottom: 8px; text-transform: uppercase; }
-    .news-date { font-size: 11px; color: #718096; display: block; margin-top: 5px; }
-
-    .featured-card { background: #ffffff; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
-    .featured-card img { width: 100%; height: 280px; object-fit: cover; display: block; }
-    .featured-card .card-body { padding: 18px; }
-    .featured-card h2 { font-size: 22px; color: #111; line-height: 1.3; }
-
-    .list-card { background: #fff; padding: 15px; border-radius: 6px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); margin-bottom: 12px; border-left: 3px solid #11136c; }
-    .list-card h4 { font-size: 15px; color: #2d3748; }
-
-    .sidebar-box { background: #ffffff; padding: 18px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
-    .sidebar-title { font-size: 15px; font-weight: bold; color: #11136c; border-bottom: 3px solid #cc0000; padding-bottom: 6px; margin-bottom: 15px; text-transform: uppercase; }
+    .section-header { border-left: 6px solid #cc0000; padding-left: 12px; margin: 30px 0 20px; font-size: 20px; font-weight: 800; color: #11136c; text-transform: uppercase; }
+    .tag { display: inline-block; background-color: #cc0000; color: #ffffff; padding: 4px 10px; font-size: 11px; font-weight: 800; border-radius: 4px; margin-bottom: 10px; text-transform: uppercase; }
     
-    .social-icons-grid { display: flex; flex-wrap: wrap; gap: 15px; align-items: center; }
-    .social-icons-grid a { color: #11136c; font-size: 22px; transition: transform 0.2s; }
+    /* ESTILO DA MATÉRIA PÚBLICA */
+    .featured-card { background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin-bottom: 25px; padding: 25px; }
+    .news-page-title { font-size: 26px; color: #111; line-height: 1.35; font-weight: 900; margin-bottom: 12px; }
+    .news-meta-info { font-size: 13px; color: #4a5568; margin-bottom: 18px; border-bottom: 2px solid #edf2f7; padding-bottom: 10px; display: flex; flex-wrap: wrap; gap: 15px; font-weight: 600; }
+    
+    .featured-card img { width: 100%; max-height: 400px; object-fit: cover; border-radius: 6px; display: block; margin-bottom: 20px; }
+    .news-body-text { font-size: 16px; color: #2d3748; line-height: 1.7; margin-bottom: 20px; white-space: pre-line; }
+    
+    .news-links-box { background: #f8fafc; border-left: 4px solid #11136c; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
+    .news-links-box a { color: #11136c; font-weight: bold; display: block; margin: 5px 0; word-break: break-all; }
+    .news-links-box a:hover { color: #cc0000; }
+
+    .news-social-follow { border-top: 2px solid #edf2f7; padding-top: 18px; margin-top: 20px; }
+    .news-social-follow h4 { font-size: 14px; color: #11136c; margin-bottom: 12px; text-transform: uppercase; font-weight: 800; }
+    .news-social-grid { display: flex; gap: 14px; flex-wrap: wrap; }
+    .news-social-grid a { background: #11136c; color: #fff; padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: bold; display: flex; align-items: center; gap: 6px; }
+    .news-social-grid a:hover { background: #cc0000; }
+
+    .sidebar-box { background: #ffffff; padding: 22px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin-bottom: 25px; }
+    .sidebar-title { font-size: 16px; font-weight: bold; color: #11136c; border-bottom: 3px solid #cc0000; padding-bottom: 8px; margin-bottom: 18px; text-transform: uppercase; }
+    
+    .social-icons-grid { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+    .social-icons-grid a { color: #11136c; font-size: 24px; transition: transform 0.2s; }
     .social-icons-grid a:hover { transform: scale(1.15); color: #cc0000; }
 
-    /* MODAL DE LOGIN E CADASTRO */
+    /* MODAL DE LOGIN / ESCOLHA */
     .modal-overlay {
       display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7); align-items: center; justify-content: center; padding: 15px;
+      background: rgba(0,0,0,0.75); align-items: center; justify-content: center; padding: 20px;
     }
     .modal-box {
-      background: #fff; width: 100%; max-width: 500px; border-radius: 8px; padding: 25px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.4); position: relative;
+      background: #fff; width: 100%; max-width: 550px; border-radius: 10px; padding: 35px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.4); position: relative;
     }
-    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #555; background: none; border: none; }
-    .modal-box h3 { color: #11136c; margin-bottom: 15px; font-size: 20px; }
-    
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #333; }
-    .form-group input, .form-group textarea, .form-group select {
-      width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; background: #fff;
-    }
-    .btn-submit {
-      width: 100%; background: #11136c; color: #fff; border: none; padding: 12px; border-radius: 4px;
-      font-weight: bold; cursor: pointer; font-size: 15px; margin-top: 10px;
-    }
-    .btn-submit:hover { background: #1a23a0; }
+    .modal-close { position: absolute; top: 20px; right: 25px; font-size: 28px; cursor: pointer; color: #555; background: none; border: none; }
+    .modal-box h3 { color: #11136c; margin-bottom: 15px; font-size: 24px; font-weight: 800; }
 
-    /* PAINEL DE CONTROLE EXCLUSIVO (SUBSTITUI A TELA AO LOGAR) */
-    #painelGerencial {
-      display: none; max-width: 1000px; margin: 30px auto; background: #ffffff; padding: 30px;
-      border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-top: 6px solid #11136c;
+    .role-choice-container { display: flex; gap: 15px; margin: 25px 0; }
+    .role-btn {
+      flex: 1; padding: 20px; border: 2px solid #cbd5e1; border-radius: 8px; background: #f8fafc;
+      cursor: pointer; text-align: center; font-weight: 800; color: #11136c; font-size: 16px; transition: all 0.2s;
     }
-    .dashboard-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 25px; }
-    .dashboard-header h2 { color: #11136c; font-size: 24px; }
-    .btn-logout { background: #cc0000; color: #fff; border: none; padding: 8px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+    .role-btn:hover { border-color: #11136c; background: #e2e8f0; }
 
-    .admin-section-box { background: #f9fafb; border: 1px solid #e5e7eb; padding: 20px; border-radius: 6px; margin-bottom: 25px; }
-    .admin-section-title { font-size: 16px; font-weight: bold; color: #11136c; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-
-    .approval-row {
-      background: #fff; border: 1px solid #d1d5db; padding: 12px 15px; border-radius: 6px; margin-bottom: 10px;
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+    .password-wrapper { position: relative; display: flex; align-items: center; }
+    .password-wrapper input { width: 100%; padding: 12px 45px 12px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; background: #fff; }
+    .toggle-password {
+      position: absolute; right: 15px; background: none; border: none; cursor: pointer; font-size: 18px; color: #64748b;
     }
 
-    /* RODAPÉ */
-    footer { width: 100%; background-color: #11136c; color: #ffffff; padding: 30px 20px; text-align: center; margin-top: 40px; border-top: 4px solid #cc0000; }
-    footer h3 { font-size: 18px; margin-bottom: 15px; }
-    .footer-social-icons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 15px 0 20px; }
-    .footer-social-icons a { color: #ffffff; font-size: 24px; transition: transform 0.2s; }
-    footer p { font-size: 11px; opacity: 0.8; }
+    /* PAINEL ADMINISTRATIVO */
+    #painelDashboardMaster {
+      display: none; max-width: 1350px; margin: 30px auto; background: #ffffff; padding: 40px;
+      border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); border-top: 8px solid #11136c;
+    }
+    .dashboard-topbar { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #eaeaea; padding-bottom: 20px; margin-bottom: 30px; }
+    .dashboard-topbar h2 { color: #11136c; font-size: 28px; font-weight: 900; }
+    .btn-exit-dash { background: #cc0000; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px; }
+
+    .dash-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
+    .dash-panel-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+    .dash-panel-title { font-size: 18px; font-weight: 800; color: #11136c; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #cbd5e1; padding-bottom: 10px; }
+
+    .form-group-dash { margin-bottom: 18px; }
+    .form-group-dash label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 6px; color: #334155; }
+    .form-group-dash input, .form-group-dash textarea, .form-group-dash select {
+      width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; background: #fff;
+    }
+    .form-group-dash input:focus, .form-group-dash textarea:focus, .form-group-dash select:focus {
+      border-color: #11136c; outline: none; box-shadow: 0 0 0 3px rgba(17,19,108,0.15);
+    }
+
+    .btn-dash-action {
+      width: 100%; background: #11136c; color: #fff; border: none; padding: 14px; border-radius: 6px;
+      font-weight: 800; cursor: pointer; font-size: 16px; margin-top: 10px; transition: background 0.2s;
+    }
+    .btn-dash-action:hover { background: #1a23a0; }
+
+    .approval-table-row {
+      background: #fff; border: 1px solid #cbd5e1; padding: 15px; border-radius: 8px; margin-bottom: 12px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+
+    /* RODAPÉ COM AS 7 REDES SOCIAIS */
+    footer { width: 100%; background-color: #11136c; color: #ffffff; padding: 40px 20px; text-align: center; margin-top: 50px; border-top: 5px solid #cc0000; }
+    footer h3 { font-size: 20px; margin-bottom: 15px; font-weight: 800; }
+    .footer-social-icons { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; margin: 15px 0 20px; }
+    .footer-social-icons a { color: #ffffff; font-size: 26px; transition: transform 0.2s; }
+    .footer-social-icons a:hover { transform: scale(1.15); color: #cc0000; }
+    footer p { font-size: 12px; opacity: 0.8; }
   </style>
 </head>
 <body>
@@ -137,194 +165,232 @@
     <div class="header-title">
       <h1><a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">CG NEWS OFICIAL</a></h1>
     </div>
-    <button class="login-top-btn" id="btnAbrirLogin" onclick="abrirModalLogin()">
-      <i class="fa-solid fa-user-lock"></i> Área Restrita
+    <button class="login-top-btn" id="btnLoginNav" onclick="abrirModalLogin()">
+      <i class="fa-solid fa-lock"></i> Entrar / Painel
     </button>
   </header>
 
-  <!-- SITE PRINCIPAL (PORTAL DE NOTÍCIAS) -->
-  <div id="sitePublico" class="main-wrapper">
+  <!-- ========================================== -->
+  <!-- SITE PÚBLICO (EXIBIÇÃO DINÂMICA DA MATÉRIA) -->
+  <!-- ========================================== -->
+  <div id="sitePublicoArea" class="main-wrapper">
     <div class="content-column">
-      <div id="ultimas-noticias" class="section-header">Últimas Notícias & Mundo</div>
+      <div id="ultimas-noticias" class="section-header">Últimas Notícias — Mato Grosso do Sul, Brasil</div>
       
+      <!-- CARTÃO DA MATÉRIA -->
       <article class="featured-card">
-        <img src="https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?w=800" alt="Notícia Principal">
-        <div class="card-body">
-          <span class="tag">Mundo</span>
-          <h2>Cúpula internacional debate novas diretrizes econômicas globais na Europa</h2>
-          <span class="news-date">02/08/2026 — Por: Redação Internacional</span>
+        <span class="tag" id="pubTag">Mato Grosso do Sul</span>
+        <h2 class="news-page-title" id="pubTitulo">Cúpula estadual debate novas diretrizes de infraestrutura urbana em Campo Grande</h2>
+        
+        <div class="news-meta-info">
+          <div><i class="fa-solid fa-user-pen"></i> Jornalista: <span id="pubJornalista">[Preencha Manualmente]</span></div>
+          <div><i class="fa-solid fa-calendar-days"></i> Data: <span id="pubData">02/08/2026</span></div>
+          <div><i class="fa-solid fa-clock"></i> Horário: <span id="pubHora">07:30</span></div>
+          <div><i class="fa-solid fa-rotate"></i> Última Atualização: <span id="pubAtualizacao">02/08/2026 às 08:15</span></div>
+        </div>
+
+        <img id="pubImagem" src="https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?w=800" alt="Foto da Matéria">
+        
+        <div class="news-body-text" id="pubTexto">
+          Representantes do governo e autoridades locais se reuniram nesta manhã em Campo Grande, Mato Grosso do Sul, para alinhar os novos projetos de mobilidade urbana e segurança nas rodovias da região. As medidas visam otimizar o fluxo de veículos e garantir maior agilidade nos serviços prestados à população sul-mato-grossense.
+        </div>
+
+        <!-- LINKS COMPLEMENTARES (NOTÍCIA, VÍDEO OU FOTO) -->
+        <div class="news-links-box" id="pubBoxLinks">
+          <strong>Links e Mídias Relacionadas:</strong>
+          <a id="pubLinkNoticia" href="#" target="_blank"><i class="fa-solid fa-link"></i> Ler Matéria Completa Externa</a>
+          <a id="pubLinkVideo" href="#" target="_blank"><i class="fa-solid fa-video"></i> Assistir Vídeo da Reportagem (YouTube / Kwai / TikTok)</a>
+        </div>
+
+        <!-- PORTAIS DE NOTÍCIA PARA OS PESSOAL SEGUIR (TODAS AS 7 REDES SOCIAIS) -->
+        <div class="news-social-follow">
+          <h4>Siga Nossos Portais e Redes Sociais Oficiais:</h4>
+          <div class="news-social-grid">
+            <a href="https://whatsapp.com" target="_blank"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+            <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a>
+            <a href="https://tiktok.com" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a>
+            <a href="https://kwai.com" target="_blank"><i class="fa-solid fa-video"></i> Kwai</a>
+            <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
+            <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-x-twitter"></i> X</a>
+            <a href="https://threads.net" target="_blank"><i class="fa-brands fa-threads"></i> Threads</a>
+            <a href="https://linkedin.com" target="_blank"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
+          </div>
         </div>
       </article>
 
-      <div class="list-card">
-        <span class="tag">Campo Grande</span>
-        <h4>Operação de trânsito é reforçada nas principais avenidas da Capital</h4>
-        <span class="news-date">02/08/2026 — Por: Redação</span>
-      </div>
     </div>
 
+    <!-- COLUNA LATERAL COM AS REDES SOCIAIS -->
     <aside class="sidebar-column">
       <div class="sidebar-box">
-        <div class="sidebar-title">Redes Sociais</div>
+        <div class="sidebar-title">Nossas Redes Sociais</div>
         <div class="social-icons-grid">
-          <a href="https://whatsapp.com" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-          <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-          <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://whatsapp.com" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://tiktok.com" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="https://kwai.com" target="_blank" title="Kwai"><i class="fa-solid fa-video"></i></a>
+          <a href="https://twitter.com" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="https://threads.net" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
+          <a href="https://linkedin.com" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
       </div>
     </aside>
   </div>
 
   <!-- ========================================== -->
-  <!-- PAINEL GERENCIAL (EXIBIDO APÓS O LOGIN)     -->
+  <!-- PAINEL ADMINISTRATIVO COM EDITOR COMPLETO  -->
   <!-- ========================================== -->
-  <div id="painelGerencial">
-    <div class="dashboard-header">
-      <h2 id="tituloPainelUser"><i class="fa-solid fa-gauge-high"></i> Painel de Controle</h2>
-      <button class="btn-logout" onclick="fazerLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</button>
+  <div id="painelDashboardMaster">
+    <div class="dashboard-topbar">
+      <h2 id="dashMasterTitle"><i class="fa-solid fa-gauge"></i> Painel de Controle Executivo</h2>
+      <button class="btn-exit-dash" onclick="fazerLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair do Painel</button>
     </div>
 
-    <!-- SEÇÃO EXCLUSIVA DO CHEFE (ADM) PARA APROVAR CADASTROS -->
-    <div id="secaoAprovacaoAdmin" class="admin-section-box" style="display: none; border-left: 5px solid #cc0000; background: #fff8f8;">
-      <div class="admin-section-title" style="color: #cc0000;"><i class="fa-solid fa-user-shield"></i> Painel do Administrador: Aprovação de Novos Funcionários</div>
-      <p style="font-size: 13px; color: #555; margin-bottom: 15px;">Estes usuários solicitaram acesso ao sistema e aguardam sua liberação:</p>
+    <div class="dash-grid">
       
-      <div class="approval-row">
-        <div>
-          <strong>Carlos Eduardo</strong> <span style="font-size: 12px; color: #666;">(@carlos_news — Repórter)</span>
+      <!-- EDITOR DE MATÉRIAS ESPELHADO -->
+      <div class="dash-panel-card">
+        <div class="dash-panel-title"><i class="fa-solid fa-newspaper"></i> Editor de Matérias — Campo Grande, Mato Grosso do Sul, Brasil</div>
+        
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+          <div class="form-group-dash">
+            <label>Título da Notícia</label>
+            <input type="text" id="materiaTitulo" value="Cúpula estadual debate novas diretrizes de infraestrutura urbana em Campo Grande">
+          </div>
+          <div class="form-group-dash">
+            <label>Categoria</label>
+            <select id="materiaCategoria">
+              <option>Mato Grosso do Sul</option>
+              <option>Campo Grande</option>
+              <option>Últimas Notícias</option>
+              <option>Polícia</option>
+              <option>Trânsito</option>
+              <option>Brasil</option>
+              <option>Mundo</option>
+            </select>
+          </div>
         </div>
-        <div>
-          <button style="background:#28a745; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprovarCadastro(this)">Aprovar Acesso</button>
-          <button style="background:#dc3545; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-weight:bold; margin-left: 5px;" onclick="recusarCadastro(this)">Recusar</button>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px;">
+          <div class="form-group-dash">
+            <label>Nome do Jornalista (Preenchimento Manual)</label>
+            <input type="text" id="materiaJornalista" placeholder="Digite o nome do jornalista...">
+          </div>
+          <div class="form-group-dash">
+            <label>Data (Dia)</label>
+            <input type="text" id="materiaData" value="02/08/2026">
+          </div>
+          <div class="form-group-dash">
+            <label>Horário</label>
+            <input type="text" id="materiaHora" value="07:30">
+          </div>
+          <div class="form-group-dash">
+            <label>Última Atualização</label>
+            <input type="text" id="materiaAtualizacao" value="02/08/2026 às 08:15">
+          </div>
         </div>
-      </div>
 
-      <div class="approval-row">
-        <div>
-          <strong>Ana Beatriz</strong> <span style="font-size: 12px; color: #666;">(@ana_jornalista — Redatora)</span>
+        <div class="form-group-dash">
+          <label>Link da Foto da Matéria (URL da Imagem)</label>
+          <input type="url" id="materiaImagem" value="https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?w=800">
         </div>
-        <div>
-          <button style="background:#28a745; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprovarCadastro(this)">Aprovar Acesso</button>
-          <button style="background:#dc3545; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-weight:bold; margin-left: 5px;" onclick="recusarCadastro(this)">Recusar</button>
+
+        <div class="form-group-dash">
+          <label>Texto da Notícia (Conteúdo Completo)</label>
+          <textarea id="materiaTexto" rows="7">Representantes do governo e autoridades locais se reuniram nesta manhã em Campo Grande, Mato Grosso do Sul, para alinhar os novos projetos de mobilidade urbana e segurança nas rodovias da região. As medidas visam otimizar o fluxo de veículos e garantir maior agilidade nos serviços prestados à população sul-mato-grossense.</textarea>
         </div>
-      </div>
-    </div>
 
-    <!-- SEÇÃO DE CRIAÇÃO E EDIÇÃO DE MATÉRIAS (PARA ADM E FUNCIONÁRIOS) -->
-    <div class="admin-section-box">
-      <div class="admin-section-title"><i class="fa-solid fa-pen-to-square"></i> Criar ou Editar Notícia no Portal</div>
-      
-      <div class="form-group">
-        <label>Título da Matéria</label>
-        <input type="text" id="noticiaTitulo" placeholder="Digite o título principal da notícia">
-      </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div class="form-group-dash">
+            <label>Link da Notícia (URL Externa / Fonte)</label>
+            <input type="url" id="materiaLinkNoticia" placeholder="https://exemplo.com/noticia-completa">
+          </div>
+          <div class="form-group-dash">
+            <label>Link do Vídeo ou Mídia (YouTube / Kwai / TikTok)</label>
+            <input type="url" id="materiaLinkVideo" placeholder="https://youtube.com/watch?v=...">
+          </div>
+        </div>
 
-      <div class="form-group">
-        <label>Categoria da Notícia</label>
-        <select id="noticiaCategoria">
-          <option>Últimas Notícias</option>
-          <option>Mundo</option>
-          <option>Polícia</option>
-          <option>Trânsito</option>
-          <option>Campo Grande</option>
-          <option>Mato Grosso do Sul</option>
-          <option>Brasil</option>
-        </select>
+        <button class="btn-dash-action" onclick="publicarMateriaOficial()"><i class="fa-solid fa-cloud-arrow-up"></i> Atualizar e Publicar no Portal Agora</button>
       </div>
 
-      <div class="form-group">
-        <label>Nome do Jornalista / Repórter</label>
-        <input type="text" id="noticiaJornalista" placeholder="Seu nome completo ou Redação">
-      </div>
-
-      <div class="form-group">
-        <label>Link Complementar / URL da Matéria</label>
-        <input type="url" id="noticiaLink" placeholder="https://...">
-      </div>
-
-      <div class="form-group">
-        <label>Link do Vídeo (YouTube / Kwai / TikTok)</label>
-        <input type="url" id="noticiaVideo" placeholder="Cole o link do vídeo incorporado">
-      </div>
-
-      <div class="form-group">
-        <label>Link da Imagem Ilustrativa (URL da Foto)</label>
-        <input type="url" id="noticiaImagem" placeholder="https://exemplo.com/foto.jpg">
-      </div>
-
-      <div class="form-group">
-        <label>Texto Completo / Conteúdo da Matéria</label>
-        <textarea id="noticiaTexto" rows="6" placeholder="Escreva todos os detalhes da notícia aqui..."></textarea>
-      </div>
-
-      <button class="btn-submit" onclick="publicarMateria()"><i class="fa-solid fa-cloud-arrow-up"></i> Publicar Matéria Oficial no Portal</button>
-    </div>
-
-    <!-- SEÇÃO EXCLUSIVA DE ANÚNCIOS (DISPONÍVEL PARA O CHEFE) -->
-    <div id="secaoAnunciosAdmin" class="admin-section-box" style="display: none;">
-      <div class="admin-section-title"><i class="fa-solid fa-rectangle-ad"></i> Gestão de Anúncios e Banners Publicitários</div>
-      <div class="form-group">
-        <label>Código HTML de Anúncios / Google AdSense / Banners de Patrocínio</label>
-        <textarea rows="3" placeholder="Cole o código do anúncio aqui para exibir em todo o site..."></textarea>
-      </div>
-      <button class="btn-submit" style="background: #28a745;" onclick="alert('Configurações de anúncios salvas com sucesso!')">Salvar Anúncios no Site</button>
     </div>
   </div>
 
-  <!-- MODAL DE LOGIN / CADASTRO -->
+  <!-- MODAL DE LOGIN -->
   <div id="modalLogin" class="modal-overlay">
     <div class="modal-box">
       <button class="modal-close" onclick="fecharModalLogin()">&times;</button>
       
-      <!-- TELA DE ENTRADA -->
-      <div id="formLoginView">
-        <h3>Acesso ao Sistema</h3>
-        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Digite <b>admin</b> no usuário para entrar como Chefe (ADM) ou use sua conta de funcionário.</p>
-        <div class="form-group">
-          <label>Usuário</label>
-          <input type="text" id="inputUsuario" placeholder="Ex: admin ou seu_usuario">
+      <div id="telaEscolhaPerfil">
+        <h3>Acesso ao Portal</h3>
+        <p style="font-size: 14px; color: #555; margin-bottom: 10px;">Como você deseja acessar o painel?</p>
+        
+        <div class="role-choice-container">
+          <button class="role-btn" onclick="selecionarPerfil('adm')">
+            <i class="fa-solid fa-crown" style="font-size: 28px; color: #cc0000; display: block; margin-bottom: 8px;"></i>
+            Administrador
+          </button>
+          <button class="role-btn" onclick="selecionarPerfil('funcionario')">
+            <i class="fa-solid fa-user-pen" style="font-size: 28px; color: #11136c; display: block; margin-bottom: 8px;"></i>
+            Funcionário / Repórter
+          </button>
         </div>
-        <div class="form-group">
+      </div>
+
+      <div id="telaLoginAdm" style="display: none;">
+        <h3 style="color: #cc0000;"><i class="fa-solid fa-crown"></i> Login do Administrador</h3>
+        <div class="form-group-dash">
+          <label>E-mail</label>
+          <input type="text" id="admUser" value="cgnewsoficial@gmail.com">
+        </div>
+        <div class="form-group-dash">
           <label>Senha</label>
-          <input type="password" id="inputSenha" placeholder="Sua senha">
+          <div class="password-wrapper">
+            <input type="password" id="admPass" value="@M4x98209980">
+            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('admPass', this)">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
         </div>
-        <button class="btn-submit" onclick="realizarLogin()">Entrar no Painel</button>
-        <p style="text-align: center; margin-top: 15px; font-size: 13px;">
-          Novo funcionário? <a href="#" onclick="mostrarTelaCadastro()" style="color: #cc0000; font-weight: bold;">Solicitar Cadastro</a>
-        </p>
+        <button class="btn-dash-action" onclick="executarLogin()">Entrar</button>
+        <p style="text-align: center; margin-top: 15px;"><a href="#" onclick="voltarParaEscolha()" style="color: #666; font-size: 13px;">&larr; Voltar</a></p>
       </div>
 
-      <!-- TELA DE SOLICITAÇÃO DE CADASTRO -->
-      <div id="formCadastroView" style="display: none;">
-        <h3>Solicitar Novo Acesso</h3>
-        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Preencha seus dados para envio ao painel de aprovação do Administrador.</p>
-        <div class="form-group">
-          <label>Nome Completo</label>
-          <input type="text" placeholder="Seu nome">
+      <div id="telaLoginFuncionario" style="display: none;">
+        <h3><i class="fa-solid fa-user-pen"></i> Login de Funcionário</h3>
+        <div class="form-group-dash">
+          <label>Usuário / E-mail</label>
+          <input type="text" id="funcUser" placeholder="Seu usuário...">
         </div>
-        <div class="form-group">
-          <label>Usuário Desejado</label>
-          <input type="text" placeholder="Ex: joao_reporter">
+        <div class="form-group-dash">
+          <label>Senha</label>
+          <div class="password-wrapper">
+            <input type="password" id="funcPass" placeholder="Sua senha...">
+            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('funcPass', this)">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Crie uma Senha</label>
-          <input type="password" placeholder="Sua senha">
-        </div>
-        <button class="btn-submit" onclick="enviarSolicitacaoCadastro()">Enviar para Aprovação do Chefe</button>
-        <p style="text-align: center; margin-top: 15px; font-size: 13px;">
-          Já tem conta? <a href="#" onclick="mostrarTelaLogin()" style="color: #cc0000; font-weight: bold;">Fazer Login</a>
-        </p>
+        <button class="btn-dash-action" onclick="executarLogin()">Entrar</button>
+        <p style="text-align: center; margin-top: 15px;"><a href="#" onclick="voltarParaEscolha()" style="color: #666; font-size: 13px;">&larr; Voltar</a></p>
       </div>
-
     </div>
   </div>
 
-  <!-- RODAPÉ -->
+  <!-- RODAPÉ COMPLETO -->
   <footer>
-    <h3>CG NEWS OFICIAL</h3>
+    <h3>CG NEWS OFICIAL — Campo Grande, Mato Grosso do Sul, Brasil</h3>
     <div class="footer-social-icons">
-      <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
-      <a href="#"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://whatsapp.com" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://tiktok.com" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://kwai.com" target="_blank" title="Kwai"><i class="fa-solid fa-video"></i></a>
+      <a href="https://twitter.com" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="https://threads.net" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
+      <a href="https://linkedin.com" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
     </div>
     <p>© 2026 CG NEWS OFICIAL — Todos os direitos reservados.</p>
   </footer>
@@ -333,79 +399,102 @@
     function openNav() { document.getElementById("mySideMenu").style.width = "280px"; }
     function closeNav() { document.getElementById("mySideMenu").style.width = "0"; }
 
-    function abrirModalLogin() { document.getElementById('modalLogin').style.display = 'flex'; }
+    function abrirModalLogin() {
+      document.getElementById('modalLogin').style.display = 'flex';
+      voltarParaEscolha();
+    }
     function fecharModalLogin() { document.getElementById('modalLogin').style.display = 'none'; }
 
-    function mostrarTelaCadastro() {
-      document.getElementById('formLoginView').style.display = 'none';
-      document.getElementById('formCadastroView').style.display = 'block';
-    }
-    function mostrarTelaLogin() {
-      document.getElementById('formCadastroView').style.display = 'none';
-      document.getElementById('formLoginView').style.display = 'block';
+    function voltarParaEscolha() {
+      document.getElementById('telaEscolhaPerfil').style.display = 'block';
+      document.getElementById('telaLoginAdm').style.display = 'none';
+      document.getElementById('telaLoginFuncionario').style.display = 'none';
     }
 
-    function enviarSolicitacaoCadastro() {
-      alert('Solicitação enviada com sucesso! O Administrador (Chefe) poderá aprová-la no painel dele.');
-      fecharModalLogin();
-      mostrarTelaLogin();
-    }
-
-    function realizarLogin() {
-      var usuario = document.getElementById('inputUsuario').value.trim().toLowerCase();
-      fecharModalLogin();
-
-      // Esconde o site público e exibe o Painel Gerencial na mesma página
-      document.getElementById('sitePublico').style.display = 'none';
-      document.getElementById('painelGerencial').style.display = 'block';
-      document.getElementById('btnAbrirLogin').style.display = 'none';
-
-      if (usuario === 'admin') {
-        // Painel exclusivo do Chefe (ADM)
-        document.getElementById('tituloPainelUser').innerHTML = '<i class="fa-solid fa-crown" style="color: #cc0000;"></i> Painel do Administrador (Chefe)';
-        document.getElementById('secaoAprovacaoAdmin').style.display = 'block';
-        document.getElementById('secaoAnunciosAdmin').style.display = 'block';
-        document.getElementById('noticiaJornalista').value = 'Administração / Chefia';
+    function selecionarPerfil(tipo) {
+      document.getElementById('telaEscolhaPerfil').style.display = 'none';
+      if (tipo === 'adm') {
+        document.getElementById('telaLoginAdm').style.display = 'block';
       } else {
-        // Painel padrão de Funcionário / Jornalista
-        document.getElementById('tituloPainelUser').innerHTML = '<i class="fa-solid fa-user-pen"></i> Painel do Jornalista / Redação';
-        document.getElementById('secaoAprovacaoAdmin').style.display = 'none';
-        document.getElementById('secaoAnunciosAdmin').style.display = 'none';
+        document.getElementById('telaLoginFuncionario').style.display = 'block';
       }
+    }
+
+    function togglePasswordVisibility(fieldId, btnElement) {
+      var passwordInput = document.getElementById(fieldId);
+      var icon = btnElement.querySelector('i');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    }
+
+    function executarLogin() {
+      fecharModalLogin();
+      document.getElementById('sitePublicoArea').style.display = 'none';
+      document.getElementById('painelDashboardMaster').style.display = 'block';
+      document.getElementById('btnLoginNav').style.display = 'none';
     }
 
     function fazerLogout() {
-      // Retorna para o site público
-      document.getElementById('painelGerencial').style.display = 'none';
-      document.getElementById('sitePublico').style.display = 'flex';
-      document.getElementById('btnAbrirLogin').style.display = 'flex';
-      document.getElementById('inputUsuario').value = '';
-      document.getElementById('inputSenha').value = '';
+      document.getElementById('painelDashboardMaster').style.display = 'none';
+      document.getElementById('sitePublicoArea').style.display = 'flex';
+      document.getElementById('btnLoginNav').style.display = 'flex';
     }
 
-    function aprovarCadastro(btn) {
-      alert('Cadastro de funcionário aprovado com sucesso!');
-      btn.closest('.approval-row').remove();
-    }
-
-    function recusarCadastro(btn) {
-      alert('Cadastro recusado.');
-      btn.closest('.approval-row').remove();
-    }
-
-    function publicarMateria() {
-      var titulo = document.getElementById('noticiaTitulo').value;
+    function publicarMateriaOficial() {
+      var titulo = document.getElementById('materiaTitulo').value;
       if (!titulo) {
-        alert('Por favor, preencha pelo menos o título da matéria!');
+        alert('Por favor, informe o título da matéria!');
         return;
       }
-      alert('Matéria publicada com sucesso no portal CG NEWS OFICIAL!');
-      // Limpa os campos após publicar
-      document.getElementById('noticiaTitulo').value = '';
-      document.getElementById('noticiaLink').value = '';
-      document.getElementById('noticiaVideo').value = '';
-      document.getElementById('noticiaImagem').value = '';
-      document.getElementById('noticiaTexto').value = '';
+
+      document.getElementById('pubTitulo').innerText = titulo;
+      document.getElementById('pubTag').innerText = document.getElementById('materiaCategoria').value;
+      
+      var jornalistaInput = document.getElementById('materiaJornalista').value;
+      document.getElementById('pubJornalista').innerText = jornalistaInput ? jornalistaInput : '[Preencha Manualmente]';
+      
+      document.getElementById('pubData').innerText = document.getElementById('materiaData').value;
+      document.getElementById('pubHora').innerText = document.getElementById('materiaHora').value;
+      document.getElementById('pubAtualizacao').innerText = document.getElementById('materiaAtualizacao').value;
+      document.getElementById('pubImagem').src = document.getElementById('materiaImagem').value;
+      document.getElementById('pubTexto').innerText = document.getElementById('materiaTexto').value;
+
+      var linkNoticia = document.getElementById('materiaLinkNoticia').value;
+      var linkVideo = document.getElementById('materiaLinkVideo').value;
+      var boxLinks = document.getElementById('pubBoxLinks');
+      
+      var htmlLinks = '<strong>Links e Mídias Relacionadas:</strong>';
+      var temLinks = false;
+
+      if (linkNoticia) {
+        htmlLinks += '<a href="' + linkNoticia + '" target="_blank"><i class="fa-solid fa-link"></i> ' + linkNoticia + '</a>';
+        temLinks = true;
+      }
+      if (linkVideo) {
+        htmlLinks += '<a href="' + linkVideo + '" target="_blank"><i class="fa-solid fa-video"></i> ' + linkVideo + '</a>';
+        temLinks = true;
+      }
+
+      if (temLinks) {
+        boxLinks.innerHTML = htmlLinks;
+        boxLinks.style.display = 'block';
+      } else {
+        boxLinks.style.display = 'none';
+      }
+
+      alert('Matéria atualizada e publicada com sucesso no portal!');
+      
+      document.getElementById('painelDashboardMaster').style.display = 'none';
+      document.getElementById('sitePublicoArea').style.display = 'flex';
+      document.getElementById('btnLoginNav').style.display = 'flex';
+      window.scrollTo({top: 0, behavior: 'smooth'});
     }
   </script>
 
