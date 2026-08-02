@@ -403,7 +403,7 @@
     function openNav() { document.getElementById("mySideMenu").style.width = "280px"; }
     function closeNav() { document.getElementById("mySideMenu").style.width = "0"; }
 
-    // CONTROLE DO PAINEL DE LOGIN NA PRÓPRIA PÁGINA
+    // CONTROLE DO PAINEL DE LOGIN NA PRÓPRIA PÁGINA (MANTÉM VOCÊ NA CAPA)
     window.netlifyIdentity && netlifyIdentity.on("init", user => {
       if (user) {
         document.getElementById("admin-bar").style.display = "flex";
@@ -413,7 +413,6 @@
     netlifyIdentity.on("login", user => {
       document.getElementById("admin-bar").style.display = "flex";
       netlifyIdentity.close();
-      window.location.href = "/admin/";
     });
 
     netlifyIdentity.on("logout", () => {
