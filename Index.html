@@ -27,7 +27,6 @@
       width: 100%; background-color: #11136c; color: #ffffff; padding: 20px; 
       display: flex; align-items: center; justify-content: space-between;
       border-bottom: 4px solid #1a23a0 !important;
-      position: sticky; top: 0; z-index: 999;
     }
     .menu-btn { font-size: 28px; cursor: pointer; background: none; border: none; color: #ffffff; padding: 5px 10px; }
     .header-title { text-align: center; flex-grow: 1; }
@@ -41,13 +40,6 @@
       cursor: pointer;
     }
 
-    .btn-painel-topo {
-      background: #34495e; color: #fff; border: none; padding: 8px 14px;
-      border-radius: 6px; font-weight: 700; font-size: 13px; cursor: pointer;
-      display: flex; align-items: center; gap: 6px; transition: background 0.2s;
-    }
-    .btn-painel-topo:hover { background: #2c3e50; }
-
     /* MENU LATERAL */
     .side-menu {
       height: 100%; width: 0; position: fixed; z-index: 1000; top: 0; left: 0;
@@ -60,18 +52,10 @@
     .side-menu a { padding: 12px 20px; font-size: 15px; color: #11136c; font-weight: 700; display: block; cursor: pointer; }
     .side-menu a:hover { background-color: #f2f4f7; }
 
-    /* SISTEMA SPA (Telas: Leitor vs Admin) */
-    .app-screen { display: none; }
-    .app-screen.active { display: block; }
-
-    /* TELA DO LEITOR (Portal Principal) */
+    /* LAYOUT PRINCIPAL */
     .main-wrapper { display: flex; flex-wrap: wrap; max-width: 1200px; margin: 20px auto; padding: 0 15px; gap: 20px; }
     .content-column { flex: 2; min-width: 300px; }
     .sidebar-column { flex: 1; min-width: 260px; }
-
-    .spa-section { display: none; }
-    .spa-section.active { display: block; animation: fadeIn 0.3s ease-in-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
     .news-link { color: inherit; display: block; }
 
@@ -80,13 +64,13 @@
     .news-date { font-size: 11px; color: #718096; display: block; margin-top: 5px; }
 
     /* DESTAQUE PRINCIPAL DA CAPA */
-    .featured-card { background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 20px; }
+    .featured-card { background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 20px; scroll-margin-top: 20px; }
     .featured-card img { width: 100%; height: 280px; object-fit: cover; display: block; }
     .featured-card .card-body { padding: 18px; }
     .featured-card h2 { font-size: 22px; color: #111; line-height: 1.3; }
 
     /* GRADE DE DUAS COLUNAS */
-    .two-col-grid { display: flex; flex-wrap: wrap; gap: 15px; }
+    .two-col-grid { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; }
     .sub-card { flex: 1; min-width: 240px; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
     .sub-card img { width: 100%; height: 140px; object-fit: cover; display: block; }
     .sub-card .card-body { padding: 12px; }
@@ -100,80 +84,41 @@
     .sidebar-box { background: #ffffff; padding: 18px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
     .sidebar-title { font-size: 15px; font-weight: bold; color: #11136c; border-bottom: 3px solid #11136c !important; padding-bottom: 6px; margin-bottom: 15px; text-transform: uppercase; }
 
+    /* ÍCONES DE REDES SOCIAIS NA SIDEBAR */
     .social-icons-grid {
-      display: flex; flex-wrap: wrap; gap: 15px; justify-content: flex-start; align-items: center; padding-top: 5px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 5px;
     }
     .social-icons-grid a {
-      color: #11136c; font-size: 22px; transition: transform 0.2s ease, color 0.2s ease; display: flex; align-items: center;
+      color: #11136c;
+      font-size: 22px;
+      transition: transform 0.2s ease, color 0.2s ease;
+      display: flex;
+      align-items: center;
     }
     .social-icons-grid a:hover { color: #1a23a0; transform: scale(1.15); }
 
-
-    /* TELA DE ADMINISTRAÇÃO (EXATAMENTE COMO NAS SUAS FOTOS) */
-    .admin-container {
-      max-width: 650px; margin: 30px auto; background: #ffffff; padding: 25px;
-      border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border: 1px solid #dcdcdc;
-    }
-    .admin-title-top {
-      font-size: 26px; font-weight: 600; color: #34495e; text-align: center; margin-bottom: 25px;
-    }
-    
-    /* TELA DE LOGIN ADMIN */
-    .login-box-wrapper {
-      border: 1px solid #ccc; border-radius: 4px; background: #fff; max-width: 500px; margin: 40px auto; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .login-header-bar {
-      background: #34495e; color: #fff; padding: 12px 18px; font-size: 18px; font-weight: 600;
-    }
-    .login-body { padding: 20px; }
-    .admin-form-group { margin-bottom: 15px; }
-    .admin-form-group label { display: block; font-size: 14px; color: #333; margin-bottom: 5px; }
-    .admin-form-group input, .admin-form-group select, .admin-form-group textarea {
-      width: 100%; padding: 10px; border: 1px solid #bce8f1; background: #f8fbff; border-radius: 4px; font-size: 14px;
-    }
-    .admin-btn-login {
-      background: #95a5a6; color: #fff; border: none; padding: 8px 18px; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 14px;
-    }
-    .admin-btn-login:hover { background: #7f8c8d; }
-    .forgot-link { color: #34495e; font-size: 13px; text-decoration: underline !important; display: inline-block; margin-top: 10px; }
-
-    /* FORMULÁRIO DE CADASTRO DE NOTÍCIAS (FOTO 1000139230 / 139231) */
-    .form-section-title { font-size: 22px; color: #34495e; font-weight: 600; margin-bottom: 20px; }
-    .checkbox-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 14px; color: #333; }
-    .checkbox-row input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
-    
-    .image-picker-box {
-      border: 1px dashed #bbb; padding: 15px; text-align: center; background: #fafafa; border-radius: 4px; margin-bottom: 15px;
-    }
-    .btn-escolher-img {
-      background: #eef1f5; border: 1px solid #ccc; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 4px; color: #333;
-    }
-    
-    .tags-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; margin-top: 5px; background: #fff; padding: 10px; border: 1px solid #ddd; border-radius: 4px;
-    }
-    .tag-checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #333; }
-
-    .admin-actions-bar {
-      display: flex; gap: 10px; margin-top: 20px; border-top: 1px dashed #ddd; padding-top: 15px; align-items: center;
-    }
-    .btn-salvar-admin { background: #95a5a6; color: white; border: none; padding: 8px 20px; border-radius: 4px; font-weight: 600; cursor: pointer; }
-    .btn-cancelar-admin { background: #95a5a6; color: white; border: none; padding: 8px 20px; border-radius: 4px; font-weight: 600; cursor: pointer; }
-    .btn-salvar-admin:hover, .btn-cancelar-admin:hover { opacity: 0.85; }
-
-    /* RODAPÉ DO ADMIN */
-    .admin-footer {
-      text-align: center; font-size: 12px; color: #7f8c8d; margin-top: 40px; border-top: 1px dotted #ccc; padding-top: 15px;
-    }
-
-    /* RODAPÉ DO PORTAL */
+    /* RODAPÉ */
     footer { width: 100%; background-color: #11136c; color: #ffffff; padding: 30px 20px; text-align: center; margin-top: 40px; }
     footer h3 { font-size: 18px; margin-bottom: 15px; }
     .footer-social-icons {
-      display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 15px 0 20px; align-items: center;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin: 15px 0 20px;
+      align-items: center;
     }
     .footer-social-icons a {
-      color: #ffffff; font-size: 24px; transition: transform 0.2s ease, color 0.2s ease; display: flex; align-items: center;
+      color: #ffffff;
+      font-size: 24px;
+      transition: transform 0.2s ease, color 0.2s ease;
+      display: flex;
+      align-items: center;
     }
     .footer-social-icons a:hover { color: #4cd964; transform: scale(1.2); }
     footer p { font-size: 11px; opacity: 0.8; }
@@ -181,432 +126,143 @@
 </head>
 <body>
 
-  <!-- ========================================== -->
-  <!-- TELA 1: LEITOR (www.cgnewsoficial.com.br)  -->
-  <!-- ========================================== -->
-  <div id="screen-leitor" class="app-screen active">
+  <!-- MENU LATERAL -->
+  <div id="mySideMenu" class="side-menu">
+    <div class="side-menu-header">
+      <h2>CG NEWS OFICIAL</h2>
+      <button class="close-btn" onclick="closeNav()">&times;</button>
+    </div>
+    <a href="#ultimas-noticias" onclick="closeNav()">Últimas Notícias</a>
+    <a href="#policia" onclick="closeNav()">Polícia</a>
+    <a href="#transito" onclick="closeNav()">Trânsito</a>
+    <a href="#campo-grande" onclick="closeNav()">Campo Grande</a>
+    <a href="#ms" onclick="closeNav()">Mato Grosso do Sul</a>
+    <a href="#brasil" onclick="closeNav()">Brasil</a>
+    <a href="#mundo" onclick="closeNav()">Mundo</a>
+    <div style="border-top: 1px solid #ddd; margin: 10px 0;"></div>
+    <a href="admin/" style="color: #2563eb;" target="_blank">🔒 Painel Administrativo</a>
+  </div>
 
-    <!-- MENU LATERAL -->
-    <div id="mySideMenu" class="side-menu">
-      <div class="side-menu-header">
-        <h2>CG NEWS OFICIAL</h2>
-        <button class="close-btn" onclick="closeNav()">&times;</button>
-      </div>
-      <a href="#" onclick="mudarSecaoLeitor('ultimas-noticias'); closeNav();">Últimas Notícias</a>
-      <a href="#" onclick="mudarSecaoLeitor('policia'); closeNav();">Polícia</a>
-      <a href="#" onclick="mudarSecaoLeitor('transito'); closeNav();">Trânsito</a>
-      <a href="#" onclick="mudarSecaoLeitor('campo-grande'); closeNav();">Campo Grande</a>
-      <a href="#" onclick="mudarSecaoLeitor('ms'); closeNav();">Mato Grosso do Sul</a>
-      <a href="#" onclick="mudarSecaoLeitor('brasil'); closeNav();">Brasil</a>
-      <a href="#" onclick="mudarSecaoLeitor('mundo'); closeNav();">Mundo</a>
+  <!-- CABEÇALHO -->
+  <header class="top-header">
+    <button class="menu-btn" onclick="openNav()">☰</button>
+    <div class="header-title">
+      <h1><a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">CG NEWS OFICIAL</a></h1>
+    </div>
+  </header>
+
+  <!-- CORPO PRINCIPAL -->
+  <div class="main-wrapper">
+
+    <!-- COLUNA DE NOTÍCIAS -->
+    <div class="content-column" id="container-dinamico">
+      
+      <!-- As notícias cadastradas pelo painel admin aparecerão aqui automaticamente -->
+
     </div>
 
-    <!-- CABEÇALHO -->
-    <header class="top-header">
-      <button class="menu-btn" onclick="openNav()">☰</button>
-      <div class="header-title">
-        <h1><a href="#" onclick="mudarSecaoLeitor('ultimas-noticias'); return false;">CG NEWS OFICIAL</a></h1>
+    <!-- COLUNA DIREITA (REDES SOCIAIS) -->
+    <aside class="sidebar-column">
+      <div class="sidebar-box">
+        <div class="sidebar-title">Redes Sociais</div>
+        <div class="social-icons-grid">
+          <a href="https://wa.me/5567996619364" target="_blank" title="WhatsApp CG NEWS"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="https://www.instagram.com/cgnews.oficial/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.facebook.com/share/19XBbzamDq/" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="https://www.tiktok.com/@cgnewsoficial" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="https://www.youtube.com/@cgnews.oficial" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://www.kwai.com/@cgnewsoficial" target="_blank" title="Kwai"><i class="fa-solid fa-video"></i></a>
+          <a href="https://www.threads.net/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
+          <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
       </div>
-      <button class="btn-painel-topo" onclick="irParaAdmin()"><i class="fa-solid fa-lock"></i> Painel Admin</button>
-    </header>
-
-    <!-- CORPO PRINCIPAL (PORTAL) -->
-    <div class="main-wrapper">
-      <div class="content-column">
-        
-        <!-- 1. ÚLTIMAS NOTÍCIAS -->
-        <div id="ultimas-noticias" class="spa-section active">
-          <div class="section-header">Últimas Notícias — Mato Grosso do Sul, Brasil</div>
-          
-          <article class="featured-card">
-            <img id="viewImg" src="https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?w=800" alt="Notícia Principal">
-            <div class="card-body">
-              <span class="tag" id="viewTag">Campo Grande</span>
-              <h2 id="viewTitulo">Operação integrada mobiliza forças de segurança nas principais vias da Capital</h2>
-              <p id="viewSubtitulo" style="font-size: 13px; font-weight: bold; color: #333; margin-top: 4px;">Ações de fiscalização e monitoramento ocorrem de forma simultânea nesta semana.</p>
-              <p id="viewTexto" style="font-size: 13px; color: #555; margin-top: 6px;">As equipes estratégicas continuam o patrulhamento ostensivo...</p>
-              
-              <div style="margin-top: 10px; font-size: 12px; color: #333; font-weight: bold;">
-                <span>Autor: <span id="viewAutor">Redação CG NEWS</span></span> | 
-                <span>Data: <span id="viewData">31/07/2026</span></span> | 
-                <span>Fonte: <span id="viewFonte">Assessoria</span></span>
-              </div>
-
-              <span class="news-date">31/07/2026</span>
-            </div>
-          </article>
-
-          <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-            <div class="list-card">
-              <span class="tag">Campo Grande</span>
-              <h4>Nova diretriz municipal altera horários de atendimento em órgãos públicos</h4>
-              <span class="news-date">31/07/2026</span>
-            </div>
-          </a>
-        </div>
-
-        <!-- 2. POLÍCIA -->
-        <div id="policia" class="spa-section">
-          <div class="section-header">Polícia</div>
-          <div class="two-col-grid">
-            <div class="sub-card">
-              <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400" alt="Polícia">
-              <div class="card-body">
-                <span class="tag">Polícia</span>
-                <h3>Operação policial resulta em apreensões e prisões em região estratégica</h3>
-                <span class="news-date">31/07/2026</span>
-              </div>
-            </div>
-            <div class="sub-card">
-              <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400" alt="Investigação">
-              <div class="card-body">
-                <span class="tag">Polícia</span>
-                <h3>Forças de segurança desarticulam esquema de fraudes</h3>
-                <span class="news-date">31/07/2026</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3. TRÂNSITO -->
-        <div id="transito" class="spa-section">
-          <div class="section-header">Trânsito</div>
-          <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-            <div class="list-card">
-              <span class="tag">Trânsito</span>
-              <h4>Colisão entre veículos causa lentidão em avenida de grande fluxo na Capital</h4>
-              <span class="news-date">31/07/2026</span>
-            </div>
-          </a>
-        </div>
-
-        <!-- 4. CAMPO GRANDE -->
-        <div id="campo-grande" class="spa-section">
-          <div class="section-header">Campo Grande</div>
-          <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-            <div class="list-card">
-              <span class="tag">Campo Grande</span>
-              <h4>Prefeitura anuncia novas obras de infraestrutura em bairros da cidade</h4>
-              <span class="news-date">31/07/2026</span>
-            </div>
-          </a>
-        </div>
-
-        <!-- 5. MATO GROSSO DO SUL -->
-        <div id="ms" class="spa-section">
-          <div class="section-header">Mato Grosso do Sul</div>
-          <div class="two-col-grid">
-            <div class="sub-card">
-              <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400" alt="Interior MS">
-              <div class="card-body">
-                <span class="tag">Mato Grosso do Sul</span>
-                <h3>Governo estadual anuncia investimentos em rodovias do interior</h3>
-                <span class="news-date">31/07/2026</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 6. BRASIL -->
-        <div id="brasil" class="spa-section">
-          <div class="section-header">Brasil</div>
-          <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-            <div class="list-card">
-              <span class="tag">Brasil</span>
-              <h4>Novas diretrizes econômicas entram em vigor no território nacional</h4>
-              <span class="news-date">31/07/2026</span>
-            </div>
-          </a>
-        </div>
-
-        <!-- 7. MUNDO -->
-        <div id="mundo" class="spa-section">
-          <div class="section-header">Mundo</div>
-          <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-            <div class="list-card">
-              <span class="tag">Mundo</span>
-              <h4>Panorama econômico global registra oscilações em bolsas internacionais</h4>
-              <span class="news-date">31/07/2026</span>
-            </div>
-          </a>
-        </div>
-
-      </div>
-
-      <!-- COLUNA DIREITA (REDES SOCIAIS) -->
-      <aside class="sidebar-column">
-        <div class="sidebar-box">
-          <div class="sidebar-title">Redes Sociais</div>
-          <div class="social-icons-grid">
-            <a href="https://wa.me/5567996619364" target="_blank" title="WhatsApp CG NEWS"><i class="fa-brands fa-whatsapp"></i></a>
-            <a href="https://www.instagram.com/cgnews.oficial/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://www.facebook.com/share/19XBbzamDq/" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="https://www.tiktok.com/@cgnewsoficial" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-            <a href="https://www.youtube.com/@cgnews.oficial" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
-            <a href="https://www.kwai.com/@cgnewsoficial" target="_blank" title="Kwai"><i class="fa-solid fa-video"></i></a>
-            <a href="https://www.threads.net/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
-            <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-          </div>
-        </div>
-      </aside>
-    </div>
-
-    <!-- RODAPÉ DO LEITOR -->
-    <footer>
-      <h3>CG NEWS OFICIAL</h3>
-      <div class="footer-social-icons">
-        <a href="https://wa.me/5567996619364" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-        <a href="https://www.facebook.com/share/19XBbzamDq/" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="https://www.youtube.com/@cgnews.oficial" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
-        <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
-        <a href="https://www.instagram.com/cgnews.oficial/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-        <a href="https://www.tiktok.com/@cgnewsoficial" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-        <a href="https://www.kwai.com/@cgnewsoficial" target="_blank" title="Kwai"><i class="fa-solid fa-video"></i></a>
-        <a href="https://www.threads.net/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
-      </div>
-      <p>© 2026 CG NEWS OFICIAL — Informação em tempo real.</p>
-    </footer>
+    </aside>
 
   </div>
 
-
-  <!-- ========================================== -->
-  <!-- TELA 2: ADMINISTRAÇÃO (www.cgnewsoficial.com.br/admin) -->
-  <!-- ========================================== -->
-  <div id="screen-admin" class="app-screen">
-    
-    <div style="background: #ffffff; padding: 20px; border-bottom: 2px solid #34495e; display: flex; justify-content: space-between; align-items: center;">
-      <h2 style="color: #34495e; font-size: 22px;">Administração do Portal</h2>
-      <button onclick="voltarParaLeitor()" class="admin-btn-login" style="background: #34495e;"><i class="fa-solid fa-globe"></i> Ver Site (Leitor)</button>
+  <!-- RODAPÉ -->
+  <footer>
+    <h3>CG NEWS OFICIAL</h3>
+    <div class="footer-social-icons">
+      <a href="https://wa.me/5567996619364" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      <a href="https://www.facebook.com/share/19XBbzamDq/" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://www.youtube.com/@cgnews.oficial" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="https://www.instagram.com/cgnews.oficial/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+      <a href="https://www.tiktok.com/@cgnewsoficial" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://www.kwai.com/@cgnewsoficial" target="_blank" title="Kwai"><i class="fa-solid fa-video"></i></a>
+      <a href="https://www.threads.net/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
     </div>
-
-    <!-- ETAPA A: TELA DE LOGIN (Baseada na sua foto 1000139232.jpg) -->
-    <div id="admin-login-view" style="display: block;">
-      <div class="login-box-wrapper">
-        <div class="login-header-bar">Faça o login</div>
-        <div class="login-body">
-          <div class="admin-form-group">
-            <label>Usuário</label>
-            <input type="text" id="loginUsuario" value="Elizeu">
-          </div>
-          <div class="admin-form-group">
-            <label>Senha</label>
-            <input type="password" id="loginSenha" value="123456">
-          </div>
-          <div class="checkbox-row" style="margin-bottom: 15px;">
-            <input type="checkbox" id="manterConectado" checked>
-            <label for="manterConectado" style="margin: 0; font-weight: normal;">Manter conectado</label>
-          </div>
-          <button class="admin-btn-login" onclick="executarLogin()">Login</button>
-          <br>
-          <a href="#" class="forgot-link" onclick="alert('Funcionalidade de recuperação simulada. Use a senha padrão!')">Esqueci minha senha.</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- ETAPA B: CADASTRO/EDIÇÃO DE NOTÍCIAS (Baseada nas fotos 1000139230, 139231, etc.) -->
-    <div id="admin-form-view" style="display: none;">
-      <div class="admin-container">
-        <div class="form-section-title">Cadastro de: Notícias</div>
-
-        <div class="admin-form-group">
-          <label>Categoria</label>
-          <select id="cadCategoria">
-            <option value="">- Selecione -</option>
-            <option value="Campo Grande">Campo Grande</option>
-            <option value="Polícia">Polícia</option>
-            <option value="Trânsito">Trânsito</option>
-            <option value="Mato Grosso do Sul">Mato Grosso do Sul</option>
-            <option value="Brasil">Brasil</option>
-            <option value="Mundo">Mundo</option>
-          </select>
-        </div>
-
-        <div class="checkbox-row">
-          <input type="checkbox" id="cadSuperDestaque">
-          <label for="cadSuperDestaque">Super Destaque</label>
-        </div>
-
-        <div class="checkbox-row" style="margin-bottom: 15px;">
-          <input type="checkbox" id="cadDestaque">
-          <label for="cadDestaque">Destaque</label>
-        </div>
-
-        <div class="admin-form-group">
-          <label>Imagem</label>
-          <div class="image-picker-box">
-            <button class="btn-escolher-img" onclick="promptarUrlImagem()">Escolha a Imagen</button>
-            <span id="imgNomeArquivo" style="font-size: 12px; color: #666; margin-left: 10px;">Nenhuma selecionada</span>
-          </div>
-          <input type="hidden" id="cadImgUrl" value="https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?w=800">
-        </div>
-
-        <div class="admin-form-group">
-          <label>Fonte Imagem</label>
-          <input type="text" id="cadFonteImg" placeholder="Ex: Unsplash / Divulgação">
-        </div>
-
-        <div class="admin-form-group">
-          <label>Video (Cole o Link do Youtube)</label>
-          <input type="text" id="cadVideoYoutube" placeholder="https://youtube.com/watch?v=...">
-        </div>
-
-        <div class="admin-form-group">
-          <label>Autor</label>
-          <input type="text" id="cadAutor" value="Redação CG NEWS">
-        </div>
-
-        <div class="admin-form-group">
-          <label>Data</label>
-          <div style="display: flex; gap: 10px;">
-            <input type="text" id="cadDataDia" value="31/07/2026" style="flex: 2;">
-            <input type="text" id="cadDataHora" value="08:00" style="flex: 1;">
-          </div>
-        </div>
-
-        <div class="admin-form-group">
-          <label>Título</label>
-          <input type="text" id="cadTitulo" value="Operação integrada mobiliza forças de segurança nas principais vias da Capital">
-        </div>
-
-        <div class="admin-form-group">
-          <label>Subtítulo</label>
-          <input type="text" id="cadSubtitulo" value="Ações de fiscalização e monitoramento ocorrem de forma simultânea nesta semana.">
-        </div>
-
-        <div class="admin-form-group">
-          <label>Texto</label>
-          <!-- Barra de formatação idêntica à imagem -->
-          <div style="border: 1px solid #ccc; background: #fdfdfd; padding: 4px; border-top-left-radius: 4px; border-top-right-radius: 4px; display: flex; gap: 8px; align-items: center;">
-            <button type="button" style="background:none; border:none; cursor:pointer;"><i class="fa-solid fa-folder-plus"></i></button>
-            <button type="button" style="background:none; border:none; cursor:pointer;"><i class="fa-regular fa-image"></i></button>
-            <select style="padding: 2px; font-size: 12px;"><option>Paragraph</option></select>
-            <button type="button" style="background:none; border:none; cursor:pointer; font-weight:bold;">B</button>
-            <button type="button" style="background:none; border:none; cursor:pointer; font-style:italic;">I</button>
-          </div>
-          <textarea id="cadTexto" rows="5" style="border-top: none; border-top-left-radius: 0; border-top-right-radius: 0;">As equipes estratégicas continuam o patrulhamento ostensivo...</textarea>
-        </div>
-
-        <div class="admin-form-group">
-          <label>Fonte</label>
-          <input type="text" id="cadFonte" value="Assessoria de Imprensa">
-        </div>
-
-        <div class="admin-form-group">
-          <label>Tags</label>
-          <div class="tags-grid">
-            <div class="tag-checkbox-item"><input type="checkbox" value="Brasil"> Brasil</div>
-            <div class="tag-checkbox-item"><input type="checkbox" value="Corumbá"> Corumbá</div>
-            <div class="tag-checkbox-item"><input type="checkbox" value="Dengue"> Dengue</div>
-            <div class="tag-checkbox-item"><input type="checkbox" value="Desaparecido"> Desaparecido</div>
-            <div class="tag-checkbox-item"><input type="checkbox" value="Dourados"> Dourados</div>
-            <div class="tag-checkbox-item"><input type="checkbox" value="Enem"> Enem</div>
-            <div class="tag-checkbox-item"><input type="checkbox" value="GUERRA"> GUERRA</div>
-            <div class="tag-checkbox-item"><input type="checkbox" value="Inep"> Inep</div>
-            <div class="tag-checkbox-item"><input type="checkbox" value="Israel"> Israel</div>
-            <div class="tag-checkbox-item"><input type="checkbox" value="Lívia Andrade"> Lívia Andrade</div>
-            <div class="tag-checkbox-item"><input type="checkbox" value="Sociedade"> Sociedade</div>
-            <div class="tag-checkbox-item"><input type="checkbox" value="Três Lagoas"> Três Lagoas</div>
-          </div>
-        </div>
-
-        <div class="admin-actions-bar">
-          <button class="btn-salvar-admin" onclick="salvarNoticiaAdmin()">Salvar</button>
-          <button class="btn-cancelar-admin" onclick="voltarParaLeitor()">Cancelar</button>
-        </div>
-
-        <div style="margin-top: 15px;">
-          <a href="#" onclick="voltarParaLeitor(); return false;" style="font-size: 13px; color: #34495e; text-decoration: underline !important;">🗂 Voltar para listagem.</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- RODAPÉ DO ADMIN IGUAL ÀS IMAGENS -->
-    <div class="admin-footer">
-      Copyright © 2026. Sistema de Administração de Sites - Todos os direitos reservados.
-    </div>
-
-  </div>
+    <p>© 2026 CG NEWS OFICIAL — Informação em tempo real.</p>
+  </footer>
 
   <script>
-    // Controle do menu lateral do Leitor
     function openNav() { document.getElementById("mySideMenu").style.width = "280px"; }
     function closeNav() { document.getElementById("mySideMenu").style.width = "0"; }
 
-    // Alternância de seções na SPA do Leitor
-    function mudarSecaoLeitor(secaoId) {
-      const secoes = document.querySelectorAll('#screen-leitor .spa-section');
-      secoes.forEach(secao => secao.classList.remove('active'));
-      const alvo = document.getElementById(secaoId);
-      if (alvo) {
-        alvo.classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('container-dinamico');
+      const noticias = JSON.parse(localStorage.getItem('portal_noticias')) || [];
+
+      if (noticias.length === 0) {
+        container.innerHTML = `
+          <div id="ultimas-noticias" class="section-header">Últimas Notícias</div>
+          <div class="list-card">
+            <h4>Nenhuma notícia cadastrada no momento. Acesse o painel administrativo para publicar.</h4>
+          </div>
+        `;
+        return;
       }
-    }
 
-    // Gerenciamento de URL Dinâmica entre Leitor e Admin (/admin)
-    function irParaAdmin() {
-      document.getElementById('screen-leitor').classList.remove('active');
-      document.getElementById('screen-admin').classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+      const categorias = [
+        { id: 'ultimas-noticias', nome: 'Últimas Notícias' },
+        { id: 'policia', nome: 'Polícia' },
+        { id: 'transito', nome: 'Trânsito' },
+        { id: 'campo-grande', nome: 'Campo Grande' },
+        { id: 'ms', nome: 'Mato Grosso do Sul' },
+        { id: 'brasil', nome: 'Brasil' },
+        { id: 'mundo', nome: 'Mundo' }
+      ];
 
-    function voltarParaLeitor() {
-      document.getElementById('screen-admin').classList.remove('active');
-      document.getElementById('screen-leitor').classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+      let htmlFinal = '';
 
-    // Login com senha exigido pelo usuário
-    function executarLogin() {
-      const usuario = document.getElementById('loginUsuario').value;
-      const senha = document.getElementById('loginSenha').value;
+      categorias.forEach(cat => {
+        const filtradas = noticias.filter(n => n.categoria === cat.nome || (cat.id === 'ultimas-noticias' && !n.categoria));
+        
+        if (filtradas.length > 0) {
+          htmlFinal += `<div id="${cat.id}" class="section-header">${cat.nome}</div>`;
+          
+          filtradas.forEach((n, index) => {
+            if (cat.id === 'ultimas-noticias' && index === 0 && n.imagem) {
+              htmlFinal += `
+                <article class="featured-card">
+                  <img src="${n.imagem}" alt="${n.titulo}">
+                  <div class="card-body">
+                    <span class="tag">${n.categoria || 'Geral'}</span>
+                    <h2>${n.titulo}</h2>
+                    <p style="font-size: 13px; color: #555; margin-top: 5px;">${n.subtitulo || ''}</p>
+                    <span class="news-date">${n.data || '02/08/2026'}</span>
+                  </div>
+                </article>
+              `;
+            } else {
+              htmlFinal += `
+                <div class="list-card">
+                  <span class="tag">${n.categoria || 'Geral'}</span>
+                  <h4>${n.titulo}</h4>
+                  ${n.subtitulo ? `<p style="font-size: 12px; color: #555; margin-top: 3px;">${n.subtitulo}</p>` : ''}
+                  <span class="news-date">${n.data || '02/08/2026'}</span>
+                </div>
+              `;
+            }
+          });
+        }
+      });
 
-      if (usuario.trim() !== "" && senha.trim() !== "") {
-        // Oculta tela de login e exibe o formulário de cadastro de notícias da imagem
-        document.getElementById('admin-login-view').style.display = 'none';
-        document.getElementById('admin-form-view').style.display = 'block';
-      } else {
-        alert('Por favor, preencha o usuário e a senha corretamente.');
-      }
-    }
-
-    // Seletor de imagem simulado via prompt para URL
-    function promptarUrlImagem() {
-      const url = prompt("Insira a URL da imagem da notícia (ex: link do Unsplash):", document.getElementById('cadImgUrl').value);
-      if (url) {
-        document.getElementById('cadImgUrl').value = url;
-        document.getElementById('imgNomeArquivo').innerText = "Imagem carregada com sucesso!";
-      }
-    }
-
-    // Salvar Notícia do Admin e atualizar o portal do leitor em tempo real
-    function salvarNoticiaAdmin() {
-      const titulo = document.getElementById('cadTitulo').value;
-      const subtitulo = document.getElementById('cadSubtitulo').value;
-      const texto = document.getElementById('cadTexto').value;
-      const autor = document.getElementById('cadAutor').value;
-      const dataDia = document.getElementById('cadDataDia').value;
-      const fonte = document.getElementById('cadFonte').value;
-      const imagem = document.getElementById('cadImgUrl').value;
-      const categoria = document.getElementById('cadCategoria').value || 'Campo Grande';
-
-      // Atualiza os campos na página do leitor
-      document.getElementById('viewTitulo').innerText = titulo;
-      document.getElementById('viewSubtitulo').innerText = subtitulo;
-      document.getElementById('viewTexto').innerText = texto;
-      document.getElementById('viewAutor').innerText = autor;
-      document.getElementById('viewData').innerText = dataDia;
-      document.getElementById('viewFonte').innerText = fonte;
-      document.getElementById('viewImg').src = imagem;
-      document.getElementById('viewTag').innerText = categoria;
-
-      alert('Notícia cadastrada e publicada com sucesso no portal!');
-      voltarParaLeitor();
-      mudarSecaoLeitor('ultimas-noticias');
-    }
+      container.innerHTML = htmlFinal;
+    });
   </script>
 
 </body>
