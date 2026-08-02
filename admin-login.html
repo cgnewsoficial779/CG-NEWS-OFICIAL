@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso Restrito - Redação</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+        body { background-color: #e2e8f0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .login-container { background: #ffffff; padding: 40px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; border-top: 6px solid #11136c; }
+        .login-container h2 { color: #11136c; margin-bottom: 25px; font-weight: 800; font-size: 24px; text-transform: uppercase; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; color: #333; }
+        .input-group input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; outline: none; transition: 0.3s; }
+        .input-group input:focus { border-color: #11136c; box-shadow: 0 0 5px rgba(17, 19, 108, 0.3); }
+        .btn-login { width: 100%; background-color: #11136c; color: white; border: none; padding: 12px; font-size: 16px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn-login:hover { background-color: #1a23a0; }
+        .forgot-password { display: block; margin-top: 15px; font-size: 13px; color: #64748b; text-decoration: none; font-weight: 600; cursor: pointer; }
+        .forgot-password:hover { color: #11136c; text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Área Administrativa</h2>
+        <form onsubmit="fazerLogin(event)">
+            <div class="input-group">
+                <label>Usuário ou E-mail</label>
+                <input type="text" id="user" placeholder="Digite seu acesso" required>
+            </div>
+            <div class="input-group">
+                <label>Senha</label>
+                <input type="password" id="pass" placeholder="Digite sua senha" required>
+            </div>
+            <button type="submit" class="btn-login">Entrar no Painel</button>
+            <a onclick="recuperarSenha()" class="forgot-password">Esqueceu a senha? Clique aqui.</a>
+        </form>
+    </div>
+
+    <script>
+        function fazerLogin(event) {
+            event.preventDefault();
+            // Aqui entra a integração com o banco de dados futuramente
+            window.location.href = "admin-painel.html"; 
+        }
+
+        function recuperarSenha() {
+            let email = prompt("Digite o e-mail cadastrado para receber o link de recuperação:");
+            if(email) {
+                alert("Se o e-mail estiver correto, um link de recuperação será enviado para: " + email);
+                // Aqui entra o código de disparo de e-mail do Firebase/Backend
+            }
+        }
+    </script>
+</body>
+</html>
