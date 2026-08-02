@@ -12,10 +12,10 @@ collections:
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      - {label: "Título", name: "title", widget: "string"}
-      - {label: "Subtítulo", name: "subtitle", widget: "string", required: false}
-      - {label: "Data", name: "date", widget: "datetime"}
+      - {label: "Título da Notícia", name: "title", widget: "string"}
+      - {label: "Subtítulo / Resumo", name: "subtitle", widget: "string", required: false}
+      - {label: "Data da Postagem", name: "date", widget: "datetime"}
       - {label: "Autor", name: "autor", widget: "string", default: "CG News Oficial"}
       - {label: "Categoria", name: "categoria", widget: "select", options: ["Últimas Notícias", "Polícia", "Trânsito", "Campo Grande", "Mato Grosso do Sul", "Brasil", "Mundo"]}
-      - {label: "Imagem de Capa", name: "image", widget: "image"}
-      - {label: "Conteúdo da Notícia", name: "body", widget: "markdown"}
+      - {label: "Foto de Capa", name: "image", widget: "image"}
+      - {label: "Texto Completo da Notícia", name: "body", widget: "markdown"}
