@@ -3,31 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Redação</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Painel de Redação - Gestão de Notícias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
-        body { background-color: #f1f5f9; padding: 20px; }
-        .header { background: #11136c; color: white; padding: 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .header h1 { font-size: 20px; font-weight: 800; text-transform: uppercase; }
-        .btn-logout { background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        body { background-color: #f8fafc; color: #334155; padding: 20px; }
+        
+        .header { background: #11136c; color: white; padding: 16px 24px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .header h1 { font-size: 18px; font-weight: 700; text-transform: uppercase; }
+        .btn-logout { background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; }
+
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 40px; }
+        .page-title { font-size: 22px; font-weight: 600; color: #475569; margin-bottom: 25px; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #1e293b; font-size: 14px; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; outline: none; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #475569; font-size: 14px; }
+        .form-group input[type="text"], 
+        .form-group input[type="file"], 
+        .form-group select, 
+        .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; color: #1e293b; outline: none; background: #fff; }
+        
         .form-group textarea { height: 180px; resize: vertical; }
-        .btn-submit { width: 100%; background: #11136c; color: white; border: none; padding: 14px; font-size: 16px; font-weight: 800; border-radius: 6px; cursor: pointer; transition: 0.3s; }
-        .btn-submit:hover { background: #1a23a0; }
-        .alert { padding: 12px; border-radius: 6px; margin-bottom: 20px; font-weight: 600; display: none; }
+
+        .checkbox-group { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; }
+        .checkbox-group input { width: 18px; height: 18px; cursor: pointer; }
+        .checkbox-group label { font-size: 14px; font-weight: 600; color: #475569; cursor: pointer; margin-bottom: 0; }
+
+        .tags-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; background: #f8fafc; padding: 15px; border-radius: 6px; border: 1px solid #e2e8f0; }
+        .tag-item { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; }
+
+        .btn-group { display: flex; gap: 12px; margin-top: 30px; }
+        .btn-save { background: #11136c; color: white; border: none; padding: 12px 28px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; }
+        .btn-cancel { background: #cbd5e1; color: #475569; border: none; padding: 12px 24px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; }
+
+        .alert { padding: 12px; border-radius: 6px; margin-bottom: 20px; font-weight: 600; display: none; font-size: 14px; }
         .alert-success { background: #dcfce7; color: #166534; }
         .alert-error { background: #fee2e2; color: #991b1b; }
+
+        /* Lista de Notícias Cadastradas */
+        .noticia-card { border: 1px solid #e2e8f0; padding: 15px; border-radius: 6px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; background: #fff; }
+        .noticia-info h4 { font-size: 15px; color: #1e293b; margin-bottom: 4px; }
+        .noticia-info p { font-size: 12px; color: #64748b; }
+        .noticia-acoes { display: flex; gap: 8px; }
+        .btn-edit { background: #0284c7; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .btn-delete { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+
+        .preview-media { max-width: 150px; max-height: 100px; margin-top: 8px; border-radius: 4px; display: none; }
+        .footer-text { text-align: center; font-size: 12px; color: #94a3b8; margin-top: 20px; }
     </style>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDjl4R4h2An2POmuZgMhAFsLbdhuzauxyY",
@@ -43,10 +72,13 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Proteção da Página: Se não estiver logado, redireciona para a tela de login
+        let editandoId = null;
+
         onAuthStateChanged(auth, (user) => {
             if (!user) {
                 window.location.href = "admin-login.html";
+            } else {
+                carregarListaNoticias();
             }
         });
 
@@ -56,33 +88,180 @@
             });
         };
 
-        window.publicarNoticia = async function(event) {
+        // Função para converter arquivo (imagem/vídeo) em Base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Função de cálculo de tempo decorrido
+        function tempoDecorrido(dataIso) {
+            if (!dataIso) return "";
+            const agora = new Date();
+            const dataPost = new Date(dataIso);
+            const diffMs = agora - dataPost;
+            const diffMin = Math.floor(diffMs / (1000 * 60));
+            const diffHoras = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const diffMeses = Math.floor(diffDias / 30);
+            const diffAnos = Math.floor(diffDias / 365);
+
+            if (diffMin < 1) return "agora mesmo";
+            if (diffMin < 60) return `há ${diffMin} minuto${diffMin > 1 ? 's' : ''}`;
+            if (diffHoras < 24) return `há ${diffHoras} hora${diffHoras > 1 ? 's' : ''}`;
+            if (diffDias < 30) return `há ${diffDias} dia${diffDias > 1 ? 's' : ''}`;
+            if (diffMeses < 12) return `há ${diffMeses} mês${diffMeses > 1 ? 'es' : ''}`;
+            return `há ${diffAnos} ano${diffAnos > 1 ? 's' : ''}`;
+        }
+
+        // Ajusta data/hora para fuso horário MS (America/Campo_Grande)
+        function obterDataHoraMS() {
+            const agora = new Date();
+            const dataMS = new Date(agora.toLocaleString("en-US", { timeZone: "America/Campo_Grande" }));
+            return dataMS.toISOString();
+        }
+
+        window.salvarNoticia = async function(event) {
             event.preventDefault();
             const alertBox = document.getElementById("alert-box");
-            
-            const titulo = document.getElementById("titulo").value.trim();
-            const categoria = document.getElementById("categoria").value;
-            const imagem = document.getElementById("imagem").value.trim();
-            const conteudo = document.getElementById("conteudo").value.trim();
+
+            const tagsSelecionadas = [];
+            document.querySelectorAll('input[name="tags"]:checked').forEach(cb => {
+                tagsSelecionadas.push(cb.value);
+            });
+
+            // Processa arquivo de Imagem
+            const imgInput = document.getElementById("fileImagem");
+            let imagemBase64 = document.getElementById("hiddenImagem").value;
+            if (imgInput.files.length > 0) {
+                imagemBase64 = await fileToBase64(imgInput.files[0]);
+            }
+
+            // Processa arquivo de Vídeo
+            const videoInput = document.getElementById("fileVideo");
+            let videoBase64 = document.getElementById("hiddenVideo").value;
+            if (videoInput.files.length > 0) {
+                videoBase64 = await fileToBase64(videoInput.files[0]);
+            }
+
+            const dataAtualizacao = obterDataHoraMS();
+
+            const dados = {
+                categoria: document.getElementById("categoria").value,
+                superDestaque: document.getElementById("superDestaque").checked,
+                destaque: document.getElementById("destaque").checked,
+                imagem: imagemBase64,
+                fonteImagem: document.getElementById("fonteImagem").value.trim(),
+                video: videoBase64,
+                autor: document.getElementById("autor").value.trim(),
+                titulo: document.getElementById("titulo").value.trim(),
+                subtitulo: document.getElementById("subtitulo").value.trim(),
+                texto: document.getElementById("texto").value.trim(),
+                fonteNoticia: document.getElementById("fonteNoticia").value.trim(),
+                tags: tagsSelecionadas,
+                dataAtualizacao: dataAtualizacao,
+                editado: editandoId ? true : false
+            };
 
             try {
-                await addDoc(collection(db, "noticias"), {
-                    titulo: titulo,
-                    categoria: categoria,
-                    imagem: imagem,
-                    conteudo: conteudo,
-                    dataCriacao: serverTimestamp()
-                });
-
-                alertBox.className = "alert alert-success";
-                alertBox.innerText = "Notícia publicada com sucesso!";
+                if (editandoId) {
+                    await updateDoc(doc(db, "noticias", editandoId), dados);
+                    alertBox.className = "alert alert-success";
+                    alertBox.innerText = "Notícia atualizada com sucesso!";
+                } else {
+                    dados.dataCriacao = dataAtualizacao;
+                    await addDoc(collection(db, "noticias"), dados);
+                    alertBox.className = "alert alert-success";
+                    alertBox.innerText = "Notícia publicada com sucesso!";
+                }
                 alertBox.style.display = "block";
-                document.getElementById("form-noticia").reset();
+                resetarFormulario();
             } catch (e) {
                 alertBox.className = "alert alert-error";
-                alertBox.innerText = "Erro ao publicar matéria: " + e.message;
+                alertBox.innerText = "Erro ao salvar matéria: " + e.message;
                 alertBox.style.display = "block";
             }
+        };
+
+        function carregarListaNoticias() {
+            const listaDiv = document.getElementById("lista-noticias");
+            const q = query(collection(db, "noticias"), orderBy("dataAtualizacao", "desc"));
+            
+            onSnapshot(q, (snapshot) => {
+                listaDiv.innerHTML = "";
+                snapshot.forEach((docSnap) => {
+                    const item = docSnap.data();
+                    const id = docSnap.id;
+                    const tempoStr = tempoDecorrido(item.dataAtualizacao);
+                    const statusEditado = item.editado ? ` (Atualizada ${tempoStr})` : ` (Publicada ${tempoStr})`;
+
+                    const div = document.createElement("div");
+                    div.className = "noticia-card";
+                    div.innerHTML = `
+                        <div class="noticia-info">
+                            <h4>${item.titulo}</h4>
+                            <p><strong>Categoria:</strong> ${item.categoria} | <strong>Status:</strong> ${statusEditado}</p>
+                        </div>
+                        <div class="noticia-acoes">
+                            <button onclick="editarNoticia('${id}')" class="btn-edit"><i class="fa-solid fa-pen"></i> Editar</button>
+                            <button onclick="excluirNoticia('${id}')" class="btn-delete"><i class="fa-solid fa-trash"></i> Excluir</button>
+                        </div>
+                    `;
+                    listaDiv.appendChild(div);
+                });
+            });
+        }
+
+        window.editarNoticia = function(id) {
+            editandoId = id;
+            document.getElementById("form-title").innerText = "Editar Notícia";
+            document.getElementById("btn-salvar-texto").innerText = "Salvar Alterações";
+
+            const q = query(collection(db, "noticias"));
+            onSnapshot(q, (snapshot) => {
+                snapshot.forEach((docSnap) => {
+                    if (docSnap.id === id) {
+                        const data = docSnap.data();
+                        document.getElementById("categoria").value = data.categoria || "";
+                        document.getElementById("superDestaque").checked = data.superDestaque || false;
+                        document.getElementById("destaque").checked = data.destaque || false;
+                        document.getElementById("hiddenImagem").value = data.imagem || "";
+                        document.getElementById("fonteImagem").value = data.fonteImagem || "";
+                        document.getElementById("hiddenVideo").value = data.video || "";
+                        document.getElementById("autor").value = data.autor || "";
+                        document.getElementById("titulo").value = data.titulo || "";
+                        document.getElementById("subtitulo").value = data.subtitulo || "";
+                        document.getElementById("texto").value = data.texto || "";
+                        document.getElementById("fonteNoticia").value = data.fonteNoticia || "";
+
+                        // Marca tags
+                        document.querySelectorAll('input[name="tags"]').forEach(cb => {
+                            cb.checked = (data.tags || []).includes(cb.value);
+                        });
+
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+            });
+        };
+
+        window.excluirNoticia = async function(id) {
+            if (confirm("Tem certeza que deseja excluir esta notícia permanentemente?")) {
+                await deleteDoc(doc(db, "noticias", id));
+            }
+        };
+
+        window.resetarFormulario = function() {
+            editandoId = null;
+            document.getElementById("form-title").innerText = "Cadastro de: Notícias";
+            document.getElementById("btn-salvar-texto").innerText = "Salvar Notícia";
+            document.getElementById("form-noticia").reset();
+            document.getElementById("hiddenImagem").value = "";
+            document.getElementById("hiddenVideo").value = "";
         };
     </script>
 </head>
@@ -93,16 +272,18 @@
         <button onclick="sair()" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
     </div>
 
+    <!-- Formulário de Cadastro e Edição -->
     <div class="container">
+        <h2 class="page-title" id="form-title">Cadastro de: Notícias</h2>
+        
         <div id="alert-box" class="alert"></div>
-        <form id="form-noticia" onsubmit="publicarNoticia(event)">
-            <div class="form-group">
-                <label>Título / Manchete</label>
-                <input type="text" id="titulo" placeholder="Digite o título da matéria..." required>
-            </div>
+
+        <form id="form-noticia" onsubmit="salvarNoticia(event)">
+            
             <div class="form-group">
                 <label>Categoria</label>
                 <select id="categoria" required>
+                    <option value="">- Selecione -</option>
                     <option value="Cidades">Cidades</option>
                     <option value="Polícia">Polícia</option>
                     <option value="Trânsito">Trânsito</option>
@@ -110,16 +291,90 @@
                     <option value="Geral">Geral</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label>URL da Imagem de Capa (Link da foto)</label>
-                <input type="url" id="imagem" placeholder="https://exemplo.com/imagem.jpg" required>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="superDestaque">
+                <label for="superDestaque">Super Destaque</label>
             </div>
-            <div class="form-group">
-                <label>Conteúdo da Notícia</label>
-                <textarea id="conteudo" placeholder="Escreva a matéria completa aqui..." required></textarea>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="destaque">
+                <label for="destaque">Destaque</label>
             </div>
-            <button type="submit" class="btn-submit">Publicar Notícia</button>
+
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Selecione a Imagem do Celular/Galeria</label>
+                <input type="file" id="fileImagem" accept="image/*">
+                <input type="hidden" id="hiddenImagem">
+            </div>
+
+            <div class="form-group">
+                <label>Fonte Imagem</label>
+                <input type="text" id="fonteImagem" placeholder="Créditos da imagem">
+            </div>
+
+            <div class="form-group">
+                <label>Selecione o Vídeo do Celular/Galeria</label>
+                <input type="file" id="fileVideo" accept="video/*">
+                <input type="hidden" id="hiddenVideo">
+            </div>
+
+            <div class="form-group">
+                <label>Autor</label>
+                <input type="text" id="autor" placeholder="Nome do repórter ou redação">
+            </div>
+
+            <div class="form-group">
+                <label>Título</label>
+                <input type="text" id="titulo" placeholder="Digite o título principal..." required>
+            </div>
+
+            <div class="form-group">
+                <label>Subtítulo</label>
+                <input type="text" id="subtitulo" placeholder="Digite a linha fina / resumo da matéria...">
+            </div>
+
+            <div class="form-group">
+                <label>Texto</label>
+                <textarea id="texto" placeholder="Escreva a matéria completa aqui..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Fonte</label>
+                <input type="text" id="fonteNoticia" placeholder="Fonte da matéria">
+            </div>
+
+            <div class="form-group">
+                <label>Tags</label>
+                <div class="tags-grid">
+                    <div class="tag-item"><input type="checkbox" name="tags" value="Brasil" id="t1"><label for="t1">Brasil</label></div>
+                    <div class="tag-item"><input type="checkbox" name="tags" value="Campo Grande" id="t2"><label for="t2">Campo Grande</label></div>
+                    <div class="tag-item"><input type="checkbox" name="tags" value="Polícia" id="t3"><label for="t3">Polícia</label></div>
+                    <div class="tag-item"><input type="checkbox" name="tags" value="Trânsito" id="t4"><label for="t4">Trânsito</label></div>
+                    <div class="tag-item"><input type="checkbox" name="tags" value="Mato Grosso do Sul" id="t5"><label for="t5">Mato Grosso do Sul</label></div>
+                    <div class="tag-item"><input type="checkbox" name="tags" value="Dengue" id="t6"><label for="t6">Dengue</label></div>
+                    <div class="tag-item"><input type="checkbox" name="tags" value="Política" id="t7"><label for="t7">Política</label></div>
+                    <div class="tag-item"><input type="checkbox" name="tags" value="Geral" id="t8"><label for="t8">Geral</label></div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn-save" id="btn-salvar-texto">Salvar Notícia</button>
+                <button type="button" onclick="resetarFormulario()" class="btn-cancel">Cancelar</button>
+            </div>
         </form>
+    </div>
+
+    <!-- Gerenciador de Notícias Publicadas -->
+    <div class="container">
+        <h3 class="page-title">Notícias Cadastradas</h3>
+        <div id="lista-noticias">
+            <p style="font-size: 14px; color: #94a3b8;">Carregando notícias...</p>
+        </div>
+    </div>
+
+    <div class="footer-text">
+        Copyright © 2026. Sistema de Administração de Sites - Todos os direitos reservados.
     </div>
 
 </body>
