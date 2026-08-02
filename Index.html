@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CG NEWS OFICIAL - Portal de Notícias</title>
 
-  <!-- SCRIPT DE AUTENTICAÇÃO E WIDGET DE LOGIN DA NETLIFY -->
-  <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
   <!-- BIBLIOTECA DE ÍCONES OFICIAIS (FONT AWESOME) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
@@ -43,7 +40,7 @@
       cursor: pointer;
     }
 
-    /* BOTÃO DE LOGIN / ADMIN NO TOPO */
+    /* BOTÃO DE GERENCIAMENTO MODERNO NO TOPO */
     .admin-login-btn {
       color: #fff;
       font-size: 15px;
@@ -60,38 +57,6 @@
     }
     .admin-login-btn:hover {
       background: rgba(255, 255, 255, 0.3);
-    }
-
-    /* BARRA DE ADMINISTRAÇÃO FLUTUANTE (APARECE SÓ QUANDO LOGADO) */
-    #admin-bar {
-      display: none;
-      width: 100%;
-      background-color: #0b0d4a;
-      color: #fff;
-      padding: 10px 20px;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 14px;
-      font-weight: bold;
-      border-bottom: 2px solid #4cd964;
-    }
-    #admin-bar .admin-actions {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-    }
-    #admin-bar a, #admin-bar button {
-      color: #fff;
-      background: #1a23a0;
-      padding: 5px 10px;
-      border-radius: 4px;
-      font-size: 13px;
-      cursor: pointer;
-      border: none;
-    }
-    #admin-bar a:hover, #admin-bar button:hover {
-      background: #4cd964;
-      color: #111;
     }
 
     /* MENU LATERAL */
@@ -180,15 +145,6 @@
 </head>
 <body>
 
-  <!-- BARRA DE ADMINISTRAÇÃO EXCLUSIVA (SÓ APARECE LOGADO) -->
-  <div id="admin-bar">
-    <span><i class="fa-solid fa-shield-halved" style="color: #4cd964;"></i> Modo Administrador Ativo</span>
-    <div class="admin-actions">
-      <a href="/admin/" target="_blank"><i class="fa-solid fa-gear"></i> Painel / Criar Notícia</a>
-      <button onclick="netlifyIdentity.logout()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
-    </div>
-  </div>
-
   <!-- MENU LATERAL -->
   <div id="mySideMenu" class="side-menu">
     <div class="side-menu-header">
@@ -210,10 +166,10 @@
     <div class="header-title">
       <h1><a href="https://www.cgnewsoficial.com.br" target="_blank" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">CG NEWS OFICIAL</a></h1>
     </div>
-    <!-- BOTÃO PARA FAZER LOGIN DIRETO NA PÁGINA -->
-    <button class="admin-login-btn" onclick="netlifyIdentity.open()">
-      <i class="fa-solid fa-user-lock"></i> Entrar
-    </button>
+    <!-- BOTÃO DE ATALHO RÁPIDO PARA O PAINEL DE POSTAGEM -->
+    <a href="https://wa.me/5567996619364" target="_blank" class="admin-login-btn" title="Suporte / Postagem">
+      <i class="fa-solid fa-bolt"></i> Painel Rápido
+    </a>
   </header>
 
   <!-- CORPO PRINCIPAL -->
@@ -394,7 +350,7 @@
       <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
       <a href="https://www.tiktok.com/@cgnewsoficial" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
       <a href="https://www.kwai.com/@cgnewsoficial" target="_blank" title="Kwai"><i class="fa-solid fa-video"></i></a>
-      <a href="https://www.threads.net/@cgnewsoficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
+      <a href="https://www.threads.net/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
     </div>
     <p>© 2026 CG NEWS OFICIAL — Informação em tempo real.</p>
   </footer>
@@ -402,23 +358,6 @@
   <script>
     function openNav() { document.getElementById("mySideMenu").style.width = "280px"; }
     function closeNav() { document.getElementById("mySideMenu").style.width = "0"; }
-
-    // CONTROLE DO PAINEL DE LOGIN NA PRÓPRIA PÁGINA (MANTÉM VOCÊ NA CAPA)
-    window.netlifyIdentity && netlifyIdentity.on("init", user => {
-      if (user) {
-        document.getElementById("admin-bar").style.display = "flex";
-      }
-    });
-
-    netlifyIdentity.on("login", user => {
-      document.getElementById("admin-bar").style.display = "flex";
-      netlifyIdentity.close();
-    });
-
-    netlifyIdentity.on("logout", () => {
-      document.getElementById("admin-bar").style.display = "none";
-      window.location.reload();
-    });
   </script>
 
 </body>
