@@ -11,27 +11,24 @@
     html { scroll-behavior: smooth; }
     html, body { width: 100%; min-height: 100vh; background-color: #f2f4f7; color: #1a1a1a; }
 
-    a, a:hover, a:focus, a:visited, a:active { 
-      text-decoration: none !important; border: none !important; outline: none !important;
-    }
+    a, a:hover, a:focus, a:visited, a:active { text-decoration: none !important; border: none !important; outline: none !important; }
 
-    /* TOPO PRINCIPAL */
+    /* TOPO / HEADER G1 STYLE */
     .top-header { 
-      width: 100%; background-color: #11136c; color: #ffffff; padding: 20px; 
+      width: 100%; background-color: #11136c; color: #ffffff; padding: 15px 25px; 
       display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 4px solid #1a23a0 !important;
+      border-bottom: 4px solid #cc0000;
     }
-    .menu-btn { font-size: 28px; cursor: pointer; background: none; border: none; color: #ffffff; padding: 5px 10px; }
+    .menu-btn { font-size: 26px; cursor: pointer; background: none; border: none; color: #ffffff; }
     .header-title { text-align: center; flex-grow: 1; }
-    .header-title h1 a { font-size: 32px; font-weight: 900; letter-spacing: 1.5px; color: #ffffff; display: inline-block; }
+    .header-title h1 a { font-size: 30px; font-weight: 900; letter-spacing: 2px; color: #ffffff; text-transform: uppercase; }
 
-    /* BOTÃO DE LOGIN NO TOPO */
     .login-top-btn {
-      background: #4cd964; color: #fff; font-size: 14px; font-weight: 700;
-      padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer;
+      background: #cc0000; color: #fff; font-size: 13px; font-weight: 700;
+      padding: 8px 14px; border-radius: 4px; border: none; cursor: pointer;
       display: flex; align-items: center; gap: 6px; transition: background 0.2s;
     }
-    .login-top-btn:hover { background: #3fb253; }
+    .login-top-btn:hover { background: #a30000; }
 
     /* MENU LATERAL */
     .side-menu {
@@ -39,66 +36,78 @@
       background-color: #ffffff; overflow-x: hidden; transition: 0.3s;
       box-shadow: 4px 0 15px rgba(0,0,0,0.3); padding-top: 20px;
     }
-    .side-menu-header { padding: 0 20px 15px; border-bottom: 2px solid #11136c !important; display: flex; justify-content: space-between; align-items: center; }
+    .side-menu-header { padding: 0 20px 15px; border-bottom: 2px solid #11136c; display: flex; justify-content: space-between; align-items: center; }
     .side-menu-header h2 { font-size: 18px; color: #11136c; font-weight: 800; }
     .close-btn { font-size: 28px; cursor: pointer; color: #11136c; border: none; background: none; }
     .side-menu a { padding: 12px 20px; font-size: 15px; color: #11136c; font-weight: 700; display: block; cursor: pointer; }
     .side-menu a:hover { background-color: #f2f4f7; }
 
-    /* LAYOUT PRINCIPAL */
+    /* LAYOUT PRINCIPAL DO SITE DE NOTÍCIAS */
     .main-wrapper { display: flex; flex-wrap: wrap; max-width: 1200px; margin: 20px auto; padding: 0 15px; gap: 20px; }
     .content-column { flex: 2; min-width: 300px; }
     .sidebar-column { flex: 1; min-width: 260px; }
 
-    .section-header { border-left: 5px solid #11136c !important; padding-left: 10px; margin: 30px 0 15px; font-size: 18px; font-weight: 800; color: #11136c; text-transform: uppercase; }
-    .tag { display: inline-block; background-color: #11136c; color: #ffffff; padding: 3px 8px; font-size: 10px; font-weight: 800; border-radius: 3px; margin-bottom: 8px; text-transform: uppercase; }
+    .section-header { border-left: 5px solid #cc0000; padding-left: 10px; margin: 30px 0 15px; font-size: 18px; font-weight: 800; color: #11136c; text-transform: uppercase; }
+    .tag { display: inline-block; background-color: #cc0000; color: #ffffff; padding: 3px 8px; font-size: 10px; font-weight: 800; border-radius: 3px; margin-bottom: 8px; text-transform: uppercase; }
     .news-date { font-size: 11px; color: #718096; display: block; margin-top: 5px; }
 
-    .featured-card { background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 20px; }
+    .featured-card { background: #ffffff; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
     .featured-card img { width: 100%; height: 280px; object-fit: cover; display: block; }
     .featured-card .card-body { padding: 18px; }
     .featured-card h2 { font-size: 22px; color: #111; line-height: 1.3; }
 
-    .list-card { background: #fff; padding: 12px; border-radius: 6px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); margin-bottom: 10px; border-left: 3px solid #11136c !important; }
-    .list-card h4 { font-size: 14px; color: #2d3748; }
+    .list-card { background: #fff; padding: 15px; border-radius: 6px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); margin-bottom: 12px; border-left: 3px solid #11136c; }
+    .list-card h4 { font-size: 15px; color: #2d3748; }
 
-    .sidebar-box { background: #ffffff; padding: 18px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
-    .sidebar-title { font-size: 15px; font-weight: bold; color: #11136c; border-bottom: 3px solid #11136c !important; padding-bottom: 6px; margin-bottom: 15px; text-transform: uppercase; }
+    .sidebar-box { background: #ffffff; padding: 18px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
+    .sidebar-title { font-size: 15px; font-weight: bold; color: #11136c; border-bottom: 3px solid #cc0000; padding-bottom: 6px; margin-bottom: 15px; text-transform: uppercase; }
     
     .social-icons-grid { display: flex; flex-wrap: wrap; gap: 15px; align-items: center; }
     .social-icons-grid a { color: #11136c; font-size: 22px; transition: transform 0.2s; }
-    .social-icons-grid a:hover { transform: scale(1.15); }
+    .social-icons-grid a:hover { transform: scale(1.15); color: #cc0000; }
 
-    /* MODAL DE LOGIN / PAINEL */
+    /* MODAL DE LOGIN E CADASTRO */
     .modal-overlay {
       display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6); align-items: center; justify-content: center; padding: 15px;
+      background: rgba(0,0,0,0.7); align-items: center; justify-content: center; padding: 15px;
     }
     .modal-box {
-      background: #fff; width: 100%; max-width: 600px; border-radius: 10px; padding: 25px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; position: relative;
+      background: #fff; width: 100%; max-width: 500px; border-radius: 8px; padding: 25px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.4); position: relative;
     }
     .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #555; background: none; border: none; }
     .modal-box h3 { color: #11136c; margin-bottom: 15px; font-size: 20px; }
-    .form-group { margin-bottom: 12px; }
+    
+    .form-group { margin-bottom: 15px; }
     .form-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #333; }
     .form-group input, .form-group textarea, .form-group select {
-      width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px;
+      width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; background: #fff;
     }
     .btn-submit {
-      width: 100%; background: #11136c; color: #fff; border: none; padding: 12px; border-radius: 5px;
+      width: 100%; background: #11136c; color: #fff; border: none; padding: 12px; border-radius: 4px;
       font-weight: bold; cursor: pointer; font-size: 15px; margin-top: 10px;
     }
     .btn-submit:hover { background: #1a23a0; }
 
-    /* LISTA DE APROVAÇÃO DE CADASTROS */
-    .approval-card {
-      background: #fff; border: 1px solid #e2e8f0; padding: 12px; border-radius: 6px; margin-bottom: 10px;
+    /* PAINEL DE CONTROLE EXCLUSIVO (SUBSTITUI A TELA AO LOGAR) */
+    #painelGerencial {
+      display: none; max-width: 1000px; margin: 30px auto; background: #ffffff; padding: 30px;
+      border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-top: 6px solid #11136c;
+    }
+    .dashboard-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 25px; }
+    .dashboard-header h2 { color: #11136c; font-size: 24px; }
+    .btn-logout { background: #cc0000; color: #fff; border: none; padding: 8px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+
+    .admin-section-box { background: #f9fafb; border: 1px solid #e5e7eb; padding: 20px; border-radius: 6px; margin-bottom: 25px; }
+    .admin-section-title { font-size: 16px; font-weight: bold; color: #11136c; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+
+    .approval-row {
+      background: #fff; border: 1px solid #d1d5db; padding: 12px 15px; border-radius: 6px; margin-bottom: 10px;
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
     }
 
     /* RODAPÉ */
-    footer { width: 100%; background-color: #11136c; color: #ffffff; padding: 30px 20px; text-align: center; margin-top: 40px; }
+    footer { width: 100%; background-color: #11136c; color: #ffffff; padding: 30px 20px; text-align: center; margin-top: 40px; border-top: 4px solid #cc0000; }
     footer h3 { font-size: 18px; margin-bottom: 15px; }
     .footer-social-icons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 15px 0 20px; }
     .footer-social-icons a { color: #ffffff; font-size: 24px; transition: transform 0.2s; }
@@ -128,28 +137,28 @@
     <div class="header-title">
       <h1><a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">CG NEWS OFICIAL</a></h1>
     </div>
-    <button class="login-top-btn" onclick="abrirModalLogin()">
-      <i class="fa-solid fa-lock"></i> Entrar / Painel
+    <button class="login-top-btn" id="btnAbrirLogin" onclick="abrirModalLogin()">
+      <i class="fa-solid fa-user-lock"></i> Área Restrita
     </button>
   </header>
 
-  <!-- CORPO PRINCIPAL -->
-  <div class="main-wrapper">
+  <!-- SITE PRINCIPAL (PORTAL DE NOTÍCIAS) -->
+  <div id="sitePublico" class="main-wrapper">
     <div class="content-column">
-      <div id="ultimas-noticias" class="section-header">Últimas Notícias</div>
+      <div id="ultimas-noticias" class="section-header">Últimas Notícias & Mundo</div>
       
       <article class="featured-card">
         <img src="https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?w=800" alt="Notícia Principal">
         <div class="card-body">
-          <span class="tag">Campo Grande</span>
-          <h2>Operação integrada mobiliza forças de segurança nas principais vias da Capital</h2>
-          <span class="news-date">02/08/2026 — Por: Redação</span>
+          <span class="tag">Mundo</span>
+          <h2>Cúpula internacional debate novas diretrizes econômicas globais na Europa</h2>
+          <span class="news-date">02/08/2026 — Por: Redação Internacional</span>
         </div>
       </article>
 
       <div class="list-card">
-        <span class="tag">Mundo</span>
-        <h4>Panorama econômico global registra oscilações em bolsas internacionais</h4>
+        <span class="tag">Campo Grande</span>
+        <h4>Operação de trânsito é reforçada nas principais avenidas da Capital</h4>
         <span class="news-date">02/08/2026 — Por: Redação</span>
       </div>
     </div>
@@ -166,177 +175,147 @@
     </aside>
   </div>
 
-  <!-- MODAL DE LOGIN / CADASTRO -->
-  <div id="modalLogin" class="modal-overlay">
-    <div class="modal-box">
-      <button class="modal-close" onclick="fecharModais()">&times;</button>
-      <div id="telaLogin">
-        <h3>Acesso Restrito</h3>
-        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Digite sua conta para acessar o painel correspondente.</p>
-        <div class="form-group">
-          <label>Usuário / E-mail (Digite 'admin' para Chefe)</label>
-          <input type="text" id="userInput" placeholder="Seu usuário">
+  <!-- ========================================== -->
+  <!-- PAINEL GERENCIAL (EXIBIDO APÓS O LOGIN)     -->
+  <!-- ========================================== -->
+  <div id="painelGerencial">
+    <div class="dashboard-header">
+      <h2 id="tituloPainelUser"><i class="fa-solid fa-gauge-high"></i> Painel de Controle</h2>
+      <button class="btn-logout" onclick="fazerLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</button>
+    </div>
+
+    <!-- SEÇÃO EXCLUSIVA DO CHEFE (ADM) PARA APROVAR CADASTROS -->
+    <div id="secaoAprovacaoAdmin" class="admin-section-box" style="display: none; border-left: 5px solid #cc0000; background: #fff8f8;">
+      <div class="admin-section-title" style="color: #cc0000;"><i class="fa-solid fa-user-shield"></i> Painel do Administrador: Aprovação de Novos Funcionários</div>
+      <p style="font-size: 13px; color: #555; margin-bottom: 15px;">Estes usuários solicitaram acesso ao sistema e aguardam sua liberação:</p>
+      
+      <div class="approval-row">
+        <div>
+          <strong>Carlos Eduardo</strong> <span style="font-size: 12px; color: #666;">(@carlos_news — Repórter)</span>
         </div>
-        <div class="form-group">
-          <label>Senha</label>
-          <input type="password" id="passInput" placeholder="Sua senha">
+        <div>
+          <button style="background:#28a745; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprovarCadastro(this)">Aprovar Acesso</button>
+          <button style="background:#dc3545; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-weight:bold; margin-left: 5px;" onclick="recusarCadastro(this)">Recusar</button>
         </div>
-        <button class="btn-submit" onclick="fazerLogin()">Entrar no Sistema</button>
-        <p style="text-align: center; margin-top: 15px; font-size: 13px;">
-          Não tem cadastro? <a href="#" onclick="mostrarCadastro()" style="color: #11136c; font-weight: bold;">Solicitar Cadastro</a>
-        </p>
       </div>
 
-      <!-- TELA DE SOLICITAÇÃO DE CADASTRO -->
-      <div id="telaCadastro" style="display: none;">
-        <h3>Solicitar Cadastro de Funcionário</h3>
-        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Sua conta precisa ser aprovada pelo Administrador (Chefe).</p>
-        <div class="form-group">
-          <label>Nome Completo</label>
-          <input type="text" placeholder="Seu nome">
+      <div class="approval-row">
+        <div>
+          <strong>Ana Beatriz</strong> <span style="font-size: 12px; color: #666;">(@ana_jornalista — Redatora)</span>
         </div>
-        <div class="form-group">
-          <label>Usuário desejado</label>
-          <input type="text" placeholder="Ex: joao_reporter">
+        <div>
+          <button style="background:#28a745; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprovarCadastro(this)">Aprovar Acesso</button>
+          <button style="background:#dc3545; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-weight:bold; margin-left: 5px;" onclick="recusarCadastro(this)">Recusar</button>
         </div>
-        <div class="form-group">
-          <label>Criar Senha</label>
-          <input type="password" placeholder="Sua senha">
-        </div>
-        <button class="btn-submit" onclick="enviarCadastro()">Enviar Solicitação ao Chefe</button>
-        <p style="text-align: center; margin-top: 15px; font-size: 13px;">
-          Já tem conta? <a href="#" onclick="mostrarLogin()" style="color: #11136c; font-weight: bold;">Fazer Login</a>
-        </p>
       </div>
     </div>
-  </div>
 
-  <!-- PAINEL DO FUNCIONÁRIO (CRIAR MATÉRIA COMPLETA) -->
-  <div id="modalPainelFuncionario" class="modal-overlay">
-    <div class="modal-box">
-      <button class="modal-close" onclick="fecharModais()">&times;</button>
-      <h3>Painel do Funcionário (Criar Matéria)</h3>
+    <!-- SEÇÃO DE CRIAÇÃO E EDIÇÃO DE MATÉRIAS (PARA ADM E FUNCIONÁRIOS) -->
+    <div class="admin-section-box">
+      <div class="admin-section-title"><i class="fa-solid fa-pen-to-square"></i> Criar ou Editar Notícia no Portal</div>
+      
       <div class="form-group">
-        <label>Título da Notícia</label>
-        <input type="text" placeholder="Título principal">
+        <label>Título da Matéria</label>
+        <input type="text" id="noticiaTitulo" placeholder="Digite o título principal da notícia">
       </div>
+
       <div class="form-group">
-        <label>Categoria</label>
-        <select>
+        <label>Categoria da Notícia</label>
+        <select id="noticiaCategoria">
           <option>Últimas Notícias</option>
+          <option>Mundo</option>
           <option>Polícia</option>
           <option>Trânsito</option>
           <option>Campo Grande</option>
           <option>Mato Grosso do Sul</option>
           <option>Brasil</option>
-          <option>Mundo</option>
         </select>
       </div>
+
       <div class="form-group">
         <label>Nome do Jornalista / Repórter</label>
-        <input type="text" placeholder="Seu Nome ou Redação">
+        <input type="text" id="noticiaJornalista" placeholder="Seu nome completo ou Redação">
       </div>
+
       <div class="form-group">
-        <label>Link da Notícia (URL externa / Link complementar)</label>
-        <input type="url" placeholder="https://...">
+        <label>Link Complementar / URL da Matéria</label>
+        <input type="url" id="noticiaLink" placeholder="https://...">
       </div>
+
       <div class="form-group">
-        <label>Link do Vídeo (YouTube, Kwai ou TikTok)</label>
-        <input type="url" placeholder="Cole o link do vídeo aqui">
+        <label>Link do Vídeo (YouTube / Kwai / TikTok)</label>
+        <input type="url" id="noticiaVideo" placeholder="Cole o link do vídeo incorporado">
       </div>
+
       <div class="form-group">
-        <label>Link da Imagem Principal (URL da foto)</label>
-        <input type="url" placeholder="https://exemplo.com/foto.jpg">
+        <label>Link da Imagem Ilustrativa (URL da Foto)</label>
+        <input type="url" id="noticiaImagem" placeholder="https://exemplo.com/foto.jpg">
       </div>
+
       <div class="form-group">
-        <label>Texto / Conteúdo Completo da Matéria</label>
-        <textarea rows="5" placeholder="Escreva o texto completo da notícia..."></textarea>
+        <label>Texto Completo / Conteúdo da Matéria</label>
+        <textarea id="noticiaTexto" rows="6" placeholder="Escreva todos os detalhes da notícia aqui..."></textarea>
       </div>
-      <button class="btn-submit" onclick="alert('Matéria publicada com sucesso!')">Publicar Matéria</button>
+
+      <button class="btn-submit" onclick="publicarMateria()"><i class="fa-solid fa-cloud-arrow-up"></i> Publicar Matéria Oficial no Portal</button>
+    </div>
+
+    <!-- SEÇÃO EXCLUSIVA DE ANÚNCIOS (DISPONÍVEL PARA O CHEFE) -->
+    <div id="secaoAnunciosAdmin" class="admin-section-box" style="display: none;">
+      <div class="admin-section-title"><i class="fa-solid fa-rectangle-ad"></i> Gestão de Anúncios e Banners Publicitários</div>
+      <div class="form-group">
+        <label>Código HTML de Anúncios / Google AdSense / Banners de Patrocínio</label>
+        <textarea rows="3" placeholder="Cole o código do anúncio aqui para exibir em todo o site..."></textarea>
+      </div>
+      <button class="btn-submit" style="background: #28a745;" onclick="alert('Configurações de anúncios salvas com sucesso!')">Salvar Anúncios no Site</button>
     </div>
   </div>
 
-  <!-- PAINEL DO ADMINISTRADOR (CHEFE: APROVAÇÃO, CRIAÇÃO, ANÚNCIOS) -->
-  <div id="modalPainelAdmin" class="modal-overlay">
-    <div class="modal-box" style="max-width: 650px;">
-      <button class="modal-close" onclick="fecharModais()">&times;</button>
-      <h3 style="color: #d9534f;"><i class="fa-solid fa-crown"></i> Painel do Administrador (Chefe)</h3>
-      <p style="font-size: 13px; color: #555; margin-bottom: 15px;">Gerencie cadastros, publique matérias completas e controle o site.</p>
+  <!-- MODAL DE LOGIN / CADASTRO -->
+  <div id="modalLogin" class="modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close" onclick="fecharModalLogin()">&times;</button>
       
-      <!-- Seção de Aprovação de Cadastros Pendentes -->
-      <div style="background: #fff3cd; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #f0ad4e;">
-        <strong style="color: #8a6d3b;">Aprovação de Novos Funcionários (Cadastros Pendentes):</strong>
-        
-        <div class="approval-card" style="margin-top: 10px;">
-          <div>
-            <strong>Carlos Silva</strong> <span style="font-size: 11px; color: #666;">(@carlos_news)</span>
-          </div>
-          <div>
-            <button style="background:#4cd964; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprovarFuncionario(this)">Aprovar</button>
-            <button style="background:#d9534f; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-weight:bold; margin-left: 5px;" onclick="rejeitarFuncionario(this)">Recusar</button>
-          </div>
+      <!-- TELA DE ENTRADA -->
+      <div id="formLoginView">
+        <h3>Acesso ao Sistema</h3>
+        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Digite <b>admin</b> no usuário para entrar como Chefe (ADM) ou use sua conta de funcionário.</p>
+        <div class="form-group">
+          <label>Usuário</label>
+          <input type="text" id="inputUsuario" placeholder="Ex: admin ou seu_usuario">
         </div>
-
-        <div class="approval-card">
-          <div>
-            <strong>Ana Souza</strong> <span style="font-size: 11px; color: #666;">(@ana_reporter)</span>
-          </div>
-          <div>
-            <button style="background:#4cd964; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprovarFuncionario(this)">Aprovar</button>
-            <button style="background:#d9534f; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-weight:bold; margin-left: 5px;" onclick="rejeitarFuncionario(this)">Recusar</button>
-          </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <input type="password" id="inputSenha" placeholder="Sua senha">
         </div>
+        <button class="btn-submit" onclick="realizarLogin()">Entrar no Painel</button>
+        <p style="text-align: center; margin-top: 15px; font-size: 13px;">
+          Novo funcionário? <a href="#" onclick="mostrarTelaCadastro()" style="color: #cc0000; font-weight: bold;">Solicitar Cadastro</a>
+        </p>
       </div>
 
-      <!-- Seção de Criar Matéria (Admin) -->
-      <div style="background: #eef2f7; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #11136c;">
-        <strong style="color: #11136c;">Criar Nova Matéria Oficial (Administrador):</strong>
-        <div class="form-group" style="margin-top: 10px;">
-          <label>Título da Matéria</label>
-          <input type="text" placeholder="Título principal">
+      <!-- TELA DE SOLICITAÇÃO DE CADASTRO -->
+      <div id="formCadastroView" style="display: none;">
+        <h3>Solicitar Novo Acesso</h3>
+        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Preencha seus dados para envio ao painel de aprovação do Administrador.</p>
+        <div class="form-group">
+          <label>Nome Completo</label>
+          <input type="text" placeholder="Seu nome">
         </div>
         <div class="form-group">
-          <label>Categoria (Com Mundo e demais seções)</label>
-          <select>
-            <option>Últimas Notícias</option>
-            <option>Polícia</option>
-            <option>Trânsito</option>
-            <option>Campo Grande</option>
-            <option>Mato Grosso do Sul</option>
-            <option>Brasil</option>
-            <option>Mundo</option>
-          </select>
+          <label>Usuário Desejado</label>
+          <input type="text" placeholder="Ex: joao_reporter">
         </div>
         <div class="form-group">
-          <label>Nome do Jornalista / Repórter</label>
-          <input type="text" value="Administração / Chefe">
+          <label>Crie uma Senha</label>
+          <input type="password" placeholder="Sua senha">
         </div>
-        <div class="form-group">
-          <label>Link / URL da Matéria (Opcional)</label>
-          <input type="url" placeholder="https://...">
-        </div>
-        <div class="form-group">
-          <label>Link do Vídeo (YouTube / Kwai / TikTok)</label>
-          <input type="url" placeholder="Link do vídeo">
-        </div>
-        <div class="form-group">
-          <label>Link da Imagem (URL)</label>
-          <input type="url" placeholder="https://...">
-        </div>
-        <div class="form-group">
-          <label>Texto Completo</label>
-          <textarea rows="3" placeholder="Escreva o texto da matéria..."></textarea>
-        </div>
-        <button class="btn-submit" onclick="alert('Matéria publicada pelo Administrador!')">Publicar Matéria como Administrador</button>
+        <button class="btn-submit" onclick="enviarSolicitacaoCadastro()">Enviar para Aprovação do Chefe</button>
+        <p style="text-align: center; margin-top: 15px; font-size: 13px;">
+          Já tem conta? <a href="#" onclick="mostrarTelaLogin()" style="color: #cc0000; font-weight: bold;">Fazer Login</a>
+        </p>
       </div>
 
-      <!-- Seção de Anúncios e Customização -->
-      <div class="form-group">
-        <label>Inserir Código de Anúncios / Publicidade (Banners / AdSense)</label>
-        <textarea rows="2" placeholder="Cole o código HTML do anúncio aqui..."></textarea>
-      </div>
-
-      <button class="btn-submit" style="background: #d9534f;" onclick="alert('Configurações de Administrador salvas!')">Salvar Configurações Gerais</button>
     </div>
   </div>
 
@@ -347,56 +326,86 @@
       <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
       <a href="#"><i class="fa-brands fa-instagram"></i></a>
     </div>
-    <p>© 2026 CG NEWS OFICIAL — Informação em tempo real.</p>
+    <p>© 2026 CG NEWS OFICIAL — Todos os direitos reservados.</p>
   </footer>
 
   <script>
     function openNav() { document.getElementById("mySideMenu").style.width = "280px"; }
     function closeNav() { document.getElementById("mySideMenu").style.width = "0"; }
 
-    function abrirModalLogin() { fecharModais(); document.getElementById('modalLogin').style.display = 'flex'; }
-    function fecharModais() { 
-      document.getElementById('modalLogin').style.display = 'none'; 
-      document.getElementById('telaLogin').style.display = 'block';
-      document.getElementById('telaCadastro').style.display = 'none';
-      document.getElementById('modalPainelFuncionario').style.display = 'none';
-      document.getElementById('modalPainelAdmin').style.display = 'none';
+    function abrirModalLogin() { document.getElementById('modalLogin').style.display = 'flex'; }
+    function fecharModalLogin() { document.getElementById('modalLogin').style.display = 'none'; }
+
+    function mostrarTelaCadastro() {
+      document.getElementById('formLoginView').style.display = 'none';
+      document.getElementById('formCadastroView').style.display = 'block';
+    }
+    function mostrarTelaLogin() {
+      document.getElementById('formCadastroView').style.display = 'none';
+      document.getElementById('formLoginView').style.display = 'block';
     }
 
-    function mostrarCadastro() {
-      document.getElementById('telaLogin').style.display = 'none';
-      document.getElementById('telaCadastro').style.display = 'block';
-    }
-    function mostrarLogin() {
-      document.getElementById('telaCadastro').style.display = 'none';
-      document.getElementById('telaLogin').style.display = 'block';
+    function enviarSolicitacaoCadastro() {
+      alert('Solicitação enviada com sucesso! O Administrador (Chefe) poderá aprová-la no painel dele.');
+      fecharModalLogin();
+      mostrarTelaLogin();
     }
 
-    function enviarCadastro() {
-      alert('Solicitação de cadastro enviada com sucesso! O Chefe precisará aprovar no painel de administrador.');
-      fecharModais();
-    }
+    function realizarLogin() {
+      var usuario = document.getElementById('inputUsuario').value.trim().toLowerCase();
+      fecharModalLogin();
 
-    function aprovarFuncionario(btn) {
-      alert('Funcionário aprovado com sucesso! O acesso foi liberado.');
-      btn.closest('.approval-card').remove();
-    }
+      // Esconde o site público e exibe o Painel Gerencial na mesma página
+      document.getElementById('sitePublico').style.display = 'none';
+      document.getElementById('painelGerencial').style.display = 'block';
+      document.getElementById('btnAbrirLogin').style.display = 'none';
 
-    function rejeitarFuncionario(btn) {
-      alert('Cadastro recusado.');
-      btn.closest('.approval-card').remove();
-    }
-
-    function fazerLogin() {
-      var user = document.getElementById('userInput').value.trim();
-      fecharModais();
-      
-      // Digitando "admin" você abre o painel do chefe com a lista de aprovação e ferramentas completas
-      if (user.toLowerCase() === 'admin') {
-        document.getElementById('modalPainelAdmin').style.display = 'flex';
+      if (usuario === 'admin') {
+        // Painel exclusivo do Chefe (ADM)
+        document.getElementById('tituloPainelUser').innerHTML = '<i class="fa-solid fa-crown" style="color: #cc0000;"></i> Painel do Administrador (Chefe)';
+        document.getElementById('secaoAprovacaoAdmin').style.display = 'block';
+        document.getElementById('secaoAnunciosAdmin').style.display = 'block';
+        document.getElementById('noticiaJornalista').value = 'Administração / Chefia';
       } else {
-        document.getElementById('modalPainelFuncionario').style.display = 'flex';
+        // Painel padrão de Funcionário / Jornalista
+        document.getElementById('tituloPainelUser').innerHTML = '<i class="fa-solid fa-user-pen"></i> Painel do Jornalista / Redação';
+        document.getElementById('secaoAprovacaoAdmin').style.display = 'none';
+        document.getElementById('secaoAnunciosAdmin').style.display = 'none';
       }
+    }
+
+    function fazerLogout() {
+      // Retorna para o site público
+      document.getElementById('painelGerencial').style.display = 'none';
+      document.getElementById('sitePublico').style.display = 'flex';
+      document.getElementById('btnAbrirLogin').style.display = 'flex';
+      document.getElementById('inputUsuario').value = '';
+      document.getElementById('inputSenha').value = '';
+    }
+
+    function aprovarCadastro(btn) {
+      alert('Cadastro de funcionário aprovado com sucesso!');
+      btn.closest('.approval-row').remove();
+    }
+
+    function recusarCadastro(btn) {
+      alert('Cadastro recusado.');
+      btn.closest('.approval-row').remove();
+    }
+
+    function publicarMateria() {
+      var titulo = document.getElementById('noticiaTitulo').value;
+      if (!titulo) {
+        alert('Por favor, preencha pelo menos o título da matéria!');
+        return;
+      }
+      alert('Matéria publicada com sucesso no portal CG NEWS OFICIAL!');
+      // Limpa os campos após publicar
+      document.getElementById('noticiaTitulo').value = '';
+      document.getElementById('noticiaLink').value = '';
+      document.getElementById('noticiaVideo').value = '';
+      document.getElementById('noticiaImagem').value = '';
+      document.getElementById('noticiaTexto').value = '';
     }
   </script>
 
