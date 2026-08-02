@@ -14,10 +14,9 @@ collections:
       - {label: "Categoria", name: "categoria", widget: "select", options: ["Últimas Notícias", "Polícia", "Trânsito", "Campo Grande", "Mato Grosso do Sul", "Brasil", "Mundo"]}
       - {label: "Super Destaque", name: "super_destaque", widget: "boolean", required: false}
       - {label: "Destaque", name: "destaque", widget: "boolean", required: false}
-      - {label: "Imagem da Notícia", name: "image", widget: "image", required: false}
-      - {label: "Fonte Imagem", name: "fonte_imagem", widget: "string", required: false}
-      - {label: "Vídeo (Arquivo MP4 ou Link)", name: "video_arquivo", widget: "file", required: false, hint: "Envie um vídeo do celular ou computador se preferir"}
-      - {label: "Link do YouTube", name: "video", widget: "string", required: false}
+      - {label: "Mídia da Notícia (Foto ou Vídeo)", name: "image", widget: "file", required: false, hint: "Envie uma foto ou um vídeo do seu dispositivo"}
+      - {label: "Fonte Mídia", name: "fonte_imagem", widget: "string", required: false}
+      - {label: "Link do YouTube (Opcional)", name: "video", widget: "string", required: false}
       - {label: "Autor", name: "autor", widget: "string", required: false}
       - {label: "Data e Hora", name: "date", widget: "datetime", format: "YYYY-MM-DD HH:mm", date_format: "YYYY-MM-DD", time_format: "HH:mm"}
       - {label: "Título", name: "title", widget: "string"}
