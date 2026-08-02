@@ -12,7 +12,8 @@
         h2 { margin-top: 40px; font-size: 18px; }
         .form-group { margin-bottom: 18px; }
         label { display: block; font-weight: bold; margin-bottom: 6px; color: #333; font-size: 14px; }
-        input[type="text"], input[type="url"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; outline: none; }
+        input[type="text"], input[type="url"], input[type="file"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; outline: none; background: #fff; }
+        input[type="file"] { padding: 8px; cursor: pointer; background: #f8f9fa; }
         input[type="text"]:focus, input[type="url"]:focus, textarea:focus { border-color: #11136c; }
         textarea { height: 120px; resize: vertical; }
         .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
@@ -60,8 +61,8 @@
             </div>
 
             <div class="form-group">
-                <label for="imagem">Link da Imagem (URL)</label>
-                <input type="url" id="imagem" placeholder="Cole o link da foto">
+                <label for="imagemFile">Selecionar Imagem do Celular</label>
+                <input type="file" id="imagemFile" accept="image/*">
             </div>
 
             <div class="form-group">
@@ -70,8 +71,8 @@
             </div>
 
             <div class="form-group">
-                <label for="video">Link do Vídeo (URL)</label>
-                <input type="url" id="video" placeholder="Cole o link direto do arquivo de vídeo">
+                <label for="videoFile">Selecionar Vídeo do Celular</label>
+                <input type="file" id="videoFile" accept="video/*">
             </div>
 
             <div class="form-group">
@@ -82,7 +83,7 @@
             <div class="form-group">
                 <label for="linkRedeSocial">Link de Incorporação (Redes Sociais)</label>
                 <input type="url" id="linkRedeSocial" placeholder="Cole o link do Instagram, TikTok, Facebook, YouTube, etc.">
-                <small style="color: #666; font-size: 12px; display: block; margin-top: 4px;">Exibe o post interativo da rede social direto na matéria, igual ao seu exemplo.</small>
+                <small style="color: #666; font-size: 12px; display: block; margin-top: 4px;">Exibe o post interativo da rede social direto na matéria.</small>
             </div>
 
             <div class="form-group">
@@ -198,8 +199,6 @@
             document.getElementById("fonteImagem").value = noti.fonteImagem || "";
             document.getElementById("fonteVideo").value = noti.fonteVideo || "";
             document.getElementById("linkRedeSocial").value = noti.linkRedeSocial || "";
-            document.getElementById("imagem").value = noti.imagem || "";
-            document.getElementById("video").value = noti.video || "";
             document.getElementById("superDestaque").checked = !!noti.superDestaque;
             document.getElementById("destaque").checked = !!noti.destaque;
 
@@ -253,12 +252,22 @@
             statusMsg.innerText = "Publicando notícia, aguarde...";
 
             try {
+                // Função auxiliar para ler arquivo do celular em formato leve (Base64) se selecionado
+                const imagemInput = document.getElementById("imagemFile");
+                let imagemData = "";
+                if (imagemInput.files && imagemInput.files[0]) {
+                    imagemData = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => resolve(e.target.result);
+                        reader.readAsDataURL(imagemInput.files[0]);
+                    });
+                }
+
                 const dadosNoticia = {
                     categorias: categoriasSelecionadas,
                     superDestaque: document.getElementById("superDestaque").checked,
                     destaque: document.getElementById("destaque").checked,
-                    imagem: document.getElementById("imagem").value,
-                    video: document.getElementById("video").value,
+                    imagem: imagemData, // Salva a foto direto da galeria
                     fonteImagem: document.getElementById("fonteImagem").value,
                     fonteVideo: document.getElementById("fonteVideo").value,
                     linkRedeSocial: document.getElementById("linkRedeSocial").value,
