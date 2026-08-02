@@ -70,9 +70,19 @@
             </div>
 
             <div class="form-group">
+                <label for="video">Link do Vídeo (URL)</label>
+                <input type="url" id="video" placeholder="Cole o link direto do arquivo de vídeo">
+            </div>
+
+            <div class="form-group">
+                <label for="fonteVideo">Fonte Vídeo</label>
+                <input type="text" id="fonteVideo" placeholder="Créditos do vídeo">
+            </div>
+
+            <div class="form-group">
                 <label for="linkRedeSocial">Link de Incorporação (Redes Sociais)</label>
                 <input type="url" id="linkRedeSocial" placeholder="Cole o link do Instagram, TikTok, Facebook, YouTube, etc.">
-                <small style="color: #666; font-size: 12px; display: block; margin-top: 4px;">Isso exibirá o post interativo da rede social direto na matéria, igual ao seu exemplo.</small>
+                <small style="color: #666; font-size: 12px; display: block; margin-top: 4px;">Exibe o post interativo da rede social direto na matéria, igual ao seu exemplo.</small>
             </div>
 
             <div class="form-group">
@@ -186,8 +196,10 @@
             document.getElementById("autor").value = noti.autor || "";
             document.getElementById("fonteNoticia").value = noti.fonteNoticia || "";
             document.getElementById("fonteImagem").value = noti.fonteImagem || "";
+            document.getElementById("fonteVideo").value = noti.fonteVideo || "";
             document.getElementById("linkRedeSocial").value = noti.linkRedeSocial || "";
             document.getElementById("imagem").value = noti.imagem || "";
+            document.getElementById("video").value = noti.video || "";
             document.getElementById("superDestaque").checked = !!noti.superDestaque;
             document.getElementById("destaque").checked = !!noti.destaque;
 
@@ -246,7 +258,9 @@
                     superDestaque: document.getElementById("superDestaque").checked,
                     destaque: document.getElementById("destaque").checked,
                     imagem: document.getElementById("imagem").value,
+                    video: document.getElementById("video").value,
                     fonteImagem: document.getElementById("fonteImagem").value,
+                    fonteVideo: document.getElementById("fonteVideo").value,
                     linkRedeSocial: document.getElementById("linkRedeSocial").value,
                     autor: document.getElementById("autor").value,
                     titulo: document.getElementById("titulo").value,
@@ -284,4 +298,3 @@
     </script>
 </body>
 </html>
-                  
