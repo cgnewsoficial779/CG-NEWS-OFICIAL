@@ -14,7 +14,7 @@ collections:
       - {label: "Categoria", name: "categoria", widget: "select", options: ["Últimas Notícias", "Polícia", "Trânsito", "Campo Grande", "Mato Grosso do Sul", "Brasil", "Mundo"]}
       - {label: "Super Destaque", name: "super_destaque", widget: "boolean", required: false}
       - {label: "Destaque", name: "destaque", widget: "boolean", required: false}
-      - {label: "Mídia da Notícia (Foto ou Vídeo)", name: "image", widget: "file", required: false, hint: "Envie uma foto ou um vídeo do seu dispositivo"}
+      - {label: "Mídia da Notícia (Foto ou Vídeo)", name: "image", widget: "file", required: false, hint: "Envie uma foto ou um vídeo direto do seu celular"}
       - {label: "Fonte Mídia", name: "fonte_imagem", widget: "string", required: false}
       - {label: "Link do YouTube (Opcional)", name: "video", widget: "string", required: false}
       - {label: "Autor", name: "autor", widget: "string", required: false}
