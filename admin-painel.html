@@ -3,39 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Notícias - CG NEWS OFICIAL</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
+    <title>Painel - CG NEWS OFICIAL</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-        html, body { width: 100%; min-height: 100vh; background-color: #f2f4f7; color: #1a1a1a; }
-
-        .container { max-width: 900px; margin: 20px auto; background: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { font-size: 22px; color: #11136c; margin-bottom: 20px; border-bottom: 2px solid #11136c; padding-bottom: 10px; }
+        body { background-color: #f2f4f7; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { color: #11136c; font-size: 22px; border-bottom: 2px solid #11136c; padding-bottom: 10px; margin-bottom: 25px; }
+        h2 { color: #11136c; font-size: 18px; border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 15px; margin-top: 40px; }
         
-        .form-group { margin-bottom: 18px; }
-        label { display: block; font-weight: bold; margin-bottom: 6px; color: #333; font-size: 14px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #333; font-size: 14px; }
+        input[type="text"], textarea, input[type="file"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        textarea { height: 150px; resize: vertical; }
         
-        input[type="text"], input[type="url"], input[type="file"], textarea {
-            width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; outline: none; background: #fff;
-        }
-        input[type="file"] { padding: 8px; cursor: pointer; background: #f8f9fa; }
-        input[type="text"]:focus, input[type="url"]:focus, textarea:focus { border-color: #11136c; }
-        textarea { height: 120px; resize: vertical; }
-
-        .categorias-box {
-            display: flex; flex-wrap: wrap; gap: 12px; background: #f8f9fa; padding: 12px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 18px;
-        }
-        .categorias-box label {
-            font-weight: normal; font-size: 13px; display: flex; align-items: center; gap: 5px; cursor: pointer; color: #333; margin-bottom: 0;
-        }
-
-        .btn-salvar {
-            background-color: #11136c; color: white; border: none; padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; width: 100%; transition: background 0.3s;
-        }
-        .btn-salvar:hover { background-color: #1a23a0; }
-        #status-msg { margin-top: 15px; text-align: center; font-weight: bold; font-size: 14px; }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 15px; border: 1px solid #ccc; padding: 10px; border-radius: 4px; }
+        .checkbox-group label { font-weight: normal; margin-bottom: 0; display: flex; align-items: center; gap: 5px; }
+        
+        .btn-submit { background-color: #11136c; color: white; border: none; padding: 15px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+        .btn-submit:hover { background-color: #0a0b45; }
+        .btn-cancelar { background-color: #888; color: white; border: none; padding: 10px; width: 100%; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 10px; display: none; }
+        
+        /* Estilos da lista de notícias */
+        .noticia-item { border: 1px solid #eee; padding: 15px; margin-bottom: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; background: #fafafa; }
+        .noticia-info strong { display: block; color: #11136c; font-size: 16px; }
+        .noticia-info span { font-size: 12px; color: #666; }
+        .acoes-btn { display: flex; gap: 10px; }
+        .btn-editar { background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .btn-apagar { background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -43,88 +37,72 @@
     <div class="container">
         <h1>Cadastro de Notícias</h1>
 
-        <form id="form-noticia">
-            
+        <form id="formNoticia">
             <div class="form-group">
                 <label>Categorias (Selecione uma ou mais)</label>
-                <div class="categorias-box">
-                    <label><input type="checkbox" name="categorias" value="Polícia"> Polícia</label>
-                    <label><input type="checkbox" name="categorias" value="Trânsito"> Trânsito</label>
-                    <label><input type="checkbox" name="categorias" value="Campo Grande"> Campo Grande</label>
-                    <label><input type="checkbox" name="categorias" value="Mato Grosso do Sul"> Mato Grosso do Sul</label>
-                    <label><input type="checkbox" name="categorias" value="Brasil"> Brasil</label>
-                    <label><input type="checkbox" name="categorias" value="Mundo"> Mundo</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="categoria" value="Polícia"> Polícia</label>
+                    <label><input type="checkbox" name="categoria" value="Trânsito"> Trânsito</label>
+                    <label><input type="checkbox" name="categoria" value="Campo Grande"> Campo Grande</label>
+                    <label><input type="checkbox" name="categoria" value="Mato Grosso do Sul"> Mato Grosso do Sul</label>
+                    <label><input type="checkbox" name="categoria" value="Brasil"> Brasil</label>
+                    <label><input type="checkbox" name="categoria" value="Mundo"> Mundo</label>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Destaque</label>
-                <div class="categorias-box">
-                    <label><input type="checkbox" id="superDestaque"> Super Destaque</label>
-                    <label><input type="checkbox" id="destaque"> Destaque</label>
-                </div>
+                <label>Selecionar Imagem do Celular</label>
+                <input type="file" id="imagemUpload" accept="image/*">
+                <small style="color: #666; font-size: 11px;">A imagem será comprimida automaticamente.</small>
+                <input type="hidden" id="imagemBase64">
             </div>
 
             <div class="form-group">
-                <label for="imagemFile">Selecionar Imagem do Celular</label>
-                <input type="file" id="imagemFile" accept="image/*">
-                <small style="color: #666; font-size: 11px;">A imagem será comprimida automaticamente para não pesar no banco de dados.</small>
-            </div>
-
-            <div class="form-group">
-                <label for="fonteImagem">Fonte Imagem</label>
+                <label>Fonte Imagem</label>
                 <input type="text" id="fonteImagem" placeholder="Créditos da imagem">
             </div>
 
             <div class="form-group">
-                <label for="videoFile">Selecionar Vídeo do Celular (Apenas vídeos curtos)</label>
-                <input type="file" id="videoFile" accept="video/*">
+                <label>Link de Incorporação (Redes Sociais / Vídeo)</label>
+                <input type="text" id="linkRedeSocial" placeholder="Cole o link do Instagram, TikTok, Facebook, YouTube, etc.">
             </div>
 
             <div class="form-group">
-                <label for="fonteVideo">Fonte Vídeo</label>
-                <input type="text" id="fonteVideo" placeholder="Créditos do vídeo">
-            </div>
-
-            <div class="form-group">
-                <label for="linkRedeSocial">Link de Incorporação (Redes Sociais)</label>
-                <input type="url" id="linkRedeSocial" placeholder="Cole o link do Instagram, TikTok, Facebook, YouTube, etc.">
-            </div>
-
-            <div class="form-group">
-                <label for="autor">Autor</label>
+                <label>Autor</label>
                 <input type="text" id="autor" placeholder="Nome do autor da matéria">
             </div>
 
             <div class="form-group">
-                <label for="titulo">Título</label>
+                <label>Título</label>
                 <input type="text" id="titulo" placeholder="Título da notícia" required>
             </div>
 
             <div class="form-group">
-                <label for="subtitulo">Subtítulo</label>
-                <input type="text" id="subtitulo" placeholder="Digite a linha fina / resumo da matéria...">
-            </div>
-
-            <div class="form-group">
-                <label for="texto">Texto</label>
+                <label>Texto</label>
                 <textarea id="texto" placeholder="Escreva a matéria completa aqui..." required></textarea>
             </div>
 
             <div class="form-group">
-                <label for="fonteNoticia">Fonte</label>
+                <label>Fonte</label>
                 <input type="text" id="fonteNoticia" placeholder="Fonte da notícia">
             </div>
 
-            <button type="submit" class="btn-salvar">Publicar Notícia</button>
-            <div id="status-msg"></div>
+            <button type="submit" id="btnSalvar" class="btn-submit">Publicar Notícia</button>
+            <button type="button" id="btnCancelar" class="btn-cancelar" onclick="cancelarEdicao()">Cancelar Edição</button>
         </form>
+
+        <!-- SEÇÃO PARA GERENCIAR NOTÍCIAS -->
+        <h2>Notícias Publicadas (Editar / Apagar)</h2>
+        <div id="lista-noticias">
+            <p style="color: #888; font-size: 14px;">Carregando matérias...</p>
+        </div>
+
     </div>
 
-    <!-- INTEGRAÇÃO COM O FIREBASE -->
+    <!-- SCRIPT DO FIREBASE E FUNCIONAMENTO DO PAINEL -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDjl4R4h2An2POmuZgMhAFsLbdhuzauxyY",
@@ -139,98 +117,183 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const form = document.getElementById("form-noticia");
-        const statusMsg = document.getElementById("status-msg");
+        let idEditando = null;
+        window.noticiasAdmin = {};
 
-        // COMPRESSOR DE IMAGEM
-        function comprimirImagem(file) {
-            return new Promise((resolve) => {
-                if (!file) { resolve(""); return; }
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.onload = () => {
-                        const canvas = document.createElement("canvas");
-                        const maxWidth = 800; 
-                        let scaleSize = maxWidth / img.width;
-                        if(scaleSize > 1) scaleSize = 1; 
-                        
-                        canvas.width = img.width * scaleSize;
-                        canvas.height = img.height * scaleSize;
-                        
-                        const ctx = canvas.getContext("2d");
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        resolve(canvas.toDataURL("image/jpeg", 0.6)); 
-                    };
+        // COMPRESSÃO DE IMAGEM
+        document.getElementById("imagemUpload").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement("canvas");
+                    const MAX_WIDTH = 800;
+                    const scaleSize = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scaleSize;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    const base64 = canvas.toDataURL("image/jpeg", 0.7);
+                    document.getElementById("imagemBase64").value = base64;
+                    alert("Imagem carregada e comprimida com sucesso!");
                 };
-            });
-        }
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
 
-        // FUNÇÃO PARA VÍDEO
-        function converterParaBase64(file) {
-            return new Promise((resolve) => {
-                if (!file) { resolve(""); return; }
-                const reader = new FileReader();
-                reader.onload = (e) => resolve(e.target.result);
-                reader.readAsDataURL(file);
-            });
-        }
-
-        form.addEventListener("submit", async (e) => {
+        // SALVAR OU ATUALIZAR NOTÍCIA
+        document.getElementById("formNoticia").addEventListener("submit", async function(e) {
             e.preventDefault();
-            statusMsg.style.color = "#11136c";
-            statusMsg.innerText = "Publicando notícia no Firebase aguarde...";
+            document.getElementById("btnSalvar").innerText = "Salvando...";
+
+            const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
+            const categoriasSelecionadas = Array.from(checkboxes).map(cb => cb.value);
+
+            const noticiaDados = {
+                categorias: categoriasSelecionadas,
+                categoria: categoriasSelecionadas.length > 0 ? categoriasSelecionadas[0] : "", // fallback
+                imagem: document.getElementById("imagemBase64").value,
+                fonteImagem: document.getElementById("fonteImagem").value,
+                linkRedeSocial: document.getElementById("linkRedeSocial").value,
+                autor: document.getElementById("autor").value,
+                titulo: document.getElementById("titulo").value,
+                texto: document.getElementById("texto").value,
+                fonteNoticia: document.getElementById("fonteNoticia").value,
+                dataAtualizacao: Date.now()
+            };
 
             try {
-                const imagemFile = document.getElementById("imagemFile").files[0];
-                const videoFile = document.getElementById("videoFile").files[0];
+                if (idEditando) {
+                    // Atualizar matéria existente
+                    const docRef = doc(db, "noticias", idEditando);
+                    await updateDoc(docRef, noticiaDados);
+                    alert("Notícia ATUALIZADA com sucesso!");
+                } else {
+                    // Criar nova matéria
+                    await addDoc(collection(db, "noticias"), noticiaDados);
+                    alert("Notícia PUBLICADA com sucesso!");
+                }
+                
+                document.getElementById("formNoticia").reset();
+                document.getElementById("imagemBase64").value = "";
+                cancelarEdicao();
+                carregarListaNoticias();
 
-                const imagemBase64 = await comprimirImagem(imagemFile);
-                const videoBase64 = await converterParaBase64(videoFile);
+            } catch (error) {
+                console.error("Erro ao salvar:", error);
+                alert("Erro ao salvar a notícia.");
+                document.getElementById("btnSalvar").innerText = idEditando ? "Atualizar Notícia" : "Publicar Notícia";
+            }
+        });
 
-                // NOVO: Pega todas as categorias marcadas
-                const checkboxesMarcados = document.querySelectorAll('input[name="categorias"]:checked');
-                const arrayCategorias = [];
-                checkboxesMarcados.forEach((cb) => arrayCategorias.push(cb.value));
-
-                if (arrayCategorias.length === 0) {
-                    alert("Selecione pelo menos uma categoria antes de publicar!");
-                    statusMsg.innerText = "";
+        // CARREGAR LISTA PARA EDITAR/APAGAR
+        async function carregarListaNoticias() {
+            const listaDiv = document.getElementById("lista-noticias");
+            listaDiv.innerHTML = "<p>Carregando...</p>";
+            
+            try {
+                const q = query(collection(db, "noticias"), orderBy("dataAtualizacao", "desc"));
+                const snapshot = await getDocs(q);
+                listaDiv.innerHTML = "";
+                
+                if (snapshot.empty) {
+                    listaDiv.innerHTML = "<p style='color: #888; font-size: 14px;'>Nenhuma notícia publicada ainda.</p>";
                     return;
                 }
 
-                const novaNoticia = {
-                    categoria: arrayCategorias[0], // A primeira marcada fica como a tag visual da notícia
-                    categorias: arrayCategorias,   // Salva a lista completa no banco de dados
-                    superDestaque: document.getElementById("superDestaque").checked,
-                    destaque: document.getElementById("destaque").checked,
-                    titulo: document.getElementById("titulo").value,
-                    subtitulo: document.getElementById("subtitulo").value,
-                    texto: document.getElementById("texto").value,
-                    autor: document.getElementById("autor").value,
-                    fonteNoticia: document.getElementById("fonteNoticia").value,
-                    fonteImagem: document.getElementById("fonteImagem").value,
-                    fonteVideo: document.getElementById("fonteVideo").value,
-                    linkRedeSocial: document.getElementById("linkRedeSocial").value,
-                    imagem: imagemBase64,
-                    video: videoBase64,
-                    dataAtualizacao: new Date().toISOString(),
-                    editado: false
-                };
+                snapshot.forEach((docSnap) => {
+                    const item = docSnap.data();
+                    const id = docSnap.id;
+                    window.noticiasAdmin[id] = item;
+                    
+                    const d = new Date(item.dataAtualizacao);
+                    const dataFormatada = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + " às " + d.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
 
-                await addDoc(collection(db, "noticias"), novaNoticia);
-
-                statusMsg.style.color = "green";
-                statusMsg.innerText = "Notícia publicada com sucesso! Já está no ar.";
-                form.reset();
-            } catch (erro) {
-                console.error("Erro ao publicar:", erro);
-                statusMsg.style.color = "red";
-                statusMsg.innerText = "Erro ao publicar. Verifique a aba 'Regras' do seu Firebase.";
+                    listaDiv.innerHTML += `
+                        <div class="noticia-item">
+                            <div class="noticia-info">
+                                <strong>${item.titulo}</strong>
+                                <span>Publicado em: ${dataFormatada}</span>
+                            </div>
+                            <div class="acoes-btn">
+                                <button class="btn-editar" onclick="prepararEdicao('${id}')">Editar</button>
+                                <button class="btn-apagar" onclick="apagarNoticia('${id}')">Apagar</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error("Erro ao listar:", error);
+                listaDiv.innerHTML = "<p>Erro ao carregar a lista de notícias.</p>";
             }
-        });
+        }
+
+        // PREPARAR FORMULÁRIO PARA EDIÇÃO
+        window.prepararEdicao = function(id) {
+            const item = window.noticiasAdmin[id];
+            if (!item) return;
+
+            idEditando = id;
+            document.getElementById("btnSalvar").innerText = "Atualizar Notícia";
+            document.getElementById("btnSalvar").style.backgroundColor = "#007bff";
+            document.getElementById("btnCancelar").style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Rola a tela para o topo
+
+            // Preencher os campos textuais
+            document.getElementById("titulo").value = item.titulo || "";
+            document.getElementById("texto").value = item.texto || "";
+            document.getElementById("autor").value = item.autor || "";
+            document.getElementById("linkRedeSocial").value = item.linkRedeSocial || "";
+            document.getElementById("fonteImagem").value = item.fonteImagem || "";
+            document.getElementById("fonteNoticia").value = item.fonteNoticia || "";
+            document.getElementById("imagemBase64").value = item.imagem || "";
+
+            // Marcar checkboxes corretamente
+            const checkboxes = document.querySelectorAll('input[name="categoria"]');
+            checkboxes.forEach(cb => cb.checked = false); // limpa tudo
+            
+            if (item.categorias && item.categorias.length > 0) {
+                item.categorias.forEach(cat => {
+                    const check = document.querySelector(`input[name="categoria"][value="${cat}"]`);
+                    if (check) check.checked = true;
+                });
+            } else if (item.categoria) {
+                const check = document.querySelector(`input[name="categoria"][value="${item.categoria}"]`);
+                if (check) check.checked = true;
+            }
+        };
+
+        // CANCELAR EDIÇÃO E VOLTAR PARA MODO "PUBLICAR"
+        window.cancelarEdicao = function() {
+            idEditando = null;
+            document.getElementById("formNoticia").reset();
+            document.getElementById("imagemBase64").value = "";
+            document.getElementById("btnSalvar").innerText = "Publicar Notícia";
+            document.getElementById("btnSalvar").style.backgroundColor = "#11136c";
+            document.getElementById("btnCancelar").style.display = "none";
+        };
+
+        // APAGAR NOTÍCIA
+        window.apagarNoticia = async function(id) {
+            const confirmacao = confirm("Tem certeza que deseja apagar esta matéria definitivamente?");
+            if (confirmacao) {
+                try {
+                    await deleteDoc(doc(db, "noticias", id));
+                    alert("Notícia apagada com sucesso!");
+                    carregarListaNoticias(); // recarrega a lista
+                } catch (error) {
+                    console.error("Erro ao apagar:", error);
+                    alert("Erro ao tentar apagar a notícia.");
+                }
+            }
+        };
+
+        // Inicia carregando a lista
+        carregarListaNoticias();
     </script>
 </body>
 </html>
