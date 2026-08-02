@@ -43,7 +43,9 @@
         /* MODAL DE PESQUISA */
         #search-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: flex-start; padding-top: 80px; }
         .search-box-content { background: #fff; width: 90%; max-width: 500px; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .search-box-content input { width: 100%; padding: 10px; border: 2px solid #11136c; border-radius: 5px; font-size: 16px; }
+        .search-box-content input { width: 100%; padding: 10px; border: 2px solid #11136c; border-radius: 5px; font-size: 16px; margin-bottom: 10px; }
+        .search-submit-btn { background-color: #11136c; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; font-size: 15px; }
+        .search-submit-btn:hover { background-color: #1a23a0; }
 
         /* MENU LATERAL */
         .side-menu {
@@ -103,10 +105,13 @@
     <div id="search-modal">
         <div class="search-box-content">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <h3 style="color: #11136c; font-size: 16px;">Pesquisar Notícia</h3>
+                <h3 style="color: #11136c; font-size: 16px;">Pesquisar Notícia na Página</h3>
                 <button onclick="closeSearch()" style="background:none; border:none; font-size:22px; cursor:pointer; color:#11136c;">&times;</button>
             </div>
-            <input type="text" id="searchInput" placeholder="Digite o que deseja procurar...">
+            <form onsubmit="executarPesquisaNaPagina(event)">
+                <input type="text" id="searchInput" placeholder="Digite o termo ou palavra-chave..." required>
+                <button type="submit" class="search-submit-btn">Buscar na Página</button>
+            </form>
         </div>
     </div>
 
@@ -191,6 +196,20 @@
         function closeNav() { document.getElementById("mySideMenu").style.width = "0"; }
         function openSearch() { document.getElementById("search-modal").style.display = "flex"; document.getElementById("searchInput").focus(); }
         function closeSearch() { document.getElementById("search-modal").style.display = "none"; }
+        
+        function executarPesquisaNaPagina(event) {
+            event.preventDefault();
+            const termo = document.getElementById("searchInput").value.trim();
+            closeSearch();
+            
+            if (termo) {
+                // Utiliza a função nativa do navegador para encontrar e destacar/rolar até o texto na página
+                const encontrado = window.find(termo, false, false, true, false, true, false);
+                if (!encontrado) {
+                    alert("Nenhum resultado encontrado para: " + termo);
+                }
+            }
+        }
     </script>
 </body>
 </html>
