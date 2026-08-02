@@ -178,7 +178,7 @@
             const d = new Date(item.dataAtualizacao || Date.now());
             const dataFormatada = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
 
-            // GERADOR DE VÍDEOS DIRETOS (SEM BOTÃO AZUL)
+            // GERADOR DE VÍDEOS DIRETOS
             let areaVideo = "";
             if (item.linkRedeSocial && item.linkRedeSocial.trim() !== "") {
                 const url = item.linkRedeSocial.trim();
@@ -205,13 +205,13 @@
                     areaVideo = `<iframe src="https://www.tiktok.com/embed/v2/${videoId}" width="100%" height="650" frameborder="0" allowfullscreen scrolling="no" style="border-radius: 8px; margin-top: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></iframe>`;
                 }
                 else {
-                    // Para qualquer outro link (Kwai, etc), força a abertura de um quadrado de vídeo nativo (iframe)
                     areaVideo = `<iframe src="${url}" width="100%" height="500" frameborder="0" allowfullscreen style="border-radius: 8px; margin-top: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #f9f9f9;"></iframe>`;
                 }
             }
 
+            // AQUI FOI ADICIONADO "aspect-ratio: 1 / 1; object-fit: cover;" PARA DEIXAR A IMAGEM QUADRADA E EVITAR QUE TOME A TELA TODA
             conteudo.innerHTML = `
-                ${item.imagem ? `<img src="${item.imagem}" style="width: 100%; border-radius: 8px; margin-bottom: 15px;">` : ""}
+                ${item.imagem ? `<img src="${item.imagem}" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">` : ""}
                 <span style="color: #666; font-size: 12px;">Foto: ${item.fonteImagem || "Divulgação"}</span>
                 <h1 style="color: #11136c; font-size: 24px; margin: 15px 0;">${item.titulo}</h1>
                 <p style="color: #555; font-size: 14px; margin-bottom: 25px;">Publicado em: ${dataFormatada} ${item.autor ? `| Por ${item.autor}` : ""}</p>
