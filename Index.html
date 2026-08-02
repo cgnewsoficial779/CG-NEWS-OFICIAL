@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CG NEWS OFICIAL - Portal de Notícias</title>
 
+  <!-- BIBLIOTECA DE ÍCONES OFICIAIS (FONT AWESOME) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
   <style>
@@ -61,11 +62,12 @@
     .content-column { flex: 2; min-width: 300px; }
     .sidebar-column { flex: 1; min-width: 260px; }
 
-    .section-header { border-left: 5px solid #11136c !important; padding-left: 10px; margin: 30px 0 15px; font-size: 18px; font-weight: 800; color: #11136c; text-transform: uppercase; }
+    .section-header { border-left: 5px solid #11136c !important; padding-left: 10px; margin: 30px 0 15px; font-size: 18px; font-weight: 800; color: #11136c; text-transform: uppercase; scroll-margin-top: 20px; }
     .tag { display: inline-block; background-color: #11136c; color: #ffffff; padding: 3px 8px; font-size: 10px; font-weight: 800; border-radius: 3px; margin-bottom: 8px; text-transform: uppercase; }
     .news-date { font-size: 11px; color: #718096; display: block; margin-top: 5px; }
 
     .featured-card { background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 20px; padding: 18px; }
+    .featured-card img { width: 100%; height: 250px; object-fit: cover; border-radius: 6px; margin-bottom: 10px; display: block; }
     .list-card { background: #fff; padding: 12px; border-radius: 6px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); margin-bottom: 10px; border-left: 3px solid #11136c !important; }
 
     .sidebar-box { background: #ffffff; padding: 18px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
@@ -82,6 +84,7 @@
 </head>
 <body>
 
+  <!-- MENU LATERAL -->
   <div id="mySideMenu" class="side-menu">
     <div class="side-menu-header">
       <h2>CG NEWS OFICIAL</h2>
@@ -96,6 +99,7 @@
     <a href="#mundo" onclick="closeNav()">Mundo</a>
   </div>
 
+  <!-- MODAL DE PESQUISA -->
   <div id="search-modal">
     <div class="search-box-content">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -106,6 +110,7 @@
     </div>
   </div>
 
+  <!-- CABEÇALHO -->
   <header class="top-header">
     <button class="menu-btn" onclick="openNav()" aria-label="Menu">☰</button>
     <div class="header-title">
@@ -116,23 +121,38 @@
     </button>
   </header>
 
+  <!-- CORPO PRINCIPAL -->
   <div class="main-wrapper">
     <div class="content-column">
       
       <div id="ultimas" class="section-header">Últimas Notícias</div>
-      <div class="featured-card">
-        <p style="font-size: 13px; color: #555;">Seu portal está configurado! Utilize o painel administrativo em <a href="/admin/" style="color: #11136c; font-weight: bold;">/admin</a> para publicar suas primeiras matérias. As notícias aparecerão automaticamente aqui.</p>
+      <div id="container-ultimas">
+        <div class="featured-card">
+          <p style="font-size: 13px; color: #555;">Painel ativo! Acesse <a href="/admin/" style="color: #11136c; font-weight: bold;">/admin</a> para publicar suas notícias.</p>
+        </div>
       </div>
 
       <div id="policia" class="section-header">Polícia</div>
+      <div id="container-policia"></div>
+
       <div id="transito" class="section-header">Trânsito</div>
+      <div id="container-transito"></div>
+
       <div id="campo-grande" class="section-header">Campo Grande</div>
+      <div id="container-campo-grande"></div>
+
       <div id="ms" class="section-header">Mato Grosso do Sul</div>
+      <div id="container-ms"></div>
+
       <div id="brasil" class="section-header">Brasil</div>
+      <div id="container-brasil"></div>
+
       <div id="mundo" class="section-header">Mundo</div>
+      <div id="container-mundo"></div>
 
     </div>
 
+    <!-- COLUNA LATERAL (REDES SOCIAIS) -->
     <aside class="sidebar-column">
       <div class="sidebar-box">
         <div class="sidebar-title">Redes Sociais</div>
@@ -151,6 +171,7 @@
     </aside>
   </div>
 
+  <!-- RODAPÉ -->
   <footer>
     <h3>CG NEWS OFICIAL</h3>
     <div class="footer-social-icons">
