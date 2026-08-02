@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Notícias - CG NEWS OFICIAL</title>
 
-    <!-- BIBLIOTECA DE ÍCONES (FONT AWESOME) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
@@ -47,14 +46,14 @@
         <form id="form-noticia">
             
             <div class="form-group">
-                <label>Categorias (Selecione a categoria principal)</label>
+                <label>Categorias (Selecione uma ou mais)</label>
                 <div class="categorias-box">
-                    <label><input type="radio" name="categoria" value="Polícia" required> Polícia</label>
-                    <label><input type="radio" name="categoria" value="Trânsito"> Trânsito</label>
-                    <label><input type="radio" name="categoria" value="Campo Grande"> Campo Grande</label>
-                    <label><input type="radio" name="categoria" value="Mato Grosso do Sul"> Mato Grosso do Sul</label>
-                    <label><input type="radio" name="categoria" value="Brasil"> Brasil</label>
-                    <label><input type="radio" name="categoria" value="Mundo"> Mundo</label>
+                    <label><input type="checkbox" name="categorias" value="Polícia"> Polícia</label>
+                    <label><input type="checkbox" name="categorias" value="Trânsito"> Trânsito</label>
+                    <label><input type="checkbox" name="categorias" value="Campo Grande"> Campo Grande</label>
+                    <label><input type="checkbox" name="categorias" value="Mato Grosso do Sul"> Mato Grosso do Sul</label>
+                    <label><input type="checkbox" name="categorias" value="Brasil"> Brasil</label>
+                    <label><input type="checkbox" name="categorias" value="Mundo"> Mundo</label>
                 </div>
             </div>
 
@@ -69,6 +68,7 @@
             <div class="form-group">
                 <label for="imagemFile">Selecionar Imagem do Celular</label>
                 <input type="file" id="imagemFile" accept="image/*">
+                <small style="color: #666; font-size: 11px;">A imagem será comprimida automaticamente para não pesar no banco de dados.</small>
             </div>
 
             <div class="form-group">
@@ -77,7 +77,7 @@
             </div>
 
             <div class="form-group">
-                <label for="videoFile">Selecionar Vídeo do Celular</label>
+                <label for="videoFile">Selecionar Vídeo do Celular (Apenas vídeos curtos)</label>
                 <input type="file" id="videoFile" accept="video/*">
             </div>
 
@@ -121,7 +121,7 @@
         </form>
     </div>
 
-    <!-- INTEGRAÇÃO COM O FIREBASE NO PAINEL -->
+    <!-- INTEGRAÇÃO COM O FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -142,7 +142,33 @@
         const form = document.getElementById("form-noticia");
         const statusMsg = document.getElementById("status-msg");
 
-        // Função para converter imagem/vídeo do celular em formato leve (Base64)
+        // COMPRESSOR DE IMAGEM
+        function comprimirImagem(file) {
+            return new Promise((resolve) => {
+                if (!file) { resolve(""); return; }
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement("canvas");
+                        const maxWidth = 800; 
+                        let scaleSize = maxWidth / img.width;
+                        if(scaleSize > 1) scaleSize = 1; 
+                        
+                        canvas.width = img.width * scaleSize;
+                        canvas.height = img.height * scaleSize;
+                        
+                        const ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL("image/jpeg", 0.6)); 
+                    };
+                };
+            });
+        }
+
+        // FUNÇÃO PARA VÍDEO
         function converterParaBase64(file) {
             return new Promise((resolve) => {
                 if (!file) { resolve(""); return; }
@@ -155,19 +181,29 @@
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
             statusMsg.style.color = "#11136c";
-            statusMsg.innerText = "Publicando notícia no Firebase...";
+            statusMsg.innerText = "Publicando notícia no Firebase aguarde...";
 
             try {
                 const imagemFile = document.getElementById("imagemFile").files[0];
                 const videoFile = document.getElementById("videoFile").files[0];
 
-                const imagemBase64 = await converterParaBase64(imagemFile);
+                const imagemBase64 = await comprimirImagem(imagemFile);
                 const videoBase64 = await converterParaBase64(videoFile);
 
-                const categoriaSelecionada = document.querySelector('input[name="categoria"]:checked');
+                // NOVO: Pega todas as categorias marcadas
+                const checkboxesMarcados = document.querySelectorAll('input[name="categorias"]:checked');
+                const arrayCategorias = [];
+                checkboxesMarcados.forEach((cb) => arrayCategorias.push(cb.value));
+
+                if (arrayCategorias.length === 0) {
+                    alert("Selecione pelo menos uma categoria antes de publicar!");
+                    statusMsg.innerText = "";
+                    return;
+                }
 
                 const novaNoticia = {
-                    categoria: categoriaSelecionada ? categoriaSelecionada.value : "Geral",
+                    categoria: arrayCategorias[0], // A primeira marcada fica como a tag visual da notícia
+                    categorias: arrayCategorias,   // Salva a lista completa no banco de dados
                     superDestaque: document.getElementById("superDestaque").checked,
                     destaque: document.getElementById("destaque").checked,
                     titulo: document.getElementById("titulo").value,
@@ -184,16 +220,15 @@
                     editado: false
                 };
 
-                // Envia para a coleção 'noticias' no Firestore
                 await addDoc(collection(db, "noticias"), novaNoticia);
 
                 statusMsg.style.color = "green";
-                statusMsg.innerText = "Notícia publicada com sucesso! Já está no ar na página principal.";
+                statusMsg.innerText = "Notícia publicada com sucesso! Já está no ar.";
                 form.reset();
             } catch (erro) {
                 console.error("Erro ao publicar:", erro);
                 statusMsg.style.color = "red";
-                statusMsg.innerText = "Erro ao publicar. Verifique a conexão.";
+                statusMsg.innerText = "Erro ao publicar. Verifique a aba 'Regras' do seu Firebase.";
             }
         });
     </script>
