@@ -12,13 +12,41 @@ collections:
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      - {label: "Título da Notícia", name: "title", widget: "string"}
-      - {label: "Subtítulo / Linha de Apoio", name: "subtitle", widget: "string"}
-      - {label: "Editoria / Nicho", name: "category", widget: "select", options: ["Campo Grande", "Mato Grosso do Sul", "Brasil", "Mundo", "Polícia", "Trânsito"]}
-      - {label: "Nome do Jornalista / Autor", name: "author", widget: "string", default: "Max Gabriel"}
-      - {label: "Data e Hora da Publicação", name: "date", widget: "datetime", date_format: "DD/MM/YYYY", time_format: "HH:mm", format: "YYYY-MM-DDTHH:mm:ss.sssZ"}
-      - {label: "Foto ou Vídeo de Capa", name: "image", widget: "image", required: false}
-      - {label: "Texto da Notícia", name: "body", widget: "markdown"}
-      - {label: "Vídeo ou Link Externo (YouTube, TikTok, Kwai)", name: "embed_url", widget: "string", required: false}
-      - {label: "Créditos / Reprodução", name: "credits", widget: "string", required: false}
-      - {label: "Última Atualização Automática", name: "updated_at", widget: "datetime", required: false}
+      - label: "Título da Notícia"
+        name: "title"
+        widget: "string"
+      - label: "Subtítulo / Linha de Apoio"
+        name: "subtitle"
+        widget: "string"
+        required: false
+      - label: "Editoria / Nicho"
+        name: "category"
+        widget: "select"
+        options: ["Campo Grande", "Mato Grosso do Sul", "Brasil", "Mundo", "Polícia", "Trânsito"]
+      - label: "Nome do Jornalista / Autor"
+        name: "author"
+        widget: "string"
+        default: "Max Gabriel"
+      - label: "Data e Hora da Publicação"
+        name: "date"
+        widget: "datetime"
+        format: "YYYY-MM-DDTHH:mm:ss.sssZ"
+      - label: "Foto ou Vídeo de Capa"
+        name: "image"
+        widget: "image"
+        required: false
+      - label: "Texto da Notícia"
+        name: "body"
+        widget: "markdown"
+      - label: "Vídeo ou Link Externo (YouTube, TikTok, Kwai)"
+        name: "external_link"
+        widget: "string"
+        required: false
+      - label: "Créditos / Reprodução"
+        name: "credits"
+        widget: "string"
+        required: false
+      - label: "Última Atualização Automática"
+        name: "updated_at"
+        widget: "datetime"
+        required: false
