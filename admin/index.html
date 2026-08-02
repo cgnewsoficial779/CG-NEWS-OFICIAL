@@ -1,12 +1,161 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel Administrativo - CG NEWS OFICIAL</title>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CG NEWS OFICIAL - Administração</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: #f2f4f7; color: #1a1a1a; }
+        header { background: #11136c; color: white; padding: 20px; text-align: center; border-bottom: 4px solid #1a23a0; }
+        .container { max-width: 600px; margin: 30px auto; padding: 25px; background: white; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #11136c; }
+        input[type="text"], input[type="password"], textarea, select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 4px; }
+        textarea { height: 100px; }
+        button { background: #11136c; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; width: 100%; }
+        button:hover { background: #1a23a0; }
+        .error-msg { color: #dc2626; margin-bottom: 15px; font-size: 0.9rem; text-align: center; font-weight: bold; }
+        .hidden { display: none !important; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .logout-btn { background: #dc2626; width: auto; padding: 8px 15px; font-size: 0.85rem; }
+        .logout-btn:hover { background: #b91c1c; }
+        footer { text-align: center; padding: 15px; color: #777; font-size: 0.8rem; margin-top: 40px; }
+    </style>
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+    <header>
+        <h2>CG NEWS OFICIAL — Painel Administrativo</h2>
+    </header>
+
+    <div class="container">
+        <!-- TELA DE LOGIN -->
+        <div id="tela-login">
+            <h3 style="margin-bottom: 15px; color: #11136c; text-align: center;">Área Restrita</h3>
+            <div id="erro-login" class="error-msg"></div>
+            <div class="form-group">
+                <label>Usuário</label>
+                <input type="text" id="usuario" placeholder="Digite o usuário">
+            </div>
+            <div class="form-group">
+                <label>Senha</label>
+                <input type="password" id="senha" placeholder="Digite a senha">
+            </div>
+            <button onclick="fazerLogin()">Entrar no Painel</button>
+            <p style="text-align: center; margin-top: 15px;"><a href="../index.html" style="color: #11136c; text-decoration: none; font-weight: bold;">← Voltar para o Portal de Notícias</a></p>
+        </div>
+
+        <!-- TELA DE CADASTRO DE NOTÍCIAS -->
+        <div id="tela-painel" class="hidden">
+            <div class="top-bar">
+                <h3 style="color: #11136c;">Publicar Nova Notícia</h3>
+                <button class="logout-btn" onclick="fazerLogout()">Sair</button>
+            </div>
+            <div id="mensagem-sucesso" style="color: #16a34a; margin-bottom: 15px; font-weight: bold; text-align: center;"></div>
+            
+            <div class="form-group">
+                <label>Categoria</label>
+                <select id="categoria">
+                    <option value="Últimas Notícias">Últimas Notícias</option>
+                    <option value="Polícia">Polícia</option>
+                    <option value="Trânsito">Trânsito</option>
+                    <option value="Campo Grande">Campo Grande</option>
+                    <option value="Mato Grosso do Sul">Mato Grosso do Sul</option>
+                    <option value="Brasil">Brasil</option>
+                    <option value="Mundo">Mundo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Data (ex: 02/08/2026)</label>
+                <input type="text" id="data" value="02/08/2026">
+            </div>
+            <div class="form-group">
+                <label>Título da Notícia</label>
+                <input type="text" id="titulo" placeholder="Digite o título principal">
+            </div>
+            <div class="form-group">
+                <label>Subtítulo / Resumo Curto</label>
+                <input type="text" id="subtitulo" placeholder="Digite uma breve descrição">
+            </div>
+            <div class="form-group">
+                <label>Link da Imagem (URL)</label>
+                <input type="text" id="imagem" placeholder="Cole o link da foto (ex: https://images.unsplash.com/...)">
+            </div>
+            <button onclick="salvarNoticia()">Publicar Notícia no Portal</button>
+            <p style="text-align: center; margin-top: 15px;"><a href="../index.html" style="color: #11136c; text-decoration: none; font-weight: bold;" target="_blank">Ver o Portal Publicado →</a></p>
+        </div>
+    </div>
+
+    <footer>
+        © 2026 CG NEWS OFICIAL — Todos os direitos reservados.
+    </footer>
+
+    <script>
+        const USER_CORRETO = "maxgabriel";
+        const SENHA_CORRETA = "@M4x98209980";
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (sessionStorage.getItem('logado') === 'true') {
+                mostrarPainel();
+            }
+        });
+
+        function fazerLogin() {
+            const uInput = document.getElementById('usuario').value.trim();
+            const sInput = document.getElementById('senha').value.trim();
+            const erroDiv = document.getElementById('erro-login');
+
+            if (uInput === USER_CORRETO && sInput === SENHA_CORRETA) {
+                sessionStorage.setItem('logado', 'true');
+                erroDiv.innerText = '';
+                mostrarPainel();
+            } else {
+                erroDiv.innerText = 'Usuário ou senha incorretos!';
+            }
+        }
+
+        function mostrarPainel() {
+            document.getElementById('tela-login').classList.add('hidden');
+            document.getElementById('tela-painel').classList.remove('hidden');
+        }
+
+        function fazerLogout() {
+            sessionStorage.removeItem('logado');
+            document.getElementById('tela-painel').classList.add('hidden');
+            document.getElementById('tela-login').classList.remove('hidden');
+            document.getElementById('usuario').value = '';
+            document.getElementById('senha').value = '';
+        }
+
+        function salvarNoticia() {
+            const novaNoticia = {
+                categoria: document.getElementById('categoria').value,
+                data: document.getElementById('data').value,
+                titulo: document.getElementById('titulo').value,
+                subtitulo: document.getElementById('subtitulo').value,
+                imagem: document.getElementById('imagem').value
+            };
+
+            if (!novaNoticia.titulo) {
+                alert('Por favor, preencha pelo menos o Título da notícia.');
+                return;
+            }
+
+            let noticias = JSON.parse(localStorage.getItem('portal_noticias')) || [];
+            noticias.unshift(novaNoticia);
+            localStorage.setItem('portal_noticias', JSON.stringify(noticias));
+
+            document.getElementById('mensagem-sucesso').innerText = 'Notícia publicada com sucesso no portal!';
+            
+            document.getElementById('titulo').value = '';
+            document.getElementById('subtitulo').value = '';
+            document.getElementById('imagem').value = '';
+
+            setTimeout(() => {
+                document.getElementById('mensagem-sucesso').innerText = '';
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
