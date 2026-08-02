@@ -2,8 +2,8 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "images"
-public_folder: "/images"
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
 
 collections:
   - name: "noticias"
@@ -12,41 +12,10 @@ collections:
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      - label: "Título da Notícia"
-        name: "title"
-        widget: "string"
-      - label: "Subtítulo / Linha de Apoio"
-        name: "subtitle"
-        widget: "string"
-        required: false
-      - label: "Editoria / Nicho"
-        name: "category"
-        widget: "select"
-        options: ["Campo Grande", "Mato Grosso do Sul", "Brasil", "Mundo", "Polícia", "Trânsito"]
-      - label: "Nome do Jornalista / Autor"
-        name: "author"
-        widget: "string"
-        default: "Max Gabriel"
-      - label: "Data e Hora da Publicação"
-        name: "date"
-        widget: "datetime"
-        format: "YYYY-MM-DDTHH:mm:ss.sssZ"
-      - label: "Foto ou Vídeo de Capa"
-        name: "image"
-        widget: "image"
-        required: false
-      - label: "Texto da Notícia"
-        name: "body"
-        widget: "markdown"
-      - label: "Vídeo ou Link Externo (YouTube, TikTok, Kwai)"
-        name: "external_link"
-        widget: "string"
-        required: false
-      - label: "Créditos / Reprodução"
-        name: "credits"
-        widget: "string"
-        required: false
-      - label: "Última Atualização Automática"
-        name: "updated_at"
-        widget: "datetime"
-        required: false
+      - {label: "Título", name: "title", widget: "string"}
+      - {label: "Subtítulo", name: "subtitle", widget: "string", required: false}
+      - {label: "Data", name: "date", widget: "datetime"}
+      - {label: "Autor", name: "autor", widget: "string", default: "CG News Oficial"}
+      - {label: "Categoria", name: "categoria", widget: "select", options: ["Últimas Notícias", "Polícia", "Trânsito", "Campo Grande", "Mato Grosso do Sul", "Brasil", "Mundo"]}
+      - {label: "Imagem de Capa", name: "image", widget: "image"}
+      - {label: "Conteúdo da Notícia", name: "body", widget: "markdown"}
