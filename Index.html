@@ -75,7 +75,7 @@
       background: rgba(0,0,0,0.6); align-items: center; justify-content: center; padding: 15px;
     }
     .modal-box {
-      background: #fff; width: 100%; max-width: 550px; border-radius: 10px; padding: 25px;
+      background: #fff; width: 100%; max-width: 600px; border-radius: 10px; padding: 25px;
       box-shadow: 0 5px 20px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; position: relative;
     }
     .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #555; background: none; border: none; }
@@ -90,6 +90,12 @@
       font-weight: bold; cursor: pointer; font-size: 15px; margin-top: 10px;
     }
     .btn-submit:hover { background: #1a23a0; }
+
+    /* LISTA DE APROVAÇÃO DE CADASTROS */
+    .approval-card {
+      background: #fff; border: 1px solid #e2e8f0; padding: 12px; border-radius: 6px; margin-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+    }
 
     /* RODAPÉ */
     footer { width: 100%; background-color: #11136c; color: #ffffff; padding: 30px 20px; text-align: center; margin-top: 40px; }
@@ -112,6 +118,8 @@
     <a href="#transito" onclick="closeNav()">Trânsito</a>
     <a href="#campo-grande" onclick="closeNav()">Campo Grande</a>
     <a href="#ms" onclick="closeNav()">Mato Grosso do Sul</a>
+    <a href="#brasil" onclick="closeNav()">Brasil</a>
+    <a href="#mundo" onclick="closeNav()">Mundo</a>
   </div>
 
   <!-- CABEÇALHO -->
@@ -135,14 +143,14 @@
         <div class="card-body">
           <span class="tag">Campo Grande</span>
           <h2>Operação integrada mobiliza forças de segurança nas principais vias da Capital</h2>
-          <span class="news-date">02/08/2026</span>
+          <span class="news-date">02/08/2026 — Por: Redação</span>
         </div>
       </article>
 
       <div class="list-card">
-        <span class="tag">Campo Grande</span>
-        <h4>Nova diretriz municipal altera horários de atendimento em órgãos públicos</h4>
-        <span class="news-date">02/08/2026</span>
+        <span class="tag">Mundo</span>
+        <h4>Panorama econômico global registra oscilações em bolsas internacionais</h4>
+        <span class="news-date">02/08/2026 — Por: Redação</span>
       </div>
     </div>
 
@@ -164,14 +172,14 @@
       <button class="modal-close" onclick="fecharModais()">&times;</button>
       <div id="telaLogin">
         <h3>Acesso Restrito</h3>
-        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Faça login com sua conta de Funcionário ou Administrador.</p>
+        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Digite sua conta para acessar o painel correspondente.</p>
         <div class="form-group">
-          <label>Usuário / E-mail</label>
-          <input type="text" id="userInput" placeholder="Digite seu usuário (Digite 'admin' para Chefe)">
+          <label>Usuário / E-mail (Digite 'admin' para Chefe)</label>
+          <input type="text" id="userInput" placeholder="Seu usuário">
         </div>
         <div class="form-group">
           <label>Senha</label>
-          <input type="password" id="passInput" placeholder="Digite sua senha">
+          <input type="password" id="passInput" placeholder="Sua senha">
         </div>
         <button class="btn-submit" onclick="fazerLogin()">Entrar no Sistema</button>
         <p style="text-align: center; margin-top: 15px; font-size: 13px;">
@@ -181,21 +189,21 @@
 
       <!-- TELA DE SOLICITAÇÃO DE CADASTRO -->
       <div id="telaCadastro" style="display: none;">
-        <h3>Solicitar Cadastro</h3>
-        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Sua conta precisará ser aprovada pelo Administrador (Chefe) para liberar o acesso.</p>
+        <h3>Solicitar Cadastro de Funcionário</h3>
+        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Sua conta precisa ser aprovada pelo Administrador (Chefe).</p>
         <div class="form-group">
-          <label>Seu Nome Completo</label>
-          <input type="text" placeholder="Nome completo">
+          <label>Nome Completo</label>
+          <input type="text" placeholder="Seu nome">
         </div>
         <div class="form-group">
-          <label>E-mail ou Usuário desejado</label>
-          <input type="text" placeholder="usuario@email.com">
+          <label>Usuário desejado</label>
+          <input type="text" placeholder="Ex: joao_reporter">
         </div>
         <div class="form-group">
           <label>Criar Senha</label>
           <input type="password" placeholder="Sua senha">
         </div>
-        <button class="btn-submit" onclick="enviarCadastro()">Enviar para Aprovação do Chefe</button>
+        <button class="btn-submit" onclick="enviarCadastro()">Enviar Solicitação ao Chefe</button>
         <p style="text-align: center; margin-top: 15px; font-size: 13px;">
           Já tem conta? <a href="#" onclick="mostrarLogin()" style="color: #11136c; font-weight: bold;">Fazer Login</a>
         </p>
@@ -203,49 +211,92 @@
     </div>
   </div>
 
-  <!-- PAINEL DO FUNCIONÁRIO (CRIAR NOTÍCIAS) -->
+  <!-- PAINEL DO FUNCIONÁRIO (CRIAR MATÉRIA COMPLETA) -->
   <div id="modalPainelFuncionario" class="modal-overlay">
     <div class="modal-box">
       <button class="modal-close" onclick="fecharModais()">&times;</button>
-      <h3>Painel do Funcionário (Criar Notícia)</h3>
+      <h3>Painel do Funcionário (Criar Matéria)</h3>
       <div class="form-group">
-        <label>Título da Matéria</label>
-        <input type="text" placeholder="Digite o título da notícia">
+        <label>Título da Notícia</label>
+        <input type="text" placeholder="Título principal">
       </div>
       <div class="form-group">
         <label>Categoria</label>
         <select>
+          <option>Últimas Notícias</option>
           <option>Polícia</option>
           <option>Trânsito</option>
           <option>Campo Grande</option>
           <option>Mato Grosso do Sul</option>
           <option>Brasil</option>
+          <option>Mundo</option>
         </select>
       </div>
       <div class="form-group">
-        <label>Texto da Notícia / Matéria</label>
-        <textarea rows="5" placeholder="Escreva o texto completo da notícia aqui..."></textarea>
+        <label>Nome do Jornalista / Repórter</label>
+        <input type="text" placeholder="Seu Nome ou Redação">
       </div>
-      <button class="btn-submit" onclick="alert('Notícia enviada com sucesso!')">Publicar Matéria</button>
+      <div class="form-group">
+        <label>Link da Notícia (URL externa / Link complementar)</label>
+        <input type="url" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label>Link do Vídeo (YouTube, Kwai ou TikTok)</label>
+        <input type="url" placeholder="Cole o link do vídeo aqui">
+      </div>
+      <div class="form-group">
+        <label>Link da Imagem Principal (URL da foto)</label>
+        <input type="url" placeholder="https://exemplo.com/foto.jpg">
+      </div>
+      <div class="form-group">
+        <label>Texto / Conteúdo Completo da Matéria</label>
+        <textarea rows="5" placeholder="Escreva o texto completo da notícia..."></textarea>
+      </div>
+      <button class="btn-submit" onclick="alert('Matéria publicada com sucesso!')">Publicar Matéria</button>
     </div>
   </div>
 
-  <!-- PAINEL DO ADMINISTRADOR (CHEFE - CONTROLE TOTAL + CRIAÇÃO DE NOTÍCIAS) -->
+  <!-- PAINEL DO ADMINISTRADOR (CHEFE: APROVAÇÃO, CRIAÇÃO, ANÚNCIOS) -->
   <div id="modalPainelAdmin" class="modal-overlay">
     <div class="modal-box" style="max-width: 650px;">
       <button class="modal-close" onclick="fecharModais()">&times;</button>
       <h3 style="color: #d9534f;"><i class="fa-solid fa-crown"></i> Painel do Administrador (Chefe)</h3>
-      <p style="font-size: 13px; color: #555; margin-bottom: 15px;">Controle absoluto: Criação de matérias, aprovação de cadastros, anúncios e customização.</p>
+      <p style="font-size: 13px; color: #555; margin-bottom: 15px;">Gerencie cadastros, publique matérias completas e controle o site.</p>
       
-      <!-- Seção 1: Criar Notícia (Admin) -->
+      <!-- Seção de Aprovação de Cadastros Pendentes -->
+      <div style="background: #fff3cd; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #f0ad4e;">
+        <strong style="color: #8a6d3b;">Aprovação de Novos Funcionários (Cadastros Pendentes):</strong>
+        
+        <div class="approval-card" style="margin-top: 10px;">
+          <div>
+            <strong>Carlos Silva</strong> <span style="font-size: 11px; color: #666;">(@carlos_news)</span>
+          </div>
+          <div>
+            <button style="background:#4cd964; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprovarFuncionario(this)">Aprovar</button>
+            <button style="background:#d9534f; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-weight:bold; margin-left: 5px;" onclick="rejeitarFuncionario(this)">Recusar</button>
+          </div>
+        </div>
+
+        <div class="approval-card">
+          <div>
+            <strong>Ana Souza</strong> <span style="font-size: 11px; color: #666;">(@ana_reporter)</span>
+          </div>
+          <div>
+            <button style="background:#4cd964; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprovarFuncionario(this)">Aprovar</button>
+            <button style="background:#d9534f; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-weight:bold; margin-left: 5px;" onclick="rejeitarFuncionario(this)">Recusar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção de Criar Matéria (Admin) -->
       <div style="background: #eef2f7; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #11136c;">
-        <strong style="color: #11136c;">Criar Nova Notícia (Administrador):</strong>
+        <strong style="color: #11136c;">Criar Nova Matéria Oficial (Administrador):</strong>
         <div class="form-group" style="margin-top: 10px;">
           <label>Título da Matéria</label>
-          <input type="text" placeholder="Título principal da notícia">
+          <input type="text" placeholder="Título principal">
         </div>
         <div class="form-group">
-          <label>Categoria</label>
+          <label>Categoria (Com Mundo e demais seções)</label>
           <select>
             <option>Últimas Notícias</option>
             <option>Polícia</option>
@@ -257,30 +308,35 @@
           </select>
         </div>
         <div class="form-group">
-          <label>Conteúdo da Matéria</label>
-          <textarea rows="3" placeholder="Escreva a matéria completa..."></textarea>
+          <label>Nome do Jornalista / Repórter</label>
+          <input type="text" value="Administração / Chefe">
         </div>
-        <button class="btn-submit" onclick="alert('Notícia publicada pelo Administrador com sucesso!')">Publicar Notícia Oficial</button>
+        <div class="form-group">
+          <label>Link / URL da Matéria (Opcional)</label>
+          <input type="url" placeholder="https://...">
+        </div>
+        <div class="form-group">
+          <label>Link do Vídeo (YouTube / Kwai / TikTok)</label>
+          <input type="url" placeholder="Link do vídeo">
+        </div>
+        <div class="form-group">
+          <label>Link da Imagem (URL)</label>
+          <input type="url" placeholder="https://...">
+        </div>
+        <div class="form-group">
+          <label>Texto Completo</label>
+          <textarea rows="3" placeholder="Escreva o texto da matéria..."></textarea>
+        </div>
+        <button class="btn-submit" onclick="alert('Matéria publicada pelo Administrador!')">Publicar Matéria como Administrador</button>
       </div>
 
-      <!-- Seção 2: Aprovação de Cadastros -->
-      <div style="background: #f9f9f9; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #d9534f;">
-        <strong>Gerenciar Cadastros Pendentes:</strong>
-        <p style="font-size: 12px; color: #666; margin-top: 5px;">Novo funcionário aguardando aprovação: <em>joao_reporter</em> <button style="background:#4cd964; color:#fff; border:none; padding:3px 8px; border-radius:3px; cursor:pointer; margin-left:10px;" onclick="alert('Funcionário Aprovado!')">Aprovar</button></p>
-      </div>
-
-      <!-- Seção 3: Anúncios e Configurações -->
+      <!-- Seção de Anúncios e Customização -->
       <div class="form-group">
-        <label>Inserir Código de Anúncios / Publicidade (Google AdSense / Banners)</label>
+        <label>Inserir Código de Anúncios / Publicidade (Banners / AdSense)</label>
         <textarea rows="2" placeholder="Cole o código HTML do anúncio aqui..."></textarea>
       </div>
 
-      <div class="form-group">
-        <label>Alterar Cor Principal do Site</label>
-        <input type="color" value="#11136c" style="height: 40px; cursor: pointer;">
-      </div>
-
-      <button class="btn-submit" style="background: #d9534f;" onclick="alert('Configurações de Administrador salvas com sucesso!')">Salvar Alterações Globais</button>
+      <button class="btn-submit" style="background: #d9534f;" onclick="alert('Configurações de Administrador salvas!')">Salvar Configurações Gerais</button>
     </div>
   </div>
 
@@ -317,15 +373,25 @@
     }
 
     function enviarCadastro() {
-      alert('Cadastro enviado com sucesso! Aguardando aprovação do Administrador.');
+      alert('Solicitação de cadastro enviada com sucesso! O Chefe precisará aprovar no painel de administrador.');
       fecharModais();
+    }
+
+    function aprovarFuncionario(btn) {
+      alert('Funcionário aprovado com sucesso! O acesso foi liberado.');
+      btn.closest('.approval-card').remove();
+    }
+
+    function rejeitarFuncionario(btn) {
+      alert('Cadastro recusado.');
+      btn.closest('.approval-card').remove();
     }
 
     function fazerLogin() {
       var user = document.getElementById('userInput').value.trim();
       fecharModais();
       
-      // Se digitar "admin" entra como Chefe (Admin Completo com Criação de Notícias)
+      // Digitando "admin" você abre o painel do chefe com a lista de aprovação e ferramentas completas
       if (user.toLowerCase() === 'admin') {
         document.getElementById('modalPainelAdmin').style.display = 'flex';
       } else {
