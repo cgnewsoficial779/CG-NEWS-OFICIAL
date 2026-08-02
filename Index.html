@@ -1,146 +1,361 @@
-<!DOCTYPE html>
+         <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CG NEWS OFICIAL - Portal de Notícias</title>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <style>
-        :root {
-            --primary-color: #0b2545;
-            --secondary-color: #134074;
-            --accent-color: #c59b27;
-            --bg-color: #f4f6f9;
-            --text-color: #212529;
-            --border-color: #dee2e6;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Arial', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
-        
-        header { background-color: var(--primary-color); color: #fff; border-bottom: 4px solid var(--accent-color); position: sticky; top: 0; z-index: 1000; }
-        .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
-        .logo-area h1 { font-size: 1.8rem; font-weight: 900; letter-spacing: 1px; color: #fff; text-transform: uppercase; }
-        .logo-area span { font-size: 0.75rem; display: block; color: #a6b9cc; font-weight: normal; }
-        
-        .admin-btn { background-color: var(--accent-color); color: #000; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 0.85rem; transition: background 0.2s; }
-        .admin-btn:hover { background-color: #dcb138; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CG NEWS OFICIAL - Portal de Notícias</title>
 
-        nav { background-color: var(--secondary-color); border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; overflow-x: auto; padding: 0 20px; }
-        .nav-container button { background: none; border: none; color: #fff; padding: 12px 18px; font-size: 0.9rem; font-weight: bold; white-space: nowrap; cursor: pointer; transition: background 0.2s; }
-        .nav-container button:hover, .nav-container button.active { background-color: rgba(255,255,255,0.15); color: var(--accent-color); }
+  <!-- SCRIPT DE AUTENTICAÇÃO DO PAINEL ADMINISTRATIVO (NETLIFY IDENTITY) -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
-        main { max-width: 1200px; margin: 20px auto; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-        @media(max-width: 768px) { main { grid-template-columns: 1fr; } }
+  <!-- BIBLIOTECA DE ÍCONES OFICIAIS (FONT AWESOME) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-        .section-title { font-size: 1.2rem; font-weight: bold; color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 5px; margin-bottom: 20px; text-transform: uppercase; }
-        .news-card { background: #fff; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--border-color); }
-        .news-img { width: 100%; height: 220px; object-fit: cover; background-color: #e9ecef; }
-        .news-content { padding: 20px; }
-        .news-tag { display: inline-block; background-color: var(--primary-color); color: #fff; font-size: 0.7rem; font-weight: bold; padding: 3px 8px; border-radius: 3px; margin-bottom: 10px; text-transform: uppercase; }
-        .news-title { font-size: 1.4rem; font-weight: bold; color: #111; margin-bottom: 10px; line-height: 1.3; }
-        .news-subtitle { font-size: 1rem; color: #555; margin-bottom: 15px; }
-        .news-meta { font-size: 0.8rem; color: #777; border-top: 1px solid #eee; padding-top: 10px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; }
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+    html { scroll-behavior: smooth; }
+    html, body { width: 100%; min-height: 100vh; background-color: #f2f4f7; color: #1a1a1a; }
 
-        aside { background: #fff; padding: 20px; border-radius: 6px; border: 1px solid var(--border-color); height: fit-content; }
-        aside h3 { font-size: 1rem; color: var(--primary-color); margin-bottom: 15px; text-transform: uppercase; border-bottom: 2px solid var(--accent-color); padding-bottom: 5px; }
-        .social-links { display: flex; flex-direction: column; gap: 10px; }
-        .social-links a { color: #333; text-decoration: none; padding: 10px; background: #f8f9fa; border-radius: 4px; font-weight: bold; font-size: 0.9rem; border: 1px solid #ddd; text-align: center; transition: background 0.2s; }
-        .social-links a:hover { background: var(--primary-color); color: #fff; }
+    /* REMOÇÃO TOTAL DE BARRINHAS DE LINKS */
+    a, a:hover, a:focus, a:visited, a:active { 
+      text-decoration: none !important; 
+      border: none !important; 
+      border-bottom: none !important; 
+      outline: none !important;
+      box-shadow: none !important;
+    }
 
-        footer { background-color: var(--primary-color); color: #fff; text-align: center; padding: 30px 20px; margin-top: 40px; font-size: 0.85rem; border-top: 4px solid var(--accent-color); }
-    </style>
+    /* TOPO PRINCIPAL */
+    .top-header { 
+      width: 100%; background-color: #11136c; color: #ffffff; padding: 20px; 
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 4px solid #1a23a0 !important;
+    }
+    .menu-btn { font-size: 28px; cursor: pointer; background: none; border: none; color: #ffffff; padding: 5px 10px; }
+    .header-title { text-align: center; flex-grow: 1; }
+    
+    .header-title h1 a { 
+      font-size: 32px; 
+      font-weight: 900; 
+      letter-spacing: 1.5px; 
+      color: #ffffff; 
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    /* BOTÃO DE ADMIN NO TOPO */
+    .admin-link-btn {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 6px 12px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .admin-link-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* MENU LATERAL */
+    .side-menu {
+      height: 100%; width: 0; position: fixed; z-index: 1000; top: 0; left: 0;
+      background-color: #ffffff; overflow-x: hidden; transition: 0.3s;
+      box-shadow: 4px 0 15px rgba(0,0,0,0.3); padding-top: 20px;
+    }
+    .side-menu-header { padding: 0 20px 15px; border-bottom: 2px solid #11136c !important; display: flex; justify-content: space-between; align-items: center; }
+    .side-menu-header h2 { font-size: 18px; color: #11136c; font-weight: 800; }
+    .close-btn { font-size: 28px; cursor: pointer; color: #11136c; border: none; background: none; }
+    .side-menu a { padding: 12px 20px; font-size: 15px; color: #11136c; font-weight: 700; display: block; cursor: pointer; }
+    .side-menu a:hover { background-color: #f2f4f7; }
+
+    /* LAYOUT PRINCIPAL */
+    .main-wrapper { display: flex; flex-wrap: wrap; max-width: 1200px; margin: 20px auto; padding: 0 15px; gap: 20px; }
+    .content-column { flex: 2; min-width: 300px; }
+    .sidebar-column { flex: 1; min-width: 260px; }
+
+    .news-link { color: inherit; display: block; }
+
+    .section-header { border-left: 5px solid #11136c !important; padding-left: 10px; margin: 30px 0 15px; font-size: 18px; font-weight: 800; color: #11136c; text-transform: uppercase; scroll-margin-top: 20px; }
+    .tag { display: inline-block; background-color: #11136c; color: #ffffff; padding: 3px 8px; font-size: 10px; font-weight: 800; border-radius: 3px; margin-bottom: 8px; text-transform: uppercase; }
+    .news-date { font-size: 11px; color: #718096; display: block; margin-top: 5px; }
+
+    /* DESTAQUE PRINCIPAL DA CAPA */
+    .featured-card { background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 20px; scroll-margin-top: 20px; }
+    .featured-card img { width: 100%; height: 280px; object-fit: cover; display: block; }
+    .featured-card .card-body { padding: 18px; }
+    .featured-card h2 { font-size: 22px; color: #111; line-height: 1.3; }
+
+    /* GRADE DE DUAS COLUNAS */
+    .two-col-grid { display: flex; flex-wrap: wrap; gap: 15px; }
+    .sub-card { flex: 1; min-width: 240px; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .sub-card img { width: 100%; height: 140px; object-fit: cover; display: block; }
+    .sub-card .card-body { padding: 12px; }
+    .sub-card h3 { font-size: 15px; color: #111; line-height: 1.3; }
+
+    /* LISTA COMPACTA DE NOTÍCIAS */
+    .list-card { background: #fff; padding: 12px; border-radius: 6px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); margin-bottom: 10px; border-left: 3px solid #11136c !important; }
+    .list-card h4 { font-size: 14px; color: #2d3748; }
+
+    /* BARRA LATERAL */
+    .sidebar-box { background: #ffffff; padding: 18px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
+    .sidebar-title { font-size: 15px; font-weight: bold; color: #11136c; border-bottom: 3px solid #11136c !important; padding-bottom: 6px; margin-bottom: 15px; text-transform: uppercase; }
+
+    /* ÍCONES DE REDES SOCIAIS NA SIDEBAR */
+    .social-icons-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 5px;
+    }
+    .social-icons-grid a {
+      color: #11136c;
+      font-size: 22px;
+      transition: transform 0.2s ease, color 0.2s ease;
+      display: flex;
+      align-items: center;
+    }
+    .social-icons-grid a:hover { color: #1a23a0; transform: scale(1.15); }
+
+    /* RODAPÉ */
+    footer { width: 100%; background-color: #11136c; color: #ffffff; padding: 30px 20px; text-align: center; margin-top: 40px; }
+    footer h3 { font-size: 18px; margin-bottom: 15px; }
+    .footer-social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin: 15px 0 20px;
+      align-items: center;
+    }
+    .footer-social-icons a {
+      color: #ffffff;
+      font-size: 24px;
+      transition: transform 0.2s ease, color 0.2s ease;
+      display: flex;
+      align-items: center;
+    }
+    .footer-social-icons a:hover { color: #4cd964; transform: scale(1.2); }
+    footer p { font-size: 11px; opacity: 0.8; }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-container">
-            <div class="logo-area">
-                <h1>CG NEWS OFICIAL</h1>
-                <span>Portal de Jornalismo em Tempo Real</span>
-            </div>
-            <div>
-                <a href="/admin/" class="admin-btn">Área do Editor / Login</a>
-            </div>
+  <!-- MENU LATERAL -->
+  <div id="mySideMenu" class="side-menu">
+    <div class="side-menu-header">
+      <h2>CG NEWS OFICIAL</h2>
+      <button class="close-btn" onclick="closeNav()">&times;</button>
+    </div>
+    <a href="#ultimas-noticias" onclick="closeNav()">Últimas Notícias</a>
+    <a href="#policia" onclick="closeNav()">Polícia</a>
+    <a href="#transito" onclick="closeNav()">Trânsito</a>
+    <a href="#campo-grande" onclick="closeNav()">Campo Grande</a>
+    <a href="#ms" onclick="closeNav()">Mato Grosso do Sul</a>
+    <a href="#brasil" onclick="closeNav()">Brasil</a>
+    <a href="#mundo" onclick="closeNav()">Mundo</a>
+  </div>
+
+  <!-- CABEÇALHO -->
+  <header class="top-header">
+    <button class="menu-btn" onclick="openNav()">☰</button>
+    <div class="header-title">
+      <h1><a href="https://www.cgnewsoficial.com.br" target="_blank" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">CG NEWS OFICIAL</a></h1>
+    </div>
+    <!-- BOTÃO PARA ACESSAR O PAINEL DE ADMINISTRAÇÃO -->
+    <a href="/admin/" class="admin-link-btn" title="Painel Administrativo"><i class="fa-solid fa-lock"></i> Painel</a>
+  </header>
+
+  <!-- CORPO PRINCIPAL -->
+  <div class="main-wrapper">
+
+    <!-- COLUNA DE NOTÍCIAS -->
+    <div class="content-column">
+      
+      <!-- 1. ÚLTIMAS NOTÍCIAS -->
+      <div id="ultimas-noticias" class="section-header">Últimas Notícias</div>
+      
+      <article class="featured-card">
+        <img src="https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?w=800" alt="Notícia Principal">
+        <div class="card-body">
+          <span class="tag">Campo Grande</span>
+          <h2>Operação integrada mobiliza forças de segurança nas principais vias da Capital</h2>
+          <p style="font-size: 13px; color: #555; margin-top: 5px;">Ações de fiscalização e monitoramento ocorrem de forma simultânea nesta semana.</p>
+          <span class="news-date">31/07/2026</span>
         </div>
-    </header>
+      </article>
 
-    <nav>
-        <div class="nav-container">
-            <button class="active" onclick="filterNews('todas', this)">Últimas Notícias</button>
-            <button onclick="filterNews('Campo Grande', this)">Campo Grande</button>
-            <button onclick="filterNews('Mato Grosso do Sul', this)">Mato Grosso do Sul</button>
-            <button onclick="filterNews('Brasil', this)">Brasil</button>
-            <button onclick="filterNews('Mundo', this)">Mundo</button>
-            <button onclick="filterNews('Polícia', this)">Polícia</button>
-            <button onclick="filterNews('Trânsito', this)">Trânsito</button>
+      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
+        <div class="list-card">
+          <span class="tag">Campo Grande</span>
+          <h4>Nova diretriz municipal altera horários de atendimento em órgãos públicos</h4>
+          <span class="news-date">31/07/2026</span>
         </div>
-    </nav>
+      </a>
 
-    <main>
-        <section>
-            <div class="section-title" id="feed-title">Últimas Notícias</div>
-            <div id="news-container">
-                <!-- Exemplo fixo de demonstração do layout -->
-                <article class="news-card" data-category="Campo Grande">
-                    <img src="https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=800&q=80" alt="Capa" class="news-img">
-                    <div class="news-content">
-                        <span class="news-tag">Campo Grande</span>
-                        <h2 class="news-title">Portal CG NEWS OFICIAL inicia nova fase com padrão tecnológico avançado</h2>
-                        <p class="news-subtitle">Sistema automatizado garante atualização em tempo real, editorias segmentadas e integração completa a partir de Mato Grosso do Sul.</p>
-                        <div class="news-meta">
-                            <span>Por Max Gabriel</span>
-                            <span>01/08/2026 23:48</span>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
+      <!-- 2. POLÍCIA -->
+      <div id="policia" class="section-header">Polícia</div>
+      <div class="two-col-grid">
+        <div class="sub-card">
+          <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400" alt="Polícia">
+          <div class="card-body">
+            <span class="tag">Polícia</span>
+            <h3>Operação policial resulta em apreensões e prisões em região estratégica</h3>
+            <span class="news-date">31/07/2026</span>
+          </div>
+        </div>
+        <div class="sub-card">
+          <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400" alt="Investigação">
+          <div class="card-body">
+            <span class="tag">Polícia</span>
+            <h3>Forças de segurança desarticulam esquema de fraudes</h3>
+            <span class="news-date">31/07/2026</span>
+          </div>
+        </div>
+      </div>
 
-        <aside>
-            <h3>Redes Sociais</h3>
-            <div class="social-links">
-                <a href="https://tiktok.com" target="_blank">TikTok (2.3k Seg.)</a>
-                <a href="https://kwai.com" target="_blank">Kwai Oficial</a>
-                <a href="https://instagram.com" target="_blank">Instagram CG News</a>
-                <a href="https://youtube.com" target="_blank">Canal YouTube</a>
-            </div>
+      <!-- 3. TRÂNSITO -->
+      <div id="transito" class="section-header">Trânsito</div>
+      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
+        <div class="list-card">
+          <span class="tag">Trânsito</span>
+          <h4>Colisão entre veículos causa lentidão em avenida de grande fluxo na Capital</h4>
+          <span class="news-date">31/07/2026</span>
+        </div>
+      </a>
+      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
+        <div class="list-card">
+          <span class="tag">Trânsito</span>
+          <h4>Acidente em cruzamento mobiliza equipes de resgate e altera tráfego local</h4>
+          <span class="news-date">31/07/2026</span>
+        </div>
+      </a>
 
-            <h3 style="margin-top: 30px;">Região</h3>
-            <p style="font-size: 0.85rem; color: #555; line-height: 1.5;">Cobertura jornalística cobrindo Campo Grande, o interior do Mato Grosso do Sul e os principais fatos do Brasil e do mundo.</p>
-        </aside>
-    </main>
+      <!-- 4. CAMPO GRANDE -->
+      <div id="campo-grande" class="section-header">Campo Grande</div>
+      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
+        <div class="list-card">
+          <span class="tag">Campo Grande</span>
+          <h4>Prefeitura anuncia novas obras de infraestrutura em bairros da cidade</h4>
+          <span class="news-date">31/07/2026</span>
+        </div>
+      </a>
+      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
+        <div class="list-card">
+          <span class="tag">Campo Grande</span>
+          <h4>Parques municipais recebem melhorias na iluminação e segurança</h4>
+          <span class="news-date">31/07/2026</span>
+        </div>
+      </a>
+      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
+        <div class="list-card">
+          <span class="tag">Campo Grande</span>
+          <h4>Mutirão comunitário oferece serviços e corte de cabelo gratuito nos bairros</h4>
+          <span class="news-date">31/07/2026</span>
+        </div>
+      </a>
 
-    <footer>
-        <p>&copy; 2026 CG NEWS OFICIAL — Todos os direitos reservados.</p>
-    </footer>
+      <!-- 5. MATO GROSSO DO SUL -->
+      <div id="ms" class="section-header">Mato Grosso do Sul</div>
+      <div class="two-col-grid">
+        <div class="sub-card">
+          <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400" alt="Interior MS">
+          <div class="card-body">
+            <span class="tag">Mato Grosso do Sul</span>
+            <h3>Governo estadual anuncia investimentos em rodovias do interior</h3>
+            <span class="news-date">31/07/2026</span>
+          </div>
+        </div>
+        <div class="sub-card">
+          <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=400" alt="Estradas MS">
+          <div class="card-body">
+            <span class="tag">Mato Grosso do Sul</span>
+            <h3>Programas estaduais fortalecem o setor produtivo regional</h3>
+            <span class="news-date">31/07/2026</span>
+          </div>
+        </div>
+      </div>
 
-    <script>
-        function filterNews(category, btn) {
-            document.querySelectorAll('.nav-container button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            document.getElementById('feed-title').innerText = category === 'todas' ? 'Últimas Notícias' : category;
-            
-            const cards = document.querySelectorAll('.news-card');
-            cards.forEach(card => {
-                if (category === 'todas' || card.getAttribute('data-category') === category) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
+      <!-- 6. BRASIL -->
+      <div id="brasil" class="section-header">Brasil</div>
+      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
+        <div class="list-card">
+          <span class="tag">Brasil</span>
+          <h4>Novas diretrizes econômicas entram em vigor no território nacional</h4>
+          <span class="news-date">31/07/2026</span>
+        </div>
+      </a>
+      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
+        <div class="list-card">
+          <span class="tag">Brasil</span>
+          <h4>Setor de transportes registra expansão em rotas interestaduais</h4>
+          <span class="news-date">31/07/2026</span>
+        </div>
+      </a>
 
-        if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", user => {
-                if (!user) {
-                    window.netlifyIdentity.on("login", () => {
-                        document.location.href = "/admin/";
-                    });
-                }
-            });
-        }
-    </script>
+      <!-- 7. MUNDO -->
+      <div id="mundo" class="section-header">Mundo</div>
+      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
+        <div class="list-card">
+          <span class="tag">Mundo</span>
+          <h4>Panorama econômico global registra oscilações em bolsas internacionais</h4>
+          <span class="news-date">31/07/2026</span>
+        </div>
+      </a>
+      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
+        <div class="list-card">
+          <span class="tag">Mundo</span>
+          <h4>Acordos comerciais entre nações entram em nova fase de negociações</h4>
+          <span class="news-date">31/07/2026</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- COLUNA DIREITA (REDES SOCIAIS) -->
+    <aside class="sidebar-column">
+      <div class="sidebar-box">
+        <div class="sidebar-title">Redes Sociais</div>
+        <div class="social-icons-grid">
+          <a href="https://wa.me/5567996619364" target="_blank" title="WhatsApp CG NEWS"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="https://www.instagram.com/cgnews.oficial/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.facebook.com/share/19XBbzamDq/" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="https://www.tiktok.com/@cgnewsoficial" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="https://www.youtube.com/@cgnews.oficial" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://www.kwai.com/@cgnewsoficial" target="_blank" title="Kwai"><i class="fa-solid fa-video"></i></a>
+          <a href="https://www.threads.net/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
+          <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- RODAPÉ -->
+  <footer>
+    <h3>CG NEWS OFICIAL</h3>
+    <div class="footer-social-icons">
+      <a href="https://wa.me/5567996619364" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      <a href="https://www.facebook.com/share/19XBbzamDq/" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://www.youtube.com/@cgnews.oficial" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="https://www.instagram.com/cgnews.oficial/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+      <a href="https://www.tiktok.com/@cgnewsoficial" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://www.kwai.com/@cgnewsoficial" target="_blank" title="Kwai"><i class="fa-solid fa-video"></i></a>
+      <a href="https://www.threads.net/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
+    </div>
+    <p>© 2026 CG NEWS OFICIAL — Informação em tempo real.</p>
+  </footer>
+
+  <script>
+    function openNav() { document.getElementById("mySideMenu").style.width = "280px"; }
+    function closeNav() { document.getElementById("mySideMenu").style.width = "0"; }
+  </script>
+
 </body>
 </html>
+   
