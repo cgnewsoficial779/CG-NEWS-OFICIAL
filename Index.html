@@ -1,12 +1,12 @@
-         <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CG NEWS OFICIAL - Portal de Notícias</title>
 
-  <!-- SCRIPT DE AUTENTICAÇÃO DO PAINEL ADMINISTRATIVO (NETLIFY IDENTITY) -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <!-- SCRIPT DE AUTENTICAÇÃO E WIDGET DE LOGIN DA NETLIFY -->
+  <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
   <!-- BIBLIOTECA DE ÍCONES OFICIAIS (FONT AWESOME) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -43,18 +43,55 @@
       cursor: pointer;
     }
 
-    /* BOTÃO DE ADMIN NO TOPO */
-    .admin-link-btn {
+    /* BOTÃO DE LOGIN / ADMIN NO TOPO */
+    .admin-login-btn {
       color: #fff;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       background: rgba(255, 255, 255, 0.15);
-      padding: 6px 12px;
+      padding: 6px 14px;
       border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       transition: background 0.2s;
     }
-    .admin-link-btn:hover {
+    .admin-login-btn:hover {
       background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* BARRA DE ADMINISTRAÇÃO FLUTUANTE (APARECE SÓ QUANDO LOGADO) */
+    #admin-bar {
+      display: none;
+      width: 100%;
+      background-color: #0b0d4a;
+      color: #fff;
+      padding: 10px 20px;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      font-weight: bold;
+      border-bottom: 2px solid #4cd964;
+    }
+    #admin-bar .admin-actions {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+    #admin-bar a, #admin-bar button {
+      color: #fff;
+      background: #1a23a0;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+    }
+    #admin-bar a:hover, #admin-bar button:hover {
+      background: #4cd964;
+      color: #111;
     }
 
     /* MENU LATERAL */
@@ -143,6 +180,15 @@
 </head>
 <body>
 
+  <!-- BARRA DE ADMINISTRAÇÃO EXCLUSIVA (SÓ APARECE LOGADO) -->
+  <div id="admin-bar">
+    <span><i class="fa-solid fa-shield-halved" style="color: #4cd964;"></i> Modo Administrador Ativo</span>
+    <div class="admin-actions">
+      <a href="/admin/" target="_blank"><i class="fa-solid fa-gear"></i> Painel / Criar Notícia</a>
+      <button onclick="netlifyIdentity.logout()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+    </div>
+  </div>
+
   <!-- MENU LATERAL -->
   <div id="mySideMenu" class="side-menu">
     <div class="side-menu-header">
@@ -164,8 +210,10 @@
     <div class="header-title">
       <h1><a href="https://www.cgnewsoficial.com.br" target="_blank" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">CG NEWS OFICIAL</a></h1>
     </div>
-    <!-- BOTÃO PARA ACESSAR O PAINEL DE ADMINISTRAÇÃO -->
-    <a href="/admin/" class="admin-link-btn" title="Painel Administrativo"><i class="fa-solid fa-lock"></i> Painel</a>
+    <!-- BOTÃO PARA FAZER LOGIN DIRETO NA PÁGINA -->
+    <button class="admin-login-btn" onclick="netlifyIdentity.open()">
+      <i class="fa-solid fa-user-lock"></i> Entrar
+    </button>
   </header>
 
   <!-- CORPO PRINCIPAL -->
@@ -183,7 +231,7 @@
           <span class="tag">Campo Grande</span>
           <h2>Operação integrada mobiliza forças de segurança nas principais vias da Capital</h2>
           <p style="font-size: 13px; color: #555; margin-top: 5px;">Ações de fiscalização e monitoramento ocorrem de forma simultânea nesta semana.</p>
-          <span class="news-date">31/07/2026</span>
+          <span class="news-date">02/08/2026</span>
         </div>
       </article>
 
@@ -191,7 +239,7 @@
         <div class="list-card">
           <span class="tag">Campo Grande</span>
           <h4>Nova diretriz municipal altera horários de atendimento em órgãos públicos</h4>
-          <span class="news-date">31/07/2026</span>
+          <span class="news-date">02/08/2026</span>
         </div>
       </a>
 
@@ -203,7 +251,7 @@
           <div class="card-body">
             <span class="tag">Polícia</span>
             <h3>Operação policial resulta em apreensões e prisões em região estratégica</h3>
-            <span class="news-date">31/07/2026</span>
+            <span class="news-date">02/08/2026</span>
           </div>
         </div>
         <div class="sub-card">
@@ -211,7 +259,7 @@
           <div class="card-body">
             <span class="tag">Polícia</span>
             <h3>Forças de segurança desarticulam esquema de fraudes</h3>
-            <span class="news-date">31/07/2026</span>
+            <span class="news-date">02/08/2026</span>
           </div>
         </div>
       </div>
@@ -222,14 +270,14 @@
         <div class="list-card">
           <span class="tag">Trânsito</span>
           <h4>Colisão entre veículos causa lentidão em avenida de grande fluxo na Capital</h4>
-          <span class="news-date">31/07/2026</span>
+          <span class="news-date">02/08/2026</span>
         </div>
       </a>
       <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
         <div class="list-card">
           <span class="tag">Trânsito</span>
           <h4>Acidente em cruzamento mobiliza equipes de resgate e altera tráfego local</h4>
-          <span class="news-date">31/07/2026</span>
+          <span class="news-date">02/08/2026</span>
         </div>
       </a>
 
@@ -239,21 +287,21 @@
         <div class="list-card">
           <span class="tag">Campo Grande</span>
           <h4>Prefeitura anuncia novas obras de infraestrutura em bairros da cidade</h4>
-          <span class="news-date">31/07/2026</span>
+          <span class="news-date">02/08/2026</span>
         </div>
       </a>
       <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
         <div class="list-card">
           <span class="tag">Campo Grande</span>
           <h4>Parques municipais recebem melhorias na iluminação e segurança</h4>
-          <span class="news-date">31/07/2026</span>
+          <span class="news-date">02/08/2026</span>
         </div>
       </a>
       <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
         <div class="list-card">
           <span class="tag">Campo Grande</span>
           <h4>Mutirão comunitário oferece serviços e corte de cabelo gratuito nos bairros</h4>
-          <span class="news-date">31/07/2026</span>
+          <span class="news-date">02/08/2026</span>
         </div>
       </a>
 
@@ -265,7 +313,7 @@
           <div class="card-body">
             <span class="tag">Mato Grosso do Sul</span>
             <h3>Governo estadual anuncia investimentos em rodovias do interior</h3>
-            <span class="news-date">31/07/2026</span>
+            <span class="news-date">02/08/2026</span>
           </div>
         </div>
         <div class="sub-card">
@@ -273,7 +321,7 @@
           <div class="card-body">
             <span class="tag">Mato Grosso do Sul</span>
             <h3>Programas estaduais fortalecem o setor produtivo regional</h3>
-            <span class="news-date">31/07/2026</span>
+            <span class="news-date">02/08/2026</span>
           </div>
         </div>
       </div>
@@ -284,14 +332,14 @@
         <div class="list-card">
           <span class="tag">Brasil</span>
           <h4>Novas diretrizes econômicas entram em vigor no território nacional</h4>
-          <span class="news-date">31/07/2026</span>
+          <span class="news-date">02/08/2026</span>
         </div>
       </a>
       <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
         <div class="list-card">
           <span class="tag">Brasil</span>
           <h4>Setor de transportes registra expansão em rotas interestaduais</h4>
-          <span class="news-date">31/07/2026</span>
+          <span class="news-date">02/08/2026</span>
         </div>
       </a>
 
@@ -301,14 +349,14 @@
         <div class="list-card">
           <span class="tag">Mundo</span>
           <h4>Panorama econômico global registra oscilações em bolsas internacionais</h4>
-          <span class="news-date">31/07/2026</span>
+          <span class="news-date">02/08/2026</span>
         </div>
       </a>
       <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
         <div class="list-card">
           <span class="tag">Mundo</span>
           <h4>Acordos comerciais entre nações entram em nova fase de negociações</h4>
-          <span class="news-date">31/07/2026</span>
+          <span class="news-date">02/08/2026</span>
         </div>
       </a>
 
@@ -346,7 +394,7 @@
       <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
       <a href="https://www.tiktok.com/@cgnewsoficial" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
       <a href="https://www.kwai.com/@cgnewsoficial" target="_blank" title="Kwai"><i class="fa-solid fa-video"></i></a>
-      <a href="https://www.threads.net/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
+      <a href="https://www.threads.net/@cgnewsoficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
     </div>
     <p>© 2026 CG NEWS OFICIAL — Informação em tempo real.</p>
   </footer>
@@ -354,8 +402,25 @@
   <script>
     function openNav() { document.getElementById("mySideMenu").style.width = "280px"; }
     function closeNav() { document.getElementById("mySideMenu").style.width = "0"; }
+
+    // CONTROLE DO PAINEL DE LOGIN NA PRÓPRIA PÁGINA
+    window.netlifyIdentity && netlifyIdentity.on("init", user => {
+      if (user) {
+        document.getElementById("admin-bar").style.display = "flex";
+      }
+    });
+
+    netlifyIdentity.on("login", user => {
+      document.getElementById("admin-bar").style.display = "flex";
+      netlifyIdentity.close();
+      window.location.href = "/admin/";
+    });
+
+    netlifyIdentity.on("logout", () => {
+      document.getElementById("admin-bar").style.display = "none";
+      window.location.reload();
+    });
   </script>
 
 </body>
 </html>
-   
