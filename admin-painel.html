@@ -3,41 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Notícias - CG NEWS OFICIAL</title>
+    <title>Painel de Notícias - CG NEWS OFICIAL</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
         body { background-color: #f2f4f7; padding: 20px; color: #1a1a1a; }
-        .container { max-width: 800px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { font-size: 22px; color: #11136c; margin-bottom: 20px; border-bottom: 2px solid #11136c; padding-bottom: 10px; }
+        .container { max-width: 900px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1, h2 { font-size: 22px; color: #11136c; margin-bottom: 20px; border-bottom: 2px solid #11136c; padding-bottom: 10px; }
+        h2 { margin-top: 40px; font-size: 18px; }
         .form-group { margin-bottom: 18px; }
         label { display: block; font-weight: bold; margin-bottom: 6px; color: #333; font-size: 14px; }
-        input[type="text"], input[type="url"], select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; outline: none; }
-        input[type="text"]:focus, input[type="url"]:focus, select:focus, textarea:focus { border-color: #11136c; }
+        input[type="text"], input[type="url"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; outline: none; }
+        input[type="text"]:focus, input[type="url"]:focus, textarea:focus { border-color: #11136c; }
         textarea { height: 120px; resize: vertical; }
-        .checkbox-group { display: flex; gap: 20px; align-items: center; margin-bottom: 18px; }
-        .checkbox-group label { font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+        .checkbox-group label { font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 6px; background: #f8f9fa; padding: 8px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+        .checkbox-group label:hover { background: #e9ecef; }
         .btn-salvar { background-color: #11136c; color: white; border: none; padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; width: 100%; transition: background 0.3s; }
         .btn-salvar:hover { background-color: #1a23a0; }
         .btn-salvar:disabled { background-color: #888; cursor: not-allowed; }
         #status-msg { margin-top: 15px; text-align: center; font-weight: bold; font-size: 14px; }
+
+        /* LISTA DE NOTÍCIAS */
+        .noticia-card { border: 1px solid #e0e0e0; border-radius: 6px; padding: 15px; margin-bottom: 15px; background: #fafafa; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .noticia-info { flex: 1; min-width: 250px; }
+        .noticia-info h3 { font-size: 16px; color: #11136c; margin-bottom: 5px; }
+        .noticia-info p { font-size: 12px; color: #666; }
+        .btn-acoes { display: flex; gap: 8px; }
+        .btn-editar { background: #ff9800; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; }
+        .btn-excluir { background: #d32f2f; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; }
+        .btn-cancelar { background: #666; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; display: none; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Cadastro de: Notícias</h1>
+        <h1 id="form-titulo">Cadastro de: Notícias</h1>
 
         <form id="form-noticia">
+            <input type="hidden" id="noticia-id">
+
             <div class="form-group">
-                <label for="categoria">Categoria</label>
-                <select id="categoria" required>
-                    <option value="Polícia">Polícia</option>
-                    <option value="Trânsito">Trânsito</option>
-                    <option value="Campo Grande">Campo Grande</option>
-                    <option value="Mato Grosso do Sul">Mato Grosso do Sul</option>
-                    <option value="Brasil">Brasil</option>
-                    <option value="Mundo">Mundo</option>
-                </select>
+                <label>Categorias (Selecione quantas desejar)</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="cat-check" value="Polícia"> Polícia</label>
+                    <label><input type="checkbox" class="cat-check" value="Trânsito"> Trânsito</label>
+                    <label><input type="checkbox" class="cat-check" value="Campo Grande"> Campo Grande</label>
+                    <label><input type="checkbox" class="cat-check" value="Mato Grosso do Sul"> Mato Grosso do Sul</label>
+                    <label><input type="checkbox" class="cat-check" value="Brasil"> Brasil</label>
+                    <label><input type="checkbox" class="cat-check" value="Mundo"> Mundo</label>
+                </div>
             </div>
 
             <div class="checkbox-group">
@@ -65,9 +79,8 @@
                 <input type="text" id="fonteVideo" placeholder="Créditos do vídeo (ex: Redes Sociais / Leitor)">
             </div>
 
-            <!-- CAMPO ADICIONADO: LINK DO VÍDEO/REDE SOCIAL -->
             <div class="form-group">
-                <label for="linkRedeSocial">Link do Vídeo nas Redes Sociais (Instagram, TikTok, YouTube, Kwai, Facebook, Threads, etc.)</label>
+                <label for="linkRedeSocial">Link do Vídeo nas Redes Sociais</label>
                 <input type="url" id="linkRedeSocial" placeholder="https://www.instagram.com/p/... ou https://www.tiktok.com/@...">
             </div>
 
@@ -97,13 +110,17 @@
             </div>
 
             <button type="submit" id="btnSalvar" class="btn-salvar">Publicar Notícia</button>
+            <button type="button" id="btnCancelarEdicao" class="btn-cancelar">Cancelar Edição</button>
             <div id="status-msg"></div>
         </form>
+
+        <h2>Notícias Publicadas</h2>
+        <div id="lista-noticias">Carregando notícias...</div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
         const firebaseConfig = {
@@ -122,14 +139,123 @@
 
         const form = document.getElementById("form-noticia");
         const btnSalvar = document.getElementById("btnSalvar");
+        const btnCancelar = document.getElementById("btnCancelarEdicao");
         const statusMsg = document.getElementById("status-msg");
+        const listaNoticias = document.getElementById("lista-noticias");
+        const inputId = document.getElementById("noticia-id");
 
+        let listaDadosNoticias = [];
+
+        // Carregar Notícias
+        async function carregarNoticias() {
+            try {
+                listaNoticias.innerHTML = "Carregando notícias...";
+                const q = query(collection(db, "noticias"), orderBy("dataAtualizacao", "desc"));
+                const querySnapshot = await getDocs(q);
+                
+                listaNoticias.innerHTML = "";
+                listaDadosNoticias = [];
+
+                if (querySnapshot.empty) {
+                    listaNoticias.innerHTML = "<p>Nenhuma notícia cadastrada ainda.</p>";
+                    return;
+                }
+
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    data.id = docSnap.id;
+                    listaDadosNoticias.push(data);
+
+                    const card = document.createElement("div");
+                    card.className = "noticia-card";
+                    card.innerHTML = `
+                        <div class="noticia-info">
+                            <h3>${data.titulo || 'Sem título'}</h3>
+                            <p><strong>Categorias:</strong> ${Array.isArray(data.categorias) ? data.categorias.join(", ") : (data.categoria || 'Nenhuma')}</p>
+                            <p><strong>Data:</strong> ${data.dataAtualizacao ? new Date(data.dataAtualizacao).toLocaleString('pt-BR') : '-'}</p>
+                        </div>
+                        <div class="btn-acoes">
+                            <button class="btn-editar" onclick="editarNoticia('${data.id}')">Editar</button>
+                            <button class="btn-excluir" onclick="excluirNoticia('${data.id}')">Excluir</button>
+                        </div>
+                    `;
+                    listaNoticias.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Erro ao carregar notícias:", error);
+                listaNoticias.innerHTML = "<p>Erro ao carregar lista de notícias.</p>";
+            }
+        }
+
+        // Função para preencher formulário ao clicar em Editar
+        window.editarNoticia = function(id) {
+            const noti = listaDadosNoticias.find(item => item.id === id);
+            if (!noti) return;
+
+            inputId.value = noti.id;
+            document.getElementById("titulo").value = noti.titulo || "";
+            document.getElementById("subtitulo").value = noti.subtitulo || "";
+            document.getElementById("texto").value = noti.texto || "";
+            document.getElementById("autor").value = noti.autor || "";
+            document.getElementById("fonteNoticia").value = noti.fonteNoticia || "";
+            document.getElementById("fonteImagem").value = noti.fonteImagem || "";
+            document.getElementById("fonteVideo").value = noti.fonteVideo || "";
+            document.getElementById("linkRedeSocial").value = noti.linkRedeSocial || "";
+            document.getElementById("superDestaque").checked = !!noti.superDestaque;
+            document.getElementById("destaque").checked = !!noti.destaque;
+
+            // Marcar checkboxes de categoria
+            document.querySelectorAll('.cat-check').forEach(cb => {
+                cb.checked = Array.isArray(noti.categorias) ? noti.categorias.includes(cb.value) : noti.categoria === cb.value;
+            });
+
+            document.getElementById("form-titulo").innerText = "Editando Notícia";
+            btnSalvar.innerText = "Atualizar Notícia";
+            btnCancelar.style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // Cancelar Edição
+        btnCancelar.addEventListener("click", () => {
+            resetForm();
+        });
+
+        function resetForm() {
+            form.reset();
+            inputId.value = "";
+            document.getElementById("form-titulo").innerText = "Cadastro de: Notícias";
+            btnSalvar.innerText = "Publicar Notícia";
+            btnCancelar.style.display = "none";
+        }
+
+        // Excluir Notícia
+        window.excluirNoticia = async function(id) {
+            if (confirm("Tem certeza que deseja excluir esta notícia?")) {
+                try {
+                    await deleteDoc(doc(db, "noticias", id));
+                    alert("Notícia excluída com sucesso!");
+                    carregarNoticias();
+                } catch (error) {
+                    console.error("Erro ao excluir notícia:", error);
+                    alert("Erro ao excluir notícia.");
+                }
+            }
+        };
+
+        // Salvar / Atualizar Form
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
+            const categoriasSelecionadas = Array.from(document.querySelectorAll('.cat-check:checked')).map(cb => cb.value);
+
+            if (categoriasSelecionadas.length === 0) {
+                alert("Por favor, selecione pelo menos uma categoria.");
+                return;
+            }
+
             btnSalvar.disabled = true;
             statusMsg.style.color = "#11136c";
-            statusMsg.innerText = "Enviando arquivos e publicando notícia, aguarde...";
+            statusMsg.innerText = "Processando, aguarde...";
 
             try {
                 let urlImagem = "";
@@ -150,35 +276,52 @@
                     urlVideo = await getDownloadURL(uploadResult.ref);
                 }
 
-                await addDoc(collection(db, "noticias"), {
-                    categoria: document.getElementById("categoria").value,
+                const dadosNoticia = {
+                    categorias: categoriasSelecionadas,
                     superDestaque: document.getElementById("superDestaque").checked,
                     destaque: document.getElementById("destaque").checked,
-                    imagem: urlImagem,
                     fonteImagem: document.getElementById("fonteImagem").value,
-                    video: urlVideo,
                     fonteVideo: document.getElementById("fonteVideo").value,
-                    linkRedeSocial: document.getElementById("linkRedeSocial").value, // SALVA O LINK DO VÍDEO / REDE SOCIAL
+                    linkRedeSocial: document.getElementById("linkRedeSocial").value,
                     autor: document.getElementById("autor").value,
                     titulo: document.getElementById("titulo").value,
                     subtitulo: document.getElementById("subtitulo").value,
                     texto: document.getElementById("texto").value,
                     fonteNoticia: document.getElementById("fonteNoticia").value,
                     dataAtualizacao: new Date().toISOString()
-                });
+                };
 
-                statusMsg.style.color = "green";
-                statusMsg.innerText = "Notícia publicada com sucesso!";
-                form.reset();
+                if (urlImagem) dadosNoticia.imagem = urlImagem;
+                if (urlVideo) dadosNoticia.video = urlVideo;
+
+                const idAtual = inputId.value;
+
+                if (idAtual) {
+                    // Atualiza existente
+                    await updateDoc(doc(db, "noticias", idAtual), dadosNoticia);
+                    statusMsg.style.color = "green";
+                    statusMsg.innerText = "Notícia atualizada com sucesso!";
+                } else {
+                    // Cria nova
+                    await addDoc(collection(db, "noticias"), dadosNoticia);
+                    statusMsg.style.color = "green";
+                    statusMsg.innerText = "Notícia publicada com sucesso!";
+                }
+
+                resetForm();
+                carregarNoticias();
 
             } catch (error) {
                 console.error("Erro ao salvar notícia:", error);
                 statusMsg.style.color = "red";
-                statusMsg.innerText = "Erro ao publicar notícia. Tente novamente.";
+                statusMsg.innerText = "Erro ao processar notícia. Tente novamente.";
             } finally {
                 btnSalvar.disabled = false;
             }
         });
+
+        // Carrega as notícias ao abrir a página
+        carregarNoticias();
     </script>
 </body>
 </html>
