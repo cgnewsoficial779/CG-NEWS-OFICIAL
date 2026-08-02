@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CG NEWS OFICIAL — Painel Administrativo</title>
-    <!-- FONT AWESOME PARA ÍCONES DAS REDES SOCIAIS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
@@ -54,7 +53,6 @@
     </header>
 
     <div class="container">
-        <!-- TELA DE LOGIN -->
         <div id="tela-login">
             <h3 style="margin-bottom: 20px; color: #11136c; text-align: center;">Área Restrita do Jornalista</h3>
             <div id="erro-login" class="error-msg"></div>
@@ -67,10 +65,9 @@
                 <input type="password" id="senha" placeholder="Digite sua senha">
             </div>
             <button class="btn-action" onclick="fazerLogin()">Entrar no Painel</button>
-            <p style="text-align: center; margin-top: 20px;"><a href="../index.html" style="color: #11136c; text-decoration: none; font-weight: bold;">← Voltar para o Portal de Notícias</a></p>
+            <p style="text-align: center; margin-top: 20px;"><a href="/index.html" onclick="voltarParaHome(event)" style="color: #11136c; text-decoration: none; font-weight: bold; cursor: pointer;">← Voltar para o Portal de Notícias</a></p>
         </div>
 
-        <!-- TELA DE CADASTRO DE NOTÍCIAS -->
         <div id="tela-painel" class="hidden">
             <div class="top-bar">
                 <h3 style="color: #11136c;">Cadastro de Notícias</h3>
@@ -143,7 +140,6 @@
                 <textarea id="corpoNoticia" placeholder="Escreva todos os detalhes da notícia aqui..."></textarea>
             </div>
 
-            <!-- SEÇÃO DE REDES SOCIAIS COMPLETAS -->
             <div style="border-top: 2px solid #f2f4f7; padding-top: 20px; margin-top: 20px;">
                 <label style="font-size: 1.1rem; margin-bottom: 12px; color: #11136c;"><i class="fa-solid fa-share-nodes"></i> Vincular Redes Sociais e Menções</label>
                 <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Cole os links dos posts ou perfis correspondentes para esta matéria:</p>
@@ -188,7 +184,7 @@
             </div>
 
             <button class="btn-action" onclick="salvarNoticia()">Publicar Notícia no Portal</button>
-            <p style="text-align: center; margin-top: 20px;"><a href="../index.html" style="color: #11136c; text-decoration: none; font-weight: bold;" target="_blank">Ver o Portal Publicado →</a></p>
+            <p style="text-align: center; margin-top: 20px;"><a href="/index.html" onclick="voltarParaHome(event)" style="color: #11136c; text-decoration: none; font-weight: bold; cursor: pointer;">Ver o Portal Publicado →</a></p>
         </div>
     </div>
 
@@ -197,7 +193,7 @@
     </footer>
 
     <script>
-        const USER_CORRETO = "maxgabriel";
+        const USER_CORRETO = "Cgnews7799";
         const SENHA_CORRETA = "@M4x98209980";
         let midiaBase64 = "";
 
@@ -206,6 +202,12 @@
                 mostrarPainel();
             }
         });
+
+        function voltarParaHome(event) {
+            event.preventDefault();
+            // Tenta voltar para a raiz ou tenta carregar o index na pasta anterior
+            window.location.href = "../index.html";
+        }
 
         function fazerLogin() {
             const uInput = document.getElementById('usuario').value.trim();
