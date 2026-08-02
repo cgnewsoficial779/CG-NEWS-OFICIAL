@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Notícias - CG NEWS OFICIAL</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: #f2f4f7; padding: 20px; color: #1a1a1a; }
+        .container { max-width: 800px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { font-size: 22px; color: #11136c; margin-bottom: 20px; border-bottom: 2px solid #11136c; padding-bottom: 10px; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-weight: bold; margin-bottom: 6px; color: #333; font-size: 14px; }
+        input[type="text"], input[type="url"], select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; outline: none; }
+        input[type="text"]:focus, input[type="url"]:focus, select:focus, textarea:focus { border-color: #11136c; }
+        textarea { height: 120px; resize: vertical; }
+        .checkbox-group { display: flex; gap: 20px; align-items: center; margin-bottom: 18px; }
+        .checkbox-group label { font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .btn-salvar { background-color: #11136c; color: white; border: none; padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; width: 100%; transition: background 0.3s; }
+        .btn-salvar:hover { background-color: #1a23a0; }
+        .btn-salvar:disabled { background-color: #888; cursor: not-allowed; }
+        #status-msg { margin-top: 15px; text-align: center; font-weight: bold; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Cadastro de: Notícias</h1>
+
+        <form id="form-noticia">
+            <div class="form-group">
+                <label for="categoria">Categoria</label>
+                <select id="categoria" required>
+                    <option value="Polícia">Polícia</option>
+                    <option value="Trânsito">Trânsito</option>
+                    <option value="Campo Grande">Campo Grande</option>
+                    <option value="Mato Grosso do Sul">Mato Grosso do Sul</option>
+                    <option value="Brasil">Brasil</option>
+                    <option value="Mundo">Mundo</option>
+                </select>
+            </div>
+
+            <div class="checkbox-group">
+                <label><input type="checkbox" id="superDestaque"> Super Destaque</label>
+                <label><input type="checkbox" id="destaque"> Destaque</label>
+            </div>
+
+            <div class="form-group">
+                <label for="imagem">Selecione a Imagem do Celular/Galeria</label>
+                <input type="file" id="imagem" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label for="fonteImagem">Fonte Imagem</label>
+                <input type="text" id="fonteImagem" placeholder="Créditos da imagem">
+            </div>
+
+            <div class="form-group">
+                <label for="video">Selecione o Vídeo do Celular/Galeria</label>
+                <input type="file" id="video" accept="video/*">
+            </div>
+
+            <div class="form-group">
+                <label for="fonteVideo">Fonte Vídeo</label>
+                <input type="text" id="fonteVideo" placeholder="Créditos do vídeo (ex: Redes Sociais / Leitor)">
+            </div>
+
+            <!-- CAMPO ADICIONADO: LINK DO VÍDEO/REDE SOCIAL -->
+            <div class="form-group">
+                <label for="linkRedeSocial">Link do Vídeo nas Redes Sociais (Instagram, TikTok, YouTube, Kwai, Facebook, Threads, etc.)</label>
+                <input type="url" id="linkRedeSocial" placeholder="https://www.instagram.com/p/... ou https://www.tiktok.com/@...">
+            </div>
+
+            <div class="form-group">
+                <label for="autor">Autor</label>
+                <input type="text" id="autor" placeholder="Nome do autor da matéria">
+            </div>
+
+            <div class="form-group">
+                <label for="titulo">Título</label>
+                <input type="text" id="titulo" placeholder="Título da notícia" required>
+            </div>
+
+            <div class="form-group">
+                <label for="subtitulo">Subtítulo</label>
+                <input type="text" id="subtitulo" placeholder="Digite a linha fina / resumo da matéria...">
+            </div>
+
+            <div class="form-group">
+                <label for="texto">Texto</label>
+                <textarea id="texto" placeholder="Escreva a matéria completa aqui..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="fonteNoticia">Fonte</label>
+                <input type="text" id="fonteNoticia" placeholder="Fonte da notícia (ex: Agência Brasil / Redação)">
+            </div>
+
+            <button type="submit" id="btnSalvar" class="btn-salvar">Publicar Notícia</button>
+            <div id="status-msg"></div>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDjl4R4h2An2POmuZgMhAFsLbdhuzauxyY",
+            authDomain: "cgnewsoficial7799.firebaseapp.com",
+            projectId: "cgnewsoficial7799",
+            storageBucket: "cgnewsoficial7799.firebasestorage.app",
+            messagingSenderId: "792965935073",
+            appId: "1:792965935073:web:6a43726000feec3b356ca0",
+            measurementId: "G-MCQJ63SYP1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        const form = document.getElementById("form-noticia");
+        const btnSalvar = document.getElementById("btnSalvar");
+        const statusMsg = document.getElementById("status-msg");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            btnSalvar.disabled = true;
+            statusMsg.style.color = "#11136c";
+            statusMsg.innerText = "Enviando arquivos e publicando notícia, aguarde...";
+
+            try {
+                let urlImagem = "";
+                let urlVideo = "";
+
+                const fileImagem = document.getElementById("imagem").files[0];
+                const fileVideo = document.getElementById("video").files[0];
+
+                if (fileImagem) {
+                    const imgRef = ref(storage, `imagens/${Date.now()}_${fileImagem.name}`);
+                    const uploadResult = await uploadBytes(imgRef, fileImagem);
+                    urlImagem = await getDownloadURL(uploadResult.ref);
+                }
+
+                if (fileVideo) {
+                    const videoRef = ref(storage, `videos/${Date.now()}_${fileVideo.name}`);
+                    const uploadResult = await uploadBytes(videoRef, fileVideo);
+                    urlVideo = await getDownloadURL(uploadResult.ref);
+                }
+
+                await addDoc(collection(db, "noticias"), {
+                    categoria: document.getElementById("categoria").value,
+                    superDestaque: document.getElementById("superDestaque").checked,
+                    destaque: document.getElementById("destaque").checked,
+                    imagem: urlImagem,
+                    fonteImagem: document.getElementById("fonteImagem").value,
+                    video: urlVideo,
+                    fonteVideo: document.getElementById("fonteVideo").value,
+                    linkRedeSocial: document.getElementById("linkRedeSocial").value, // SALVA O LINK DO VÍDEO / REDE SOCIAL
+                    autor: document.getElementById("autor").value,
+                    titulo: document.getElementById("titulo").value,
+                    subtitulo: document.getElementById("subtitulo").value,
+                    texto: document.getElementById("texto").value,
+                    fonteNoticia: document.getElementById("fonteNoticia").value,
+                    dataAtualizacao: new Date().toISOString()
+                });
+
+                statusMsg.style.color = "green";
+                statusMsg.innerText = "Notícia publicada com sucesso!";
+                form.reset();
+
+            } catch (error) {
+                console.error("Erro ao salvar notícia:", error);
+                statusMsg.style.color = "red";
+                statusMsg.innerText = "Erro ao publicar notícia. Tente novamente.";
+            } finally {
+                btnSalvar.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
