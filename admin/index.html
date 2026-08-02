@@ -1,231 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administração - CG NEWS</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-        body { background-color: #f4f6f9; color: #333; display: flex; flex-direction: column; min-height: 100vh; justify-content: space-between; }
-        .header-top { background-color: #ffffff; color: #3b5998; padding: 25px; text-align: center; font-size: 26px; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); border-bottom: 1px solid #dcdcdc; }
-        .login-box { width: 100%; max-width: 450px; margin: 40px auto; background: #fff; border: 1px solid #dcdcdc; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .login-title { background-color: #34495e; color: #fff; padding: 15px 20px; font-size: 18px; }
-        .login-body { padding: 20px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; color: #333; font-size: 14px; }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px; background-color: #eef2f7; }
-        .btn-custom { background-color: #95a5a6; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 15px; font-weight: bold; }
-        .btn-custom:hover { background-color: #7f8c8d; }
-        .error-msg { color: #dc3545; font-size: 13px; margin-bottom: 15px; text-align: center; }
-        
-        /* Painel logado */
-        .admin-container { max-width: 800px; margin: 20px auto; background: #fff; padding: 30px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100%; }
-        h1 { font-size: 22px; margin-bottom: 25px; color: #34495e; font-weight: bold; }
-        input[type="text"], input[type="url"], select, textarea { width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px; background-color: #fafafa; margin-bottom: 15px; }
-        textarea { min-height: 120px; resize: vertical; }
-        .checkbox-group { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; }
-        .checkbox-label { font-weight: normal; display: flex; align-items: center; gap: 5px; cursor: pointer; font-size: 14px; color: #333; }
-        .footer { text-align: center; padding: 20px; color: #7f8c8d; font-size: 13px; border-top: 1px solid #eaeaea; background: #fff; }
-        .hidden { display: none !important; }
-        .logout-link { color: #333; text-decoration: none; font-size: 14px; cursor: pointer; float: right; font-weight: normal; }
-        .alert-success { background-color: #d4edda; color: #155724; padding: 15px; margin-bottom: 20px; border-radius: 4px; border: 1px solid #c3e6cb; }
-        .toolbar { background: #f8f9fa; border: 1px solid #ced4da; padding: 5px; display: flex; gap: 10px; align-items: center; font-size: 14px; border-bottom: none; border-radius: 4px 4px 0 0; }
-        .toolbar span { cursor: pointer; padding: 3px 8px; border: 1px solid transparent; }
-        .toolbar span:hover { background: #e2e6ea; border-color: #dae0e5; border-radius: 3px; }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CG NEWS OFICIAL - Painel Administrativo</title>
+  
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  
+  <style>
+    :root {
+      --cg-primary: #11136c;
+      --cg-hover: #1a23a0;
+    }
+    body {
+      background-color: #f2f4f7 !important;
+      margin: 0;
+    }
+    #cg-custom-header {
+      background-color: var(--cg-primary);
+      color: #ffffff;
+      padding: 18px 20px;
+      font-size: 19px;
+      font-weight: bold;
+      text-align: center;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    #cg-custom-footer {
+      background-color: var(--cg-primary);
+      color: #ffffff;
+      text-align: center;
+      padding: 15px;
+      font-size: 13px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+    }
+    #nc-root {
+      min-height: calc(100vh - 110px);
+      padding-bottom: 60px;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- TELA DE LOGIN -->
-    <div id="loginScreen">
-        <div class="header-top">Administração</div>
-        <div class="login-box">
-            <div class="login-title">Faça o login</div>
-            <div class="login-body">
-                <div id="loginError" class="error-msg hidden">Usuário ou senha incorretos!</div>
-                <form id="loginForm" onsubmit="fazerLogin(event)">
-                    <div class="form-group">
-                        <label>Usuário</label>
-                        <input type="text" id="usuario" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Senha</label>
-                        <input type="password" id="senha" class="form-control" required>
-                    </div>
-                    <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
-                        <input type="checkbox" id="manter" style="width: auto;">
-                        <label for="manter" style="margin: 0; cursor: pointer;">Manter conectado</label>
-                    </div>
-                    <button type="submit" class="btn-custom" style="width: 100%;">Login</button>
-                    <a href="#" style="display: block; margin-top: 15px; color: #3498db; text-decoration: none; font-size: 13px;">Esqueci minha senha.</a>
-                </form>
-            </div>
-        </div>
-    </div>
+  <div id="cg-custom-header">
+    CG NEWS OFICIAL - PAINEL ADMINISTRATIVO
+  </div>
 
-    <!-- PAINEL ADMINISTRATIVO -->
-    <div id="adminScreen" class="hidden">
-        <div class="header-top" style="text-align: left; padding: 15px 30px; font-size: 18px;">
-            CG NEWS - Administração
-            <a onclick="fazerLogout()" class="logout-link">Sair</a>
-        </div>
+  <div id="nc-root"></div>
 
-        <div class="admin-container">
-            <h1>Cadastro de: Notícias</h1>
-            <div id="sucessoMsg" class="alert-success hidden">Notícia cadastrada com sucesso!</div>
+  <div id="cg-custom-footer">
+    CG NEWS OFICIAL - Todos os direitos reservados &copy; 2026 | Painel Administrativo
+  </div>
 
-            <form id="newsForm" onsubmit="salvarNoticia(event)">
-                <label>Categoria</label>
-                <select id="categoria" required>
-                    <option value="">- Selecione -</option>
-                    <option value="Policia">Polícia</option>
-                    <option value="Transito">Trânsito</option>
-                    <option value="Campo Grande">Campo Grande</option>
-                    <option value="Mato Grosso do Sul">Mato Grosso do Sul</option>
-                    <option value="Brasil">Brasil</option>
-                    <option value="Mundo">Mundo</option>
-                </select>
-
-                <label>Super Destaque</label>
-                <div class="checkbox-group">
-                    <label class="checkbox-label"><input type="checkbox" id="superDestaque"> Super Destaque</label>
-                </div>
-
-                <label>Destaque</label>
-                <div class="checkbox-group">
-                    <label class="checkbox-label"><input type="checkbox" id="destaque"> Destaque</label>
-                </div>
-
-                <label>Imagem</label>
-                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
-                    <input type="file" id="imagemFile" accept="image/*" style="margin-bottom:0;">
-                </div>
-
-                <label>Fonte Imagem</label>
-                <input type="text" id="fonteImagem" placeholder="Ex: Divulgação">
-
-                <label>Vídeo (Cole o Link do Youtube)</label>
-                <input type="url" id="videoYoutube" placeholder="https://www.youtube.com/watch?v=...">
-
-                <label>Autor</label>
-                <input type="text" id="autor" placeholder="Seu nome">
-
-                <label>Data</label>
-                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <select id="diaData" style="margin-bottom:0;">
-                        <option value="">Dia</option>
-                        <script>
-                            for(let i=1; i<=31; i++) {
-                                document.write(`<option value="${i}">${i < 10 ? '0'+i : i}</option>`);
-                            }
-                        </script>
-                    </select>
-                    <select id="mesData" style="margin-bottom:0;">
-                        <option value="">Mês</option>
-                        <option value="01">Janeiro</option>
-                        <option value="02">Fevereiro</option>
-                        <option value="03">Março</option>
-                        <option value="04">Abril</option>
-                        <option value="05">Maio</option>
-                        <option value="06">Junho</option>
-                        <option value="07">Julho</option>
-                        <option value="08">Agosto</option>
-                        <option value="09">Setembro</option>
-                        <option value="10">Outubro</option>
-                        <option value="11">Novembro</option>
-                        <option value="12">Dezembro</option>
-                    </select>
-                </div>
-
-                <label>Título</label>
-                <input type="text" id="titulo" required placeholder="Título da notícia">
-
-                <label>Subtítulo</label>
-                <input type="text" id="subtitulo" placeholder="Subtítulo">
-
-                <label>Texto</label>
-                <div class="toolbar">
-                    <span title="Negrito"><b>B</b></span>
-                    <span title="Itálico"><i>I</i></span>
-                    <span title="Inserir Imagem">🖼️</span>
-                </div>
-                <textarea id="texto" placeholder="Escreva a notícia..." style="border-radius: 0 0 4px 4px;"></textarea>
-
-                <label>Fonte</label>
-                <input type="url" id="fonteLink" placeholder="https://www.siteoriginal.com.br">
-
-                <label>Tags</label>
-                <div class="checkbox-group">
-                    <label class="checkbox-label"><input type="checkbox" name="tag" value="Brasil"> Brasil</label>
-                    <label class="checkbox-label"><input type="checkbox" name="tag" value="Corumbá"> Corumbá</label>
-                    <label class="checkbox-label"><input type="checkbox" name="tag" value="Dengue"> Dengue</label>
-                    <label class="checkbox-label"><input type="checkbox" name="tag" value="Desaparecido"> Desaparecido</label>
-                    <label class="checkbox-label"><input type="checkbox" name="tag" value="Dourados"> Dourados</label>
-                    <label class="checkbox-label"><input type="checkbox" name="tag" value="Enem"> Enem</label>
-                    <label class="checkbox-label"><input type="checkbox" name="tag" value="GUERRA"> GUERRA</label>
-                    <label class="checkbox-label"><input type="checkbox" name="tag" value="Inep"> Inep</label>
-                    <label class="checkbox-label"><input type="checkbox" name="tag" value="Israel"> Israel</label>
-                    <label class="checkbox-label"><input type="checkbox" name="tag" value="Lívia Andrade"> Lívia Andrade</label>
-                    <label class="checkbox-label"><input type="checkbox" name="tag" value="Sociedade"> Sociedade</label>
-                    <label class="checkbox-label"><input type="checkbox" name="tag" value="Três Lagoas"> Três Lagoas</label>
-                </div>
-
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button type="submit" class="btn-custom">Salvar</button>
-                    <button type="button" class="btn-custom" style="background-color: #bdc3c7;" onclick="document.getElementById('newsForm').reset()">Cancelar</button>
-                </div>
-                
-                <div style="margin-top: 25px;">
-                    <a href="#" style="color: #34495e; text-decoration: none; font-size: 14px;">« Voltar para listagem.</a>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="footer">
-        Copyright © 2026. Sistema de Administração de Sites - Todos os direitos reservados.
-    </div>
-
-    <script>
-        const USER_CORRETO = "cgnews7799";
-        const SENHA_CORRETA = "@M4x98209980";
-
-        if (localStorage.getItem("logado_cgnews") === "true") {
-            mostrarPainel();
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.reload();
+          });
         }
-
-        function fazerLogin(event) {
-            event.preventDefault();
-            const u = document.getElementById("usuario").value;
-            const s = document.getElementById("senha").value;
-
-            if (u === USER_CORRETO && s === SENHA_CORRETA) {
-                localStorage.setItem("logado_cgnews", "true");
-                mostrarPainel();
-            } else {
-                document.getElementById("loginError").classList.remove("hidden");
-            }
-        }
-
-        function mostrarPainel() {
-            document.getElementById("loginScreen").classList.add("hidden");
-            document.getElementById("adminScreen").classList.remove("hidden");
-        }
-
-        function fazerLogout() {
-            localStorage.removeItem("logado_cgnews");
-            location.reload();
-        }
-
-        function salvarNoticia(event) {
-            event.preventDefault();
-            document.getElementById("sucessoMsg").classList.remove("hidden");
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setTimeout(() => {
-                document.getElementById("newsForm").reset();
-                document.getElementById("sucessoMsg").classList.add("hidden");
-            }, 3000);
-        }
-    </script>
+      });
+    }
+  </script>
 </body>
 </html>
