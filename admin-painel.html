@@ -60,8 +60,8 @@
             </div>
 
             <div class="form-group">
-                <label for="imagem">Selecione a Imagem do Celular/Galeria</label>
-                <input type="file" id="imagem" accept="image/*">
+                <label for="imagem">Link da Imagem (URL)</label>
+                <input type="url" id="imagem" placeholder="Cole o link da foto">
             </div>
 
             <div class="form-group">
@@ -70,18 +70,9 @@
             </div>
 
             <div class="form-group">
-                <label for="video">Selecione o Vídeo do Celular/Galeria</label>
-                <input type="file" id="video" accept="video/*">
-            </div>
-
-            <div class="form-group">
-                <label for="fonteVideo">Fonte Vídeo</label>
-                <input type="text" id="fonteVideo" placeholder="Créditos do vídeo (ex: Redes Sociais / Leitor)">
-            </div>
-
-            <div class="form-group">
-                <label for="linkRedeSocial">Link do Vídeo nas Redes Sociais</label>
-                <input type="url" id="linkRedeSocial" placeholder="https://www.instagram.com/p/... ou https://www.tiktok.com/@...">
+                <label for="linkRedeSocial">Link de Incorporação (Redes Sociais)</label>
+                <input type="url" id="linkRedeSocial" placeholder="Cole o link do Instagram, TikTok, Facebook, YouTube, etc.">
+                <small style="color: #666; font-size: 12px; display: block; margin-top: 4px;">Isso exibirá o post interativo da rede social direto na matéria, igual ao seu exemplo.</small>
             </div>
 
             <div class="form-group">
@@ -106,7 +97,7 @@
 
             <div class="form-group">
                 <label for="fonteNoticia">Fonte</label>
-                <input type="text" id="fonteNoticia" placeholder="Fonte da notícia (ex: Agência Brasil / Redação)">
+                <input type="text" id="fonteNoticia" placeholder="Fonte da notícia">
             </div>
 
             <button type="submit" id="btnSalvar" class="btn-salvar">Publicar Notícia</button>
@@ -121,7 +112,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDjl4R4h2An2POmuZgMhAFsLbdhuzauxyY",
@@ -135,7 +125,6 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const storage = getStorage(app);
 
         const form = document.getElementById("form-noticia");
         const btnSalvar = document.getElementById("btnSalvar");
@@ -146,7 +135,6 @@
 
         let listaDadosNoticias = [];
 
-        // Carregar Notícias
         async function carregarNoticias() {
             try {
                 listaNoticias.innerHTML = "Carregando notícias...";
@@ -187,7 +175,6 @@
             }
         }
 
-        // Função para preencher formulário ao clicar em Editar
         window.editarNoticia = function(id) {
             const noti = listaDadosNoticias.find(item => item.id === id);
             if (!noti) return;
@@ -199,12 +186,11 @@
             document.getElementById("autor").value = noti.autor || "";
             document.getElementById("fonteNoticia").value = noti.fonteNoticia || "";
             document.getElementById("fonteImagem").value = noti.fonteImagem || "";
-            document.getElementById("fonteVideo").value = noti.fonteVideo || "";
             document.getElementById("linkRedeSocial").value = noti.linkRedeSocial || "";
+            document.getElementById("imagem").value = noti.imagem || "";
             document.getElementById("superDestaque").checked = !!noti.superDestaque;
             document.getElementById("destaque").checked = !!noti.destaque;
 
-            // Marcar checkboxes de categoria
             document.querySelectorAll('.cat-check').forEach(cb => {
                 cb.checked = Array.isArray(noti.categorias) ? noti.categorias.includes(cb.value) : noti.categoria === cb.value;
             });
@@ -215,7 +201,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // Cancelar Edição
         btnCancelar.addEventListener("click", () => {
             resetForm();
         });
@@ -228,7 +213,6 @@
             btnCancelar.style.display = "none";
         }
 
-        // Excluir Notícia
         window.excluirNoticia = async function(id) {
             if (confirm("Tem certeza que deseja excluir esta notícia?")) {
                 try {
@@ -242,7 +226,6 @@
             }
         };
 
-        // Salvar / Atualizar Form
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
@@ -255,33 +238,15 @@
 
             btnSalvar.disabled = true;
             statusMsg.style.color = "#11136c";
-            statusMsg.innerText = "Processando, aguarde...";
+            statusMsg.innerText = "Publicando notícia, aguarde...";
 
             try {
-                let urlImagem = "";
-                let urlVideo = "";
-
-                const fileImagem = document.getElementById("imagem").files[0];
-                const fileVideo = document.getElementById("video").files[0];
-
-                if (fileImagem) {
-                    const imgRef = ref(storage, `imagens/${Date.now()}_${fileImagem.name}`);
-                    const uploadResult = await uploadBytes(imgRef, fileImagem);
-                    urlImagem = await getDownloadURL(uploadResult.ref);
-                }
-
-                if (fileVideo) {
-                    const videoRef = ref(storage, `videos/${Date.now()}_${fileVideo.name}`);
-                    const uploadResult = await uploadBytes(videoRef, fileVideo);
-                    urlVideo = await getDownloadURL(uploadResult.ref);
-                }
-
                 const dadosNoticia = {
                     categorias: categoriasSelecionadas,
                     superDestaque: document.getElementById("superDestaque").checked,
                     destaque: document.getElementById("destaque").checked,
+                    imagem: document.getElementById("imagem").value,
                     fonteImagem: document.getElementById("fonteImagem").value,
-                    fonteVideo: document.getElementById("fonteVideo").value,
                     linkRedeSocial: document.getElementById("linkRedeSocial").value,
                     autor: document.getElementById("autor").value,
                     titulo: document.getElementById("titulo").value,
@@ -291,18 +256,13 @@
                     dataAtualizacao: new Date().toISOString()
                 };
 
-                if (urlImagem) dadosNoticia.imagem = urlImagem;
-                if (urlVideo) dadosNoticia.video = urlVideo;
-
                 const idAtual = inputId.value;
 
                 if (idAtual) {
-                    // Atualiza existente
                     await updateDoc(doc(db, "noticias", idAtual), dadosNoticia);
                     statusMsg.style.color = "green";
                     statusMsg.innerText = "Notícia atualizada com sucesso!";
                 } else {
-                    // Cria nova
                     await addDoc(collection(db, "noticias"), dadosNoticia);
                     statusMsg.style.color = "green";
                     statusMsg.innerText = "Notícia publicada com sucesso!";
@@ -320,8 +280,8 @@
             }
         });
 
-        // Carrega as notícias ao abrir a página
         carregarNoticias();
     </script>
 </body>
 </html>
+                  
