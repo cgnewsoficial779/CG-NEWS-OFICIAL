@@ -9,13 +9,46 @@
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        html { scroll-behavior: smooth; }
         body { background-color: #f2f4f7; color: #1a1a1a; }
         
-        header { background-color: #11136c; color: white; text-align: center; padding: 20px; font-size: 24px; font-weight: bold; }
+        /* CABEÇALHO ATUALIZADO (Com Menu e Lupa) */
+        header { 
+            background-color: #11136c; color: white; 
+            padding: 15px 20px; font-size: 20px; font-weight: bold;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .header-btn { cursor: pointer; font-size: 22px; padding: 5px; }
         
+        /* MENU LATERAL (SIDEBAR) */
+        .sidebar {
+            height: 100%; width: 260px; position: fixed; z-index: 2000;
+            top: 0; left: -260px; background-color: #fff; overflow-x: hidden;
+            transition: 0.3s ease; box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            display: flex; flex-direction: column;
+        }
+        .sidebar-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px; background-color: #11136c; color: white; border-bottom: 2px solid #0a0b45;
+        }
+        .sidebar-header h3 { font-size: 16px; margin: 0; }
+        .sidebar-header i { cursor: pointer; font-size: 22px; padding: 5px; }
+        .sidebar a {
+            padding: 15px 20px; text-decoration: none; font-size: 15px; font-weight: 500;
+            color: #11136c; display: block; border-bottom: 1px solid #e0e0e0;
+            transition: 0.2s;
+        }
+        .sidebar a:hover { background-color: #f2f4f7; padding-left: 25px; }
+        
+        #overlay {
+            position: fixed; display: none; width: 100%; height: 100%;
+            top: 0; left: 0; background-color: rgba(0,0,0,0.6); z-index: 1500; cursor: pointer;
+        }
+
         .container { max-width: 900px; margin: 20px auto; padding: 0 15px; min-height: 70vh; }
         
-        .section-title { font-size: 20px; color: #11136c; border-left: 4px solid #11136c; padding-left: 10px; margin: 30px 0 15px 0; }
+        .section-title { font-size: 20px; color: #11136c; border-left: 4px solid #11136c; padding-left: 10px; margin: 30px 0 15px 0; scroll-margin-top: 80px; }
         .empty-msg { font-size: 14px; color: #888; font-style: italic; margin-bottom: 20px; }
 
         footer { background-color: #11136c; color: white; text-align: center; padding: 25px 20px; margin-top: 40px; font-size: 12px; }
@@ -24,35 +57,62 @@
 </head>
 <body>
 
+    <!-- CABEÇALHO -->
     <header>
-        CG NEWS OFICIAL
+        <div class="header-btn" onclick="abrirMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div>CG NEWS OFICIAL</div>
+        <div class="header-btn">
+            <i class="fas fa-search"></i>
+        </div>
     </header>
 
+    <!-- FUNDO ESCURO DO MENU -->
+    <div id="overlay" onclick="fecharMenu()"></div>
+
+    <!-- MENU LATERAL -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h3>CG NEWS OFICIAL</h3>
+            <i class="fas fa-times" onclick="fecharMenu()"></i>
+        </div>
+        <a href="#sec-ultimas" onclick="fecharMenu()">Últimas Notícias</a>
+        <a href="#sec-policia" onclick="fecharMenu()">Polícia</a>
+        <a href="#sec-transito" onclick="fecharMenu()">Trânsito</a>
+        <a href="#sec-campogrande" onclick="fecharMenu()">Campo Grande</a>
+        <a href="#sec-ms" onclick="fecharMenu()">Mato Grosso do Sul</a>
+        <a href="#sec-brasil" onclick="fecharMenu()">Brasil</a>
+        <a href="#sec-mundo" onclick="fecharMenu()">Mundo</a>
+    </div>
+
+    <!-- CORPO DO SITE -->
     <div class="container">
         
-        <h2 class="section-title">Últimas Notícias</h2>
+        <h2 id="sec-ultimas" class="section-title">Últimas Notícias</h2>
         <div id="ultimas-noticias"><p class="empty-msg">Carregando notícias...</p></div>
 
-        <h2 class="section-title">Polícia</h2>
+        <h2 id="sec-policia" class="section-title">Polícia</h2>
         <div id="cat-policia"><p class="empty-msg">Nenhuma notícia registrada.</p></div>
 
-        <h2 class="section-title">Trânsito</h2>
+        <h2 id="sec-transito" class="section-title">Trânsito</h2>
         <div id="cat-transito"><p class="empty-msg">Nenhuma notícia registrada.</p></div>
 
-        <h2 class="section-title">Campo Grande</h2>
+        <h2 id="sec-campogrande" class="section-title">Campo Grande</h2>
         <div id="cat-campogrande"><p class="empty-msg">Nenhuma notícia registrada.</p></div>
 
-        <h2 class="section-title">Mato Grosso do Sul</h2>
+        <h2 id="sec-ms" class="section-title">Mato Grosso do Sul</h2>
         <div id="cat-ms"><p class="empty-msg">Nenhuma notícia registrada.</p></div>
 
-        <h2 class="section-title">Brasil</h2>
+        <h2 id="sec-brasil" class="section-title">Brasil</h2>
         <div id="cat-brasil"><p class="empty-msg">Nenhuma notícia registrada.</p></div>
 
-        <h2 class="section-title">Mundo</h2>
+        <h2 id="sec-mundo" class="section-title">Mundo</h2>
         <div id="cat-mundo"><p class="empty-msg">Nenhuma notícia registrada.</p></div>
 
     </div>
 
+    <!-- RODAPÉ -->
     <footer>
         <div class="social-icons" style="margin-bottom: 15px;">
             <i class="fab fa-whatsapp"></i>
@@ -75,7 +135,7 @@
         </div>
     </div>
 
-    <!-- INTEGRAÇÃO COM O FIREBASE E SISTEMA DE CARDS -->
+    <!-- INTEGRAÇÃO FIREBASE E SCRIPTS -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -93,10 +153,23 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Objeto global para armazenar as matérias baixadas
+        // FUNÇÕES DO MENU LATERAL
+        window.abrirMenu = function() {
+            document.getElementById("sidebar").style.left = "0";
+            document.getElementById("overlay").style.display = "block";
+            document.body.style.overflow = "hidden"; 
+        };
+
+        window.fecharMenu = function() {
+            document.getElementById("sidebar").style.left = "-260px";
+            document.getElementById("overlay").style.display = "none";
+            document.body.style.overflow = "auto";
+        };
+
+        // OBJETOS DAS NOTÍCIAS
         window.noticiasSalvas = {};
 
-        // Função para abrir a matéria em tela cheia
+        // ABRIR MATÉRIA EM TELA CHEIA
         window.abrirMateria = function(id) {
             const item = window.noticiasSalvas[id];
             if (!item) return;
@@ -104,11 +177,9 @@
             const modal = document.getElementById("modal-materia");
             const conteudo = document.getElementById("conteudo-materia");
 
-            // Formata a data para exibir como exigido (DD/MM)
             const d = new Date(item.dataAtualizacao || Date.now());
             const dataFormatada = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
 
-            // Cria o botão de vídeo se houver link cadastrado
             let areaVideo = "";
             if (item.linkRedeSocial && item.linkRedeSocial.trim() !== "") {
                 areaVideo = `
@@ -132,16 +203,16 @@
             `;
 
             modal.style.display = "block";
-            document.body.style.overflow = "hidden"; // Trava a rolagem da página de fundo
+            document.body.style.overflow = "hidden"; 
         };
 
-        // Função para fechar a tela cheia
+        // FECHAR MATÉRIA
         window.fecharMateria = function() {
             document.getElementById("modal-materia").style.display = "none";
-            document.body.style.overflow = "auto"; // Libera a rolagem da página de fundo
+            document.body.style.overflow = "auto"; 
         };
 
-        // Função que gera o design compacto (Card) para a página inicial
+        // CRIAR OS CARDS NA PÁGINA INICIAL
         function criarHtmlCard(item, idId) {
             return `
                 <div onclick="abrirMateria('${idId}')" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 20px; overflow: hidden; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
@@ -161,6 +232,7 @@
             `;
         }
 
+        // CARREGAR NOTÍCIAS DO BANCO DE DADOS
         async function carregarNoticias() {
             try {
                 const q = query(collection(db, "noticias"), orderBy("dataAtualizacao", "desc"));
@@ -185,15 +257,12 @@
                     const item = docSnap.data();
                     const idUnico = "noticia_" + noticiaIndex;
                     
-                    // Salva a matéria inteira no objeto global para ser usada no clique
                     window.noticiasSalvas[idUnico] = item;
 
-                    // Adiciona na seção principal se houver
                     if (containerUltimas) {
                         containerUltimas.innerHTML += criarHtmlCard(item, idUnico);
                     }
 
-                    // Distribui nas categorias marcadas
                     if (item.categorias && item.categorias.length > 0) {
                         item.categorias.forEach(cat => {
                             const containerId = mapeamentoCategorias[cat];
