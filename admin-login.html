@@ -19,16 +19,75 @@
         .btn-login:hover { background-color: #1a23a0; }
         .forgot-password { display: block; margin-top: 15px; font-size: 13px; color: #64748b; text-decoration: none; font-weight: 600; cursor: pointer; }
         .forgot-password:hover { color: #11136c; text-decoration: underline; }
+        .alert-msg { margin-bottom: 15px; padding: 10px; border-radius: 5px; font-size: 13px; font-weight: 600; display: none; }
+        .alert-error { background-color: #fee2e2; color: #991b1b; }
+        .alert-success { background-color: #dcfce7; color: #166534; }
     </style>
+
+    <!-- MOTOR DO FIREBASE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // CHAVES OFICIAIS DO SEU FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyDjL4R4h2An2POmuZgMhAFsLbdhuzauxys",
+            authDomain: "cgnewsoficial7799.firebaseapp.com",
+            projectId: "cgnewsoficial7799",
+            storageBucket: "cgnewsoficial7799.firebasestorage.app",
+            messagingSenderId: "792965935073",
+            appId: "1:792965935073:web:6a43726000feec3b356cdf",
+            measurementId: "G-MCQJ63SYP1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.fazerLogin = function(event) {
+            event.preventDefault();
+            const email = document.getElementById("user").value.trim();
+            const pass = document.getElementById("pass").value;
+            const msgBox = document.getElementById("msg-box");
+
+            signInWithEmailAndPassword(auth, email, pass)
+                .then((userCredential) => {
+                    msgBox.className = "alert-msg alert-success";
+                    msgBox.innerText = "Acesso autorizado! Redirecionando...";
+                    msgBox.style.display = "block";
+                    setTimeout(() => {
+                        window.location.href = "admin-painel.html";
+                    }, 1200);
+                })
+                .catch((error) => {
+                    msgBox.className = "alert-msg alert-error";
+                    msgBox.innerText = "E-mail ou senha incorretos. Verifique e tente novamente.";
+                    msgBox.style.display = "block";
+                });
+        };
+
+        window.recuperarSenha = function() {
+            const email = prompt("Digite o e-mail cadastrado para redefinir a senha:");
+            if (email) {
+                sendPasswordResetEmail(auth, email)
+                    .then(() => {
+                        alert("E-mail de redefinição enviado com sucesso! Verifique a sua caixa de entrada e o lixo eletrônico/spam.");
+                    })
+                    .catch((error) => {
+                        alert("Erro ao enviar o e-mail: Verifique se o endereço digitado está correto e cadastrado.");
+                    });
+            }
+        };
+    </script>
 </head>
 <body>
 
     <div class="login-container">
         <h2>Área Administrativa</h2>
+        <div id="msg-box" class="alert-msg"></div>
         <form onsubmit="fazerLogin(event)">
             <div class="input-group">
-                <label>Usuário ou E-mail</label>
-                <input type="text" id="user" placeholder="Digite seu acesso" required>
+                <label>E-mail do Administrador</label>
+                <input type="email" id="user" placeholder="seu-email@exemplo.com" required>
             </div>
             <div class="input-group">
                 <label>Senha</label>
@@ -39,20 +98,5 @@
         </form>
     </div>
 
-    <script>
-        function fazerLogin(event) {
-            event.preventDefault();
-            // Aqui entra a integração com o banco de dados futuramente
-            window.location.href = "admin-painel.html"; 
-        }
-
-        function recuperarSenha() {
-            let email = prompt("Digite o e-mail cadastrado para receber o link de recuperação:");
-            if(email) {
-                alert("Se o e-mail estiver correto, um link de recuperação será enviado para: " + email);
-                // Aqui entra o código de disparo de e-mail do Firebase/Backend
-            }
-        }
-    </script>
 </body>
 </html>
