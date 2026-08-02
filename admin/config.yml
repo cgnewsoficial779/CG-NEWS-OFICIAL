@@ -1,21 +1,23 @@
 backend:
   name: git-gateway
-  branch: main
-
-media_folder: "images/uploads"
-public_folder: "/images/uploads"
+  branch: main # ou master, dependendo de como está no seu GitHub
 
 collections:
   - name: "noticias"
     label: "Notícias"
-    folder: "_posts"
+    folder: "_posts" # Pasta onde os arquivos das notícias ficam salvos no seu projeto
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      - {label: "Título da Notícia", name: "title", widget: "string"}
-      - {label: "Subtítulo / Resumo", name: "subtitle", widget: "string", required: false}
-      - {label: "Data da Postagem", name: "date", widget: "datetime"}
-      - {label: "Autor", name: "autor", widget: "string", default: "CG News Oficial"}
       - {label: "Categoria", name: "categoria", widget: "select", options: ["Últimas Notícias", "Polícia", "Trânsito", "Campo Grande", "Mato Grosso do Sul", "Brasil", "Mundo"]}
-      - {label: "Foto de Capa", name: "image", widget: "image"}
-      - {label: "Texto Completo da Notícia", name: "body", widget: "markdown"}
+      - {label: "Super Destaque", name: "super_destaque", widget: "boolean", required: false}
+      - {label: "Destaque", name: "destaque", widget: "boolean", required: false}
+      - {label: "Imagem", name: "image", widget: "image", required: false}
+      - {label: "Fonte Imagem", name: "fonte_imagem", widget: "string", required: false}
+      - {label: "Vídeo (Youtube)", name: "video", widget: "string", required: false}
+      - {label: "Autor", name: "autor", widget: "string", required: false}
+      - {label: "Data e Hora", name: "date", widget: "datetime", format: "YYYY-MM-DD HH:mm", date_format: "YYYY-MM-DD", time_format: "HH:mm"}
+      - {label: "Título", name: "title", widget: "string"}
+      - {label: "Subtítulo", name: "subtitle", widget: "string", required: false}
+      - {label: "Texto", name: "body", widget: "markdown"}
+      - {label: "Fonte", name: "fonte", widget: "string", required: false}
