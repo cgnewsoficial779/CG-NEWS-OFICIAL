@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CG NEWS OFICIAL - Portal de Notícias</title>
-
-  <!-- BIBLIOTECA DE ÍCONES OFICIAIS (FONT AWESOME) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
   <style>
@@ -13,13 +11,8 @@
     html { scroll-behavior: smooth; }
     html, body { width: 100%; min-height: 100vh; background-color: #f2f4f7; color: #1a1a1a; }
 
-    /* REMOÇÃO TOTAL DE BARRINHAS DE LINKS */
     a, a:hover, a:focus, a:visited, a:active { 
-      text-decoration: none !important; 
-      border: none !important; 
-      border-bottom: none !important; 
-      outline: none !important;
-      box-shadow: none !important;
+      text-decoration: none !important; border: none !important; outline: none !important;
     }
 
     /* TOPO PRINCIPAL */
@@ -30,28 +23,15 @@
     }
     .menu-btn { font-size: 28px; cursor: pointer; background: none; border: none; color: #ffffff; padding: 5px 10px; }
     .header-title { text-align: center; flex-grow: 1; }
-    
-    .header-title h1 a { 
-      font-size: 32px; 
-      font-weight: 900; 
-      letter-spacing: 1.5px; 
-      color: #ffffff; 
-      display: inline-block;
-      cursor: pointer;
-    }
+    .header-title h1 a { font-size: 32px; font-weight: 900; letter-spacing: 1.5px; color: #ffffff; display: inline-block; }
 
-    /* ELEMENTO VISUAL DO TOPO (SEM LINK INDESEJADO) */
-    .top-badge {
-      color: #fff;
-      font-size: 13px;
-      font-weight: 600;
-      background: rgba(255, 255, 255, 0.15);
-      padding: 6px 12px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    /* BOTÃO DE LOGIN NO TOPO */
+    .login-top-btn {
+      background: #4cd964; color: #fff; font-size: 14px; font-weight: 700;
+      padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; transition: background 0.2s;
     }
+    .login-top-btn:hover { background: #3fb253; }
 
     /* MENU LATERAL */
     .side-menu {
@@ -70,70 +50,52 @@
     .content-column { flex: 2; min-width: 300px; }
     .sidebar-column { flex: 1; min-width: 260px; }
 
-    .news-link { color: inherit; display: block; }
-
-    .section-header { border-left: 5px solid #11136c !important; padding-left: 10px; margin: 30px 0 15px; font-size: 18px; font-weight: 800; color: #11136c; text-transform: uppercase; scroll-margin-top: 20px; }
+    .section-header { border-left: 5px solid #11136c !important; padding-left: 10px; margin: 30px 0 15px; font-size: 18px; font-weight: 800; color: #11136c; text-transform: uppercase; }
     .tag { display: inline-block; background-color: #11136c; color: #ffffff; padding: 3px 8px; font-size: 10px; font-weight: 800; border-radius: 3px; margin-bottom: 8px; text-transform: uppercase; }
     .news-date { font-size: 11px; color: #718096; display: block; margin-top: 5px; }
 
-    /* DESTAQUE PRINCIPAL DA CAPA */
-    .featured-card { background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 20px; scroll-margin-top: 20px; }
+    .featured-card { background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 20px; }
     .featured-card img { width: 100%; height: 280px; object-fit: cover; display: block; }
     .featured-card .card-body { padding: 18px; }
     .featured-card h2 { font-size: 22px; color: #111; line-height: 1.3; }
 
-    /* GRADE DE DUAS COLUNAS */
-    .two-col-grid { display: flex; flex-wrap: wrap; gap: 15px; }
-    .sub-card { flex: 1; min-width: 240px; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .sub-card img { width: 100%; height: 140px; object-fit: cover; display: block; }
-    .sub-card .card-body { padding: 12px; }
-    .sub-card h3 { font-size: 15px; color: #111; line-height: 1.3; }
-
-    /* LISTA COMPACTA DE NOTÍCIAS */
     .list-card { background: #fff; padding: 12px; border-radius: 6px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); margin-bottom: 10px; border-left: 3px solid #11136c !important; }
     .list-card h4 { font-size: 14px; color: #2d3748; }
 
-    /* BARRA LATERAL */
     .sidebar-box { background: #ffffff; padding: 18px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
     .sidebar-title { font-size: 15px; font-weight: bold; color: #11136c; border-bottom: 3px solid #11136c !important; padding-bottom: 6px; margin-bottom: 15px; text-transform: uppercase; }
+    
+    .social-icons-grid { display: flex; flex-wrap: wrap; gap: 15px; align-items: center; }
+    .social-icons-grid a { color: #11136c; font-size: 22px; transition: transform 0.2s; }
+    .social-icons-grid a:hover { transform: scale(1.15); }
 
-    /* ÍCONES DE REDES SOCIAIS NA SIDEBAR */
-    .social-icons-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: flex-start;
-      align-items: center;
-      padding-top: 5px;
+    /* MODAL DE LOGIN / PAINEL */
+    .modal-overlay {
+      display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); align-items: center; justify-content: center; padding: 15px;
     }
-    .social-icons-grid a {
-      color: #11136c;
-      font-size: 22px;
-      transition: transform 0.2s ease, color 0.2s ease;
-      display: flex;
-      align-items: center;
+    .modal-box {
+      background: #fff; width: 100%; max-width: 550px; border-radius: 10px; padding: 25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; position: relative;
     }
-    .social-icons-grid a:hover { color: #1a23a0; transform: scale(1.15); }
+    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #555; background: none; border: none; }
+    .modal-box h3 { color: #11136c; margin-bottom: 15px; font-size: 20px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #333; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px;
+    }
+    .btn-submit {
+      width: 100%; background: #11136c; color: #fff; border: none; padding: 12px; border-radius: 5px;
+      font-weight: bold; cursor: pointer; font-size: 15px; margin-top: 10px;
+    }
+    .btn-submit:hover { background: #1a23a0; }
 
     /* RODAPÉ */
     footer { width: 100%; background-color: #11136c; color: #ffffff; padding: 30px 20px; text-align: center; margin-top: 40px; }
     footer h3 { font-size: 18px; margin-bottom: 15px; }
-    .footer-social-icons {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin: 15px 0 20px;
-      align-items: center;
-    }
-    .footer-social-icons a {
-      color: #ffffff;
-      font-size: 24px;
-      transition: transform 0.2s ease, color 0.2s ease;
-      display: flex;
-      align-items: center;
-    }
-    .footer-social-icons a:hover { color: #4cd964; transform: scale(1.2); }
+    .footer-social-icons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 15px 0 20px; }
+    .footer-social-icons a { color: #ffffff; font-size: 24px; transition: transform 0.2s; }
     footer p { font-size: 11px; opacity: 0.8; }
   </style>
 </head>
@@ -150,28 +112,22 @@
     <a href="#transito" onclick="closeNav()">Trânsito</a>
     <a href="#campo-grande" onclick="closeNav()">Campo Grande</a>
     <a href="#ms" onclick="closeNav()">Mato Grosso do Sul</a>
-    <a href="#brasil" onclick="closeNav()">Brasil</a>
-    <a href="#mundo" onclick="closeNav()">Mundo</a>
   </div>
 
   <!-- CABEÇALHO -->
   <header class="top-header">
     <button class="menu-btn" onclick="openNav()">☰</button>
     <div class="header-title">
-      <h1><a href="https://www.cgnewsoficial.com.br" target="_blank" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">CG NEWS OFICIAL</a></h1>
+      <h1><a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">CG NEWS OFICIAL</a></h1>
     </div>
-    <div class="top-badge">
-      <i class="fa-solid fa-newspaper">></i> Portal
-    </div>
+    <button class="login-top-btn" onclick="abrirModalLogin()">
+      <i class="fa-solid fa-lock"></i> Entrar / Painel
+    </button>
   </header>
 
   <!-- CORPO PRINCIPAL -->
   <div class="main-wrapper">
-
-    <!-- COLUNA DE NOTÍCIAS -->
     <div class="content-column">
-      
-      <!-- 1. ÚLTIMAS NOTÍCIAS -->
       <div id="ultimas-noticias" class="section-header">Últimas Notícias</div>
       
       <article class="featured-card">
@@ -179,171 +135,161 @@
         <div class="card-body">
           <span class="tag">Campo Grande</span>
           <h2>Operação integrada mobiliza forças de segurança nas principais vias da Capital</h2>
-          <p style="font-size: 13px; color: #555; margin-top: 5px;">Ações de fiscalização e monitoramento ocorrem de forma simultânea nesta semana.</p>
           <span class="news-date">02/08/2026</span>
         </div>
       </article>
 
-      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-        <div class="list-card">
-          <span class="tag">Campo Grande</span>
-          <h4>Nova diretriz municipal altera horários de atendimento em órgãos públicos</h4>
-          <span class="news-date">02/08/2026</span>
-        </div>
-      </a>
-
-      <!-- 2. POLÍCIA -->
-      <div id="policia" class="section-header">Polícia</div>
-      <div class="two-col-grid">
-        <div class="sub-card">
-          <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400" alt="Polícia">
-          <div class="card-body">
-            <span class="tag">Polícia</span>
-            <h3>Operação policial resulta em apreensões e prisões em região estratégica</h3>
-            <span class="news-date">02/08/2026</span>
-          </div>
-        </div>
-        <div class="sub-card">
-          <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400" alt="Investigação">
-          <div class="card-body">
-            <span class="tag">Polícia</span>
-            <h3>Forças de segurança desarticulam esquema de fraudes</h3>
-            <span class="news-date">02/08/2026</span>
-          </div>
-        </div>
+      <div class="list-card">
+        <span class="tag">Campo Grande</span>
+        <h4>Nova diretriz municipal altera horários de atendimento em órgãos públicos</h4>
+        <span class="news-date">02/08/2026</span>
       </div>
-
-      <!-- 3. TRÂNSITO -->
-      <div id="transito" class="section-header">Trânsito</div>
-      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-        <div class="list-card">
-          <span class="tag">Trânsito</span>
-          <h4>Colisão entre veículos causa lentidão em avenida de grande fluxo na Capital</h4>
-          <span class="news-date">02/08/2026</span>
-        </div>
-      </a>
-      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-        <div class="list-card">
-          <span class="tag">Trânsito</span>
-          <h4>Acidente em cruzamento mobiliza equipes de resgate e altera tráfego local</h4>
-          <span class="news-date">02/08/2026</span>
-        </div>
-      </a>
-
-      <!-- 4. CAMPO GRANDE -->
-      <div id="campo-grande" class="section-header">Campo Grande</div>
-      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-        <div class="list-card">
-          <span class="tag">Campo Grande</span>
-          <h4>Prefeitura anuncia novas obras de infraestrutura em bairros da cidade</h4>
-          <span class="news-date">02/08/2026</span>
-        </div>
-      </a>
-      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-        <div class="list-card">
-          <span class="tag">Campo Grande</span>
-          <h4>Parques municipais recebem melhorias na iluminação e segurança</h4>
-          <span class="news-date">02/08/2026</span>
-        </div>
-      </a>
-      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-        <div class="list-card">
-          <span class="tag">Campo Grande</span>
-          <h4>Mutirão comunitário oferece serviços e corte de cabelo gratuito nos bairros</h4>
-          <span class="news-date">02/08/2026</span>
-        </div>
-      </a>
-
-      <!-- 5. MATO GROSSO DO SUL -->
-      <div id="ms" class="section-header">Mato Grosso do Sul</div>
-      <div class="two-col-grid">
-        <div class="sub-card">
-          <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400" alt="Interior MS">
-          <div class="card-body">
-            <span class="tag">Mato Grosso do Sul</span>
-            <h3>Governo estadual anuncia investimentos em rodovias do interior</h3>
-            <span class="news-date">02/08/2026</span>
-          </div>
-        </div>
-        <div class="sub-card">
-          <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=400" alt="Estradas MS">
-          <div class="card-body">
-            <span class="tag">Mato Grosso do Sul</span>
-            <h3>Programas estaduais fortalecem o setor produtivo regional</h3>
-            <span class="news-date">02/08/2026</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 6. BRASIL -->
-      <div id="brasil" class="section-header">Brasil</div>
-      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-        <div class="list-card">
-          <span class="tag">Brasil</span>
-          <h4>Novas diretrizes econômicas entram em vigor no território nacional</h4>
-          <span class="news-date">02/08/2026</span>
-        </div>
-      </a>
-      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-        <div class="list-card">
-          <span class="tag">Brasil</span>
-          <h4>Setor de transportes registra expansão em rotas interestaduais</h4>
-          <span class="news-date">02/08/2026</span>
-        </div>
-      </a>
-
-      <!-- 7. MUNDO -->
-      <div id="mundo" class="section-header">Mundo</div>
-      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-        <div class="list-card">
-          <span class="tag">Mundo</span>
-          <h4>Panorama econômico global registra oscilações em bolsas internacionais</h4>
-          <span class="news-date">02/08/2026</span>
-        </div>
-      </a>
-      <a href="https://www.cgnewsoficial.com.br" target="_blank" class="news-link">
-        <div class="list-card">
-          <span class="tag">Mundo</span>
-          <h4>Acordos comerciais entre nações entram em nova fase de negociações</h4>
-          <span class="news-date">02/08/2026</span>
-        </div>
-      </a>
-
     </div>
 
-    <!-- COLUNA DIREITA (REDES SOCIAIS) -->
     <aside class="sidebar-column">
       <div class="sidebar-box">
         <div class="sidebar-title">Redes Sociais</div>
         <div class="social-icons-grid">
-          <a href="https://wa.me/5567996619364" target="_blank" title="WhatsApp CG NEWS"><i class="fa-brands fa-whatsapp"></i></a>
-          <a href="https://www.instagram.com/cgnews.oficial/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-          <a href="https://www.facebook.com/share/19XBbzamDq/" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
-          <a href="https://www.tiktok.com/@cgnewsoficial" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-          <a href="https://www.youtube.com/@cgnews.oficial" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
-          <a href="https://www.kwai.com/@cgnewsoficial" target="_blank" title="Kwai"><i class="fa-solid fa-video"></i></a>
-          <a href="https://www.threads.net/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
-          <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="https://whatsapp.com" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
         </div>
       </div>
     </aside>
+  </div>
 
+  <!-- MODAL DE LOGIN / CADASTRO -->
+  <div id="modalLogin" class="modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close" onclick="fecharModais()">&times;</button>
+      <div id="telaLogin">
+        <h3>Acesso Restrito</h3>
+        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Faça login com sua conta de Funcionário ou Administrador.</p>
+        <div class="form-group">
+          <label>Usuário / E-mail</label>
+          <input type="text" id="userInput" placeholder="Digite seu usuário (Digite 'admin' para Chefe)">
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <input type="password" id="passInput" placeholder="Digite sua senha">
+        </div>
+        <button class="btn-submit" onclick="fazerLogin()">Entrar no Sistema</button>
+        <p style="text-align: center; margin-top: 15px; font-size: 13px;">
+          Não tem cadastro? <a href="#" onclick="mostrarCadastro()" style="color: #11136c; font-weight: bold;">Solicitar Cadastro</a>
+        </p>
+      </div>
+
+      <!-- TELA DE SOLICITAÇÃO DE CADASTRO -->
+      <div id="telaCadastro" style="display: none;">
+        <h3>Solicitar Cadastro</h3>
+        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Sua conta precisará ser aprovada pelo Administrador (Chefe) para liberar o acesso.</p>
+        <div class="form-group">
+          <label>Seu Nome Completo</label>
+          <input type="text" placeholder="Nome completo">
+        </div>
+        <div class="form-group">
+          <label>E-mail ou Usuário desejado</label>
+          <input type="text" placeholder="usuario@email.com">
+        </div>
+        <div class="form-group">
+          <label>Criar Senha</label>
+          <input type="password" placeholder="Sua senha">
+        </div>
+        <button class="btn-submit" onclick="enviarCadastro()">Enviar para Aprovação do Chefe</button>
+        <p style="text-align: center; margin-top: 15px; font-size: 13px;">
+          Já tem conta? <a href="#" onclick="mostrarLogin()" style="color: #11136c; font-weight: bold;">Fazer Login</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAINEL DO FUNCIONÁRIO (CRIAR NOTÍCIAS) -->
+  <div id="modalPainelFuncionario" class="modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close" onclick="fecharModais()">&times;</button>
+      <h3>Painel do Funcionário (Criar Notícia)</h3>
+      <div class="form-group">
+        <label>Título da Matéria</label>
+        <input type="text" placeholder="Digite o título da notícia">
+      </div>
+      <div class="form-group">
+        <label>Categoria</label>
+        <select>
+          <option>Polícia</option>
+          <option>Trânsito</option>
+          <option>Campo Grande</option>
+          <option>Mato Grosso do Sul</option>
+          <option>Brasil</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Texto da Notícia / Matéria</label>
+        <textarea rows="5" placeholder="Escreva o texto completo da notícia aqui..."></textarea>
+      </div>
+      <button class="btn-submit" onclick="alert('Notícia enviada com sucesso!')">Publicar Matéria</button>
+    </div>
+  </div>
+
+  <!-- PAINEL DO ADMINISTRADOR (CHEFE - CONTROLE TOTAL + CRIAÇÃO DE NOTÍCIAS) -->
+  <div id="modalPainelAdmin" class="modal-overlay">
+    <div class="modal-box" style="max-width: 650px;">
+      <button class="modal-close" onclick="fecharModais()">&times;</button>
+      <h3 style="color: #d9534f;"><i class="fa-solid fa-crown"></i> Painel do Administrador (Chefe)</h3>
+      <p style="font-size: 13px; color: #555; margin-bottom: 15px;">Controle absoluto: Criação de matérias, aprovação de cadastros, anúncios e customização.</p>
+      
+      <!-- Seção 1: Criar Notícia (Admin) -->
+      <div style="background: #eef2f7; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #11136c;">
+        <strong style="color: #11136c;">Criar Nova Notícia (Administrador):</strong>
+        <div class="form-group" style="margin-top: 10px;">
+          <label>Título da Matéria</label>
+          <input type="text" placeholder="Título principal da notícia">
+        </div>
+        <div class="form-group">
+          <label>Categoria</label>
+          <select>
+            <option>Últimas Notícias</option>
+            <option>Polícia</option>
+            <option>Trânsito</option>
+            <option>Campo Grande</option>
+            <option>Mato Grosso do Sul</option>
+            <option>Brasil</option>
+            <option>Mundo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Conteúdo da Matéria</label>
+          <textarea rows="3" placeholder="Escreva a matéria completa..."></textarea>
+        </div>
+        <button class="btn-submit" onclick="alert('Notícia publicada pelo Administrador com sucesso!')">Publicar Notícia Oficial</button>
+      </div>
+
+      <!-- Seção 2: Aprovação de Cadastros -->
+      <div style="background: #f9f9f9; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #d9534f;">
+        <strong>Gerenciar Cadastros Pendentes:</strong>
+        <p style="font-size: 12px; color: #666; margin-top: 5px;">Novo funcionário aguardando aprovação: <em>joao_reporter</em> <button style="background:#4cd964; color:#fff; border:none; padding:3px 8px; border-radius:3px; cursor:pointer; margin-left:10px;" onclick="alert('Funcionário Aprovado!')">Aprovar</button></p>
+      </div>
+
+      <!-- Seção 3: Anúncios e Configurações -->
+      <div class="form-group">
+        <label>Inserir Código de Anúncios / Publicidade (Google AdSense / Banners)</label>
+        <textarea rows="2" placeholder="Cole o código HTML do anúncio aqui..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Alterar Cor Principal do Site</label>
+        <input type="color" value="#11136c" style="height: 40px; cursor: pointer;">
+      </div>
+
+      <button class="btn-submit" style="background: #d9534f;" onclick="alert('Configurações de Administrador salvas com sucesso!')">Salvar Alterações Globais</button>
+    </div>
   </div>
 
   <!-- RODAPÉ -->
   <footer>
     <h3>CG NEWS OFICIAL</h3>
     <div class="footer-social-icons">
-      <a href="https://wa.me/5567996619364" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-      <a href="https://www.facebook.com/share/19XBbzamDq/" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-      <a href="https://www.youtube.com/@cgnews.oficial" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
-      <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
-      <a href="https://www.instagram.com/cgnews.oficial/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-      <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-      <a href="https://www.tiktok.com/@cgnewsoficial" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-      <a href="https://www.kwai.com/@cgnewsoficial" target="_blank" title="Kwai"><i class="fa-solid fa-video"></i></a>
-      <a href="https://www.threads.net/@cgnewsoficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
+      <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+      <a href="#"><i class="fa-brands fa-instagram"></i></a>
     </div>
     <p>© 2026 CG NEWS OFICIAL — Informação em tempo real.</p>
   </footer>
@@ -351,6 +297,41 @@
   <script>
     function openNav() { document.getElementById("mySideMenu").style.width = "280px"; }
     function closeNav() { document.getElementById("mySideMenu").style.width = "0"; }
+
+    function abrirModalLogin() { fecharModais(); document.getElementById('modalLogin').style.display = 'flex'; }
+    function fecharModais() { 
+      document.getElementById('modalLogin').style.display = 'none'; 
+      document.getElementById('telaLogin').style.display = 'block';
+      document.getElementById('telaCadastro').style.display = 'none';
+      document.getElementById('modalPainelFuncionario').style.display = 'none';
+      document.getElementById('modalPainelAdmin').style.display = 'none';
+    }
+
+    function mostrarCadastro() {
+      document.getElementById('telaLogin').style.display = 'none';
+      document.getElementById('telaCadastro').style.display = 'block';
+    }
+    function mostrarLogin() {
+      document.getElementById('telaCadastro').style.display = 'none';
+      document.getElementById('telaLogin').style.display = 'block';
+    }
+
+    function enviarCadastro() {
+      alert('Cadastro enviado com sucesso! Aguardando aprovação do Administrador.');
+      fecharModais();
+    }
+
+    function fazerLogin() {
+      var user = document.getElementById('userInput').value.trim();
+      fecharModais();
+      
+      // Se digitar "admin" entra como Chefe (Admin Completo com Criação de Notícias)
+      if (user.toLowerCase() === 'admin') {
+        document.getElementById('modalPainelAdmin').style.display = 'flex';
+      } else {
+        document.getElementById('modalPainelFuncionario').style.display = 'flex';
+      }
+    }
   </script>
 
 </body>
