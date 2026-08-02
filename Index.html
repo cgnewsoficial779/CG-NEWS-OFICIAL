@@ -12,7 +12,7 @@
         html { scroll-behavior: smooth; }
         body { background-color: #f2f4f7; color: #1a1a1a; }
         
-        /* CABEÇALHO ATUALIZADO (Com Menu e Lupa) */
+        /* CABEÇALHO */
         header { 
             background-color: #11136c; color: white; 
             padding: 15px 20px; font-size: 20px; font-weight: bold;
@@ -68,7 +68,6 @@
         </div>
     </header>
 
-    <!-- FUNDO ESCURO DO MENU -->
     <div id="overlay" onclick="fecharMenu()"></div>
 
     <!-- MENU LATERAL -->
@@ -166,7 +165,6 @@
             document.body.style.overflow = "auto";
         };
 
-        // OBJETOS DAS NOTÍCIAS
         window.noticiasSalvas = {};
 
         // ABRIR MATÉRIA EM TELA CHEIA
@@ -180,16 +178,36 @@
             const d = new Date(item.dataAtualizacao || Date.now());
             const dataFormatada = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
 
+            // GERADOR DE VÍDEOS DIRETOS (SEM BOTÃO AZUL)
             let areaVideo = "";
             if (item.linkRedeSocial && item.linkRedeSocial.trim() !== "") {
-                areaVideo = `
-                    <div style="margin-top: 25px; padding: 15px; background: #eef0f5; border-left: 5px solid #11136c; border-radius: 4px;">
-                        <p style="margin-bottom: 10px; font-weight: bold; color: #333;">Mídia / Vídeo da Ocorrência:</p>
-                        <a href="${item.linkRedeSocial}" target="_blank" style="display: inline-block; background: #11136c; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
-                            Assistir Vídeo na Rede Social
-                        </a>
-                    </div>
-                `;
+                const url = item.linkRedeSocial.trim();
+                
+                if (url.includes("youtube.com") || url.includes("youtu.be")) {
+                    let videoId = "";
+                    if (url.includes("youtu.be/")) videoId = url.split("youtu.be/")[1].split("?")[0];
+                    else if (url.includes("watch?v=")) videoId = url.split("watch?v=")[1].split("&")[0];
+                    else if (url.includes("shorts/")) videoId = url.split("shorts/")[1].split("?")[0];
+                    
+                    if (videoId) areaVideo = `<iframe width="100%" height="400" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 8px; margin-top: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></iframe>`;
+                } 
+                else if (url.includes("instagram.com")) {
+                    let cleanUrl = url.split("?")[0];
+                    if (!cleanUrl.endsWith("/")) cleanUrl += "/";
+                    areaVideo = `<iframe src="${cleanUrl}embed/captioned" width="100%" height="600" frameborder="0" scrolling="no" allowtransparency="true" style="border-radius: 8px; margin-top: 25px; border: 1px solid #ccc; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: white;"></iframe>`;
+                }
+                else if (url.includes("facebook.com")) {
+                    let encodedUrl = encodeURIComponent(url);
+                    areaVideo = `<iframe src="https://www.facebook.com/plugins/video.php?height=400&href=${encodedUrl}&show_text=false" width="100%" height="400" style="border:none;overflow:hidden; border-radius: 8px; margin-top: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>`;
+                }
+                else if (url.includes("tiktok.com") && url.includes("/video/")) {
+                    let videoId = url.split("/video/")[1].split("?")[0];
+                    areaVideo = `<iframe src="https://www.tiktok.com/embed/v2/${videoId}" width="100%" height="650" frameborder="0" allowfullscreen scrolling="no" style="border-radius: 8px; margin-top: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></iframe>`;
+                }
+                else {
+                    // Para qualquer outro link (Kwai, etc), força a abertura de um quadrado de vídeo nativo (iframe)
+                    areaVideo = `<iframe src="${url}" width="100%" height="500" frameborder="0" allowfullscreen style="border-radius: 8px; margin-top: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #f9f9f9;"></iframe>`;
+                }
             }
 
             conteudo.innerHTML = `
@@ -198,7 +216,9 @@
                 <h1 style="color: #11136c; font-size: 24px; margin: 15px 0;">${item.titulo}</h1>
                 <p style="color: #555; font-size: 14px; margin-bottom: 25px;">Publicado em: ${dataFormatada} ${item.autor ? `| Por ${item.autor}` : ""}</p>
                 <div style="font-size: 16px; line-height: 1.8; color: #222; white-space: pre-wrap;">${item.texto}</div>
+                
                 ${areaVideo}
+                
                 <div style="margin-top: 30px; font-size: 12px; color: #888;">Fonte: ${item.fonteNoticia || "Não informada"}</div>
             `;
 
