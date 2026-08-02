@@ -30,7 +30,7 @@
         .checkbox-group input { width: 18px; height: 18px; cursor: pointer; }
         .checkbox-group label { font-size: 14px; font-weight: 600; color: #475569; cursor: pointer; margin-bottom: 0; }
 
-        .tags-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; background: #f8fafc; padding: 15px; border-radius: 6px; border: 1px solid #e2e8f0; }
+        .tags-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; background: #f8fafc; padding: 15px; border-radius: 6px; border: 1px solid #e2e8f0; }
         .tag-item { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; }
 
         .btn-group { display: flex; gap: 12px; margin-top: 30px; }
@@ -41,7 +41,6 @@
         .alert-success { background: #dcfce7; color: #166534; }
         .alert-error { background: #fee2e2; color: #991b1b; }
 
-        /* Lista de Notícias Cadastradas */
         .noticia-card { border: 1px solid #e2e8f0; padding: 15px; border-radius: 6px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; background: #fff; }
         .noticia-info h4 { font-size: 15px; color: #1e293b; margin-bottom: 4px; }
         .noticia-info p { font-size: 12px; color: #64748b; }
@@ -49,7 +48,6 @@
         .btn-edit { background: #0284c7; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
         .btn-delete { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
 
-        .preview-media { max-width: 150px; max-height: 100px; margin-top: 8px; border-radius: 4px; display: none; }
         .footer-text { text-align: center; font-size: 12px; color: #94a3b8; margin-top: 20px; }
     </style>
 
@@ -88,7 +86,6 @@
             });
         };
 
-        // Função para converter arquivo (imagem/vídeo) em Base64
         function fileToBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -98,7 +95,6 @@
             });
         }
 
-        // Função de cálculo de tempo decorrido
         function tempoDecorrido(dataIso) {
             if (!dataIso) return "";
             const agora = new Date();
@@ -118,7 +114,6 @@
             return `há ${diffAnos} ano${diffAnos > 1 ? 's' : ''}`;
         }
 
-        // Ajusta data/hora para fuso horário MS (America/Campo_Grande)
         function obterDataHoraMS() {
             const agora = new Date();
             const dataMS = new Date(agora.toLocaleString("en-US", { timeZone: "America/Campo_Grande" }));
@@ -134,14 +129,12 @@
                 tagsSelecionadas.push(cb.value);
             });
 
-            // Processa arquivo de Imagem
             const imgInput = document.getElementById("fileImagem");
             let imagemBase64 = document.getElementById("hiddenImagem").value;
             if (imgInput.files.length > 0) {
                 imagemBase64 = await fileToBase64(imgInput.files[0]);
             }
 
-            // Processa arquivo de Vídeo
             const videoInput = document.getElementById("fileVideo");
             let videoBase64 = document.getElementById("hiddenVideo").value;
             if (videoInput.files.length > 0) {
@@ -238,7 +231,6 @@
                         document.getElementById("texto").value = data.texto || "";
                         document.getElementById("fonteNoticia").value = data.fonteNoticia || "";
 
-                        // Marca tags
                         document.querySelectorAll('input[name="tags"]').forEach(cb => {
                             cb.checked = (data.tags || []).includes(cb.value);
                         });
@@ -272,7 +264,6 @@
         <button onclick="sair()" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
     </div>
 
-    <!-- Formulário de Cadastro e Edição -->
     <div class="container">
         <h2 class="page-title" id="form-title">Cadastro de: Notícias</h2>
         
@@ -284,9 +275,12 @@
                 <label>Categoria</label>
                 <select id="categoria" required>
                     <option value="">- Selecione -</option>
-                    <option value="Cidades">Cidades</option>
                     <option value="Polícia">Polícia</option>
                     <option value="Trânsito">Trânsito</option>
+                    <option value="Campo Grande">Campo Grande</option>
+                    <option value="Mato Grosso do Sul">Mato Grosso do Sul</option>
+                    <option value="Brasil">Brasil</option>
+                    <option value="Mundo">Mundo</option>
                     <option value="Política">Política</option>
                     <option value="Geral">Geral</option>
                 </select>
@@ -347,12 +341,12 @@
             <div class="form-group">
                 <label>Tags</label>
                 <div class="tags-grid">
-                    <div class="tag-item"><input type="checkbox" name="tags" value="Brasil" id="t1"><label for="t1">Brasil</label></div>
-                    <div class="tag-item"><input type="checkbox" name="tags" value="Campo Grande" id="t2"><label for="t2">Campo Grande</label></div>
-                    <div class="tag-item"><input type="checkbox" name="tags" value="Polícia" id="t3"><label for="t3">Polícia</label></div>
-                    <div class="tag-item"><input type="checkbox" name="tags" value="Trânsito" id="t4"><label for="t4">Trânsito</label></div>
-                    <div class="tag-item"><input type="checkbox" name="tags" value="Mato Grosso do Sul" id="t5"><label for="t5">Mato Grosso do Sul</label></div>
-                    <div class="tag-item"><input type="checkbox" name="tags" value="Dengue" id="t6"><label for="t6">Dengue</label></div>
+                    <div class="tag-item"><input type="checkbox" name="tags" value="Polícia" id="t1"><label for="t1">Polícia</label></div>
+                    <div class="tag-item"><input type="checkbox" name="tags" value="Trânsito" id="t2"><label for="t2">Trânsito</label></div>
+                    <div class="tag-item"><input type="checkbox" name="tags" value="Campo Grande" id="t3"><label for="t3">Campo Grande</label></div>
+                    <div class="tag-item"><input type="checkbox" name="tags" value="Mato Grosso do Sul" id="t4"><label for="t4">Mato Grosso do Sul</label></div>
+                    <div class="tag-item"><input type="checkbox" name="tags" value="Brasil" id="t5"><label for="t5">Brasil</label></div>
+                    <div class="tag-item"><input type="checkbox" name="tags" value="Mundo" id="t6"><label for="t6">Mundo</label></div>
                     <div class="tag-item"><input type="checkbox" name="tags" value="Política" id="t7"><label for="t7">Política</label></div>
                     <div class="tag-item"><input type="checkbox" name="tags" value="Geral" id="t8"><label for="t8">Geral</label></div>
                 </div>
@@ -365,7 +359,6 @@
         </form>
     </div>
 
-    <!-- Gerenciador de Notícias Publicadas -->
     <div class="container">
         <h3 class="page-title">Notícias Cadastradas</h3>
         <div id="lista-noticias">
