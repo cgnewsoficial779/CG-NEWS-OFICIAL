@@ -554,70 +554,120 @@
 
             if (urlRede !== "") {
                 const url = urlRede;
-                let nomeRede = "Rede Social";
-                let iconeRedeClass = "fas fa-share-alt";
-                let textoBotao = "Ver publicação original";
-                let corBotaoPerfil = "#11136c";
-
-                if (url.includes("instagram.com")) {
-                    nomeRede = "Instagram"; iconeRedeClass = "fab fa-instagram"; textoBotao = "Ver no Instagram"; corBotaoPerfil = "#e1306c";
-                } else if (url.includes("youtube.com") || url.includes("youtu.be")) {
-                    nomeRede = "YouTube"; iconeRedeClass = "fab fa-youtube"; textoBotao = "Assista no YouTube"; corBotaoPerfil = "#FF0000";
-                } else if (url.includes("facebook.com")) {
-                    nomeRede = "Facebook"; iconeRedeClass = "fab fa-facebook"; textoBotao = "Ver no Facebook"; corBotaoPerfil = "#1877F2";
-                } else if (url.includes("tiktok.com")) {
-                    nomeRede = "TikTok"; iconeRedeClass = "fab fa-tiktok"; textoBotao = "Assistir no TikTok"; corBotaoPerfil = "#000000";
-                } else if (url.includes("kwai.com")) {
-                    nomeRede = "Kwai"; iconeRedeClass = "fa-solid fa-video"; textoBotao = "Assistir no Kwai"; corBotaoPerfil = "#FF6600";
-                } else if (url.includes("twitter.com") || url.includes("x.com")) {
-                    nomeRede = "X"; iconeRedeClass = "fa-brands fa-x-twitter"; textoBotao = "Ver no X"; corBotaoPerfil = "#000000";
-                }
-
                 let areaCentralPlayer = "";
 
-                if (url.includes("instagram.com")) {
+                // Helper para extrair ID do YouTube
+                function extrairYtId(link) {
+                    if (link.includes("youtu.be/")) return link.split("youtu.be/")[1]?.split("?")[0];
+                    if (link.includes("shorts/")) return link.split("shorts/")[1]?.split("?")[0];
+                    if (link.includes("watch?v=")) return link.split("watch?v=")[1]?.split("&")[0];
+                    return null;
+                }
+
+                // 1. YOUTUBE (Player de Vídeo Direto)
+                if (url.includes("youtube.com") || url.includes("youtu.be")) {
+                    let ytId = extrairYtId(url);
+                    if (ytId) {
+                        areaCentralPlayer = `
+                            <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                                <iframe src="https://www.youtube.com/embed/${ytId}" title="Vídeo do YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top:0; left:0; width:100%; height:100%;"></iframe>
+                            </div>
+                        `;
+                    }
+                }
+
+                // 2. INSTAGRAM / THREADS (Player Embed Direto)
+                else if (url.includes("instagram.com") || url.includes("threads.com")) {
                     let cleanIgUrl = url.split("?")[0];
                     if (!cleanIgUrl.endsWith("/")) cleanIgUrl += "/";
                     areaCentralPlayer = `
-                        <div style="position: relative; width: 100%; max-width: 540px; margin: 0 auto; background: #fff; overflow: hidden; border-radius: 8px;">
+                        <div style="width: 100%; max-width: 540px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                             <iframe src="${cleanIgUrl}embed" width="100%" height="560" frameborder="0" scrolling="no" allowtransparency="true" style="border:none; overflow:hidden;"></iframe>
                         </div>
                     `;
                 }
-                else if (url.includes("youtube.com/watch?v=") || url.includes("youtu.be/") || url.includes("youtube.com/shorts/")) {
-                    let ytId = "";
-                    if (url.includes("youtu.be/")) ytId = url.split("youtu.be/")[1]?.split("?")[0];
-                    else if (url.includes("shorts/")) ytId = url.split("shorts/")[1]?.split("?")[0];
-                    else if (url.includes("watch?v=")) ytId = url.split("watch?v=")[1]?.split("&")[0];
-                    if (ytId) {
+
+                // 3. TIKTOK (Embed Oficial do Vídeo)
+                else if (url.includes("tiktok.com")) {
+                    let videoId = url.split("/video/")[1]?.split("?")[0];
+                    if (videoId) {
                         areaCentralPlayer = `
-                            <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 8px; overflow: hidden;">
-                                <iframe src="https://www.youtube.com/embed/${ytId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+                            <div style="width: 100%; max-width: 325px; margin: 0 auto;">
+                                <blockquote class="tiktok-embed" cite="${url}" data-video-id="${videoId}" style="max-width: 325px; min-width: 325px;">
+                                    <section><a target="_blank" href="${url}">Ver vídeo no TikTok</a></section>
+                                </blockquote>
                             </div>
                         `;
+                        if (!document.getElementById("tiktok-embed-script")) {
+                            let scriptTk = document.createElement("script");
+                            scriptTk.id = "tiktok-embed-script";
+                            scriptTk.src = "https://www.tiktok.com/embed.js";
+                            document.body.appendChild(scriptTk);
+                        }
                     }
-                } 
+                }
+
+                // 4. FACEBOOK (Embed Oficial)
                 else if (url.includes("facebook.com")) {
                     let encodedFbUrl = encodeURIComponent(url);
                     areaCentralPlayer = `
-                        <div style="position: relative; width: 100%; background: #fff; display: flex; justify-content: center; overflow: hidden; border-radius: 8px;">
+                        <div style="position: relative; width: 100%; background: #fff; display: flex; justify-content: center; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                             <iframe src="https://www.facebook.com/plugins/video.php?height=314&href=${encodedFbUrl}&show_text=false&width=560&t=0" width="100%" height="350" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
                         </div>
                     `;
                 }
 
+                // 5. DEMAIS REDES (Kwai, X, LinkedIn, etc.) -> Extrai capa e título oficiais do LINK via OpenGraph
                 if (!areaCentralPlayer) {
+                    const apiUrl = `https://api.microlink.io?url=${encodeURIComponent(url)}`;
+
                     areaCentralPlayer = `
-                        <div style="text-align: center; padding: 20px 10px;">
-                            <a href="${url}" target="_blank" style="display: inline-block; background: ${corBotaoPerfil}; color: white; width: 100%; max-width: 360px; padding: 14px; font-weight: 700; font-size: 15px; text-decoration: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
-                                <i class="${iconeRedeClass}"></i> ${textoBotao}
-                            </a>
+                        <div id="card-og-container" style="border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; background: #000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                            <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #1a1a1a; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+                                <img id="og-card-image" src="" alt="Capa da Mídia" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85; display: none;" />
+                                <div id="og-card-loading" style="color: #fff; font-size: 13px;">Carregando mídia original...</div>
+                                <a href="${url}" target="_blank" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: #fff; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 24px; border: 2px solid #fff; box-shadow: 0 0 15px rgba(0,0,0,0.5);">
+                                    ▶
+                                </a>
+                            </div>
+                            <div style="padding: 12px 16px; background: #fff; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px solid #eee;">
+                                <span id="og-card-title" style="font-size: 13px; font-weight: 700; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 65%;">Abrir publicação oficial</span>
+                                <a href="${url}" target="_blank" style="background-color: #11136c; color: #fff; padding: 8px 14px; border-radius: 20px; text-decoration: none; font-size: 12px; font-weight: bold; white-space: nowrap;">
+                                    Assistir na Plataforma
+                                </a>
+                            </div>
                         </div>
                     `;
+
+                    // Requisição assíncrona para extração das informações originais da URL
+                    fetch(apiUrl)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === "success" && data.data) {
+                                const imgUrl = data.data.image?.url || data.data.logo?.url;
+                                const titulo = data.data.title;
+                                if (imgUrl) {
+                                    const imgEl = document.getElementById("og-card-image");
+                                    if (imgEl) {
+                                        imgEl.src = imgUrl;
+                                        imgEl.style.display = "block";
+                                    }
+                                }
+                                if (titulo) {
+                                    const titleEl = document.getElementById("og-card-title");
+                                    if (titleEl) titleEl.innerText = titulo;
+                                }
+                            }
+                        })
+                        .catch(() => {})
+                        .finally(() => {
+                            const loadEl = document.getElementById("og-card-loading");
+                            if (loadEl) loadEl.style.display = "none";
+                        });
                 }
 
                 blocoVideoRedeSocial = `
-                    <div style="margin: 35px 0 20px 0; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; background: #fff; padding: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                    <div style="margin: 30px 0 20px 0;">
                         ${areaCentralPlayer}
                     </div>
                 `;
