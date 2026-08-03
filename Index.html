@@ -432,11 +432,15 @@
             const timestampRef = item.dataAtualizacao || item.dataCriacao || Date.now();
             
             const criacao = formatarDataHoraMS(timestampCriacao);
-            const atualizacao = formatarDataHoraMS(timestampRef);
-            const relAtualizacao = tempoRelativo(timestampRef);
             
             let html = `<span>Publicado em ${criacao.data} às ${criacao.hora}</span>`;
-            html += `<br><span style="color: #333; font-weight: 600;"><i class="fas fa-sync-alt" style="font-size: 10px;"></i> Atualizado ${relAtualizacao} - ${atualizacao.data} às ${atualizacao.hora}</span>`;
+
+            // Só exibe a atualização ao lado se realmente foi editado (diferença maior que 1 minuto)
+            if (item.dataAtualizacao && (item.dataAtualizacao - timestampCriacao > 60000)) {
+                const relAtualizacao = tempoRelativo(timestampRef);
+                const atualizacao = formatarDataHoraMS(timestampRef);
+                html += ` <span style="color: #555; font-weight: 600; margin-left: 8px;">• <i class="fas fa-sync-alt" style="font-size: 10px;"></i> Atualizado ${relAtualizacao} (${atualizacao.data} às ${atualizacao.hora})</span>`;
+            }
 
             return html;
         }
@@ -644,10 +648,13 @@
             const timestampRef = item.dataAtualizacao || item.dataCriacao || Date.now();
             
             const criacao = formatarDataHoraMS(timestampCriacao);
-            const relAtualizacao = tempoRelativo(timestampRef);
-            const atualizacao = formatarDataHoraMS(timestampRef);
-            
-            let htmlData = `${criacao.data} às ${criacao.hora} • atualizado ${relAtualizacao} (${atualizacao.data} às ${atualizacao.hora})`;
+            let htmlData = `${criacao.data} às ${criacao.hora}`;
+
+            if (item.dataAtualizacao && (item.dataAtualizacao - timestampCriacao > 60000)) {
+                const relAtualizacao = tempoRelativo(timestampRef);
+                const atualizacao = formatarDataHoraMS(timestampRef);
+                htmlData += ` • atualizado ${relAtualizacao} (${atualizacao.data} às ${atualizacao.hora})`;
+            }
 
             let catText = "NOTÍCIA";
             if (item.categorias && item.categorias.length > 0) catText = item.categorias[0];
@@ -670,10 +677,13 @@
             const timestampRef = item.dataAtualizacao || item.dataCriacao || Date.now();
             
             const criacao = formatarDataHoraMS(timestampCriacao);
-            const relAtualizacao = tempoRelativo(timestampRef);
-            const atualizacao = formatarDataHoraMS(timestampRef);
-            
-            let htmlData = `${criacao.data} às ${criacao.hora} | atualizado ${relAtualizacao} (${atualizacao.data} às ${atualizacao.hora})`;
+            let htmlData = `${criacao.data} às ${criacao.hora}`;
+
+            if (item.dataAtualizacao && (item.dataAtualizacao - timestampCriacao > 60000)) {
+                const relAtualizacao = tempoRelativo(timestampRef);
+                const atualizacao = formatarDataHoraMS(timestampRef);
+                htmlData += ` | atualizado ${relAtualizacao} (${atualizacao.data} às ${atualizacao.hora})`;
+            }
 
             const textoResumo = item.texto ? item.texto.substring(0, 100) + "..." : "Clique para ler a matéria completa.";
 
