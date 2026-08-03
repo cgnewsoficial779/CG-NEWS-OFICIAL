@@ -752,15 +752,12 @@
         }
 
         function gerarHtmlDatas(item) {
-            // Data de criação original fixada (NÃO muda nunca mais)
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
             const criacao = formatarDataHoraMS(timestampCriacao);
             let html = `<span>Publicado em ${criacao.data} às ${criacao.hora}</span>`;
 
-            // Data/hora da atualização (só exibe se houver edição posterior à criação)
             const timestampAtualizacao = item.dataAtualizacao || timestampCriacao;
             
-            // Verifica se a atualização ocorreu pelo menos 1 minuto após a criação original
             if (timestampAtualizacao > (timestampCriacao + 60000)) {
                 const relAtualizacao = tempoRelativo(timestampAtualizacao);
                 html += ` <span style="color: #718096; font-weight: 500; margin-left: 6px;">• <i class="fas fa-sync-alt" style="font-size: 9px;"></i> ${relAtualizacao}</span>`;
