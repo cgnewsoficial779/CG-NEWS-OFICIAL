@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -20,6 +20,26 @@
             position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         .header-btn { cursor: pointer; font-size: 22px; padding: 5px; }
+
+        /* BARRA DE BUSCA */
+        #barra-busca {
+            display: none;
+            background-color: #fff;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 58px; 
+            z-index: 999;
+        }
+        #input-busca {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+        }
+        #input-busca:focus { border-color: #11136c; }
         
         /* MENU LATERAL */
         .sidebar {
@@ -38,6 +58,7 @@
             padding: 15px 20px; text-decoration: none; font-size: 15px; font-weight: 500;
             color: #11136c; display: block; border-bottom: 1px solid #e0e0e0;
             transition: 0.2s;
+            cursor: pointer;
         }
         .sidebar a:hover { background-color: #f2f4f7; padding-left: 25px; }
         
@@ -48,13 +69,80 @@
 
         .container { max-width: 900px; margin: 20px auto; padding: 0 15px; min-height: 70vh; }
         
-        .section-title { font-size: 20px; color: #11136c; border-left: 4px solid #11136c; padding-left: 10px; margin: 30px 0 15px 0; scroll-margin-top: 80px; }
-        .empty-msg { font-size: 14px; color: #888; font-style: italic; margin-bottom: 20px; }
+        .section-title { font-size: 20px; color: #11136c; border-left: 4px solid #11136c; padding-left: 10px; margin: 20px 0 20px 0; display: none; }
+        .empty-msg { font-size: 14px; color: #888; font-style: italic; margin-bottom: 20px; text-align: center; }
 
-        footer { background-color: #11136c; color: white; text-align: center; padding: 25px 20px; margin-top: 40px; font-size: 12px; }
-        .social-icons i { margin: 0 10px; font-size: 18px; cursor: pointer; }
+        /* =========================================
+           FORMATO 1: GRID DE PORTAL (PÁGINA INICIAL)
+           ========================================= */
+        .home-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 colunas no celular */
+            gap: 25px 15px; /* Espaço entre as linhas e colunas */
+            margin-top: 10px;
+        }
+        /* O primeiro card (Manchete principal) ocupa a tela toda */
+        .home-grid .grid-card:first-child {
+            grid-column: span 2;
+            margin-bottom: 5px;
+        }
+        .home-grid .grid-card:first-child .grid-img {
+            aspect-ratio: 16/9;
+        }
+        .home-grid .grid-card:first-child .grid-title {
+            font-size: 18px;
+        }
 
-        /* NOVO FORMATO DE LISTA (TIPO AS IMAGENS) */
+        .grid-card {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .grid-card:hover { opacity: 0.8; }
+        
+        .grid-img {
+            width: 100%;
+            aspect-ratio: 4/3; /* Imagens menores um pouco mais quadradas */
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background-color: #ddd;
+        }
+        
+        .grid-cat {
+            color: #e54b00; /* Laranja forte padrão de jornalismo */
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .grid-cat span.data-padrao {
+            color: #777;
+            font-weight: 500;
+            margin-left: 5px;
+        }
+        
+        .grid-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #222;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        /* Telas maiores (Computador/Tablet) */
+        @media (min-width: 768px) {
+            .home-grid { grid-template-columns: repeat(3, 1fr); }
+            .home-grid .grid-card:first-child { grid-column: span 3; }
+            .grid-img { aspect-ratio: 16/9; }
+        }
+
+        /* =========================================
+           FORMATO 2: LISTA (USADO NAS CATEGORIAS)
+           ========================================= */
         .news-list-item {
             display: flex;
             gap: 15px;
@@ -102,18 +190,20 @@
             color: #555;
             line-height: 1.4;
             display: -webkit-box;
-            -webkit-line-clamp: 2; /* Mostra no máximo 2 linhas do resumo */
+            -webkit-line-clamp: 2; 
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
-        /* Ajustes para telas menores (celular) */
         @media (max-width: 500px) {
             .news-list-item { padding: 10px; gap: 10px; }
             .news-list-image { width: 110px; height: 80px; }
             .news-list-title { font-size: 14px; margin-bottom: 5px; }
-            .news-list-excerpt { display: none; /* Esconde o resumo no celular para poupar espaço */ }
+            .news-list-excerpt { display: none; }
         }
+
+        footer { background-color: #11136c; color: white; text-align: center; padding: 25px 20px; margin-top: 40px; font-size: 12px; }
+        .social-icons i { margin: 0 10px; font-size: 18px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -122,51 +212,38 @@
         <div class="header-btn" onclick="abrirMenu()">
             <i class="fas fa-bars"></i>
         </div>
-        <div>CG NEWS OFICIAL</div>
-        <div class="header-btn">
+        <div>CG NEWS</div>
+        <div class="header-btn" onclick="toggleBusca()">
             <i class="fas fa-search"></i>
         </div>
     </header>
+
+    <div id="barra-busca">
+        <input type="text" id="input-busca" placeholder="Buscar por palavra-chave..." onkeyup="realizarBusca()">
+    </div>
 
     <div id="overlay" onclick="fecharMenu()"></div>
 
     <div id="sidebar" class="sidebar">
         <div class="sidebar-header">
-            <h3>CG NEWS OFICIAL</h3>
+            <h3>Navegação</h3>
             <i class="fas fa-times" onclick="fecharMenu()"></i>
         </div>
-        <a href="#sec-ultimas" onclick="fecharMenu()">Últimas Notícias</a>
-        <a href="#sec-policia" onclick="fecharMenu()">Polícia</a>
-        <a href="#sec-transito" onclick="fecharMenu()">Trânsito</a>
-        <a href="#sec-campogrande" onclick="fecharMenu()">Campo Grande</a>
-        <a href="#sec-ms" onclick="fecharMenu()">Mato Grosso do Sul</a>
-        <a href="#sec-brasil" onclick="fecharMenu()">Brasil</a>
-        <a href="#sec-mundo" onclick="fecharMenu()">Mundo</a>
+        <a onclick="filtrarCategoria('Todas')">Últimas Notícias</a>
+        <a onclick="filtrarCategoria('Polícia')">Polícia</a>
+        <a onclick="filtrarCategoria('Trânsito')">Trânsito</a>
+        <a onclick="filtrarCategoria('Campo Grande')">Campo Grande</a>
+        <a onclick="filtrarCategoria('Mato Grosso do Sul')">Mato Grosso do Sul</a>
+        <a onclick="filtrarCategoria('Brasil')">Brasil</a>
+        <a onclick="filtrarCategoria('Mundo')">Mundo</a>
     </div>
 
     <div class="container">
+        <!-- O título só aparece quando está filtrando categoria -->
+        <h2 id="titulo-principal" class="section-title">Últimas Notícias</h2>
         
-        <h2 id="sec-ultimas" class="section-title">Últimas Notícias</h2>
-        <div id="ultimas-noticias"><p class="empty-msg">Carregando notícias...</p></div>
-
-        <h2 id="sec-policia" class="section-title">Polícia</h2>
-        <div id="cat-policia"><p class="empty-msg">Nenhuma notícia registrada.</p></div>
-
-        <h2 id="sec-transito" class="section-title">Trânsito</h2>
-        <div id="cat-transito"><p class="empty-msg">Nenhuma notícia registrada.</p></div>
-
-        <h2 id="sec-campogrande" class="section-title">Campo Grande</h2>
-        <div id="cat-campogrande"><p class="empty-msg">Nenhuma notícia registrada.</p></div>
-
-        <h2 id="sec-ms" class="section-title">Mato Grosso do Sul</h2>
-        <div id="cat-ms"><p class="empty-msg">Nenhuma notícia registrada.</p></div>
-
-        <h2 id="sec-brasil" class="section-title">Brasil</h2>
-        <div id="cat-brasil"><p class="empty-msg">Nenhuma notícia registrada.</p></div>
-
-        <h2 id="sec-mundo" class="section-title">Mundo</h2>
-        <div id="cat-mundo"><p class="empty-msg">Nenhuma notícia registrada.</p></div>
-
+        <!-- Área onde as notícias são desenhadas -->
+        <div id="area-noticias"><p class="empty-msg">Carregando notícias...</p></div>
     </div>
 
     <footer>
@@ -178,14 +255,14 @@
             <i class="fab fa-instagram"></i>
             <i class="fab fa-tiktok"></i>
         </div>
-        <p>© 2026 CG NEWS OFICIAL - Informação em tempo real.</p>
+        <p>© 2026 CG NEWS - Informação em tempo real.</p>
     </footer>
 
     <!-- TELA DA MATÉRIA COMPLETA -->
     <div id="modal-materia" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f2f4f7; z-index: 9999; overflow-y: auto;">
         <div style="background: white; max-width: 800px; margin: 0 auto; min-height: 100vh; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
             <div onclick="fecharMateria()" style="color: #11136c; font-weight: bold; font-size: 16px; cursor: pointer; margin-bottom: 20px; border-bottom: 2px solid #11136c; padding-bottom: 10px; display: inline-block;">
-                &#8592; Voltar para as notícias
+                &#8592; Voltar
             </div>
             <div id="conteudo-materia"></div>
         </div>
@@ -208,6 +285,8 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        window.bancoDeNoticias = []; 
+
         window.abrirMenu = function() {
             document.getElementById("sidebar").style.left = "0";
             document.getElementById("overlay").style.display = "block";
@@ -220,10 +299,20 @@
             document.body.style.overflow = "auto";
         };
 
-        window.noticiasSalvas = {};
+        window.toggleBusca = function() {
+            const barra = document.getElementById("barra-busca");
+            if (barra.style.display === "none" || barra.style.display === "") {
+                barra.style.display = "block";
+                document.getElementById("input-busca").focus();
+            } else {
+                barra.style.display = "none";
+                document.getElementById("input-busca").value = "";
+                window.filtrarCategoria('Todas');
+            }
+        };
 
         window.abrirMateria = function(id) {
-            const item = window.noticiasSalvas[id];
+            const item = window.bancoDeNoticias.find(n => n.idUnico === id);
             if (!item) return;
 
             const modal = document.getElementById("modal-materia");
@@ -257,9 +346,6 @@
                     let videoId = url.split("/video/")[1].split("?")[0];
                     areaVideo = `<iframe src="https://www.tiktok.com/embed/v2/${videoId}" width="100%" height="650" frameborder="0" allowfullscreen scrolling="no" style="border-radius: 8px; margin-top: 25px;"></iframe>`;
                 }
-                else {
-                    areaVideo = `<iframe src="${url}" width="100%" height="500" frameborder="0" allowfullscreen style="border-radius: 8px; margin-top: 25px; background: #f9f9f9;"></iframe>`;
-                }
             }
 
             conteudo.innerHTML = `
@@ -283,15 +369,35 @@
             document.body.style.overflow = "auto"; 
         };
 
-        // NOVA FUNÇÃO: CRIA O CARD NO FORMATO DE LISTA (IMAGEM AO LADO DO TEXTO)
-        function criarHtmlCard(item, idId) {
+        // GERA O CARD NO FORMATO GRID (PÁGINA INICIAL)
+        function criarHtmlGridCard(item) {
             const d = new Date(item.dataAtualizacao || Date.now());
             const dataFormatada = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
 
+            let catText = "NOTÍCIA";
+            if (item.categorias && item.categorias.length > 0) catText = item.categorias[0];
+            else if (item.categoria) catText = item.categoria;
+
+            return `
+                <div onclick="abrirMateria('${item.idUnico}')" class="grid-card">
+                    ${item.imagem ? 
+                        `<img src="${item.imagem}" class="grid-img">` : 
+                        `<div class="grid-img" style="display:flex; align-items:center; justify-content:center; color:#999; font-size:12px;">Sem foto</div>`
+                    }
+                    <div class="grid-cat">${catText} <span class="data-padrao">• ${dataFormatada}</span></div>
+                    <div class="grid-title">${item.titulo}</div>
+                </div>
+            `;
+        }
+
+        // GERA O CARD NO FORMATO LISTA (CATEGORIAS E BUSCA)
+        function criarHtmlListaCard(item) {
+            const d = new Date(item.dataAtualizacao || Date.now());
+            const dataFormatada = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
             const textoResumo = item.texto ? item.texto.substring(0, 100) + "..." : "Clique para ler a matéria completa.";
 
             return `
-                <div onclick="abrirMateria('${idId}')" class="news-list-item">
+                <div onclick="abrirMateria('${item.idUnico}')" class="news-list-item">
                     ${item.imagem ? 
                         `<img src="${item.imagem}" class="news-list-image">` : 
                         `<div class="news-list-image" style="background:#eee; display:flex; align-items:center; justify-content:center; color:#999; font-size:12px;">Sem foto</div>`
@@ -302,80 +408,104 @@
                             <span><i class="far fa-clock"></i> ${dataFormatada}</span>
                             ${item.autor ? `<span><i class="far fa-user"></i> ${item.autor}</span>` : ""}
                         </div>
-                        <div class="news-list-excerpt">
-                            ${textoResumo}
-                        </div>
+                        <div class="news-list-excerpt">${textoResumo}</div>
                     </div>
                 </div>
             `;
         }
+
+        // FUNÇÃO QUE DECIDE QUAL TELA MOSTRAR (GRID OU LISTA)
+        function renderizarNoticias(lista, titulo, formatoHome = false) {
+            const tituloH2 = document.getElementById("titulo-principal");
+            const container = document.getElementById("area-noticias");
+            
+            container.innerHTML = "";
+
+            if (formatoHome) {
+                // Na Home, esconde o título "Últimas Notícias" para ficar mais limpo como portal
+                tituloH2.style.display = "none";
+            } else {
+                // Nas categorias, mostra o título da categoria
+                tituloH2.innerText = titulo;
+                tituloH2.style.display = "block";
+            }
+
+            if (lista.length === 0) {
+                container.innerHTML = `<p class="empty-msg">Nenhuma notícia encontrada para: ${titulo}</p>`;
+                return;
+            }
+
+            if (formatoHome) {
+                // Monta o visual de Portal (Grid)
+                let htmlGrid = '<div class="home-grid">';
+                lista.forEach(item => {
+                    htmlGrid += criarHtmlGridCard(item);
+                });
+                htmlGrid += '</div>';
+                container.innerHTML = htmlGrid;
+            } else {
+                // Monta o visual de Feed (Lista)
+                lista.forEach(item => {
+                    container.innerHTML += criarHtmlListaCard(item);
+                });
+            }
+        }
+
+        window.filtrarCategoria = function(categoriaDesejada) {
+            fecharMenu();
+            document.getElementById("input-busca").value = ""; 
+            
+            if (categoriaDesejada === 'Todas') {
+                renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
+            } else {
+                const listaFiltrada = window.bancoDeNoticias.filter(item => {
+                    if (item.categorias && item.categorias.length > 0) {
+                        return item.categorias.includes(categoriaDesejada);
+                    }
+                    return item.categoria === categoriaDesejada;
+                });
+                renderizarNoticias(listaFiltrada, categoriaDesejada, false); // False = Formato de lista
+            }
+        };
+
+        window.realizarBusca = function() {
+            const termo = document.getElementById("input-busca").value.toLowerCase();
+            
+            if (termo === "") {
+                renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
+                return;
+            }
+
+            const listaFiltrada = window.bancoDeNoticias.filter(item => {
+                const temNoTitulo = item.titulo && item.titulo.toLowerCase().includes(termo);
+                const temNoTexto = item.texto && item.texto.toLowerCase().includes(termo);
+                return temNoTitulo || temNoTexto;
+            });
+
+            renderizarNoticias(listaFiltrada, "Resultados da Busca", false);
+        };
 
         async function carregarNoticias() {
             try {
                 const q = query(collection(db, "noticias"), orderBy("dataAtualizacao", "desc"));
                 const snapshot = await getDocs(q);
 
-                const containerUltimas = document.getElementById("ultimas-noticias");
-                if(containerUltimas) containerUltimas.innerHTML = "";
-
-                const mapeamentoCategorias = {
-                    "Polícia": "cat-policia",
-                    "Trânsito": "cat-transito",
-                    "Campo Grande": "cat-campogrande",
-                    "Mato Grosso do Sul": "cat-ms",
-                    "Brasil": "cat-brasil",
-                    "Mundo": "cat-mundo"
-                };
-
-                let contadoresCategoria = {};
+                window.bancoDeNoticias = [];
                 let noticiaIndex = 0;
 
                 snapshot.forEach((docSnap) => {
                     const item = docSnap.data();
-                    const idUnico = "noticia_" + noticiaIndex;
-                    
-                    window.noticiasSalvas[idUnico] = item;
-
-                    if (containerUltimas) {
-                        containerUltimas.innerHTML += criarHtmlCard(item, idUnico);
-                    }
-
-                    if (item.categorias && item.categorias.length > 0) {
-                        item.categorias.forEach(cat => {
-                            const containerId = mapeamentoCategorias[cat];
-                            if (containerId) {
-                                const targetEl = document.getElementById(containerId);
-                                if (targetEl) {
-                                    if (!contadoresCategoria[containerId]) {
-                                        targetEl.innerHTML = "";
-                                        contadoresCategoria[containerId] = 0;
-                                    }
-                                    targetEl.innerHTML += criarHtmlCard(item, idUnico);
-                                    contadoresCategoria[containerId]++;
-                                }
-                            }
-                        });
-                    } else if (item.categoria) {
-                        const containerId = mapeamentoCategorias[item.categoria];
-                        if (containerId) {
-                            const targetEl = document.getElementById(containerId);
-                            if (targetEl) {
-                                if (!contadoresCategoria[containerId]) {
-                                    targetEl.innerHTML = "";
-                                    contadoresCategoria[containerId] = 0;
-                                }
-                                targetEl.innerHTML += criarHtmlCard(item, idUnico);
-                                contadoresCategoria[containerId]++;
-                            }
-                        }
-                    }
-
+                    item.idUnico = "noticia_" + noticiaIndex;
+                    window.bancoDeNoticias.push(item);
                     noticiaIndex++;
                 });
 
+                // Carrega a Home direto em modo Portal (Grid = true)
+                renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
+
             } catch (erro) {
                 console.error("Erro ao carregar notícias:", erro);
-                document.getElementById("ultimas-noticias").innerHTML = "<p>Erro ao carregar as notícias.</p>";
+                document.getElementById("area-noticias").innerHTML = "<p class='empty-msg'>Erro ao carregar as notícias. Tente novamente mais tarde.</p>";
             }
         }
 
@@ -383,4 +513,3 @@
     </script>
 </body>
 </html>
-  
