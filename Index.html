@@ -335,7 +335,7 @@
                 <a href="https://x.com/CGNEWS0FICIAL" target="_blank" class="sidebar-social-item"><i class="fa-brands fa-x-twitter" style="color: #000000;"></i> X (Twitter)</a>
                 <a href="https://www.tiktok.com/@cgnewsoficial?_r=1&_t=ZS-98YsDvVrtFg" target="_blank" class="sidebar-social-item"><i class="fab fa-tiktok" style="color: #000000;"></i> TikTok</a>
                 <a href="https://k.kwai.com/u/@cgnewsoficial/qmEARtCK" target="_blank" class="sidebar-social-item"><span class="sidebar-kwai-icon" style="color: #ff6600;">K</span> Kwai</a>
-                <a href="https://youtube.com/@cgnewsoficial?si=G9GeobnfJzC3jgRE" target="_blank" class="sidebar-social-item"><i class="fab fa-youtube" style="color: #ff0000;"></i> YouTube</a>
+                <a href="https://www.youtube.com/@cgnewsoficial" target="_blank" class="sidebar-social-item"><i class="fab fa-youtube" style="color: #ff0000;"></i> YouTube</a>
                 <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="sidebar-social-item"><i class="fab fa-linkedin-in" style="color: #0a66c2;"></i> LinkedIn</a>
                 <a href="https://www.threads.com/@cgnews.oficial" target="_blank" class="sidebar-social-item"><i class="fa-brands fa-threads" style="color: #000000;"></i> Threads</a>
             </div>
@@ -356,17 +356,15 @@
             <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
             <a href="https://www.tiktok.com/@cgnewsoficial?_r=1&_t=ZS-98YsDvVrtFg" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
             <a href="https://k.kwai.com/u/@cgnewsoficial/qmEARtCK" target="_blank" title="Kwai"><span class="kwai-icon">K</span></a>
-            <a href="https://youtube.com/@cgnewsoficial?si=G9GeobnfJzC3jgRE" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.youtube.com/@cgnewsoficial" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
             <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
             <a href="https://www.threads.com/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
         </div>
         <p>© 2026 CG NEWS OFICIAL - Informação em tempo real.</p>
     </footer>
 
-    <!-- TELA DA MATÉRIA COMPLETA -->
     <div id="modal-materia" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f2f4f7; z-index: 9999; overflow-y: auto;">
         
-        <!-- CABEÇALHO PADRÃO DA MATÉRIA -->
         <header>
             <div class="header-btn" onclick="abrirMenu()">
                 <i class="fas fa-bars"></i>
@@ -384,7 +382,6 @@
             <div id="conteudo-materia"></div>
         </div>
 
-        <!-- RODAPÉ COMPLETO NA TELA DA MATÉRIA -->
         <footer>
             <div class="footer-social-title">Nossas Redes Sociais</div>
             <div class="social-icons">
@@ -394,7 +391,7 @@
                 <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
                 <a href="https://www.tiktok.com/@cgnewsoficial?_r=1&_t=ZS-98YsDvVrtFg" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
                 <a href="https://k.kwai.com/u/@cgnewsoficial/qmEARtCK" target="_blank" title="Kwai"><span class="kwai-icon">K</span></a>
-                <a href="https://youtube.com/@cgnewsoficial?si=G9GeobnfJzC3jgRE" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.youtube.com/@cgnewsoficial" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
                 <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
                 <a href="https://www.threads.com/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
             </div>
@@ -462,11 +459,10 @@
             const criacao = formatarDataHoraMS(timestampCriacao);
             let html = `<span>Publicado em ${criacao.data} às ${criacao.hora}</span>`;
 
-            if (timestampAtualizacao > (timestampCriacao + 60000)) {
-                const relAtualizacao = tempoRelativo(timestampAtualizacao);
-                const atualizacao = formatarDataHoraMS(timestampAtualizacao);
-                html += ` <span style="color: #555; font-weight: 600; margin-left: 8px;">• <i class="fas fa-sync-alt" style="font-size: 10px;"></i> Atualizado há ${relAtualizacao.replace('há ', '')} (${atualizacao.data} às ${atualizacao.hora})</span>`;
-            }
+            // Exibe sempre a informação de atualização para qualquer matéria
+            const relAtualizacao = tempoRelativo(timestampAtualizacao);
+            const atualizacao = formatarDataHoraMS(timestampAtualizacao);
+            html += ` <span style="color: #555; font-weight: 600; margin-left: 8px;">• <i class="fas fa-sync-alt" style="font-size: 10px;"></i> Atualizado há ${relAtualizacao.replace('há ', '')} (${atualizacao.data} às ${atualizacao.hora})</span>`;
 
             return html;
         }
@@ -648,11 +644,10 @@
             const criacao = formatarDataHoraMS(timestampCriacao);
             let htmlData = `${criacao.data} às ${criacao.hora}`;
 
-            if (timestampAtualizacao > (timestampCriacao + 60000)) {
-                const relAtualizacao = tempoRelativo(timestampAtualizacao);
-                const atualizacao = formatarDataHoraMS(timestampAtualizacao);
-                htmlData += ` • atualizado há ${relAtualizacao.replace('há ', '')} (${atualizacao.data} às ${atualizacao.hora})`;
-            }
+            // Exibe sempre a informação de atualização no card da home
+            const relAtualizacao = tempoRelativo(timestampAtualizacao);
+            const atualizacao = formatarDataHoraMS(timestampAtualizacao);
+            htmlData += ` • atualizado há ${relAtualizacao.replace('há ', '')} (${atualizacao.data} às ${atualizacao.hora})`;
 
             let catText = "NOTÍCIA";
             if (item.categorias && item.categorias.length > 0) catText = item.categorias[0];
@@ -677,11 +672,10 @@
             const criacao = formatarDataHoraMS(timestampCriacao);
             let htmlData = `${criacao.data} às ${criacao.hora}`;
 
-            if (timestampAtualizacao > (timestampCriacao + 60000)) {
-                const relAtualizacao = tempoRelativo(timestampAtualizacao);
-                const atualizacao = formatarDataHoraMS(timestampAtualizacao);
-                htmlData += ` | atualizado há ${relAtualizacao.replace('há ', '')} (${atualizacao.data} às ${atualizacao.hora})`;
-            }
+            // Exibe sempre a informação de atualização na lista
+            const relAtualizacao = tempoRelativo(timestampAtualizacao);
+            const atualizacao = formatarDataHoraMS(timestampAtualizacao);
+            htmlData += ` | atualizado há ${relAtualizacao.replace('há ', '')} (${atualizacao.data} às ${atualizacao.hora})`;
 
             const textoResumo = item.texto ? item.texto.substring(0, 100) + "..." : "Clique para ler a matéria completa.";
 
