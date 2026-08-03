@@ -548,7 +548,6 @@
         </div>
     </header>
 
-    <!-- BARRA SUB-HEADER DE DATA E WHATSAPP COM ÍCONE -->
     <div class="sub-header-bar">
         <span class="top-date-text" id="data-atual-home"></span>
         <a href="https://wa.me/556796619364" target="_blank" class="top-social-icon" title="Fale conosco no WhatsApp">
@@ -598,7 +597,6 @@
         <h2 id="titulo-principal" class="section-title">Últimas Notícias</h2>
         <div id="area-noticias"><p class="empty-msg">Carregando notícias...</p></div>
 
-        <!-- SEÇÃO MAIS LIDAS GERAL (TODOS OS NICHOS) NA HOME -->
         <div class="section-box-container" id="secao-mais-lidas-home" style="display:none;">
             <div class="section-box-title"><i class="fas fa-fire" style="color: #e53e3e;"></i> Mais Lidas da Redação</div>
             <div class="mais-lidas-grid" id="grid-mais-lidas-home"></div>
@@ -623,7 +621,6 @@
         </div>
     </footer>
 
-    <!-- TELA DA MATÉRIA COMPLETA -->
     <div id="modal-materia">
         <header>
             <div class="header-btn" onclick="abrirMenu()">
@@ -653,13 +650,11 @@
             
             <div id="conteudo-materia"></div>
 
-            <!-- SEÇÃO DE RECOMENDAÇÕES DINÂMICAS POR CATEGORIA -->
             <div class="section-box-container" id="secao-recomendadas" style="display:none;">
                 <div class="section-box-title"><i class="fas fa-newspaper" style="color: #11136c;"></i> Leia Também</div>
                 <div class="recomendadas-grid" id="grid-recomendadas"></div>
             </div>
 
-            <!-- SEÇÃO MAIS LIDAS NA MATÉRIA (SOMA DE TODOS OS NICHO S) -->
             <div class="section-box-container" id="secao-mais-lidas-materia" style="display:none;">
                 <div class="section-box-title"><i class="fas fa-fire" style="color: #e53e3e;"></i> Mais Lidas</div>
                 <div class="mais-lidas-grid" id="grid-mais-lidas-materia"></div>
@@ -732,12 +727,12 @@
             const diffMeses = Math.floor(diffDias / 30);
             const diffAnos = Math.floor(diffDias / 365);
 
-            if (diffMinutos < 1) return "agora mesmo";
-            if (diffMinutos < 60) return `há ${diffMinutos} ${diffMinutos === 1 ? 'minuto' : 'minutos'}`;
-            if (diffHoras < 24) return `há ${diffHoras} ${diffHoras === 1 ? 'hora' : 'horas'}`;
-            if (diffDias < 30) return `há ${diffDias} ${diffDias === 1 ? 'dia' : 'dias'}`;
-            if (diffMeses < 12) return `há ${diffMeses} ${diffMeses === 1 ? 'mês' : 'meses'}`;
-            return `há ${diffAnos} ${diffAnos === 1 ? 'ano' : 'anos'}`;
+            if (diffMinutos < 1) return "atualizado agora mesmo";
+            if (diffMinutos < 60) return `atualizado há ${diffMinutos} ${diffMinutos === 1 ? 'minuto' : 'minutos'}`;
+            if (diffHoras < 24) return `atualizado há ${diffHoras} ${diffHoras === 1 ? 'hora' : 'horas'}`;
+            if (diffDias < 30) return `atualizado há ${diffDias} ${diffDias === 1 ? 'dia' : 'dias'}`;
+            if (diffMeses < 12) return `atualizado há ${diffMeses} ${diffMeses === 1 ? 'mês' : 'meses'}`;
+            return `atualizado há ${diffAnos} ${diffAnos === 1 ? 'ano' : 'anos'}`;
         }
 
         function formatarDataHoraMS(timestamp) {
@@ -757,14 +752,19 @@
         }
 
         function gerarHtmlDatas(item) {
+            // Data de criação original fixada (NÃO muda nunca mais)
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
-            const timestampAtualizacao = item.dataAtualizacao || timestampCriacao;
-            
             const criacao = formatarDataHoraMS(timestampCriacao);
             let html = `<span>Publicado em ${criacao.data} às ${criacao.hora}</span>`;
 
-            const relAtualizacao = tempoRelativo(timestampAtualizacao);
-            html += ` <span style="color: #718096; font-weight: 500; margin-left: 6px;">• <i class="fas fa-sync-alt" style="font-size: 9px;"></i> Atualizado ${relAtualizacao}</span>`;
+            // Data/hora da atualização (só exibe se houver edição posterior à criação)
+            const timestampAtualizacao = item.dataAtualizacao || timestampCriacao;
+            
+            // Verifica se a atualização ocorreu pelo menos 1 minuto após a criação original
+            if (timestampAtualizacao > (timestampCriacao + 60000)) {
+                const relAtualizacao = tempoRelativo(timestampAtualizacao);
+                html += ` <span style="color: #718096; font-weight: 500; margin-left: 6px;">• <i class="fas fa-sync-alt" style="font-size: 9px;"></i> ${relAtualizacao}</span>`;
+            }
 
             return html;
         }
@@ -970,7 +970,6 @@
                     </div>
                 </div>
 
-                <!-- ESPAÇO RESERVADO PARA ANÚNCIO DO TOPO DA MATÉRIA -->
                 <div class="banner-anuncio-slot">
                     Publicidade / Espaço para Banner
                 </div>
@@ -981,7 +980,6 @@
 
                 ${blocoVideoRedeSocial}
 
-                <!-- ESPAÇO RESERVADO PARA ANÚNCIO DO FIM DA MATÉRIA -->
                 <div class="banner-anuncio-slot">
                     Publicidade / Espaço para Banner
                 </div>
@@ -997,9 +995,7 @@
             document.body.style.overflow = "hidden"; 
             window.scrollTo(0, 0);
 
-            // Carregar Seção de Recomendações (mesma categoria)
             carregarRecomendadas(item);
-            // Carregar Seção "Mais Lidas" na Matéria (soma de todos os nichos)
             carregarMaisLidasGeral();
         };
 
@@ -1016,8 +1012,11 @@
             
             const criacao = formatarDataHoraMS(timestampCriacao);
             let htmlData = `${criacao.data} às ${criacao.hora}`;
-            const relAtualizacao = tempoRelativo(timestampAtualizacao);
-            htmlData += ` • ${relAtualizacao}`;
+            
+            if (timestampAtualizacao > (timestampCriacao + 60000)) {
+                const relAtualizacao = tempoRelativo(timestampAtualizacao);
+                htmlData += ` • ${relAtualizacao}`;
+            }
 
             let catText = "NOTÍCIA";
             if (item.categorias && item.categorias.length > 0) catText = item.categorias[0];
@@ -1058,8 +1057,11 @@
             
             const criacao = formatarDataHoraMS(timestampCriacao);
             let htmlData = `${criacao.data} às ${criacao.hora}`;
-            const relAtualizacao = tempoRelativo(timestampAtualizacao);
-            htmlData += ` | ${relAtualizacao}`;
+            
+            if (timestampAtualizacao > (timestampCriacao + 60000)) {
+                const relAtualizacao = tempoRelativo(timestampAtualizacao);
+                htmlData += ` | ${relAtualizacao}`;
+            }
 
             const textoResumo = item.texto ? item.texto.substring(0, 110) + "..." : "Clique para ler a matéria completa.";
 
@@ -1129,7 +1131,6 @@
             }
         }
 
-        // Função para carregar as Mais Lidas gerais somando todos os nichos
         function carregarMaisLidasGeral() {
             const secao = document.getElementById("secao-mais-lidas-materia");
             const grid = document.getElementById("grid-mais-lidas-materia");
@@ -1138,7 +1139,6 @@
                 return;
             }
 
-            // Pega as 3 principais notícias de todo o banco (simulando soma de acessos por ordenação recente/relevância global de todos os nichos)
             const maisLidas = [...window.bancoDeNoticias].slice(0, 3);
             if (maisLidas.length > 0 && grid) {
                 grid.innerHTML = "";
@@ -1185,7 +1185,6 @@
             }
         }
 
-        // Função para recomendações dinâmicas com base estritamente na categoria da notícia aberta
         function carregarRecomendadas(itemAtual) {
             const secao = document.getElementById("secao-recomendadas");
             const grid = document.getElementById("grid-recomendadas");
@@ -1330,5 +1329,3 @@
     </script>
 </body>
 </html>
-
-```
