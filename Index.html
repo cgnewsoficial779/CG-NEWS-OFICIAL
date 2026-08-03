@@ -554,39 +554,34 @@
 
             if (urlRede !== "") {
                 const url = urlRede;
-                let nomeRede = "Instagram";
-                let iconeRedeClass = "fab fa-instagram";
-                let textoBotao = "Ver publicação no Instagram";
-                let corIconeRede = "#E1306C";
-                let corBotaoPerfil = "#405de6";
+                let nomeRede = "Rede Social";
+                let iconeRedeClass = "fas fa-share-alt";
+                let textoBotao = "Ver publicação original";
+                let corIconeRede = "#11136c";
+                let corBotaoPerfil = "#11136c";
 
                 if (url.includes("youtube.com") || url.includes("youtu.be")) {
                     nomeRede = "YouTube"; iconeRedeClass = "fab fa-youtube"; textoBotao = "Assista no YouTube"; corIconeRede = "#FF0000"; corBotaoPerfil = "#FF0000";
                 } else if (url.includes("facebook.com")) {
                     nomeRede = "Facebook"; iconeRedeClass = "fab fa-facebook"; textoBotao = "Ver no Facebook"; corIconeRede = "#1877F2"; corBotaoPerfil = "#1877F2";
+                } else if (url.includes("instagram.com")) {
+                    nomeRede = "Instagram"; iconeRedeClass = "fab fa-instagram"; textoBotao = "Ver publicação no Instagram"; corIconeRede = "#E1306C"; corBotaoPerfil = "#405de6";
                 } else if (url.includes("tiktok.com")) {
-                    nomeRede = "TikTok"; iconeRedeClass = "fab fa-tiktok"; textoBotao = "Ver no TikTok"; corIconeRede = "#000000"; corBotaoPerfil = "#000000";
+                    nomeRede = "TikTok"; iconeRedeClass = "fab fa-tiktok"; textoBotao = "Assistir vídeo no TikTok"; corIconeRede = "#000000"; corBotaoPerfil = "#000000";
                 } else if (url.includes("kwai.com")) {
-                    nomeRede = "Kwai"; iconeRedeClass = "fa-solid fa-video"; textoBotao = "Ver no Kwai"; corIconeRede = "#FF6600"; corBotaoPerfil = "#FF6600";
+                    nomeRede = "Kwai"; iconeRedeClass = "fa-solid fa-video"; textoBotao = "Assistir vídeo no Kwai"; corIconeRede = "#FF6600"; corBotaoPerfil = "#FF6600";
                 } else if (url.includes("twitter.com") || url.includes("x.com")) {
-                    nomeRede = "X"; iconeRedeClass = "fa-brands fa-x-twitter"; textoBotao = "Ver no X"; corIconeRede = "#000000"; corBotaoPerfil = "#000000";
-                } else if (url.includes("linkedin.com")) {
-                    nomeRede = "LinkedIn"; iconeRedeClass = "fab fa-linkedin"; textoBotao = "Ver no LinkedIn"; corIconeRede = "#0A66C2"; corBotaoPerfil = "#0A66C2";
-                } else if (url.includes("threads.net") || url.includes("threads.com")) {
-                    nomeRede = "Threads"; iconeRedeClass = "fa-brands fa-threads"; textoBotao = "Ver no Threads"; corIconeRede = "#000000"; corBotaoPerfil = "#000000";
+                    nomeRede = "X"; iconeRedeClass = "fa-brands fa-x-twitter"; textoBotao = "Ver publicação no X"; corIconeRede = "#000000"; corBotaoPerfil = "#000000";
                 }
 
                 let areaCentralPlayer = "";
 
+                // PRIORIDADE 1: PLAYER EMBUTIDO (YouTube, Facebook e Instagram)
                 if (url.includes("youtube.com/watch?v=") || url.includes("youtu.be/") || url.includes("youtube.com/shorts/")) {
                     let ytId = "";
-                    if (url.includes("youtu.be/")) {
-                        ytId = url.split("youtu.be/")[1]?.split("?")[0];
-                    } else if (url.includes("shorts/")) {
-                        ytId = url.split("shorts/")[1]?.split("?")[0];
-                    } else if (url.includes("watch?v=")) {
-                        ytId = url.split("watch?v=")[1]?.split("&")[0];
-                    }
+                    if (url.includes("youtu.be/")) ytId = url.split("youtu.be/")[1]?.split("?")[0];
+                    else if (url.includes("shorts/")) ytId = url.split("shorts/")[1]?.split("?")[0];
+                    else if (url.includes("watch?v=")) ytId = url.split("watch?v=")[1]?.split("&")[0];
                     if (ytId) {
                         areaCentralPlayer = `
                             <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000;">
@@ -613,37 +608,35 @@
                     `;
                 }
 
+                // PRIORIDADE 2: CARD COM CAPA ORIGINAL DO VÍDEO (TikTok, Kwai, etc.)
                 if (!areaCentralPlayer) {
-                    let imagemCapaVideoReal = item.imagemVideo || item.imagemCapaVideo || item.imagem || "";
-
-                    if (url.includes("youtube.com") || url.includes("youtu.be")) {
-                        let ytId = "";
-                        if (url.includes("youtu.be/")) ytId = url.split("youtu.be/")[1]?.split("?")[0];
-                        else if (url.includes("watch?v=")) ytId = url.split("watch?v=")[1]?.split("&")[0];
-                        if (ytId) imagemCapaVideoReal = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
-                    }
+                    let imagemCapaOriginal = item.imagemVideo || item.imagemCapaVideo || item.imagem || "";
 
                     areaCentralPlayer = `
-                        <a href="${url}" target="_blank" style="display: block; position: relative; background: #000; aspect-ratio: 16/9; max-height: 480px; overflow: hidden; text-decoration: none;">
-                            ${imagemCapaVideoReal ? `<img src="${imagemCapaVideoReal}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.95;">` : `<div style="width:100%; height:100%; background:#111; display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px;">Abrir conteúdo</div>`}
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.7); width: 68px; height: 68px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 26px; padding-left: 3px; border: 2px solid rgba(255,255,255,0.8);">
+                        <a href="${url}" target="_blank" style="display: block; position: relative; background: #000; width: 100%; max-width: 360px; aspect-ratio: 9/16; margin: 0 auto; overflow: hidden; text-decoration: none; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+                            ${imagemCapaOriginal ? 
+                                `<img src="${imagemCapaOriginal}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.95;">` : 
+                                `<div style="width:100%; height:100%; background:#111; display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px;">Clique para assistir o vídeo</div>`
+                            }
+                            
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.7); width: 68px; height: 68px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 26px; padding-left: 3px; border: 2px solid rgba(255,255,255,0.8); box-shadow: 0 2px 8px rgba(0,0,0,0.4);">
                                 <i class="fas fa-play"></i>
                             </div>
-                            <div style="position: absolute; bottom: 15px; left: 15px; right: 15px; background: rgba(0,0,0,0.6); padding: 8px 12px; border-radius: 6px; color: #fff; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
-                                <span><i class="${iconeRedeClass}" style="color: ${corIconeRede}; margin-right: 5px;"></i> Ver publicação original no ${nomeRede}</span>
+
+                            <div style="position: absolute; bottom: 12px; left: 12px; right: 12px; background: rgba(0,0,0,0.75); padding: 10px 12px; border-radius: 6px; color: #fff; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(2px);">
+                                <span><i class="${iconeRedeClass}" style="color: ${corIconeRede}; margin-right: 6px;"></i> ${textoBotao}</span>
                                 <i class="fas fa-external-link-alt" style="font-size: 11px;"></i>
                             </div>
                         </a>
                     `;
                 }
 
-                // ESTRUTURA SEM O CABEÇALHO SUPERIOR DUPLICADO
                 blocoVideoRedeSocial = `
-                    <div style="margin: 35px 0 20px 0; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                    <div style="margin: 35px 0 20px 0; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; padding: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
                         ${areaCentralPlayer}
 
-                        <div style="padding: 14px 15px; background: #fafafa; border-top: 1px solid #eee; text-align: center;">
-                            <a href="${url}" target="_blank" style="display: inline-block; background: ${corBotaoPerfil}; color: white; width: 100%; padding: 10px; font-weight: 700; font-size: 14px; text-decoration: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <div style="margin-top: 15px; text-align: center;">
+                            <a href="${url}" target="_blank" style="display: inline-block; background: ${corBotaoPerfil}; color: white; width: 100%; max-width: 360px; padding: 12px; font-weight: 700; font-size: 14px; text-decoration: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                                 <i class="${iconeRedeClass}"></i> ${textoBotao}
                             </a>
                         </div>
