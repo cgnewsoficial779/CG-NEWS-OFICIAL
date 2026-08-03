@@ -95,7 +95,7 @@
     <div class="container">
         <div class="header-admin">
             <h1><i class="fas fa-globe"></i> PORTAL DE NOTÍCIAS ADMIN</h1>
-            <span>PRO V7.2</span>
+            <span>PRO V7.3</span>
         </div>
 
         <form id="formNoticia">
@@ -471,12 +471,15 @@
                     const tempoCriacao = item.dataCriacao || item.dataAtualizacao;
                     const infoTempo = formatarTempoRelativo(tempoCriacao, item.dataAtualizacao);
 
-                    // Miniatura da foto 1 ou foto 2 se houver
+                    // VERIFICAÇÃO AMPLA DE FOTOS (Compatível com novos e antigos campos do banco)
+                    const fotoCapa = item.imagem1 || item.imagemCapa || "";
+                    const fotoSec = item.imagem2 || item.imagemSecundaria || "";
+
                     let miniaturaHtml = `<div class="noticia-miniatura"><i class="fas fa-image"></i></div>`;
-                    if (item.imagem1) {
-                        miniaturaHtml = `<div class="noticia-miniatura"><img src="${item.imagem1}" alt="Capa"></div>`;
-                    } else if (item.imagem2) {
-                        miniaturaHtml = `<div class="noticia-miniatura"><img src="${item.imagem2}" alt="Capa"></div>`;
+                    if (fotoCapa) {
+                        miniaturaHtml = `<div class="noticia-miniatura"><img src="${fotoCapa}" alt="Capa"></div>`;
+                    } else if (fotoSec) {
+                        miniaturaHtml = `<div class="noticia-miniatura"><img src="${fotoSec}" alt="Capa"></div>`;
                     }
 
                     listaDiv.innerHTML += `
@@ -521,8 +524,10 @@
             document.getElementById("creditosVideo").value = item.creditosVideo || "";
             document.getElementById("fonteNoticia").value = item.fonteNoticia || "";
             
-            document.getElementById("imagemBase64_1").value = item.imagem1 || "";
-            document.getElementById("imagemBase64_2").value = item.imagem2 || "";
+            // Carrega imagens considerando os campos novos e legados
+            document.getElementById("imagemBase64_1").value = item.imagem1 || item.imagemCapa || "";
+            document.getElementById("imagemBase64_2").value = item.imagem2 || item.imagemSecundaria || "";
+            
             if(item.formatoCapa) {
                 const btn = document.querySelector(`.btn-ratio[onclick*="'${item.formatoCapa}'"]`);
                 if(btn) window.mudarLayout(item.formatoCapa, btn);
