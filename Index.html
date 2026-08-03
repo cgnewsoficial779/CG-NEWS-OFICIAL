@@ -546,7 +546,6 @@
                 `;
             }
 
-            // Bloco inteligente: Incorpora vídeo embutido (se permitido) ou exibe a miniatura interativa original da rede social
             let blocoVideoRedeSocial = "";
             const urlRede = item.linkRedeSocial ? item.linkRedeSocial.trim() : "";
 
@@ -578,7 +577,6 @@
 
                 let areaCentralPlayer = "";
 
-                // VERIFICA SE A PLATAFORMA PERMITE INCORPORAÇÃO DIRETA (EMBED DE VÍDEO REAL)
                 if (url.includes("youtube.com/watch?v=") || url.includes("youtu.be/") || url.includes("youtube.com/shorts/")) {
                     let ytId = "";
                     if (url.includes("youtu.be/")) {
@@ -589,7 +587,6 @@
                         ytId = url.split("watch?v=")[1]?.split("&")[0];
                     }
                     if (ytId) {
-                        // YouTube permite player embutido direto na página!
                         areaCentralPlayer = `
                             <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000;">
                                 <iframe src="https://www.youtube.com/embed/${ytId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
@@ -598,7 +595,6 @@
                     }
                 } 
                 else if (url.includes("facebook.com")) {
-                    // Facebook permite player embutido por iframe oficial (plugin de vídeo do FB)
                     let encodedFbUrl = encodeURIComponent(url);
                     areaCentralPlayer = `
                         <div style="position: relative; width: 100%; background: #000; display: flex; justify-content: center; overflow: hidden;">
@@ -607,11 +603,9 @@
                     `;
                 }
 
-                // Se a plataforma NÃO permite embed direto (Instagram, TikTok, Kwai, etc.), exibe a miniatura real e oficial com redirecionamento ao toque
                 if (!areaCentralPlayer) {
                     let imagemCapaVideoReal = item.imagemVideo || item.imagemCapaVideo || item.imagem || "";
 
-                    // Tratamento extra para pegar thumb do YouTube caso caia aqui
                     if (url.includes("youtube.com") || url.includes("youtu.be")) {
                         let ytId = "";
                         if (url.includes("youtu.be/")) ytId = url.split("youtu.be/")[1]?.split("?")[0];
