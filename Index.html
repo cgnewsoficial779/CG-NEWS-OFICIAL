@@ -12,14 +12,38 @@
         html { scroll-behavior: smooth; }
         body { background-color: #f2f4f7; color: #1a1a1a; }
         
-        /* CABEÇALHO */
+        /* CABEÇALHO AZUL */
         header { 
             background-color: #11136c; color: white; 
             padding: 15px 20px; font-size: 20px; font-weight: bold;
             display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: relative; z-index: 1000;
         }
         .header-btn { cursor: pointer; font-size: 22px; padding: 5px; }
+
+        /* BARRA DE DATA ESTILO TOP MÍDIA */
+        .sub-header-bar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #444444;
+            font-weight: 500;
+        }
+        .top-date-text {
+            text-transform: lowercase; 
+            letter-spacing: -0.2px;
+        }
+        .top-social-icon {
+            color: #25d366;
+            font-size: 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
 
         /* BARRA DE BUSCA */
         #barra-busca, #barra-busca-materia {
@@ -28,7 +52,7 @@
             padding: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             position: sticky;
-            top: 58px; 
+            top: 0; 
             z-index: 999;
         }
         #input-busca, #input-busca-materia {
@@ -117,7 +141,7 @@
             top: 0; left: 0; background-color: rgba(0,0,0,0.6); z-index: 15000; cursor: pointer;
         }
 
-        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; min-height: 70vh; }
+        .container { max-width: 900px; margin: 15px auto 20px auto; padding: 0 15px; min-height: 70vh; }
         
         .section-title { font-size: 20px; color: #11136c; border-left: 4px solid #11136c; padding-left: 10px; margin: 20px 0 20px 0; display: none; }
         .empty-msg { font-size: 14px; color: #888; font-style: italic; margin-bottom: 20px; text-align: center; }
@@ -307,6 +331,14 @@
         </div>
     </header>
 
+    <!-- BARRA SUB-HEADER DE DATA NA HOME -->
+    <div class="sub-header-bar">
+        <span class="top-date-text" id="data-atual-home"></span>
+        <a href="https://wa.me/556796619364" target="_blank" class="top-social-icon" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
     <div id="barra-busca">
         <input type="text" id="input-busca" placeholder="Buscar por palavra-chave..." onkeyup="realizarBuscaPrincipal()">
     </div>
@@ -379,6 +411,14 @@
             </div>
         </header>
 
+        <!-- BARRA SUB-HEADER DE DATA NA MATÉRIA -->
+        <div class="sub-header-bar">
+            <span class="top-date-text" id="data-atual-materia"></span>
+            <a href="https://wa.me/556796619364" target="_blank" class="top-social-icon" title="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
+
         <div id="barra-busca-materia">
             <input type="text" id="input-busca-materia" placeholder="Buscar por palavra-chave..." onkeyup="realizarBuscaMateria(event)">
         </div>
@@ -425,6 +465,26 @@
         const db = getFirestore(app);
 
         window.bancoDeNoticias = []; 
+
+        // ATUALIZAR BARRA DE DATA DINÂMICA NO FORMATO "segunda, 03 de agosto de 2026"
+        function atualizarBarraData() {
+            const agora = new Date();
+            
+            const textoData = agora.toLocaleDateString('pt-BR', {
+                weekday: 'long',
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+            }).replace('-feira', '');
+
+            const elHome = document.getElementById("data-atual-home");
+            const elMateria = document.getElementById("data-atual-materia");
+            
+            if (elHome) elHome.innerText = textoData;
+            if (elMateria) elMateria.innerText = textoData;
+        }
+
+        atualizarBarraData();
 
         function tempoRelativo(timestamp) {
             if (!timestamp) return "";
@@ -556,7 +616,6 @@
                 const url = urlRede;
                 let areaCentralPlayer = "";
 
-                // Helper para extrair ID do YouTube
                 function extrairYtId(link) {
                     if (link.includes("youtu.be/")) return link.split("youtu.be/")[1]?.split("?")[0];
                     if (link.includes("shorts/")) return link.split("shorts/")[1]?.split("?")[0];
@@ -564,7 +623,6 @@
                     return null;
                 }
 
-                // 1. YOUTUBE (Player de Vídeo Direto)
                 if (url.includes("youtube.com") || url.includes("youtu.be")) {
                     let ytId = extrairYtId(url);
                     if (ytId) {
@@ -575,8 +633,6 @@
                         `;
                     }
                 }
-
-                // 2. INSTAGRAM / THREADS (Player Embed Direto)
                 else if (url.includes("instagram.com") || url.includes("threads.com")) {
                     let cleanIgUrl = url.split("?")[0];
                     if (!cleanIgUrl.endsWith("/")) cleanIgUrl += "/";
@@ -586,8 +642,6 @@
                         </div>
                     `;
                 }
-
-                // 3. TIKTOK (Embed Oficial do Vídeo)
                 else if (url.includes("tiktok.com")) {
                     let videoId = url.split("/video/")[1]?.split("?")[0];
                     if (videoId) {
@@ -606,8 +660,6 @@
                         }
                     }
                 }
-
-                // 4. FACEBOOK (Embed Oficial)
                 else if (url.includes("facebook.com")) {
                     let encodedFbUrl = encodeURIComponent(url);
                     areaCentralPlayer = `
@@ -617,7 +669,6 @@
                     `;
                 }
 
-                // 5. DEMAIS REDES (Kwai, X, LinkedIn, etc.) -> Extrai capa e título oficiais do LINK via OpenGraph
                 if (!areaCentralPlayer) {
                     const apiUrl = `https://api.microlink.io?url=${encodeURIComponent(url)}`;
 
@@ -639,7 +690,6 @@
                         </div>
                     `;
 
-                    // Requisição assíncrona para extração das informações originais da URL
                     fetch(apiUrl)
                         .then(res => res.json())
                         .then(data => {
