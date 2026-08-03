@@ -44,7 +44,7 @@
         /* MENU LATERAL */
         .sidebar {
             height: 100%; width: 260px; position: fixed; z-index: 2000;
-            top: 0; left: -260px; background-color: #fff; overflow-x: hidden;
+            top: 0; left: -260px; background-color: #fff; overflow-y: auto;
             transition: 0.3s ease; box-shadow: 2px 0 10px rgba(0,0,0,0.3);
             display: flex; flex-direction: column;
         }
@@ -61,6 +61,55 @@
             cursor: pointer;
         }
         .sidebar a:hover { background-color: #f2f4f7; padding-left: 25px; }
+
+        /* REDES SOCIAIS NO MENU LATERAL */
+        .sidebar-social-section {
+            padding: 20px 15px;
+            background-color: #f8f9fa;
+            border-top: 2px solid #e0e0e0;
+            margin-top: auto;
+        }
+        .sidebar-social-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #11136c;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+        .sidebar-social-icons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .sidebar-social-icons a {
+            background-color: #11136c;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: 0.2s;
+            border: none;
+            padding: 0;
+        }
+        .sidebar-social-icons a:hover {
+            background-color: #ff6600;
+            padding-left: 0;
+        }
+        .sidebar-social-icons i, .sidebar-kwai-icon {
+            font-size: 16px;
+        }
+        .sidebar-kwai-icon {
+            font-weight: 900;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+        }
         
         #overlay {
             position: fixed; display: none; width: 100%; height: 100%;
@@ -273,6 +322,21 @@
         <a onclick="filtrarCategoria('Mato Grosso do Sul')">Mato Grosso do Sul</a>
         <a onclick="filtrarCategoria('Brasil')">Brasil</a>
         <a onclick="filtrarCategoria('Mundo')">Mundo</a>
+
+        <div class="sidebar-social-section">
+            <div class="sidebar-social-title">Nossas Redes Sociais</div>
+            <div class="sidebar-social-icons">
+                <a href="https://wa.me/556796619364" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/share/1Bv1aCaxte/" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/cgnews.oficial?igsh=MTU4YmZ5eHhpaXpveQ==" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="https://www.tiktok.com/@cgnewsoficial?_r=1&_t=ZS-98YsDvVrtFg" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                <a href="https://k.kwai.com/u/@cgnewsoficial/qmEARtCK" target="_blank" title="Kwai"><span class="sidebar-kwai-icon">K</span></a>
+                <a href="https://youtube.com/@cgnewsoficial?si=G9GeobnfJzC3jgRE" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.threads.com/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
+            </div>
+        </div>
     </div>
 
     <div class="container">
