@@ -205,6 +205,13 @@
             margin-top: 40px; 
             font-size: 12px; 
         }
+        .footer-social-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
         .social-icons {
             margin-bottom: 15px;
             display: flex;
@@ -213,12 +220,19 @@
             flex-wrap: wrap;
             gap: 15px;
         }
+        .social-icons a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         .social-icons i, .kwai-icon { 
             font-size: 20px; 
             cursor: pointer; 
             transition: 0.2s;
         }
-        .social-icons i:hover, .kwai-icon:hover {
+        .social-icons a:hover i, .social-icons a:hover .kwai-icon {
             color: #ff6600;
         }
         .kwai-icon {
@@ -267,16 +281,17 @@
     </div>
 
     <footer>
+        <div class="footer-social-title">Nossas Redes Sociais</div>
         <div class="social-icons">
-            <i class="fab fa-whatsapp" title="WhatsApp"></i>
-            <i class="fab fa-facebook" title="Facebook"></i>
-            <i class="fab fa-instagram" title="Instagram"></i>
-            <i class="fa-brands fa-x-twitter" title="X"></i>
-            <i class="fab fa-tiktok" title="TikTok"></i>
-            <span class="kwai-icon" title="Kwai">K</span>
-            <i class="fab fa-youtube" title="YouTube"></i>
-            <i class="fab fa-linkedin" title="LinkedIn"></i>
-            <i class="fa-brands fa-threads" title="Threads"></i>
+            <a href="https://wa.me/5567996515832" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.facebook.com/share/12AG99G4tWc/" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/cgnews.oficial?igsh=MTZ4OWZ6ZXRpNDlvYw==" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://x.com/cgnewsoficialms" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://www.tiktok.com/@cgnews.oficial?_t=ZM-8u8T5X5Bq2V&_r=1" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="https://s.kwai.app/s/v2wz2Ff7" target="_blank" title="Kwai"><span class="kwai-icon">K</span></a>
+            <a href="https://youtube.com/@cgnewsoficialms" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.linkedin.com/in/cg-news-oficial-781744318" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.threads.net/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
         </div>
         <p>© 2026 CG NEWS OFICIAL - Informação em tempo real.</p>
     </footer>
@@ -404,7 +419,6 @@
                     nomeRede = "Threads"; iconeRedeClass = "fa-brands fa-threads"; textoBotao = "Ver no Threads"; corIconeRede = "#000000"; corBotaoPerfil = "#000000"; usuarioRede = "cgnews.oficial";
                 }
 
-                // Usa obrigatoriamente a imagem da notícia como miniatura rica do vídeo vinculado
                 let imagemMidia = item.imagem ? item.imagem : "";
 
                 blocoVideoRedeSocial = `
