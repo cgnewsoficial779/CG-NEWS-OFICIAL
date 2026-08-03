@@ -428,18 +428,18 @@
         }
 
         function gerarHtmlDatas(item) {
+            // Se tiver dataCriacao usa ela, senão usa dataAtualizacao
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
-            const timestampRef = item.dataAtualizacao || item.dataCriacao || Date.now();
+            const timestampAtualizacao = item.dataAtualizacao || timestampCriacao;
             
             const criacao = formatarDataHoraMS(timestampCriacao);
-            
             let html = `<span>Publicado em ${criacao.data} às ${criacao.hora}</span>`;
 
-            // Só exibe a atualização ao lado se realmente foi editado (diferença maior que 1 minuto)
-            if (item.dataAtualizacao && (item.dataAtualizacao - timestampCriacao > 60000)) {
-                const relAtualizacao = tempoRelativo(timestampRef);
-                const atualizacao = formatarDataHoraMS(timestampRef);
-                html += ` <span style="color: #555; font-weight: 600; margin-left: 8px;">• <i class="fas fa-sync-alt" style="font-size: 10px;"></i> Atualizado ${relAtualizacao} (${atualizacao.data} às ${atualizacao.hora})</span>`;
+            // Força a exibição da atualização caso a data de atualização seja diferente/maior que a criação
+            if (timestampAtualizacao > timestampCriacao) {
+                const relAtualizacao = tempoRelativo(timestampAtualizacao);
+                const atualizacao = formatarDataHoraMS(timestampAtualizacao);
+                html += ` <span style="color: #555; font-weight: 600; margin-left: 8px;">• <i class="fas fa-sync-alt" style="font-size: 10px;"></i> Atualizado há ${relAtualizacao.replace('há ', '')} (${atualizacao.data} às ${atualizacao.hora})</span>`;
             }
 
             return html;
@@ -478,12 +478,17 @@
                 linkShare = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlAtual)}`;
             } else if (rede === 'whatsapp') {
                 linkShare = `https://api.whatsapp.com/send?text=${encodeURIComponent(tituloAtual + " - " + urlAtual)}`;
+            } else if (rede === 'instagram') {
+                // Copia o link e abre a intent ou redireciona para o app/web do Instagram com instruções de compartilhamento
+                navigator.clipboard.writeText(urlAtual).then(() => {
+                    alert("Link copiado com sucesso! Abrindo o Instagram para você colar nos Stories ou direct.");
+                    window.open("https://www.instagram.com/", "_blank");
+                }).catch(() => {
+                    window.open("https://www.instagram.com/", "_blank");
+                });
+                return;
             } else if (rede === 'twitter') {
                 linkShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tituloAtual)}&url=${encodeURIComponent(urlAtual)}`;
-            } else if (rede === 'instagram') {
-                navigator.clipboard.writeText(urlAtual);
-                alert("Link da matéria copiado! Cole no seu Instagram.");
-                return;
             } else if (rede === 'linkedin') {
                 linkShare = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(urlAtual)}`;
             } else if (rede === 'threads') {
@@ -645,15 +650,15 @@
 
         function criarHtmlGridCard(item) {
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
-            const timestampRef = item.dataAtualizacao || item.dataCriacao || Date.now();
+            const timestampAtualizacao = item.dataAtualizacao || timestampCriacao;
             
             const criacao = formatarDataHoraMS(timestampCriacao);
             let htmlData = `${criacao.data} às ${criacao.hora}`;
 
-            if (item.dataAtualizacao && (item.dataAtualizacao - timestampCriacao > 60000)) {
-                const relAtualizacao = tempoRelativo(timestampRef);
-                const atualizacao = formatarDataHoraMS(timestampRef);
-                htmlData += ` • atualizado ${relAtualizacao} (${atualizacao.data} às ${atualizacao.hora})`;
+            if (timestampAtualizacao > timestampCriacao) {
+                const relAtualizacao = tempoRelativo(timestampAtualizacao);
+                const atualizacao = formatarDataHoraMS(timestampAtualizacao);
+                htmlData += ` • atualizado há ${relAtualizacao.replace('há ', '')} (${atualizacao.data} às ${atualizacao.hora})`;
             }
 
             let catText = "NOTÍCIA";
@@ -674,15 +679,15 @@
 
         function criarHtmlListaCard(item) {
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
-            const timestampRef = item.dataAtualizacao || item.dataCriacao || Date.now();
+            const timestampAtualizacao = item.dataAtualizacao || timestampCriacao;
             
             const criacao = formatarDataHoraMS(timestampCriacao);
             let htmlData = `${criacao.data} às ${criacao.hora}`;
 
-            if (item.dataAtualizacao && (item.dataAtualizacao - timestampCriacao > 60000)) {
-                const relAtualizacao = tempoRelativo(timestampRef);
-                const atualizacao = formatarDataHoraMS(timestampRef);
-                htmlData += ` | atualizado ${relAtualizacao} (${atualizacao.data} às ${atualizacao.hora})`;
+            if (timestampAtualizacao > timestampCriacao) {
+                const relAtualizacao = tempoRelativo(timestampAtualizacao);
+                const atualizacao = formatarDataHoraMS(timestampAtualizacao);
+                htmlData += ` | atualizado há ${relAtualizacao.replace('há ', '')} (${atualizacao.data} às ${atualizacao.hora})`;
             }
 
             const textoResumo = item.texto ? item.texto.substring(0, 100) + "..." : "Clique para ler a matéria completa.";
