@@ -433,7 +433,6 @@
             const criacao = formatarDataHoraMS(timestampCriacao);
             let html = `<span>Publicado em ${criacao.data} às ${criacao.hora}</span>`;
 
-            // Verifica se a atualização ocorreu pelo menos 1 minuto após a criação para evitar falsos positivos
             if (timestampAtualizacao > (timestampCriacao + 60000)) {
                 const relAtualizacao = tempoRelativo(timestampAtualizacao);
                 const atualizacao = formatarDataHoraMS(timestampAtualizacao);
@@ -476,11 +475,6 @@
                 linkShare = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlAtual)}`;
             } else if (rede === 'whatsapp') {
                 linkShare = `https://api.whatsapp.com/send?text=${encodeURIComponent(tituloAtual + " - " + urlAtual)}`;
-            } else if (rede === 'instagram') {
-                // Copia o link em segundo plano sem pop-up de alerta e abre o Instagram direto
-                navigator.clipboard.writeText(urlAtual).catch(() => {});
-                window.open("https://www.instagram.com/", "_blank");
-                return;
             } else if (rede === 'twitter') {
                 linkShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tituloAtual)}&url=${encodeURIComponent(urlAtual)}`;
             } else if (rede === 'linkedin') {
@@ -538,7 +532,6 @@
                     nomeRede = "Threads"; iconeRedeClass = "fa-brands fa-threads"; textoBotao = "Ver no Threads"; corIconeRede = "#000000"; corBotaoPerfil = "#000000"; usuarioRede = "cgnews.oficial";
                 }
 
-                // Usa preferencialmente a imagem real cadastrada na notícia
                 let imagemMidia = item.imagem ? item.imagem : "";
 
                 blocoVideoRedeSocial = `
@@ -590,7 +583,6 @@
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                         <button onclick="compartilhar('facebook')" title="Facebook" style="background: #1877f2; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fab fa-facebook-f"></i></button>
                         <button onclick="compartilhar('whatsapp')" title="WhatsApp" style="background: #25d366; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fab fa-whatsapp"></i></button>
-                        <button onclick="compartilhar('instagram')" title="Instagram" style="background: #e1306c; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fab fa-instagram"></i></button>
                         <button onclick="compartilhar('twitter')" title="X (Twitter)" style="background: #000000; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fa-brands fa-x-twitter"></i></button>
                         <button onclick="compartilhar('linkedin')" title="LinkedIn" style="background: #0a66c2; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fab fa-linkedin-in"></i></button>
                         <button onclick="compartilhar('threads')" title="Threads" style="background: #000000; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fa-brands fa-threads"></i></button>
