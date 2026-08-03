@@ -795,8 +795,9 @@
             }
         };
 
+        // FUNÇÃO DE BUSCA PRINCIPAL ATUALIZADA
         window.realizarBuscaPrincipal = function() {
-            const termo = document.getElementById("input-busca").value.toLowerCase();
+            const termo = document.getElementById("input-busca").value.toLowerCase().trim();
             
             if (termo === "") {
                 renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
@@ -804,21 +805,33 @@
             }
 
             const listaFiltrada = window.bancoDeNoticias.filter(item => {
-                const temNoTitulo = item.titulo && item.titulo.toLowerCase().includes(termo);
-                const temNoTexto = item.texto && item.texto.toLowerCase().includes(termo);
-                return temNoTitulo || temNoTexto;
+                const titulo = item.titulo ? item.titulo.toLowerCase() : "";
+                const texto = item.texto ? item.texto.toLowerCase() : "";
+                const categoria = item.categoria ? item.categoria.toLowerCase() : "";
+                const autor = item.autor ? item.autor.toLowerCase() : "";
+                
+                let emCategoriasArray = false;
+                if (item.categorias && Array.isArray(item.categorias)) {
+                    emCategoriasArray = item.categorias.some(c => c.toLowerCase().includes(termo));
+                }
+
+                return titulo.includes(termo) || 
+                       texto.includes(termo) || 
+                       categoria.includes(termo) || 
+                       autor.includes(termo) || 
+                       emCategoriasArray;
             });
 
             renderizarNoticias(listaFiltrada, "Resultados da Busca", false);
         };
 
-        // FUNÇÃO CORRIGIDA PARA A BUSCA DA MATÉRIA
+        // FUNÇÃO DE BUSCA DA MATÉRIA ATUALIZADA
         window.realizarBuscaMateria = function(event) {
             if (event && event.key !== 'Enter') {
                 return;
             }
 
-            const termo = document.getElementById("input-busca-materia").value.toLowerCase();
+            const termo = document.getElementById("input-busca-materia").value.toLowerCase().trim();
             
             if (termo === "") {
                 fecharMateria();
@@ -827,9 +840,21 @@
             }
 
             const listaFiltrada = window.bancoDeNoticias.filter(item => {
-                const temNoTitulo = item.titulo && item.titulo.toLowerCase().includes(termo);
-                const temNoTexto = item.texto && item.texto.toLowerCase().includes(termo);
-                return temNoTitulo || temNoTexto;
+                const titulo = item.titulo ? item.titulo.toLowerCase() : "";
+                const texto = item.texto ? item.texto.toLowerCase() : "";
+                const categoria = item.categoria ? item.categoria.toLowerCase() : "";
+                const autor = item.autor ? item.autor.toLowerCase() : "";
+                
+                let emCategoriasArray = false;
+                if (item.categorias && Array.isArray(item.categorias)) {
+                    emCategoriasArray = item.categorias.some(c => c.toLowerCase().includes(termo));
+                }
+
+                return titulo.includes(termo) || 
+                       texto.includes(termo) || 
+                       categoria.includes(termo) || 
+                       autor.includes(termo) || 
+                       emCategoriasArray;
             });
 
             fecharMateria();
