@@ -20,11 +20,15 @@
         .header-admin h1 { color: #002a5c; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; }
         .header-admin span { background: #cc0000; color: white; padding: 5px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; letter-spacing: 1px; }
 
-        /* PAINEL DE ESTATÍSTICAS */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: #f8f9fa; border: 1px solid #e1e4e8; border-radius: 8px; padding: 15px; text-align: center; border-left: 4px solid #002a5c; }
-        .stat-card h3 { font-size: 11px; text-transform: uppercase; color: #666; margin-bottom: 6px; font-weight: 700; }
-        .stat-card .number { font-size: 22px; font-weight: 900; color: #002a5c; }
+        /* PAINEL DE ESTATÍSTICAS REAIS COM FILTRO */
+        .stats-box { background: #f8f9fa; border: 1px solid #e1e4e8; border-radius: 8px; padding: 15px; margin-bottom: 25px; border-left: 4px solid #002a5c; }
+        .stats-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .stats-header h3 { font-size: 13px; text-transform: uppercase; color: #002a5c; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+        
+        .stats-select { padding: 6px 12px; border-radius: 6px; border: 1px solid #cfd4db; background: #fff; font-size: 13px; font-weight: bold; color: #333; cursor: pointer; outline: none; }
+        .stats-display { text-align: center; padding: 10px; background: #fff; border-radius: 6px; border: 1px solid #e1e4e8; }
+        .stats-display .number { font-size: 32px; font-weight: 900; color: #002a5c; }
+        .stats-display .label-periodo { font-size: 11px; color: #666; text-transform: uppercase; font-weight: 600; margin-top: 2px; }
 
         .section-box { background: #fff; border: 1px solid #e1e4e8; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
         .section-title { font-size: 14px; font-weight: 800; color: #002a5c; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #eee; padding-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -109,26 +113,51 @@
     <div class="container">
         <div class="header-admin">
             <h1><i class="fas fa-globe"></i> PORTAL DE NOTÍCIAS ADMIN</h1>
-            <span>PRO V7.4</span>
+            <span>PRO V7.6</span>
         </div>
 
-        <!-- PAINEL DE ESTATÍSTICAS DE ACESSOS -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Visualizações Hoje</h3>
-                <div class="number" id="statHoje">142</div>
+        <!-- PAINEL DE ESTATÍSTICAS REAIS COM FILTROS DE MESES -->
+        <div class="stats-box">
+            <div class="stats-header">
+                <h3><i class="fas fa-chart-line"></i> Monitor de Visualizações em Tempo Real</h3>
+                <select id="filtroPeriodo" class="stats-select" onchange="atualizarEstatisticasView()">
+                    <option value="hoje">Hoje (24h)</option>
+                    <option value="1dia">1 Dia Específico</option>
+                    <option value="7dias">Últimos 7 Dias</option>
+                    <option value="15dias">Últimos 15 Dias</option>
+                    <option value="1mes">1 Mês (Este Mês)</option>
+                    <option value="2meses">2 Meses</option>
+                    <option value="3meses">3 Meses</option>
+                    <option value="4meses">4 Meses</option>
+                    <option value="5meses">5 Meses</option>
+                    <option value="6meses">6 Meses</option>
+                    <option value="7meses">7 Meses</option>
+                    <option value="8meses">8 Meses</option>
+                    <option value="9meses">9 Meses</option>
+                    <option value="10meses">10 Meses</option>
+                    <option value="11meses">11 Meses</option>
+                    <option value="12meses">12 Meses (1 Ano)</option>
+                    <option value="total" selected>Total Geral</option>
+                </select>
             </div>
-            <div class="stat-card">
-                <h3>Últimos 7 Dias</h3>
-                <div class="number" id="statSemana">1.280</div>
+            <div class="stats-display">
+                <div class="number" id="valorVisualizacoes">0</div>
+                <div class="label-periodo" id="rotuloPeriodo">Visualizações (Total Geral)</div>
             </div>
-            <div class="stat-card">
-                <h3>Este Mês</h3>
-                <div class="number" id="statMes">5.490</div>
+        </div>
+
+        <!-- CONFIGURAÇÕES DE INTEGRAÇÃO COM O GOOGLE -->
+        <div class="section-box" style="border-left: 4px solid #4285F4;">
+            <div class="section-title"><i class="fab fa-google"></i> Configuração do Google (Analytics / Search Console / AdSense)</div>
+            <div class="form-group">
+                <label>Código de Verificação / Rastreio do Google (Google Tag / Analytics)</label>
+                <input type="text" id="googleAnalyticsCode" placeholder="Ex: G-XXXXXXXXXX ou script de verificação do Search Console">
+                <small style="color: #666; font-size: 11px; margin-top: 4px; display: block;">Insira aqui para monitorar acessos exatos, taxa de rejeição e comportamento dos leitores no Google.</small>
             </div>
-            <div class="stat-card">
-                <h3>Total Geral</h3>
-                <div class="number" id="statTotal">18.320</div>
+            <div class="form-group" style="margin-bottom: 0;">
+                <label>Código de Anúncios Automáticos do Google AdSense</label>
+                <textarea id="googleAdSenseCode" rows="3" placeholder="Cole aqui o script fornecido pelo Google AdSense para gerar receita e ganhar dinheiro..."></textarea>
+                <small style="color: #666; font-size: 11px; margin-top: 4px; display: block;">Assim que aprovado no AdSense, cole o script do Google aqui para exibir anúncios automáticos na página.</small>
             </div>
         </div>
 
@@ -213,13 +242,12 @@
                 </div>
             </div>
 
-            <!-- SEÇÃO DE ANÚNCIOS / MONETIZAÇÃO -->
+            <!-- ESPAÇO PARA ANÚNCIOS MANUAIS -->
             <div class="section-box" style="border-left: 4px solid #f0ad4e;">
-                <div class="section-title"><i class="fas fa-ad"></i> Espaço para Anúncios (Google AdSense ou Banners)</div>
-                <div class="form-group">
-                    <label>Código do Anúncio ou Banner (Opcional)</label>
-                    <textarea id="codigoAnuncio" rows="3" placeholder="Cole aqui o código HTML/Script do Google AdSense ou o link da imagem do seu patrocinador local..."></textarea>
-                    <small style="color: #666; font-size: 11px; margin-top: 4px; display: block;">Este código aparecerá automaticamente abaixo da foto de capa nas matérias.</small>
+                <div class="section-title"><i class="fas fa-ad"></i> Banner Patrocinador / Anúncio Manual (Opcional)</div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Código do Banner ou Anúncio Individual</label>
+                    <textarea id="codigoAnuncio" rows="3" placeholder="Cole aqui o banner ou código de um anunciante local para esta matéria..."></textarea>
                 </div>
             </div>
 
@@ -286,7 +314,7 @@
     <!-- FIREBASE MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDjl4R4h2An2POmuZgMhAFsLbdhuzauxyY",
@@ -319,6 +347,7 @@
 
         let idEditando = null;
         window.noticiasAdmin = {};
+        window.listaCompletaNoticias = [];
 
         // --- SISTEMA DE UPLOAD DE IMAGENS ---
         function processarImagemParaBase64(file, inputHiddenId) {
@@ -406,6 +435,106 @@
             videoPreview.src = "";
         };
 
+        // --- CÁLCULO DE ESTATÍSTICAS REAIS COM FILTROS DE MESES ---
+        window.atualizarEstatisticasView = function() {
+            const filtro = document.getElementById('filtroPeriodo').value;
+            let totalViews = 0;
+            const agora = Date.now();
+            const umDiaMs = 24 * 60 * 60 * 1000;
+            const umMesMs = 30 * umDiaMs;
+
+            window.listaCompletaNoticias.forEach(item => {
+                const viewsMatéria = item.visualizacoes || 0;
+                const dataCriacao = item.dataCriacao || item.dataAtualizacao || agora;
+                const diferencaMs = agora - dataCriacao;
+
+                if (filtro === 'hoje') {
+                    if (diferencaMs <= umDiaMs) totalViews += viewsMatéria;
+                } else if (filtro === '1dia') {
+                    if (diferencaMs <= umDiaMs) totalViews += viewsMatéria;
+                } else if (filtro === '7dias') {
+                    if (diferencaMs <= (7 * umDiaMs)) totalViews += viewsMatéria;
+                } else if (filtro === '15dias') {
+                    if (diferencaMs <= (15 * umDiaMs)) totalViews += viewsMatéria;
+                } else if (filtro === '1mes') {
+                    if (diferencaMs <= (1 * umMesMs)) totalViews += viewsMatéria;
+                } else if (filtro === '2meses') {
+                    if (diferencaMs <= (2 * umMesMs)) totalViews += viewsMatéria;
+                } else if (filtro === '3meses') {
+                    if (diferencaMs <= (3 * umMesMs)) totalViews += viewsMatéria;
+                } else if (filtro === '4meses') {
+                    if (diferencaMs <= (4 * umMesMs)) totalViews += viewsMatéria;
+                } else if (filtro === '5meses') {
+                    if (diferencaMs <= (5 * umMesMs)) totalViews += viewsMatéria;
+                } else if (filtro === '6meses') {
+                    if (diferencaMs <= (6 * umMesMs)) totalViews += viewsMatéria;
+                } else if (filtro === '7meses') {
+                    if (diferencaMs <= (7 * umMesMs)) totalViews += viewsMatéria;
+                } else if (filtro === '8meses') {
+                    if (diferencaMs <= (8 * umMesMs)) totalViews += viewsMatéria;
+                } else if (filtro === '9meses') {
+                    if (diferencaMs <= (9 * umMesMs)) totalViews += viewsMatéria;
+                } else if (filtro === '10meses') {
+                    if (diferencaMs <= (10 * umMesMs)) totalViews += viewsMatéria;
+                } else if (filtro === '11meses') {
+                    if (diferencaMs <= (11 * umMesMs)) totalViews += viewsMatéria;
+                } else if (filtro === '12meses') {
+                    if (diferencaMs <= (12 * umMesMs)) totalViews += viewsMatéria;
+                } else {
+                    totalViews += viewsMatéria;
+                }
+            });
+
+            document.getElementById('valorVisualizacoes').innerText = totalViews.toLocaleString('pt-BR');
+            
+            const rotulos = {
+                'hoje': 'Visualizações Hoje',
+                '1dia': 'Visualizações (1 Dia)',
+                '7dias': 'Visualizações (Últimos 7 Dias)',
+                '15dias': 'Visualizações (Últimos 15 Dias)',
+                '1mes': 'Visualizações (1 Mês)',
+                '2meses': 'Visualizações (2 Meses)',
+                '3meses': 'Visualizações (3 Meses)',
+                '4meses': 'Visualizações (4 Meses)',
+                '5meses': 'Visualizações (5 Meses)',
+                '6meses': 'Visualizações (6 Meses)',
+                '7meses': 'Visualizações (7 Meses)',
+                '8meses': 'Visualizações (8 Meses)',
+                '9meses': 'Visualizações (9 Meses)',
+                '10meses': 'Visualizações (10 Meses)',
+                '11meses': 'Visualizações (11 Meses)',
+                '12meses': 'Visualizações (12 Meses / 1 Ano)',
+                'total': 'Visualizações (Total Geral)'
+            };
+            document.getElementById('rotuloPeriodo').innerText = rotulos[filtro];
+        };
+
+        // --- CARREGAR CONFIGURAÇÕES DO GOOGLE SALVAS ---
+        async function carregarConfigGoogle() {
+            try {
+                const docRef = doc(db, "configuracoes", "google");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById('googleAnalyticsCode').value = data.analytics || "";
+                    document.getElementById('googleAdSenseCode').value = data.adsense || "";
+                }
+            } catch (e) { console.log("Erro config google", e); }
+        }
+
+        // Salvar config do Google automaticamente ao digitar
+        document.getElementById('googleAnalyticsCode').addEventListener('blur', salvarConfigGoogle);
+        document.getElementById('googleAdSenseCode').addEventListener('blur', salvarConfigGoogle);
+
+        async function salvarConfigGoogle() {
+            try {
+                await setDoc(doc(db, "configuracoes", "google"), {
+                    analytics: document.getElementById('googleAnalyticsCode').value,
+                    adsense: document.getElementById('googleAdSenseCode').value
+                }, { merge: true });
+            } catch (e) { console.log("Erro ao salvar config", e); }
+        }
+
         // --- FUNÇÃO DE PRÉVIA DA MATÉRIA ---
         window.abrirPrevia = function() {
             const titulo = document.getElementById('titulo').value || "Título da Matéria Exemplo";
@@ -478,6 +607,7 @@
                     alert("✅ MATÉRIA ATUALIZADA COM SUCESSO!");
                 } else {
                     dadosMatéria.dataCriacao = agora;
+                    dadosMatéria.visualizacoes = 0; // Inicia com 0 visualizações reais
                     await addDoc(collection(db, "noticias"), dadosMatéria);
                     alert("🚀 MATÉRIA PUBLICADA NO SITE!");
                 }
@@ -492,7 +622,7 @@
         });
 
         // --- LISTAGEM ---
-        function formatarTempoRelativo(dataCriacaoMs, dataAtualizacaoMs) {
+        function formatarTempoRelativo(dataCriacaoMs) {
             const dCriacao = new Date(dataCriacaoMs);
             const dia = String(dCriacao.getDate()).padStart(2, '0');
             const mes = String(dCriacao.getMonth() + 1).padStart(2, '0');
@@ -510,9 +640,11 @@
                 const q = query(collection(db, "noticias"), orderBy("dataAtualizacao", "desc"));
                 const snapshot = await getDocs(q);
                 listaDiv.innerHTML = "";
+                window.listaCompletaNoticias = [];
 
                 if (snapshot.empty) {
                     listaDiv.innerHTML = "<p>Nenhuma matéria publicada ainda.</p>";
+                    atualizarEstatisticasView();
                     return;
                 }
 
@@ -520,10 +652,12 @@
                     const item = docSnap.data();
                     const id = docSnap.id;
                     window.noticiasAdmin[id] = item;
+                    window.listaCompletaNoticias.push(item);
 
                     const tempoCriacao = item.dataCriacao || item.dataAtualizacao;
-                    const infoTempo = formatarTempoRelativo(tempoCriacao, item.dataAtualizacao);
+                    const infoTempo = formatarTempoRelativo(tempoCriacao);
                     const fotoCapa = item.imagem1 || item.imagemCapa || "";
+                    const totalViewsItem = item.visualizacoes || 0;
 
                     let miniaturaHtml = `<div class="noticia-miniatura"><i class="fas fa-image"></i></div>`;
                     if (fotoCapa) {
@@ -537,8 +671,8 @@
                                 <strong>${item.titulo}</strong>
                                 <div class="noticia-meta-tags">
                                     <span><i class="far fa-clock"></i> ${infoTempo}</span>
+                                    <span><i class="fas fa-eye"></i> ${totalViewsItem} Acessos</span>
                                     <span><i class="fas fa-tag"></i> ${item.categorias ? item.categorias.join(', ') : 'Geral'}</span>
-                                    ${item.codigoAnuncio ? '<span style="color: #d9534f;"><i class="fas fa-ad"></i> Com Anúncio</span>' : ''}
                                 </div>
                                 <div class="acoes-btn">
                                     <button type="button" class="btn-editar" onclick="prepararEdicao('${id}')"><i class="fas fa-edit"></i> Editar</button>
@@ -548,7 +682,11 @@
                         </div>
                     `;
                 });
+
+                atualizarEstatisticasView();
+                carregarConfigGoogle();
             } catch (error) {
+                console.error(error);
                 listaDiv.innerHTML = "<p>Erro ao carregar notícias.</p>";
             }
         };
