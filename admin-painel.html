@@ -3,46 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel - CG NEWS OFICIAL</title>
+    <title>Painel Administrativo - CG NEWS OFICIAL</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- CROPPER.JS PARA EDIÇÃO DE IMAGEM -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-        body { background-color: #f2f4f7; padding: 20px; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h1 { color: #11136c; font-size: 22px; border-bottom: 2px solid #11136c; padding-bottom: 10px; margin-bottom: 25px; }
-        h2 { color: #11136c; font-size: 18px; border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 15px; margin-top: 40px; }
+        body { background-color: #eef2f5; padding: 20px 10px; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
         
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; color: #333; font-size: 14px; }
-        input[type="text"], textarea, input[type="file"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
-        textarea { height: 150px; resize: vertical; }
-        
-        .checkbox-group { display: flex; flex-wrap: wrap; gap: 15px; border: 1px solid #ccc; padding: 10px; border-radius: 4px; }
-        .checkbox-group label { font-weight: normal; margin-bottom: 0; display: flex; align-items: center; gap: 5px; }
-        
-        .btn-submit { background-color: #11136c; color: white; border: none; padding: 15px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+        .header-admin { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #11136c; padding-bottom: 15px; margin-bottom: 25px; }
+        .header-admin h1 { color: #11136c; font-size: 22px; font-weight: 800; }
+        .header-admin span { background: #11136c; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+
+        .section-box { background: #f8f9fa; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 25px; }
+        .section-title { font-size: 15px; font-weight: bold; color: #11136c; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e0e0e0; padding-bottom: 8px; }
+
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-weight: 700; margin-bottom: 6px; color: #2d3748; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+        input[type="text"], textarea, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; transition: 0.2s; }
+        input[type="text"]:focus, textarea:focus, select:focus { border-color: #11136c; box-shadow: 0 0 0 3px rgba(17, 19, 108, 0.1); }
+        textarea { height: 180px; resize: vertical; line-height: 1.5; }
+
+        /* CHECKBOXES DE CATEGORIA */
+        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; background: #fff; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; }
+        .checkbox-group label { font-weight: 600; text-transform: none; margin-bottom: 0; display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #475569; }
+
+        /* ESTÚDIO DE IMAGEM */
+        .modo-foto-tabs { display: flex; gap: 10px; margin-bottom: 15px; }
+        .tab-btn { flex: 1; padding: 10px; border: 1px solid #cbd5e1; background: #fff; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px; text-align: center; color: #475569; }
+        .tab-btn.active { background: #11136c; color: white; border-color: #11136c; }
+
+        .cropper-container-box { max-width: 100%; max-height: 400px; background: #000; margin-top: 10px; display: none; border-radius: 6px; overflow: hidden; }
+        .aspect-ratios { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+        .btn-ratio { background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; color: #334155; }
+        .btn-ratio:hover, .btn-ratio.active { background: #11136c; color: white; }
+
+        .preview-box { width: 100%; max-height: 350px; border: 2px dashed #cbd5e1; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fff; margin-top: 10px; position: relative; }
+        .preview-box img { max-width: 100%; max-height: 350px; object-fit: contain; }
+
+        /* BOTÕES DE AÇÃO */
+        .btn-submit { background-color: #11136c; color: white; border: none; padding: 16px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-submit:hover { background-color: #0a0b45; }
-        .btn-cancelar { background-color: #888; color: white; border: none; padding: 10px; width: 100%; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 10px; display: none; }
-        
-        /* Estilos da lista de notícias */
-        .noticia-item { border: 1px solid #eee; padding: 15px; margin-bottom: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; background: #fafafa; }
-        .noticia-info strong { display: block; color: #11136c; font-size: 16px; }
-        .noticia-info span { font-size: 12px; color: #666; }
-        .acoes-btn { display: flex; gap: 10px; }
-        .btn-editar { background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
-        .btn-apagar { background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .btn-cancelar { background-color: #64748b; color: white; border: none; padding: 12px; width: 100%; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; display: none; }
+
+        /* LISTA DE MATÉRIAS */
+        .noticia-item { border: 1px solid #e2e8f0; padding: 15px; margin-bottom: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .noticia-info strong { display: block; color: #0f172a; font-size: 15px; margin-bottom: 4px; }
+        .noticia-info span { font-size: 12px; color: #64748b; }
+        .acoes-btn { display: flex; gap: 8px; }
+        .btn-editar { background: #2563eb; color: white; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .btn-apagar { background: #dc2626; color: white; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Cadastro de Notícias</h1>
+        <div class="header-admin">
+            <h1><i class="fas fa-newspaper"></i> CG NEWS - Painel Admin</h1>
+            <span>PRO V2.0</span>
+        </div>
 
         <form id="formNoticia">
-            <div class="form-group">
-                <label>Categorias (Selecione uma ou mais)</label>
+            
+            <!-- CATEGORIAS -->
+            <div class="section-box">
+                <div class="section-title"><i class="fas fa-tags"></i> Categorias da Matéria</div>
                 <div class="checkbox-group">
                     <label><input type="checkbox" name="categoria" value="Polícia"> Polícia</label>
                     <label><input type="checkbox" name="categoria" value="Trânsito"> Trânsito</label>
+                    <label><input type="checkbox" name="categoria" value="Política"> Política</label>
+                    <label><input type="checkbox" name="categoria" value="Esporte"> Esporte</label>
+                    <label><input type="checkbox" name="categoria" value="In Memoriam"> In Memoriam</label>
                     <label><input type="checkbox" name="categoria" value="Campo Grande"> Campo Grande</label>
                     <label><input type="checkbox" name="categoria" value="Mato Grosso do Sul"> Mato Grosso do Sul</label>
                     <label><input type="checkbox" name="categoria" value="Brasil"> Brasil</label>
@@ -50,56 +84,141 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>Selecionar Imagem do Celular</label>
-                <input type="file" id="imagemUpload" accept="image/*">
-                <small style="color: #666; font-size: 11px;">A imagem será comprimida automaticamente.</small>
+            <!-- ESTÚDIO DE MÍDIA / FOTOS -->
+            <div class="section-box">
+                <div class="section-title"><i class="fas fa-camera"></i> Estúdio de Imagem de Capa (Corte e Montagem)</div>
+                
+                <div class="modo-foto-tabs">
+                    <div class="tab-btn active" id="tabUmaFoto" onclick="alternarModoFoto('uma')">1 Foto (Com Corte)</div>
+                    <div class="tab-btn" id="tabDuasFotos" onclick="alternarModoFoto('duas')">Montagem (2 Fotos)</div>
+                </div>
+
+                <!-- MODO 1 FOTO -->
+                <div id="areaUmaFoto">
+                    <div class="form-group">
+                        <label>Selecionar Foto Principal</label>
+                        <input type="file" id="imagemInput" accept="image/*">
+                    </div>
+
+                    <div class="cropper-container-box" id="cropperBox">
+                        <img id="imageToCrop" src="" style="max-width: 100%;">
+                    </div>
+
+                    <div class="aspect-ratios" id="ratioSelector" style="display: none;">
+                        <span style="font-size: 12px; font-weight: bold; align-self: center;">Proporção:</span>
+                        <button type="button" class="btn-ratio active" onclick="definirProporcao(16/9)">16:9 (Padrão Capa)</button>
+                        <button type="button" class="btn-ratio" onclick="definirProporcao(4/3)">4:3 (Clássico)</button>
+                        <button type="button" class="btn-ratio" onclick="definirProporcao(1)">1:1 (Quadrado)</button>
+                        <button type="button" class="btn-ratio" onclick="definirProporcao(9/16)">9:16 (Vertical)</button>
+                        <button type="button" class="btn-ratio" style="background:#16a34a; color:white;" onclick="aplicarCorte()">✔ Confirmar Corte</button>
+                    </div>
+                </div>
+
+                <!-- MODO MONTAGEM 2 FOTOS -->
+                <div id="areaDuasFotos" style="display: none;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="form-group">
+                            <label>Foto 1 (Esquerda / Cima)</label>
+                            <input type="file" id="foto1Input" accept="image/*">
+                        </div>
+                        <div class="form-group">
+                            <label>Foto 2 (Direita / Baixo)</label>
+                            <input type="file" id="foto2Input" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Layout da Montagem</label>
+                        <select id="tipoMontagem">
+                            <option value="ladoALado">Lado a Lado (Esquerda / Direita)</option>
+                            <option value="empilhado">Empilhado (Cima / Baixo)</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn-ratio" style="background:#11136c; color:white; width:100%; padding:10px;" onclick="gerarMontagem()">Gerar Montagem de Fotos</button>
+                </div>
+
+                <!-- PREVIEW DA FOTO FINAL -->
+                <label style="margin-top: 15px;">Resultado / Pré-visualização da Capa:</label>
+                <div class="preview-box" id="previewContainer">
+                    <span style="color: #94a3b8; font-size: 13px;">Nenhuma foto processada ainda</span>
+                    <img id="previewImg" src="" style="display: none;">
+                </div>
                 <input type="hidden" id="imagemBase64">
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Créditos / Fonte da Imagem</label>
+                    <input type="text" id="fonteImagem" placeholder="Ex: Reprodução / Redes Sociais / Divulgação">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Fonte Imagem</label>
-                <input type="text" id="fonteImagem" placeholder="Créditos da imagem">
+            <!-- VÍDEO E REDES SOCIAIS -->
+            <div class="section-box">
+                <div class="section-title"><i class="fas fa-share-alt"></i> Redes Sociais / Vídeo Incorporado</div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px;">
+                    <div class="form-group">
+                        <label>Plataforma</label>
+                        <select id="plataformaRede">
+                            <option value="instagram">Instagram</option>
+                            <option value="tiktok">TikTok</option>
+                            <option value="youtube">YouTube</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="threads">Threads</option>
+                            <option value="x">X (Twitter)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Link de Incorporação / Post</label>
+                        <input type="text" id="linkRedeSocial" placeholder="Cole o link da publicação oficial aqui">
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Link de Incorporação (Redes Sociais / Vídeo)</label>
-                <input type="text" id="linkRedeSocial" placeholder="Cole o link do Instagram, TikTok, Facebook, YouTube, etc.">
+            <!-- DADOS DA MATÉRIA -->
+            <div class="section-box">
+                <div class="section-title"><i class="fas fa-pen"></i> Conteúdo Jornalístico</div>
+
+                <div class="form-group">
+                    <label>Autor / Repórter</label>
+                    <input type="text" id="autor" placeholder="Nome do autor da matéria">
+                </div>
+
+                <div class="form-group">
+                    <label>Título da Notícia</label>
+                    <input type="text" id="titulo" placeholder="Digite um título impactante" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Corpo do Texto (Matéria Completa)</label>
+                    <textarea id="texto" placeholder="Escreva a notícia detalhada..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Fonte da Notícia</label>
+                    <input type="text" id="fonteNoticia" placeholder="Ex: CG NEWS / Assessoria / Polícia Civil">
+                </div>
+
+                <div class="form-group">
+                    <label>Código / Link de Publicidade ou Anúncio (Opcional)</label>
+                    <input type="text" id="anuncioCod" placeholder="Link de banner ou script patrocinado">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Autor</label>
-                <input type="text" id="autor" placeholder="Nome do autor da matéria">
-            </div>
-
-            <div class="form-group">
-                <label>Título</label>
-                <input type="text" id="titulo" placeholder="Título da notícia" required>
-            </div>
-
-            <div class="form-group">
-                <label>Texto</label>
-                <textarea id="texto" placeholder="Escreva a matéria completa aqui..." required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Fonte</label>
-                <input type="text" id="fonteNoticia" placeholder="Fonte da notícia">
-            </div>
-
-            <button type="submit" id="btnSalvar" class="btn-submit">Publicar Notícia</button>
+            <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> Publicar Notícia</button>
             <button type="button" id="btnCancelar" class="btn-cancelar" onclick="cancelarEdicao()">Cancelar Edição</button>
         </form>
 
-        <!-- SEÇÃO PARA GERENCIAR NOTÍCIAS -->
-        <h2>Notícias Publicadas (Editar / Apagar)</h2>
+        <!-- LISTA DE GERENCIAMENTO -->
+        <h2 style="color: #11136c; font-size: 18px; margin: 30px 0 15px 0;"><i class="fas fa-list-alt"></i> Matérias Publicadas</h2>
         <div id="lista-noticias">
-            <p style="color: #888; font-size: 14px;">Carregando matérias...</p>
+            <p style="color: #64748b; font-size: 14px;">Carregando banco de notícias...</p>
         </div>
 
     </div>
 
-    <!-- SCRIPT DO FIREBASE E FUNCIONAMENTO DO PAINEL -->
+    <!-- JS EXTERNO DO CROPPER.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+    <!-- FIREBASE E LÓGICA DO PAINEL -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -118,90 +237,173 @@
         const db = getFirestore(app);
 
         let idEditando = null;
+        let cropper = null;
         window.noticiasAdmin = {};
 
-        // COMPRESSÃO DE IMAGEM
-        document.getElementById("imagemUpload").addEventListener("change", function(event) {
-            const file = event.target.files[0];
+        // ALTERNAR ABAS DE FOTO
+        window.alternarModoFoto = function(modo) {
+            if(modo === 'uma') {
+                document.getElementById('areaUmaFoto').style.display = 'block';
+                document.getElementById('areaDuasFotos').style.display = 'none';
+                document.getElementById('tabUmaFoto').classList.add('active');
+                document.getElementById('tabDuasFotos').classList.remove('active');
+            } else {
+                document.getElementById('areaUmaFoto').style.display = 'none';
+                document.getElementById('areaDuasFotos').style.display = 'block';
+                document.getElementById('tabDuasFotos').classList.add('active');
+                document.getElementById('tabUmaFoto').classList.remove('active');
+            }
+        };
+
+        // INICIALIZAR CORTE DE IMAGEM
+        document.getElementById('imagemInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement("canvas");
-                    const MAX_WIDTH = 800;
-                    const scaleSize = MAX_WIDTH / img.width;
-                    canvas.width = MAX_WIDTH;
-                    canvas.height = img.height * scaleSize;
-                    const ctx = canvas.getContext("2d");
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    const base64 = canvas.toDataURL("image/jpeg", 0.7);
-                    document.getElementById("imagemBase64").value = base64;
-                    alert("Imagem carregada e comprimida com sucesso!");
-                };
-                img.src = e.target.result;
+            reader.onload = function(evt) {
+                const imgEl = document.getElementById('imageToCrop');
+                imgEl.src = evt.target.result;
+                
+                document.getElementById('cropperBox').style.display = 'block';
+                document.getElementById('ratioSelector').style.display = 'flex';
+
+                if (cropper) cropper.destroy();
+                
+                cropper = new Cropper(imgEl, {
+                    aspectRatio: 16 / 9,
+                    viewMode: 1,
+                    background: false
+                });
             };
             reader.readAsDataURL(file);
         });
 
-        // SALVAR OU ATUALIZAR NOTÍCIA
-        document.getElementById("formNoticia").addEventListener("submit", async function(e) {
+        window.definirProporcao = function(ratio) {
+            if (cropper) cropper.setAspectRatio(ratio);
+        };
+
+        window.aplicarCorte = function() {
+            if (!cropper) return;
+            const canvas = cropper.getCroppedCanvas({ width: 1000, height: 562 });
+            const base64 = canvas.toDataURL('image/jpeg', 0.85);
+
+            document.getElementById('imagemBase64').value = base64;
+            const previewImg = document.getElementById('previewImg');
+            previewImg.src = base64;
+            previewImg.style.display = 'block';
+            document.querySelector('#previewContainer span').style.display = 'none';
+            alert('Imagem cortada e pronta para o post!');
+        };
+
+        // GERAR MONTAGEM DE 2 FOTOS
+        window.gerarMontagem = function() {
+            const file1 = document.getElementById('foto1Input').files[0];
+            const file2 = document.getElementById('foto2Input').files[0];
+
+            if (!file1 || !file2) {
+                alert('Por favor, selecione as duas fotos para fazer a montagem.');
+                return;
+            }
+
+            const img1 = new Image();
+            const img2 = new Image();
+            let carregadas = 0;
+
+            const processar = () => {
+                carregadas++;
+                if (carregadas < 2) return;
+
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const tipo = document.getElementById('tipoMontagem').value;
+
+                if (tipo === 'ladoALado') {
+                    canvas.width = 1000;
+                    canvas.height = 562; // 16:9
+                    ctx.drawImage(img1, 0, 0, 498, 562);
+                    ctx.drawImage(img2, 502, 0, 498, 562);
+                } else {
+                    canvas.width = 1000;
+                    canvas.height = 800;
+                    ctx.drawImage(img1, 0, 0, 1000, 398);
+                    ctx.drawImage(img2, 0, 402, 1000, 398);
+                }
+
+                const base64 = canvas.toDataURL('image/jpeg', 0.85);
+                document.getElementById('imagemBase64').value = base64;
+                const previewImg = document.getElementById('previewImg');
+                previewImg.src = base64;
+                previewImg.style.display = 'block';
+                document.querySelector('#previewContainer span').style.display = 'none';
+                alert('Montagem de fotos gerada com sucesso!');
+            };
+
+            const r1 = new FileReader();
+            r1.onload = e => { img1.src = e.target.result; img1.onload = processar; };
+            r1.readAsDataURL(file1);
+
+            const r2 = new FileReader();
+            r2.onload = e => { img2.src = e.target.result; img2.onload = processar; };
+            r2.readAsDataURL(file2);
+        };
+
+        // SALVAR OU EDITAR NO FIREBASE
+        document.getElementById('formNoticia').addEventListener('submit', async function(e) {
             e.preventDefault();
-            document.getElementById("btnSalvar").innerText = "Salvando...";
+            document.getElementById('btnSalvar').innerText = "Salvando Matéria...";
 
             const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
             const categoriasSelecionadas = Array.from(checkboxes).map(cb => cb.value);
 
             const noticiaDados = {
                 categorias: categoriasSelecionadas,
-                categoria: categoriasSelecionadas.length > 0 ? categoriasSelecionadas[0] : "", // fallback
-                imagem: document.getElementById("imagemBase64").value,
-                fonteImagem: document.getElementById("fonteImagem").value,
-                linkRedeSocial: document.getElementById("linkRedeSocial").value,
-                autor: document.getElementById("autor").value,
-                titulo: document.getElementById("titulo").value,
-                texto: document.getElementById("texto").value,
-                fonteNoticia: document.getElementById("fonteNoticia").value,
+                categoria: categoriasSelecionadas.length > 0 ? categoriasSelecionadas[0] : "",
+                imagem: document.getElementById('imagemBase64').value,
+                fonteImagem: document.getElementById('fonteImagem').value,
+                plataformaRede: document.getElementById('plataformaRede').value,
+                linkRedeSocial: document.getElementById('linkRedeSocial').value,
+                autor: document.getElementById('autor').value,
+                titulo: document.getElementById('titulo').value,
+                texto: document.getElementById('texto').value,
+                fonteNoticia: document.getElementById('fonteNoticia').value,
+                anuncioCod: document.getElementById('anuncioCod').value,
                 dataAtualizacao: Date.now()
             };
 
             try {
                 if (idEditando) {
-                    // Atualizar matéria existente
-                    const docRef = doc(db, "noticias", idEditando);
-                    await updateDoc(docRef, noticiaDados);
-                    alert("Notícia ATUALIZADA com sucesso!");
+                    await updateDoc(doc(db, "noticias", idEditando), noticiaDados);
+                    alert("Matéria ATUALIZADA com sucesso!");
                 } else {
-                    // Criar nova matéria
+                    noticiaDados.dataCriacao = Date.now();
                     await addDoc(collection(db, "noticias"), noticiaDados);
-                    alert("Notícia PUBLICADA com sucesso!");
+                    alert("Matéria PUBLICADA com sucesso!");
                 }
-                
-                document.getElementById("formNoticia").reset();
-                document.getElementById("imagemBase64").value = "";
+
                 cancelarEdicao();
                 carregarListaNoticias();
 
             } catch (error) {
-                console.error("Erro ao salvar:", error);
-                alert("Erro ao salvar a notícia.");
-                document.getElementById("btnSalvar").innerText = idEditando ? "Atualizar Notícia" : "Publicar Notícia";
+                console.error("Erro:", error);
+                alert("Erro ao salvar no banco de dados.");
+            } finally {
+                document.getElementById('btnSalvar').innerText = "Publicar Notícia";
             }
         });
 
-        // CARREGAR LISTA PARA EDITAR/APAGAR
+        // LISTAR MATÉRIAS
         async function carregarListaNoticias() {
             const listaDiv = document.getElementById("lista-noticias");
             listaDiv.innerHTML = "<p>Carregando...</p>";
-            
+
             try {
                 const q = query(collection(db, "noticias"), orderBy("dataAtualizacao", "desc"));
                 const snapshot = await getDocs(q);
                 listaDiv.innerHTML = "";
-                
+
                 if (snapshot.empty) {
-                    listaDiv.innerHTML = "<p style='color: #888; font-size: 14px;'>Nenhuma notícia publicada ainda.</p>";
+                    listaDiv.innerHTML = "<p style='color: #64748b;'>Nenhuma matéria cadastrada.</p>";
                     return;
                 }
 
@@ -209,90 +411,93 @@
                     const item = docSnap.data();
                     const id = docSnap.id;
                     window.noticiasAdmin[id] = item;
-                    
+
                     const d = new Date(item.dataAtualizacao);
-                    const dataFormatada = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + " às " + d.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+                    const dataFormatada = d.toLocaleDateString('pt-BR') + " às " + d.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
 
                     listaDiv.innerHTML += `
                         <div class="noticia-item">
                             <div class="noticia-info">
                                 <strong>${item.titulo}</strong>
-                                <span>Publicado em: ${dataFormatada}</span>
+                                <span>Atualizado em: ${dataFormatada} | Categorias: ${item.categorias ? item.categorias.join(', ') : 'Geral'}</span>
                             </div>
                             <div class="acoes-btn">
-                                <button class="btn-editar" onclick="prepararEdicao('${id}')">Editar</button>
-                                <button class="btn-apagar" onclick="apagarNoticia('${id}')">Apagar</button>
+                                <button type="button" class="btn-editar" onclick="prepararEdicao('${id}')"><i class="fas fa-edit"></i> Editar</button>
+                                <button type="button" class="btn-apagar" onclick="apagarNoticia('${id}')"><i class="fas fa-trash"></i> Apagar</button>
                             </div>
                         </div>
                     `;
                 });
             } catch (error) {
                 console.error("Erro ao listar:", error);
-                listaDiv.innerHTML = "<p>Erro ao carregar a lista de notícias.</p>";
             }
         }
 
-        // PREPARAR FORMULÁRIO PARA EDIÇÃO
+        // EDICÃO E PREENCHIMENTO DOS CAMPOS
         window.prepararEdicao = function(id) {
             const item = window.noticiasAdmin[id];
             if (!item) return;
 
             idEditando = id;
-            document.getElementById("btnSalvar").innerText = "Atualizar Notícia";
-            document.getElementById("btnSalvar").style.backgroundColor = "#007bff";
+            document.getElementById("btnSalvar").innerText = "Atualizar Matéria";
+            document.getElementById("btnSalvar").style.backgroundColor = "#2563eb";
             document.getElementById("btnCancelar").style.display = "block";
-            window.scrollTo({ top: 0, behavior: 'smooth' }); // Rola a tela para o topo
+            window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // Preencher os campos textuais
             document.getElementById("titulo").value = item.titulo || "";
             document.getElementById("texto").value = item.texto || "";
             document.getElementById("autor").value = item.autor || "";
+            document.getElementById("plataformaRede").value = item.plataformaRede || "instagram";
             document.getElementById("linkRedeSocial").value = item.linkRedeSocial || "";
             document.getElementById("fonteImagem").value = item.fonteImagem || "";
             document.getElementById("fonteNoticia").value = item.fonteNoticia || "";
+            document.getElementById("anuncioCod").value = item.anuncioCod || "";
             document.getElementById("imagemBase64").value = item.imagem || "";
 
-            // Marcar checkboxes corretamente
+            if (item.imagem) {
+                const previewImg = document.getElementById('previewImg');
+                previewImg.src = item.imagem;
+                previewImg.style.display = 'block';
+                document.querySelector('#previewContainer span').style.display = 'none';
+            }
+
             const checkboxes = document.querySelectorAll('input[name="categoria"]');
-            checkboxes.forEach(cb => cb.checked = false); // limpa tudo
+            checkboxes.forEach(cb => cb.checked = false);
             
             if (item.categorias && item.categorias.length > 0) {
                 item.categorias.forEach(cat => {
                     const check = document.querySelector(`input[name="categoria"][value="${cat}"]`);
                     if (check) check.checked = true;
                 });
-            } else if (item.categoria) {
-                const check = document.querySelector(`input[name="categoria"][value="${item.categoria}"]`);
-                if (check) check.checked = true;
             }
         };
 
-        // CANCELAR EDIÇÃO E VOLTAR PARA MODO "PUBLICAR"
         window.cancelarEdicao = function() {
             idEditando = null;
             document.getElementById("formNoticia").reset();
             document.getElementById("imagemBase64").value = "";
+            document.getElementById("previewImg").style.display = "none";
+            document.querySelector('#previewContainer span').style.display = "block";
+            document.getElementById('cropperBox').style.display = "none";
+            document.getElementById('ratioSelector').style.display = "none";
             document.getElementById("btnSalvar").innerText = "Publicar Notícia";
             document.getElementById("btnSalvar").style.backgroundColor = "#11136c";
             document.getElementById("btnCancelar").style.display = "none";
+            if (cropper) cropper.destroy();
         };
 
-        // APAGAR NOTÍCIA
         window.apagarNoticia = async function(id) {
-            const confirmacao = confirm("Tem certeza que deseja apagar esta matéria definitivamente?");
-            if (confirmacao) {
+            if (confirm("Tem certeza que deseja apagar esta matéria definitivamente?")) {
                 try {
                     await deleteDoc(doc(db, "noticias", id));
                     alert("Notícia apagada com sucesso!");
-                    carregarListaNoticias(); // recarrega a lista
+                    carregarListaNoticias();
                 } catch (error) {
-                    console.error("Erro ao apagar:", error);
-                    alert("Erro ao tentar apagar a notícia.");
+                    console.error("Erro:", error);
                 }
             }
         };
 
-        // Inicia carregando a lista
         carregarListaNoticias();
     </script>
 </body>
