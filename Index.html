@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -301,7 +301,7 @@
         <div class="header-btn" onclick="abrirMenu()">
             <i class="fas fa-bars"></i>
         </div>
-        <div>CG NEWS OFICIAL</div>
+        <div style="cursor: pointer;" onclick="fecharMateria(); window.scrollTo(0,0);">CG NEWS OFICIAL</div>
         <div class="header-btn" onclick="toggleBusca()">
             <i class="fas fa-search"></i>
         </div>
@@ -366,16 +366,21 @@
     <!-- TELA DA MATÉRIA COMPLETA -->
     <div id="modal-materia" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f2f4f7; z-index: 9999; overflow-y: auto;">
         
-        <!-- CABEÇALHO PADRÃO DA MATÉRIA -->
+        <!-- CABEÇALHO PADRÃO DA MATÉRIA (AGORA COM OS MESMOS EVENTOS) -->
         <header>
             <div class="header-btn" onclick="abrirMenu()">
                 <i class="fas fa-bars"></i>
             </div>
-            <div>CG NEWS OFICIAL</div>
+            <div style="cursor: pointer;" onclick="fecharMateria(); window.scrollTo(0,0);">CG NEWS OFICIAL</div>
             <div class="header-btn" onclick="toggleBusca()">
                 <i class="fas fa-search"></i>
             </div>
         </header>
+
+        <!-- BARRA DE BUSCA DENTRO DA MATÉRIA -->
+        <div id="barra-busca-materia" style="display: none; background-color: #fff; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: sticky; top: 58px; z-index: 999;">
+            <input type="text" id="input-busca-materia" placeholder="Buscar por palavra-chave..." onkeyup="realizarBuscaMateria()" style="width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px; outline: none;">
+        </div>
 
         <div style="background: white; max-width: 900px; margin: 20px auto; min-height: 80vh; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-radius: 8px;">
             <div onclick="fecharMateria()" style="color: #11136c; font-weight: bold; font-size: 15px; cursor: pointer; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 6px;">
@@ -477,18 +482,28 @@
         window.fecharMenu = function() {
             document.getElementById("sidebar").style.left = "-260px";
             document.getElementById("overlay").style.display = "none";
-            document.body.style.overflow = "auto";
+            // Se o modal de matéria estiver fechado, restaura o scroll do body
+            if (document.getElementById("modal-materia").style.display !== "block") {
+                document.body.style.overflow = "auto";
+            }
         };
 
         window.toggleBusca = function() {
-            const barra = document.getElementById("barra-busca");
+            const modalMateriaAberto = document.getElementById("modal-materia").style.display === "block";
+            const barra = modalMateriaAberto ? document.getElementById("barra-busca-materia") : document.getElementById("barra-busca");
+            const input = modalMateriaAberto ? document.getElementById("input-busca-materia") : document.getElementById("input-busca");
+
             if (barra.style.display === "none" || barra.style.display === "") {
                 barra.style.display = "block";
-                document.getElementById("input-busca").focus();
+                input.focus();
             } else {
                 barra.style.display = "none";
-                document.getElementById("input-busca").value = "";
-                window.filtrarCategoria('Todas');
+                input.value = "";
+                if (modalMateriaAberto) {
+                    fecharMateria();
+                } else {
+                    window.filtrarCategoria('Todas');
+                }
             }
         };
 
@@ -666,6 +681,7 @@
 
         window.fecharMateria = function() {
             document.getElementById("modal-materia").style.display = "none";
+            document.getElementById("barra-busca-materia").style.display = "none";
             document.body.style.overflow = "auto"; 
         };
 
@@ -758,8 +774,10 @@
         }
 
         window.filtrarCategoria = function(categoriaDesejada) {
+            fecharMateria();
             fecharMenu();
             document.getElementById("input-busca").value = ""; 
+            document.getElementById("input-busca-materia").value = "";
             
             if (categoriaDesejada === 'Todas') {
                 renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
@@ -791,6 +809,15 @@
             renderizarNoticias(listaFiltrada, "Resultados da Busca", false);
         };
 
+        window.realizarBuscaMateria = function() {
+            const termo = document.getElementById("input-busca-materia").value.toLowerCase();
+            if (termo !== "") {
+                fecharMateria();
+                document.getElementById("input-busca").value = termo;
+                window.realizarBusca();
+            }
+        };
+
         async function carregarNoticias() {
             try {
                 const q = query(collection(db, "noticias"), orderBy("dataAtualizacao", "desc"));
@@ -818,4 +845,3 @@
     </script>
 </body>
 </html>
-   
