@@ -559,7 +559,6 @@
                 let textoBotao = "Ver publicação no Instagram";
                 let corIconeRede = "#E1306C";
                 let corBotaoPerfil = "#405de6";
-                let linkPerfilRede = url; 
 
                 if (url.includes("youtube.com") || url.includes("youtu.be")) {
                     nomeRede = "YouTube"; iconeRedeClass = "fab fa-youtube"; textoBotao = "Assista no YouTube"; corIconeRede = "#FF0000"; corBotaoPerfil = "#FF0000";
@@ -638,22 +637,9 @@
                     `;
                 }
 
-                // BLOCO ÚNICO DO INSTAGRAM ORIGINAL (SEM DUPLICAÇÃO DE CABEÇALHO)
+                // ESTRUTURA SEM O CABEÇALHO SUPERIOR DUPLICADO
                 blocoVideoRedeSocial = `
                     <div style="margin: 35px 0 20px 0; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                        <div style="padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div style="width: 38px; height: 38px; border-radius: 50%; background: #11136c; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; overflow: hidden; border: 1px solid #ddd;">
-                                    <span style="font-size: 10px; font-weight: 900; background: #11136c; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#fff;">CG</span>
-                                </div>
-                                <div>
-                                    <div style="font-weight: 700; font-size: 14px; color: #1a1a1a;">cgnews.oficial</div>
-                                    <div style="font-size: 11px; color: #777;">Áudio original • <i class="${iconeRedeClass}" style="color: ${corIconeRede};"></i> ${nomeRede}</div>
-                                </div>
-                            </div>
-                            <a href="${linkPerfilRede}" target="_blank" style="background: ${corBotaoPerfil}; color: white; padding: 6px 14px; font-size: 13px; font-weight: 600; text-decoration: none; border-radius: 4px;">Ver perfil</a>
-                        </div>
-
                         ${areaCentralPlayer}
 
                         <div style="padding: 14px 15px; background: #fafafa; border-top: 1px solid #eee; text-align: center;">
