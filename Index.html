@@ -391,7 +391,6 @@
         const db = getFirestore(app);
 
         window.bancoDeNoticias = []; 
-        let intervaloAtualizacaoAoVivo = null;
 
         function tempoRelativo(timestamp) {
             if (!timestamp) return "";
@@ -428,15 +427,14 @@
         }
 
         function gerarHtmlDatas(item) {
-            // Se tiver dataCriacao usa ela, senão usa dataAtualizacao
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
             const timestampAtualizacao = item.dataAtualizacao || timestampCriacao;
             
             const criacao = formatarDataHoraMS(timestampCriacao);
             let html = `<span>Publicado em ${criacao.data} às ${criacao.hora}</span>`;
 
-            // Força a exibição da atualização caso a data de atualização seja diferente/maior que a criação
-            if (timestampAtualizacao > timestampCriacao) {
+            // Verifica se a atualização ocorreu pelo menos 1 minuto após a criação para evitar falsos positivos
+            if (timestampAtualizacao > (timestampCriacao + 60000)) {
                 const relAtualizacao = tempoRelativo(timestampAtualizacao);
                 const atualizacao = formatarDataHoraMS(timestampAtualizacao);
                 html += ` <span style="color: #555; font-weight: 600; margin-left: 8px;">• <i class="fas fa-sync-alt" style="font-size: 10px;"></i> Atualizado há ${relAtualizacao.replace('há ', '')} (${atualizacao.data} às ${atualizacao.hora})</span>`;
@@ -479,13 +477,9 @@
             } else if (rede === 'whatsapp') {
                 linkShare = `https://api.whatsapp.com/send?text=${encodeURIComponent(tituloAtual + " - " + urlAtual)}`;
             } else if (rede === 'instagram') {
-                // Copia o link e abre a intent ou redireciona para o app/web do Instagram com instruções de compartilhamento
-                navigator.clipboard.writeText(urlAtual).then(() => {
-                    alert("Link copiado com sucesso! Abrindo o Instagram para você colar nos Stories ou direct.");
-                    window.open("https://www.instagram.com/", "_blank");
-                }).catch(() => {
-                    window.open("https://www.instagram.com/", "_blank");
-                });
+                // Copia o link em segundo plano sem pop-up de alerta e abre o Instagram direto
+                navigator.clipboard.writeText(urlAtual).catch(() => {});
+                window.open("https://www.instagram.com/", "_blank");
                 return;
             } else if (rede === 'twitter') {
                 linkShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tituloAtual)}&url=${encodeURIComponent(urlAtual)}`;
@@ -544,10 +538,8 @@
                     nomeRede = "Threads"; iconeRedeClass = "fa-brands fa-threads"; textoBotao = "Ver no Threads"; corIconeRede = "#000000"; corBotaoPerfil = "#000000"; usuarioRede = "cgnews.oficial";
                 }
 
+                // Usa preferencialmente a imagem real cadastrada na notícia
                 let imagemMidia = item.imagem ? item.imagem : "";
-
-                let baseViews = 2400 + (id.length * 137);
-                let baseLikes = Math.floor(baseViews / 3);
 
                 blocoVideoRedeSocial = `
                     <div style="margin: 35px 0 20px 0; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
@@ -575,11 +567,6 @@
                             </div>
                         </a>
 
-                        <div style="padding: 10px 15px; background: #f8f9fa; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #555;">
-                            <div><i class="fas fa-heart" style="color: #e1306c; margin-right: 4px;"></i> <strong id="contador-likes">${baseLikes.toLocaleString('pt-BR')}</strong> curtidas</div>
-                            <div><i class="fas fa-eye" style="color: #11136c; margin-right: 4px;"></i> <strong id="contador-views">${baseViews.toLocaleString('pt-BR')}</strong> visualizações</div>
-                        </div>
-
                         <div style="padding: 14px 15px; background: #fafafa; border-top: 1px solid #eee; text-align: center;">
                             <a href="${url}" target="_blank" style="display: inline-block; background: ${corBotaoPerfil}; color: white; width: 100%; padding: 10px; font-weight: 700; font-size: 14px; text-decoration: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                                 <i class="${iconeRedeClass}"></i> ${textoBotao}
@@ -587,18 +574,6 @@
                         </div>
                     </div>
                 `;
-
-                if (intervaloAtualizacaoAoVivo) clearInterval(intervaloAtualizacaoAoVivo);
-                intervaloAtualizacaoAoVivo = setInterval(() => {
-                    const elViews = document.getElementById("contador-views");
-                    const elLikes = document.getElementById("contador-likes");
-                    if (elViews && elLikes) {
-                        let vAtual = parseInt(elViews.innerText.replace(/\./g, '')) + Math.floor(Math.random() * 45) + 12;
-                        let lAtual = parseInt(elLikes.innerText.replace(/\./g, '')) + Math.floor(Math.random() * 15) + 4;
-                        elViews.innerText = vAtual.toLocaleString('pt-BR');
-                        elLikes.innerText = lAtual.toLocaleString('pt-BR');
-                    }
-                }, 300000); 
             }
 
             conteudo.innerHTML = `
@@ -642,10 +617,6 @@
         window.fecharMateria = function() {
             document.getElementById("modal-materia").style.display = "none";
             document.body.style.overflow = "auto"; 
-            if (intervaloAtualizacaoAoVivo) {
-                clearInterval(intervaloAtualizacaoAoVivo);
-                intervaloAtualizacaoAoVivo = null;
-            }
         };
 
         function criarHtmlGridCard(item) {
@@ -655,7 +626,7 @@
             const criacao = formatarDataHoraMS(timestampCriacao);
             let htmlData = `${criacao.data} às ${criacao.hora}`;
 
-            if (timestampAtualizacao > timestampCriacao) {
+            if (timestampAtualizacao > (timestampCriacao + 60000)) {
                 const relAtualizacao = tempoRelativo(timestampAtualizacao);
                 const atualizacao = formatarDataHoraMS(timestampAtualizacao);
                 htmlData += ` • atualizado há ${relAtualizacao.replace('há ', '')} (${atualizacao.data} às ${atualizacao.hora})`;
@@ -684,7 +655,7 @@
             const criacao = formatarDataHoraMS(timestampCriacao);
             let htmlData = `${criacao.data} às ${criacao.hora}`;
 
-            if (timestampAtualizacao > timestampCriacao) {
+            if (timestampAtualizacao > (timestampCriacao + 60000)) {
                 const relAtualizacao = tempoRelativo(timestampAtualizacao);
                 const atualizacao = formatarDataHoraMS(timestampAtualizacao);
                 htmlData += ` | atualizado há ${relAtualizacao.replace('há ', '')} (${atualizacao.data} às ${atualizacao.hora})`;
