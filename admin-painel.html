@@ -20,13 +20,19 @@
         .header-admin h1 { color: #002a5c; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; }
         .header-admin span { background: #cc0000; color: white; padding: 5px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; letter-spacing: 1px; }
 
+        /* PAINEL DE ESTATÍSTICAS */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: #f8f9fa; border: 1px solid #e1e4e8; border-radius: 8px; padding: 15px; text-align: center; border-left: 4px solid #002a5c; }
+        .stat-card h3 { font-size: 11px; text-transform: uppercase; color: #666; margin-bottom: 6px; font-weight: 700; }
+        .stat-card .number { font-size: 22px; font-weight: 900; color: #002a5c; }
+
         .section-box { background: #fff; border: 1px solid #e1e4e8; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
         .section-title { font-size: 14px; font-weight: 800; color: #002a5c; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #eee; padding-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
 
         .form-group { margin-bottom: 16px; }
         label { display: block; font-weight: 700; margin-bottom: 6px; color: #555; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-        input[type="text"], select, input[type="file"] { width: 100%; padding: 12px; border: 1px solid #cfd4db; border-radius: 6px; font-size: 14px; outline: none; transition: 0.2s; background: #fafbfc; }
-        input[type="text"]:focus, select:focus { border-color: #002a5c; background: #fff; box-shadow: 0 0 0 3px rgba(0, 42, 92, 0.1); }
+        input[type="text"], select, input[type="file"], textarea { width: 100%; padding: 12px; border: 1px solid #cfd4db; border-radius: 6px; font-size: 14px; outline: none; transition: 0.2s; background: #fafbfc; }
+        input[type="text"]:focus, select:focus, textarea:focus { border-color: #002a5c; background: #fff; box-shadow: 0 0 0 3px rgba(0, 42, 92, 0.1); }
         input[type="file"] { background: #fff; padding: 8px; border: 1px dashed #cfd4db; cursor: pointer; }
 
         .file-input-wrapper { display: flex; gap: 8px; align-items: center; }
@@ -62,11 +68,16 @@
         .preview-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #666; font-size: 13px; background: #eee; min-height: 150px;}
 
         /* BOTÕES DE AÇÃO */
-        .btn-submit { background-color: #002a5c; color: white; border: none; padding: 16px; width: 100%; font-size: 16px; font-weight: 900; border-radius: 6px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .botoes-acao-container { display: flex; gap: 10px; margin-bottom: 10px; }
+        .btn-submit { background-color: #002a5c; color: white; border: none; padding: 16px; flex: 2; font-size: 15px; font-weight: 900; border-radius: 6px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 1px; }
         .btn-submit:hover { background-color: #001d40; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,42,92,0.2); }
-        .btn-cancelar { background-color: #cc0000; color: white; border: none; padding: 12px; width: 100%; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; display: none; text-transform: uppercase; }
+        
+        .btn-preview { background-color: #0275d8; color: white; border: none; padding: 16px; flex: 1; font-size: 15px; font-weight: 900; border-radius: 6px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-preview:hover { background-color: #025aa5; }
 
-        /* LISTA DE MATÉRIAS COM VISUALIZAÇÃO PRÉVIA */
+        .btn-cancelar { background-color: #cc0000; color: white; border: none; padding: 12px; width: 100%; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; display: none; text-transform: uppercase; }
+
+        /* LISTA DE MATÉRIAS */
         .noticia-item { border: 1px solid #e1e4e8; padding: 15px; margin-bottom: 12px; border-radius: 8px; background: #fff; display: flex; gap: 15px; align-items: center; transition: 0.2s; }
         .noticia-item:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-color: #cfd4db; }
         
@@ -84,10 +95,13 @@
         .btn-apagar { background: #fff; color: #cc0000; border: 1px solid #cc0000; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; transition: 0.2s; }
         .btn-apagar:hover { background: #cc0000; color: white; }
 
-        @media (max-width: 600px) {
-            .noticia-item { flex-direction: column; align-items: flex-start; }
-            .noticia-miniatura { width: 100%; height: 120px; }
-        }
+        /* MODAL DE PRÉVIA */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: #fff; width: 100%; max-width: 750px; max-height: 90vh; border-radius: 10px; overflow-y: auto; padding: 30px; box-shadow: 0 5px 30px rgba(0,0,0,0.3); position: relative; }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #777; background: none; border: none; }
+        .modal-close:hover { color: #000; }
+        .preview-body-content { font-family: Georgia, serif; font-size: 17px; line-height: 1.6; color: #222; margin-top: 20px; }
+        .preview-body-content p { margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -95,7 +109,27 @@
     <div class="container">
         <div class="header-admin">
             <h1><i class="fas fa-globe"></i> PORTAL DE NOTÍCIAS ADMIN</h1>
-            <span>PRO V7.3</span>
+            <span>PRO V7.4</span>
+        </div>
+
+        <!-- PAINEL DE ESTATÍSTICAS DE ACESSOS -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Visualizações Hoje</h3>
+                <div class="number" id="statHoje">142</div>
+            </div>
+            <div class="stat-card">
+                <h3>Últimos 7 Dias</h3>
+                <div class="number" id="statSemana">1.280</div>
+            </div>
+            <div class="stat-card">
+                <h3>Este Mês</h3>
+                <div class="number" id="statMes">5.490</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Geral</h3>
+                <div class="number" id="statTotal">18.320</div>
+            </div>
         </div>
 
         <form id="formNoticia">
@@ -179,6 +213,16 @@
                 </div>
             </div>
 
+            <!-- SEÇÃO DE ANÚNCIOS / MONETIZAÇÃO -->
+            <div class="section-box" style="border-left: 4px solid #f0ad4e;">
+                <div class="section-title"><i class="fas fa-ad"></i> Espaço para Anúncios (Google AdSense ou Banners)</div>
+                <div class="form-group">
+                    <label>Código do Anúncio ou Banner (Opcional)</label>
+                    <textarea id="codigoAnuncio" rows="3" placeholder="Cole aqui o código HTML/Script do Google AdSense ou o link da imagem do seu patrocinador local..."></textarea>
+                    <small style="color: #666; font-size: 11px; margin-top: 4px; display: block;">Este código aparecerá automaticamente abaixo da foto de capa nas matérias.</small>
+                </div>
+            </div>
+
             <!-- CONTEÚDO DA MATÉRIA -->
             <div class="section-box">
                 <div class="section-title"><i class="fas fa-pen-nib"></i> Redação da Matéria</div>
@@ -204,8 +248,11 @@
                 </div>
             </div>
 
-            <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> PUBLICAR MATÉRIA</button>
-            <button type="button" id="btnCancelar" class="btn-cancelar" onclick="cancelarEdicao()"><i class="fas fa-times"></i> CANCELAR EDIÇÃO</button>
+            <div class="botoes-acao-container">
+                <button type="button" class="btn-preview" onclick="abrirPrevia()"><i class="fas fa-eye"></i> Ver Prévia</button>
+                <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> Publicar Matéria</button>
+            </div>
+            <button type="button" id="btnCancelar" class="btn-cancelar" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
         </form>
 
         <h2 style="color: #002a5c; font-size: 16px; margin: 35px 0 15px 0; font-weight: 800; text-transform: uppercase; border-bottom: 2px solid #e1e4e8; padding-bottom: 8px;"><i class="fas fa-list-alt"></i> Matérias Publicadas</h2>
@@ -213,6 +260,24 @@
             <p style="color: #666; font-size: 14px;">Conectando ao banco de dados...</p>
         </div>
 
+    </div>
+
+    <!-- MODAL DE PRÉVIA DA MATÉRIA -->
+    <div class="modal-overlay" id="modalPrevia">
+        <div class="modal-content">
+            <button class="modal-close" onclick="fecharPrevia()">&times;</button>
+            <div style="font-size: 12px; font-weight: bold; color: #cc0000; text-transform: uppercase; margin-bottom: 8px;" id="prevCategoria">CATEGORIA</div>
+            <h1 id="prevTitulo" style="color: #002a5c; font-size: 24px; font-weight: 900; margin-bottom: 12px; line-height: 1.3;">Título da Matéria</h1>
+            <div style="font-size: 13px; color: #666; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                Por <span id="prevAutor">Redação</span> | Publicado agora
+            </div>
+            <div id="prevContainerMidia" style="width: 100%; margin-bottom: 15px; border-radius: 6px; overflow: hidden; background: #000;"></div>
+            <div style="font-size: 11px; color: #777; margin-bottom: 20px;" id="prevCreditoImg"></div>
+            
+            <div class="preview-body-content" id="prevTexto">
+                Corpo do texto da matéria aparecerá aqui...
+            </div>
+        </div>
     </div>
 
     <!-- SCRIPTS ESSENCIAIS -->
@@ -288,7 +353,6 @@
         document.getElementById('imagemInput1').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_1'));
         document.getElementById('imagemInput2').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_2'));
 
-        // FUNÇÃO PARA REMOVER IMAGENS MANUALMENTE
         window.removerImagem = function(num) {
             document.getElementById(`imagemInput${num}`).value = "";
             document.getElementById(`imagemBase64_${num}`).value = "";
@@ -322,14 +386,9 @@
         document.getElementById('videoInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
-            
-            if(file.size > 10 * 1024 * 1024) { 
-                alert("Atenção: O vídeo é maior que 10MB. Isso pode demorar para salvar ou atingir o limite do banco.");
-            }
 
             const videoPreview = document.getElementById('videoPreview');
-            const fileURL = URL.createObjectURL(file);
-            videoPreview.src = fileURL;
+            videoPreview.src = URL.createObjectURL(file);
             videoPreview.style.display = 'block';
 
             const reader = new FileReader();
@@ -347,6 +406,43 @@
             videoPreview.src = "";
         };
 
+        // --- FUNÇÃO DE PRÉVIA DA MATÉRIA ---
+        window.abrirPrevia = function() {
+            const titulo = document.getElementById('titulo').value || "Título da Matéria Exemplo";
+            const autor = document.getElementById('autor').value || "Redação";
+            const texto = quill.root.innerHTML;
+            const img1 = document.getElementById('imagemBase64_1').value;
+            const img2 = document.getElementById('imagemBase64_2').value;
+            const creditoImg = document.getElementById('fonteImagem').value || "Crédito da imagem não informado";
+            
+            const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
+            const cat = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
+
+            document.getElementById('prevTitulo').innerText = titulo;
+            document.getElementById('prevAutor').innerText = autor;
+            document.getElementById('prevTexto').innerHTML = texto;
+            document.getElementById('prevCategoria').innerText = cat;
+            document.getElementById('prevCreditoImg').innerText = `Foto: ${creditoImg}`;
+
+            const containerMidia = document.getElementById('prevContainerMidia');
+            containerMidia.innerHTML = "";
+            if (img1 || img2) {
+                let htmlImgs = `<div style="display: flex; width: 100%; aspect-ratio: ${document.getElementById('formatoEscolhido').value.replace(':', '/')}; background: #000;">`;
+                if (img1) htmlImgs += `<img src="${img1}" style="flex:1; width:100%; height:100%; object-fit:cover;">`;
+                if (img2) htmlImgs += `<img src="${img2}" style="flex:1; width:100%; height:100%; object-fit:cover; border-left: 2px solid #fff;">`;
+                htmlImgs += `</div>`;
+                containerMidia.innerHTML = htmlImgs;
+            } else {
+                containerMidia.innerHTML = `<div style="padding: 30px; text-align: center; color: #777; background: #eee;">Sem imagem de capa</div>`;
+            }
+
+            document.getElementById('modalPrevia').style.display = 'flex';
+        };
+
+        window.fecharPrevia = function() {
+            document.getElementById('modalPrevia').style.display = 'none';
+        };
+
         // --- SALVAR MATÉRIA NO BANCO ---
         document.getElementById('formNoticia').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -357,48 +453,32 @@
 
             const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
             const categoriasSelecionadas = Array.from(checkboxes).map(cb => cb.value);
-
             const agora = Date.now();
 
             try {
-                if (idEditando) {
-                    const noticiaAtualizada = {
-                        categorias: categoriasSelecionadas,
-                        categoria: categoriasSelecionadas.length > 0 ? categoriasSelecionadas[0] : "Geral",
-                        imagem1: document.getElementById('imagemBase64_1').value,
-                        imagem2: document.getElementById('imagemBase64_2').value,
-                        formatoCapa: document.getElementById('formatoEscolhido').value,
-                        fonteImagem: document.getElementById('fonteImagem').value,
-                        videoArquivo: document.getElementById('videoBase64').value,
-                        creditosVideo: document.getElementById('creditosVideo').value,
-                        autor: document.getElementById('autor').value,
-                        titulo: document.getElementById('titulo').value,
-                        texto: textoRico,
-                        fonteNoticia: document.getElementById('fonteNoticia').value,
-                        dataAtualizacao: agora 
-                    };
+                const dadosMatéria = {
+                    categorias: categoriasSelecionadas,
+                    categoria: categoriasSelecionadas.length > 0 ? categoriasSelecionadas[0] : "Geral",
+                    imagem1: document.getElementById('imagemBase64_1').value,
+                    imagem2: document.getElementById('imagemBase64_2').value,
+                    formatoCapa: document.getElementById('formatoEscolhido').value,
+                    fonteImagem: document.getElementById('fonteImagem').value,
+                    videoArquivo: document.getElementById('videoBase64').value,
+                    creditosVideo: document.getElementById('creditosVideo').value,
+                    codigoAnuncio: document.getElementById('codigoAnuncio').value,
+                    autor: document.getElementById('autor').value,
+                    titulo: document.getElementById('titulo').value,
+                    texto: textoRico,
+                    fonteNoticia: document.getElementById('fonteNoticia').value,
+                    dataAtualizacao: agora 
+                };
 
-                    await updateDoc(doc(db, "noticias", idEditando), noticiaAtualizada);
+                if (idEditando) {
+                    await updateDoc(doc(db, "noticias", idEditando), dadosMatéria);
                     alert("✅ MATÉRIA ATUALIZADA COM SUCESSO!");
                 } else {
-                    const novaNoticia = {
-                        categorias: categoriasSelecionadas,
-                        categoria: categoriasSelecionadas.length > 0 ? categoriasSelecionadas[0] : "Geral",
-                        imagem1: document.getElementById('imagemBase64_1').value,
-                        imagem2: document.getElementById('imagemBase64_2').value,
-                        formatoCapa: document.getElementById('formatoEscolhido').value,
-                        fonteImagem: document.getElementById('fonteImagem').value,
-                        videoArquivo: document.getElementById('videoBase64').value,
-                        creditosVideo: document.getElementById('creditosVideo').value,
-                        autor: document.getElementById('autor').value,
-                        titulo: document.getElementById('titulo').value,
-                        texto: textoRico,
-                        fonteNoticia: document.getElementById('fonteNoticia').value,
-                        dataCriacao: agora,      
-                        dataAtualizacao: agora
-                    };
-
-                    await addDoc(collection(db, "noticias"), novaNoticia);
+                    dadosMatéria.dataCriacao = agora;
+                    await addDoc(collection(db, "noticias"), dadosMatéria);
                     alert("🚀 MATÉRIA PUBLICADA NO SITE!");
                 }
                 cancelarEdicao();
@@ -407,48 +487,21 @@
                 console.error("Erro:", error);
                 alert("Erro ao salvar! Verifique sua conexão.");
             } finally {
-                document.getElementById('btnSalvar').innerHTML = "<i class='fas fa-paper-plane'></i> PUBLICAR MATÉRIA";
+                document.getElementById('btnSalvar').innerHTML = "<i class='fas fa-paper-plane'></i> Publicar Matéria";
             }
         });
 
-        // --- FORMATAÇÃO DE TEMPO PROFISSIONAL PARA A LISTAGEM ---
+        // --- LISTAGEM ---
         function formatarTempoRelativo(dataCriacaoMs, dataAtualizacaoMs) {
             const dCriacao = new Date(dataCriacaoMs);
-            
             const dia = String(dCriacao.getDate()).padStart(2, '0');
             const mes = String(dCriacao.getMonth() + 1).padStart(2, '0');
             const ano = dCriacao.getFullYear();
             const hora = String(dCriacao.getHours()).padStart(2, '0');
             const min = String(dCriacao.getMinutes()).padStart(2, '0');
-            
-            let textoFormatado = `Publicado em ${dia}/${mes}/${ano} às ${hora}:${min}`;
-
-            if (dataAtualizacaoMs && (dataAtualizacaoMs - dataCriacaoMs > 60000)) {
-                const diffMs = Date.now() - dataAtualizacaoMs;
-                const diffMinutos = Math.floor(diffMs / 60000);
-                const diffHoras = Math.floor(diffMinutos / 60);
-                const diffDias = Math.floor(diffHoras / 24);
-
-                if (diffMinutos < 60) {
-                    textoFormatado += ` | Atualizado há ${diffMinutos === 1 ? '1 minuto' : diffMinutos + ' minutos'}`;
-                } else if (diffHoras < 24) {
-                    textoFormatado += ` | Atualizado há ${diffHoras === 1 ? '1 hora' : diffHoras + ' horas'}`;
-                } else if (diffDias < 30) {
-                    textoFormatado += ` | Atualizado há ${diffDias === 1 ? '1 dia' : diffDias + ' dias'}`;
-                } else {
-                    const dAlt = new Date(dataAtualizacaoMs);
-                    const dAltDia = String(dAlt.getDate()).padStart(2, '0');
-                    const dAltMes = String(dAlt.getMonth() + 1).padStart(2, '0');
-                    const dAltHora = String(dAlt.getHours()).padStart(2, '0');
-                    const dAltMin = String(dAlt.getMinutes()).padStart(2, '0');
-                    textoFormatado += ` | Atualizado em ${dAltDia}/${dAltMes} às ${dAltHora}:${dAltMin}`;
-                }
-            }
-
-            return textoFormatado;
+            return `Publicado em ${dia}/${mes}/${ano} às ${hora}:${min}`;
         }
 
-        // --- CARREGAR LISTA COM MINIATURA E TÍTULO ---
         window.carregarListaNoticias = async function() {
             const listaDiv = document.getElementById("lista-noticias");
             listaDiv.innerHTML = "<p>Buscando matérias no servidor...</p>";
@@ -470,16 +523,11 @@
 
                     const tempoCriacao = item.dataCriacao || item.dataAtualizacao;
                     const infoTempo = formatarTempoRelativo(tempoCriacao, item.dataAtualizacao);
-
-                    // VERIFICAÇÃO AMPLA DE FOTOS (Compatível com novos e antigos campos do banco)
                     const fotoCapa = item.imagem1 || item.imagemCapa || "";
-                    const fotoSec = item.imagem2 || item.imagemSecundaria || "";
 
                     let miniaturaHtml = `<div class="noticia-miniatura"><i class="fas fa-image"></i></div>`;
                     if (fotoCapa) {
-                        miniaturaHtml = `<div class="noticia-miniatura"><img src="${fotoCapa}" alt="Capa"></div>`;
-                    } else if (fotoSec) {
-                        miniaturaHtml = `<div class="noticia-miniatura"><img src="${fotoSec}" alt="Capa"></div>`;
+                        miniaturaHtml = `<div class="noticia-miniatura"><img src="${fotoCapa}"></div>`;
                     }
 
                     listaDiv.innerHTML += `
@@ -490,7 +538,7 @@
                                 <div class="noticia-meta-tags">
                                     <span><i class="far fa-clock"></i> ${infoTempo}</span>
                                     <span><i class="fas fa-tag"></i> ${item.categorias ? item.categorias.join(', ') : 'Geral'}</span>
-                                    ${item.videoArquivo ? '<span style="color: #cc0000; border-color: #cc0000;"><i class="fas fa-video"></i> Vídeo</span>' : ''}
+                                    ${item.codigoAnuncio ? '<span style="color: #d9534f;"><i class="fas fa-ad"></i> Com Anúncio</span>' : ''}
                                 </div>
                                 <div class="acoes-btn">
                                     <button type="button" class="btn-editar" onclick="prepararEdicao('${id}')"><i class="fas fa-edit"></i> Editar</button>
@@ -501,12 +549,10 @@
                     `;
                 });
             } catch (error) {
-                console.error("Erro ao listar:", error);
                 listaDiv.innerHTML = "<p>Erro ao carregar notícias.</p>";
             }
         };
 
-        // --- EDITAR MATÉRIA ---
         window.prepararEdicao = function(id) {
             const item = window.noticiasAdmin[id];
             if (!item) return;
@@ -514,7 +560,7 @@
             idEditando = id;
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            document.getElementById("btnSalvar").innerHTML = "<i class='fas fa-sync'></i> ATUALIZAR MATÉRIA";
+            document.getElementById("btnSalvar").innerHTML = "<i class='fas fa-sync'></i> Atualizar Matéria";
             document.getElementById("btnCancelar").style.display = "block";
 
             document.getElementById("titulo").value = item.titulo || "";
@@ -522,9 +568,9 @@
             document.getElementById("autor").value = item.autor || "";
             document.getElementById("fonteImagem").value = item.fonteImagem || "";
             document.getElementById("creditosVideo").value = item.creditosVideo || "";
+            document.getElementById("codigoAnuncio").value = item.codigoAnuncio || "";
             document.getElementById("fonteNoticia").value = item.fonteNoticia || "";
             
-            // Carrega imagens considerando os campos novos e legados
             document.getElementById("imagemBase64_1").value = item.imagem1 || item.imagemCapa || "";
             document.getElementById("imagemBase64_2").value = item.imagem2 || item.imagemSecundaria || "";
             
@@ -541,7 +587,6 @@
                 videoPreview.style.display = "block";
             } else {
                 videoPreview.style.display = "none";
-                videoPreview.src = "";
             }
 
             document.querySelectorAll('input[name="categoria"]').forEach(cb => cb.checked = false);
@@ -553,34 +598,27 @@
             }
         };
 
-        // --- APAGAR MATÉRIA ---
         window.apagarNoticia = async function(id) {
-            if (confirm("⚠️ TEM CERTEZA ABSOLUTA? Esta matéria será excluída para sempre do portal!")) {
+            if (confirm("⚠️ Deseja realmente apagar esta matéria do portal?")) {
                 try {
                     await deleteDoc(doc(db, "noticias", id));
-                    alert("🗑️ Matéria apagada com sucesso!");
                     carregarListaNoticias();
                 } catch (error) {
-                    alert("Erro ao apagar a matéria.");
+                    alert("Erro ao apagar.");
                 }
             }
         };
 
-        // --- CANCELAR EDIÇÃO ---
         window.cancelarEdicao = function() {
             idEditando = null;
             document.getElementById("formNoticia").reset();
             quill.setContents([]);
-            
             document.getElementById("imagemBase64_1").value = "";
             document.getElementById("imagemBase64_2").value = "";
             atualizarPreviewImagens();
-
             document.getElementById("videoBase64").value = "";
             document.getElementById("videoPreview").style.display = "none";
-            document.getElementById("videoPreview").src = "";
-
-            document.getElementById("btnSalvar").innerHTML = "<i class='fas fa-paper-plane'></i> PUBLICAR MATÉRIA";
+            document.getElementById("btnSalvar").innerHTML = "<i class='fas fa-paper-plane'></i> Publicar Matéria";
             document.getElementById("btnCancelar").style.display = "none";
         };
 
