@@ -167,8 +167,8 @@
             letter-spacing: 0.5px;
         }
         .grid-cat span.data-padrao {
-            color: #777;
-            font-weight: 500;
+            color: #555;
+            font-weight: 600;
             margin-left: 5px;
             display: block;
         }
@@ -224,7 +224,8 @@
         }
         .news-list-meta {
             font-size: 12px;
-            color: #777;
+            color: #555;
+            font-weight: 600;
             display: flex;
             flex-direction: column;
             gap: 2px;
@@ -428,15 +429,14 @@
 
         function gerarHtmlDatas(item) {
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
+            const timestampRef = item.dataAtualizacao || item.dataCriacao || Date.now();
+            
             const criacao = formatarDataHoraMS(timestampCriacao);
+            const atualizacao = formatarDataHoraMS(timestampRef);
+            const relAtualizacao = tempoRelativo(timestampRef);
             
             let html = `<span>Publicado em ${criacao.data} às ${criacao.hora}</span>`;
-
-            if (item.dataAtualizacao && item.dataCriacao && item.dataAtualizacao > item.dataCriacao + 60000) {
-                const atualizacao = formatarDataHoraMS(item.dataAtualizacao);
-                const relAtualizacao = tempoRelativo(item.dataAtualizacao);
-                html += `<br><span style="color: #444; font-weight: 600;"><i class="fas fa-sync-alt" style="font-size: 10px;"></i> Atualizado ${relAtualizacao} - ${atualizacao.data} às ${atualizacao.hora}</span>`;
-            }
+            html += `<br><span style="color: #333; font-weight: 600;"><i class="fas fa-sync-alt" style="font-size: 10px;"></i> Atualizado ${relAtualizacao} - ${atualizacao.data} às ${atualizacao.hora}</span>`;
 
             return html;
         }
@@ -595,7 +595,7 @@
             conteudo.innerHTML = `
                 <h1 style="color: #1a1a1a; font-size: 28px; font-weight: 800; line-height: 1.2; margin-bottom: 15px;">${item.titulo}</h1>
                 
-                <div style="color: #777; font-size: 13px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 4px;">
+                <div style="color: #555; font-size: 13px; font-weight: 600; margin-bottom: 15px; display: flex; flex-direction: column; gap: 4px;">
                     <div>${blocoDatas}</div>
                     ${item.autor ? `<div><i class="fas fa-user"></i> ${item.autor}</div>` : ""}
                     ${item.categoria ? `<div><i class="far fa-folder"></i> ${item.categoria}</div>` : ""}
@@ -641,14 +641,13 @@
 
         function criarHtmlGridCard(item) {
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
+            const timestampRef = item.dataAtualizacao || item.dataCriacao || Date.now();
+            
             const criacao = formatarDataHoraMS(timestampCriacao);
+            const relAtualizacao = tempoRelativo(timestampRef);
+            const atualizacao = formatarDataHoraMS(timestampRef);
             
-            let htmlData = `${criacao.data} às ${criacao.hora}`;
-            
-            if (item.dataAtualizacao && item.dataCriacao && item.dataAtualizacao > item.dataCriacao + 60000) {
-                const relAtualizacao = tempoRelativo(item.dataAtualizacao);
-                htmlData += ` • atualizado ${relAtualizacao}`;
-            }
+            let htmlData = `${criacao.data} às ${criacao.hora} • atualizado ${relAtualizacao} (${atualizacao.data} às ${atualizacao.hora})`;
 
             let catText = "NOTÍCIA";
             if (item.categorias && item.categorias.length > 0) catText = item.categorias[0];
@@ -660,7 +659,7 @@
                         `<img src="${item.imagem}" class="grid-img">` : 
                         `<div class="grid-img" style="display:flex; align-items:center; justify-content:center; color:#999; font-size:12px;">Sem foto</div>`
                     }
-                    <div class="grid-cat">${catText} <span class="data-padrao">• ${htmlData}</span></div>
+                    <div class="grid-cat">${catText} <span class="data-padrao">${htmlData}</span></div>
                     <div class="grid-title">${item.titulo}</div>
                 </div>
             `;
@@ -668,14 +667,13 @@
 
         function criarHtmlListaCard(item) {
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
+            const timestampRef = item.dataAtualizacao || item.dataCriacao || Date.now();
+            
             const criacao = formatarDataHoraMS(timestampCriacao);
+            const relAtualizacao = tempoRelativo(timestampRef);
+            const atualizacao = formatarDataHoraMS(timestampRef);
             
-            let htmlData = `${criacao.data} às ${criacao.hora}`;
-            
-            if (item.dataAtualizacao && item.dataCriacao && item.dataAtualizacao > item.dataCriacao + 60000) {
-                const relAtualizacao = tempoRelativo(item.dataAtualizacao);
-                htmlData += ` | atualizado ${relAtualizacao}`;
-            }
+            let htmlData = `${criacao.data} às ${criacao.hora} | atualizado ${relAtualizacao} (${atualizacao.data} às ${atualizacao.hora})`;
 
             const textoResumo = item.texto ? item.texto.substring(0, 100) + "..." : "Clique para ler a matéria completa.";
 
