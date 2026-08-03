@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -21,7 +21,7 @@
         }
         .header-btn { cursor: pointer; font-size: 22px; padding: 5px; }
         
-        /* MENU LATERAL (SIDEBAR) */
+        /* MENU LATERAL */
         .sidebar {
             height: 100%; width: 260px; position: fixed; z-index: 2000;
             top: 0; left: -260px; background-color: #fff; overflow-x: hidden;
@@ -53,11 +53,71 @@
 
         footer { background-color: #11136c; color: white; text-align: center; padding: 25px 20px; margin-top: 40px; font-size: 12px; }
         .social-icons i { margin: 0 10px; font-size: 18px; cursor: pointer; }
+
+        /* NOVO FORMATO DE LISTA (TIPO AS IMAGENS) */
+        .news-list-item {
+            display: flex;
+            gap: 15px;
+            background: #fff;
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+        .news-list-item:hover { background-color: #f9f9f9; }
+        .news-list-image {
+            width: 140px;
+            height: 95px;
+            flex-shrink: 0;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        .news-list-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        .news-list-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        .news-list-meta {
+            font-size: 12px;
+            color: #777;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+        .news-list-excerpt {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Mostra no máximo 2 linhas do resumo */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Ajustes para telas menores (celular) */
+        @media (max-width: 500px) {
+            .news-list-item { padding: 10px; gap: 10px; }
+            .news-list-image { width: 110px; height: 80px; }
+            .news-list-title { font-size: 14px; margin-bottom: 5px; }
+            .news-list-excerpt { display: none; /* Esconde o resumo no celular para poupar espaço */ }
+        }
     </style>
 </head>
 <body>
 
-    <!-- CABEÇALHO -->
     <header>
         <div class="header-btn" onclick="abrirMenu()">
             <i class="fas fa-bars"></i>
@@ -70,7 +130,6 @@
 
     <div id="overlay" onclick="fecharMenu()"></div>
 
-    <!-- MENU LATERAL -->
     <div id="sidebar" class="sidebar">
         <div class="sidebar-header">
             <h3>CG NEWS OFICIAL</h3>
@@ -85,7 +144,6 @@
         <a href="#sec-mundo" onclick="fecharMenu()">Mundo</a>
     </div>
 
-    <!-- CORPO DO SITE -->
     <div class="container">
         
         <h2 id="sec-ultimas" class="section-title">Últimas Notícias</h2>
@@ -111,7 +169,6 @@
 
     </div>
 
-    <!-- RODAPÉ -->
     <footer>
         <div class="social-icons" style="margin-bottom: 15px;">
             <i class="fab fa-whatsapp"></i>
@@ -124,7 +181,7 @@
         <p>© 2026 CG NEWS OFICIAL - Informação em tempo real.</p>
     </footer>
 
-    <!-- TELA DA MATÉRIA COMPLETA (MODAL) -->
+    <!-- TELA DA MATÉRIA COMPLETA -->
     <div id="modal-materia" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f2f4f7; z-index: 9999; overflow-y: auto;">
         <div style="background: white; max-width: 800px; margin: 0 auto; min-height: 100vh; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
             <div onclick="fecharMateria()" style="color: #11136c; font-weight: bold; font-size: 16px; cursor: pointer; margin-bottom: 20px; border-bottom: 2px solid #11136c; padding-bottom: 10px; display: inline-block;">
@@ -134,7 +191,6 @@
         </div>
     </div>
 
-    <!-- INTEGRAÇÃO FIREBASE E SCRIPTS -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -152,7 +208,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // FUNÇÕES DO MENU LATERAL
         window.abrirMenu = function() {
             document.getElementById("sidebar").style.left = "0";
             document.getElementById("overlay").style.display = "block";
@@ -167,7 +222,6 @@
 
         window.noticiasSalvas = {};
 
-        // ABRIR MATÉRIA EM TELA CHEIA
         window.abrirMateria = function(id) {
             const item = window.noticiasSalvas[id];
             if (!item) return;
@@ -178,7 +232,6 @@
             const d = new Date(item.dataAtualizacao || Date.now());
             const dataFormatada = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
 
-            // GERADOR DE VÍDEOS DIRETOS
             let areaVideo = "";
             if (item.linkRedeSocial && item.linkRedeSocial.trim() !== "") {
                 const url = item.linkRedeSocial.trim();
@@ -189,27 +242,26 @@
                     else if (url.includes("watch?v=")) videoId = url.split("watch?v=")[1].split("&")[0];
                     else if (url.includes("shorts/")) videoId = url.split("shorts/")[1].split("?")[0];
                     
-                    if (videoId) areaVideo = `<iframe width="100%" height="400" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 8px; margin-top: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></iframe>`;
+                    if (videoId) areaVideo = `<iframe width="100%" height="400" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 8px; margin-top: 25px;"></iframe>`;
                 } 
                 else if (url.includes("instagram.com")) {
                     let cleanUrl = url.split("?")[0];
                     if (!cleanUrl.endsWith("/")) cleanUrl += "/";
-                    areaVideo = `<iframe src="${cleanUrl}embed/captioned" width="100%" height="600" frameborder="0" scrolling="no" allowtransparency="true" style="border-radius: 8px; margin-top: 25px; border: 1px solid #ccc; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: white;"></iframe>`;
+                    areaVideo = `<iframe src="${cleanUrl}embed/captioned" width="100%" height="600" frameborder="0" scrolling="no" allowtransparency="true" style="border-radius: 8px; margin-top: 25px; border: 1px solid #ccc;"></iframe>`;
                 }
                 else if (url.includes("facebook.com")) {
                     let encodedUrl = encodeURIComponent(url);
-                    areaVideo = `<iframe src="https://www.facebook.com/plugins/video.php?height=400&href=${encodedUrl}&show_text=false" width="100%" height="400" style="border:none;overflow:hidden; border-radius: 8px; margin-top: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>`;
+                    areaVideo = `<iframe src="https://www.facebook.com/plugins/video.php?height=400&href=${encodedUrl}&show_text=false" width="100%" height="400" style="border:none;overflow:hidden; border-radius: 8px; margin-top: 25px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>`;
                 }
                 else if (url.includes("tiktok.com") && url.includes("/video/")) {
                     let videoId = url.split("/video/")[1].split("?")[0];
-                    areaVideo = `<iframe src="https://www.tiktok.com/embed/v2/${videoId}" width="100%" height="650" frameborder="0" allowfullscreen scrolling="no" style="border-radius: 8px; margin-top: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></iframe>`;
+                    areaVideo = `<iframe src="https://www.tiktok.com/embed/v2/${videoId}" width="100%" height="650" frameborder="0" allowfullscreen scrolling="no" style="border-radius: 8px; margin-top: 25px;"></iframe>`;
                 }
                 else {
-                    areaVideo = `<iframe src="${url}" width="100%" height="500" frameborder="0" allowfullscreen style="border-radius: 8px; margin-top: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #f9f9f9;"></iframe>`;
+                    areaVideo = `<iframe src="${url}" width="100%" height="500" frameborder="0" allowfullscreen style="border-radius: 8px; margin-top: 25px; background: #f9f9f9;"></iframe>`;
                 }
             }
 
-            // AQUI FOI ADICIONADO "aspect-ratio: 1 / 1; object-fit: cover;" PARA DEIXAR A IMAGEM QUADRADA E EVITAR QUE TOME A TELA TODA
             conteudo.innerHTML = `
                 ${item.imagem ? `<img src="${item.imagem}" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">` : ""}
                 <span style="color: #666; font-size: 12px;">Foto: ${item.fonteImagem || "Divulgação"}</span>
@@ -226,33 +278,38 @@
             document.body.style.overflow = "hidden"; 
         };
 
-        // FECHAR MATÉRIA
         window.fecharMateria = function() {
             document.getElementById("modal-materia").style.display = "none";
             document.body.style.overflow = "auto"; 
         };
 
-        // CRIAR OS CARDS NA PÁGINA INICIAL
+        // NOVA FUNÇÃO: CRIA O CARD NO FORMATO DE LISTA (IMAGEM AO LADO DO TEXTO)
         function criarHtmlCard(item, idId) {
+            const d = new Date(item.dataAtualizacao || Date.now());
+            const dataFormatada = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+
+            const textoResumo = item.texto ? item.texto.substring(0, 100) + "..." : "Clique para ler a matéria completa.";
+
             return `
-                <div onclick="abrirMateria('${idId}')" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 20px; overflow: hidden; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                    ${item.imagem ? `<img src="${item.imagem}" style="width: 100%; height: 220px; object-fit: cover; display: block;">` : ""}
-                    <div style="padding: 15px;">
-                        <span style="background: #11136c; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase;">
-                            ${item.categoria || "Geral"}
-                        </span>
-                        <h3 style="margin: 12px 0 8px 0; color: #1a1a1a; font-size: 18px; line-height: 1.3;">
-                            ${item.titulo}
-                        </h3>
-                        <p style="color: #11136c; font-size: 14px; margin: 0; font-weight: 500; text-decoration: underline;">
-                            Ler matéria completa
-                        </p>
+                <div onclick="abrirMateria('${idId}')" class="news-list-item">
+                    ${item.imagem ? 
+                        `<img src="${item.imagem}" class="news-list-image">` : 
+                        `<div class="news-list-image" style="background:#eee; display:flex; align-items:center; justify-content:center; color:#999; font-size:12px;">Sem foto</div>`
+                    }
+                    <div class="news-list-content">
+                        <div class="news-list-title">${item.titulo}</div>
+                        <div class="news-list-meta">
+                            <span><i class="far fa-clock"></i> ${dataFormatada}</span>
+                            ${item.autor ? `<span><i class="far fa-user"></i> ${item.autor}</span>` : ""}
+                        </div>
+                        <div class="news-list-excerpt">
+                            ${textoResumo}
+                        </div>
                     </div>
                 </div>
             `;
         }
 
-        // CARREGAR NOTÍCIAS DO BANCO DE DADOS
         async function carregarNoticias() {
             try {
                 const q = query(collection(db, "noticias"), orderBy("dataAtualizacao", "desc"));
@@ -326,3 +383,4 @@
     </script>
 </body>
 </html>
+  
