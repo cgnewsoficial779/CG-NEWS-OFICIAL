@@ -377,9 +377,9 @@
             </div>
         </header>
 
-        <!-- BARRA DE BUSCA DENTRO DA MATÉRIA -->
+        <!-- BARRA DE BUSCA DENTRO DA MATÉRIA (CORRIGIDA) -->
         <div id="barra-busca-materia">
-            <input type="text" id="input-busca-materia" placeholder="Buscar por palavra-chave..." onkeyup="realizarBuscaMateria()">
+            <input type="text" id="input-busca-materia" placeholder="Buscar por palavra-chave..." onkeyup="realizarBuscaMateria(event)">
         </div>
 
         <div style="background: white; max-width: 900px; margin: 20px auto; min-height: 80vh; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-radius: 8px;">
@@ -812,10 +812,16 @@
             renderizarNoticias(listaFiltrada, "Resultados da Busca", false);
         };
 
-        window.realizarBuscaMateria = function() {
+        // FUNÇÃO CORRIGIDA PARA A BUSCA DA MATÉRIA
+        window.realizarBuscaMateria = function(event) {
+            if (event && event.key !== 'Enter') {
+                return;
+            }
+
             const termo = document.getElementById("input-busca-materia").value.toLowerCase();
             
             if (termo === "") {
+                fecharMateria();
                 renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
                 return;
             }
@@ -827,6 +833,7 @@
             });
 
             fecharMateria();
+            document.getElementById("barra-busca").style.display = "block";
             document.getElementById("input-busca").value = termo;
             renderizarNoticias(listaFiltrada, "Resultados da Busca", false);
             window.scrollTo(0, 0);
