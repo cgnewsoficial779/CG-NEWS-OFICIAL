@@ -170,6 +170,14 @@
             color: #777;
             font-weight: 500;
             margin-left: 5px;
+            display: block;
+        }
+        .grid-cat span.atualizacao-txt {
+            color: #555;
+            font-weight: 600;
+            display: block;
+            font-size: 10px;
+            margin-top: 2px;
         }
         
         .grid-title {
@@ -225,8 +233,8 @@
             font-size: 12px;
             color: #777;
             display: flex;
-            align-items: center;
-            gap: 12px;
+            flex-direction: column;
+            gap: 2px;
             margin-bottom: 6px;
         }
         .news-list-excerpt {
@@ -390,6 +398,40 @@
 
         window.bancoDeNoticias = []; 
 
+        // Função para formatar data e hora no padrão do Mato Grosso do Sul
+        function formatarDataHoraMS(timestamp) {
+            const d = new Date(timestamp || Date.now());
+            const dataFormatada = d.toLocaleDateString('pt-BR', { 
+                timeZone: 'America/Campo_Grande', 
+                day: '2-digit', 
+                month: '2-digit', 
+                year: 'numeric' 
+            });
+            const horaFormatada = d.toLocaleTimeString('pt-BR', { 
+                timeZone: 'America/Campo_Grande', 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            return { data: dataFormatada, hora: horaFormatada };
+        }
+
+        // Gera o bloco de datas (Publicação + Atualização condicional)
+        function gerarHtmlDatas(item) {
+            // Usa dataCriacao se existir, senão usa dataAtualizacao como fallback
+            const timestampCriacao = item.dataCriacao || item.dataAtualizacao;
+            const criacao = formatarDataHoraMS(timestampCriacao);
+            
+            let html = `<span><i class="far fa-clock"></i> Publicado em ${criacao.data} às ${criacao.hora}</span>`;
+
+            // Verifica se houve alteração (se a data de atualização for consideravelmente posterior à criação)
+            if (item.dataAtualizacao && item.dataCriacao && item.dataAtualizacao > item.dataCriacao + 60000) {
+                const atualizacao = formatarDataHoraMS(item.dataAtualizacao);
+                html += `<br><span style="color: #444; font-weight: 600;"><i class="fas fa-sync-alt" style="font-size: 10px;"></i> Atualização: ${atualizacao.data} às ${atualizacao.hora}</span>`;
+            }
+
+            return html;
+        }
+
         window.abrirMenu = function() {
             document.getElementById("sidebar").style.left = "0";
             document.getElementById("overlay").style.display = "block";
@@ -447,8 +489,7 @@
             const modal = document.getElementById("modal-materia");
             const conteudo = document.getElementById("conteudo-materia");
 
-            const d = new Date(item.dataAtualizacao || Date.now());
-            const dataFormatada = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+            const blocoDatas = gerarHtmlDatas(item);
 
             let blocoImagem = "";
             if (item.imagem) {
@@ -524,10 +565,10 @@
             conteudo.innerHTML = `
                 <h1 style="color: #1a1a1a; font-size: 28px; font-weight: 800; line-height: 1.2; margin-bottom: 15px;">${item.titulo}</h1>
                 
-                <div style="color: #777; font-size: 13px; margin-bottom: 15px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                    <span><i class="far fa-clock"></i> ${dataFormatada}</span>
-                    ${item.autor ? `<span><i class="fas fa-user"></i> ${item.autor}</span>` : ""}
-                    ${item.categoria ? `<span><i class="far fa-folder"></i> ${item.categoria}</span>` : ""}
+                <div style="color: #777; font-size: 13px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 4px;">
+                    <div>${blocoDatas}</div>
+                    ${item.autor ? `<div><i class="fas fa-user"></i> ${item.autor}</div>` : ""}
+                    ${item.categoria ? `<div><i class="far fa-folder"></i> ${item.categoria}</div>` : ""}
                 </div>
 
                 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap;">
@@ -565,8 +606,15 @@
         };
 
         function criarHtmlGridCard(item) {
-            const d = new Date(item.dataAtualizacao || Date.now());
-            const dataFormatada = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+            const timestampCriacao = item.dataCriacao || item.dataAtualizacao;
+            const criacao = formatarDataHoraMS(timestampCriacao);
+            
+            let htmlData = `Publicado em ${criacao.data} às ${criacao.hora}`;
+            
+            if (item.dataAtualizacao && item.dataCriacao && item.dataAtualizacao > item.dataCriacao + 60000) {
+                const atualizacao = formatarDataHoraMS(item.dataAtualizacao);
+                htmlData += `<br>Atualização: ${atualizacao.data} às ${atualizacao.hora}`;
+            }
 
             let catText = "NOTÍCIA";
             if (item.categorias && item.categorias.length > 0) catText = item.categorias[0];
@@ -578,15 +626,23 @@
                         `<img src="${item.imagem}" class="grid-img">` : 
                         `<div class="grid-img" style="display:flex; align-items:center; justify-content:center; color:#999; font-size:12px;">Sem foto</div>`
                     }
-                    <div class="grid-cat">${catText} <span class="data-padrao">• ${dataFormatada}</span></div>
+                    <div class="grid-cat">${catText} <span class="data-padrao">• ${htmlData}</span></div>
                     <div class="grid-title">${item.titulo}</div>
                 </div>
             `;
         }
 
         function criarHtmlListaCard(item) {
-            const d = new Date(item.dataAtualizacao || Date.now());
-            const dataFormatada = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+            const timestampCriacao = item.dataCriacao || item.dataAtualizacao;
+            const criacao = formatarDataHoraMS(timestampCriacao);
+            
+            let htmlData = `Publicado em ${criacao.data} às ${criacao.hora}`;
+            
+            if (item.dataAtualizacao && item.dataCriacao && item.dataAtualizacao > item.dataCriacao + 60000) {
+                const atualizacao = formatarDataHoraMS(item.dataAtualizacao);
+                htmlData += ` | Atualização: ${atualizacao.data} às ${atualizacao.hora}`;
+            }
+
             const textoResumo = item.texto ? item.texto.substring(0, 100) + "..." : "Clique para ler a matéria completa.";
 
             return `
@@ -598,7 +654,7 @@
                     <div class="news-list-content">
                         <div class="news-list-title">${item.titulo}</div>
                         <div class="news-list-meta">
-                            <span><i class="far fa-clock"></i> ${dataFormatada}</span>
+                            <span><i class="far fa-clock"></i> ${htmlData}</span>
                             ${item.autor ? `<span><i class="far fa-user"></i> ${item.autor}</span>` : ""}
                         </div>
                         <div class="news-list-excerpt">${textoResumo}</div>
