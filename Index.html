@@ -429,9 +429,8 @@
         function gerarHtmlDatas(item) {
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
             const criacao = formatarDataHoraMS(timestampCriacao);
-            const relCriacao = tempoRelativo(timestampCriacao);
             
-            let html = `<span>Publicado em ${criacao.data} às ${criacao.hora} | ${relCriacao}</span>`;
+            let html = `<span>Publicado em ${criacao.data} às ${criacao.hora}</span>`;
 
             if (item.dataAtualizacao && item.dataCriacao && item.dataAtualizacao > item.dataCriacao + 60000) {
                 const atualizacao = formatarDataHoraMS(item.dataAtualizacao);
@@ -642,13 +641,13 @@
 
         function criarHtmlGridCard(item) {
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
-            const relCriacao = tempoRelativo(timestampCriacao);
+            const criacao = formatarDataHoraMS(timestampCriacao);
             
-            let htmlData = relCriacao;
+            let htmlData = `${criacao.data} às ${criacao.hora}`;
             
             if (item.dataAtualizacao && item.dataCriacao && item.dataAtualizacao > item.dataCriacao + 60000) {
                 const relAtualizacao = tempoRelativo(item.dataAtualizacao);
-                htmlData += ` • Atualizado ${relAtualizacao}`;
+                htmlData += ` • atualizado ${relAtualizacao}`;
             }
 
             let catText = "NOTÍCIA";
@@ -669,13 +668,13 @@
 
         function criarHtmlListaCard(item) {
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
-            const relCriacao = tempoRelativo(timestampCriacao);
+            const criacao = formatarDataHoraMS(timestampCriacao);
             
-            let htmlData = relCriacao;
+            let htmlData = `${criacao.data} às ${criacao.hora}`;
             
             if (item.dataAtualizacao && item.dataCriacao && item.dataAtualizacao > item.dataCriacao + 60000) {
                 const relAtualizacao = tempoRelativo(item.dataAtualizacao);
-                htmlData += ` | Atualizado ${relAtualizacao}`;
+                htmlData += ` | atualizado ${relAtualizacao}`;
             }
 
             const textoResumo = item.texto ? item.texto.substring(0, 100) + "..." : "Clique para ler a matéria completa.";
