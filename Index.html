@@ -392,6 +392,24 @@
         window.bancoDeNoticias = []; 
         let intervaloAtualizacaoAoVivo = null;
 
+        function tempoRelativo(timestamp) {
+            if (!timestamp) return "";
+            const agora = Date.now();
+            const diffMs = agora - timestamp;
+            const diffMinutos = Math.floor(diffMs / (1000 * 60));
+            const diffHoras = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const diffMeses = Math.floor(diffDias / 30);
+            const diffAnos = Math.floor(diffDias / 365);
+
+            if (diffMinutos < 1) return "agora mesmo";
+            if (diffMinutos < 60) return `há ${diffMinutos} ${diffMinutos === 1 ? 'minuto' : 'minutos'}`;
+            if (diffHoras < 24) return `há ${diffHoras} ${diffHoras === 1 ? 'hora' : 'horas'}`;
+            if (diffDias < 30) return `há ${diffDias} ${diffDias === 1 ? 'dia' : 'dias'}`;
+            if (diffMeses < 12) return `há ${diffMeses} ${diffMeses === 1 ? 'mês' : 'meses'}`;
+            return `há ${diffAnos} ${diffAnos === 1 ? 'ano' : 'anos'}`;
+        }
+
         function formatarDataHoraMS(timestamp) {
             const d = new Date(timestamp || Date.now());
             const dataFormatada = d.toLocaleDateString('pt-BR', { 
@@ -409,14 +427,15 @@
         }
 
         function gerarHtmlDatas(item) {
-            const timestampCriacao = item.dataCriacao || item.dataAtualizacao;
+            const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
             const criacao = formatarDataHoraMS(timestampCriacao);
             
-            let html = `<span><i class="far fa-clock"></i> Publicado em ${criacao.data} às ${criacao.hora}</span>`;
+            let html = `<span>Publicado em ${criacao.data} às ${criacao.hora}</span>`;
 
             if (item.dataAtualizacao && item.dataCriacao && item.dataAtualizacao > item.dataCriacao + 60000) {
                 const atualizacao = formatarDataHoraMS(item.dataAtualizacao);
-                html += `<br><span style="color: #444; font-weight: 600;"><i class="fas fa-sync-alt" style="font-size: 10px;"></i> Atualização: ${atualizacao.data} às ${atualizacao.hora}</span>`;
+                const relAtualizacao = tempoRelativo(item.dataAtualizacao);
+                html += `<br><span style="color: #444; font-weight: 600;"><i class="fas fa-sync-alt" style="font-size: 10px;"></i> Atualizado ${relAtualizacao} - ${atualizacao.data} às ${atualizacao.hora}</span>`;
             }
 
             return html;
@@ -498,6 +517,7 @@
                 let corIconeRede = "#E1306C";
                 let corBotaoPerfil = "#405de6";
                 let usuarioRede = "cgnews.oficial";
+                let linkPerfilRede = url; 
 
                 if (url.includes("youtube.com") || url.includes("youtu.be")) {
                     nomeRede = "YouTube"; iconeRedeClass = "fab fa-youtube"; textoBotao = "Assista no YouTube"; corIconeRede = "#FF0000"; corBotaoPerfil = "#FF0000"; usuarioRede = "CG NEWS OFICIAL";
@@ -515,10 +535,8 @@
                     nomeRede = "Threads"; iconeRedeClass = "fa-brands fa-threads"; textoBotao = "Ver no Threads"; corIconeRede = "#000000"; corBotaoPerfil = "#000000"; usuarioRede = "cgnews.oficial";
                 }
 
-                // Usa a imagem enviada na matéria para ilustrar o player da rede social
                 let imagemMidia = item.imagem ? item.imagem : "";
 
-                // Valores iniciais dinâmicos baseados no ID da notícia
                 let baseViews = 2400 + (id.length * 137);
                 let baseLikes = Math.floor(baseViews / 3);
 
@@ -534,7 +552,7 @@
                                     <div style="font-size: 11px; color: #777;">Publicação oficial • <i class="${iconeRedeClass}" style="color: ${corIconeRede};"></i> ${nomeRede}</div>
                                 </div>
                             </div>
-                            <a href="${url}" target="_blank" style="background: ${corBotaoPerfil}; color: white; padding: 6px 14px; font-size: 13px; font-weight: 600; text-decoration: none; border-radius: 4px;">Seguir</a>
+                            <a href="${linkPerfilRede}" target="_blank" style="background: ${corBotaoPerfil}; color: white; padding: 6px 14px; font-size: 13px; font-weight: 600; text-decoration: none; border-radius: 4px;">Seguir</a>
                         </div>
 
                         <a href="${url}" target="_blank" style="display: block; position: relative; background: #000; aspect-ratio: 9/16; max-height: 480px; overflow: hidden;">
@@ -543,12 +561,11 @@
                                 <i class="fas fa-play"></i>
                             </div>
                             <div style="position: absolute; bottom: 15px; left: 15px; right: 15px; background: rgba(0,0,0,0.6); padding: 8px 12px; border-radius: 6px; color: #fff; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
-                                <span><i class="${iconeRedeClass}" style="color: ${corIconeRede}; margin-right: 5px;"></i> Abrir no ${nomeRede}</span>
+                                <span><i class="${iconeRedeClass}" style="color: ${corIconeRede}; margin-right: 5px;"></i> Abrir link original no ${nomeRede}</span>
                                 <i class="fas fa-external-link-alt" style="font-size: 11px;"></i>
                             </div>
                         </a>
 
-                        <!-- RODAPÉ COM ATUALIZAÇÃO AUTOMÁTICA A CADA 5 MINUTOS -->
                         <div style="padding: 10px 15px; background: #f8f9fa; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #555;">
                             <div><i class="fas fa-heart" style="color: #e1306c; margin-right: 4px;"></i> <strong id="contador-likes">${baseLikes.toLocaleString('pt-BR')}</strong> curtidas</div>
                             <div><i class="fas fa-eye" style="color: #11136c; margin-right: 4px;"></i> <strong id="contador-views">${baseViews.toLocaleString('pt-BR')}</strong> visualizações</div>
@@ -562,7 +579,6 @@
                     </div>
                 `;
 
-                // Configura a atualização automática a cada 5 minutos (300000 ms)
                 if (intervaloAtualizacaoAoVivo) clearInterval(intervaloAtualizacaoAoVivo);
                 intervaloAtualizacaoAoVivo = setInterval(() => {
                     const elViews = document.getElementById("contador-views");
@@ -573,7 +589,7 @@
                         elViews.innerText = vAtual.toLocaleString('pt-BR');
                         elLikes.innerText = lAtual.toLocaleString('pt-BR');
                     }
-                }, 300000); // 300.000 ms = 5 minutos
+                }, 300000); 
             }
 
             conteudo.innerHTML = `
@@ -624,14 +640,14 @@
         };
 
         function criarHtmlGridCard(item) {
-            const timestampCriacao = item.dataCriacao || item.dataAtualizacao;
-            const criacao = formatarDataHoraMS(timestampCriacao);
+            const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
+            const relCriacao = tempoRelativo(timestampCriacao);
             
-            let htmlData = `Publicado em ${criacao.data} às ${criacao.hora}`;
+            let htmlData = relCriacao;
             
             if (item.dataAtualizacao && item.dataCriacao && item.dataAtualizacao > item.dataCriacao + 60000) {
-                const atualizacao = formatarDataHoraMS(item.dataAtualizacao);
-                htmlData += `<br>Atualização: ${atualizacao.data} às ${atualizacao.hora}`;
+                const relAtualizacao = tempoRelativo(item.dataAtualizacao);
+                htmlData += ` • Atualizado ${relAtualizacao}`;
             }
 
             let catText = "NOTÍCIA";
@@ -651,14 +667,14 @@
         }
 
         function criarHtmlListaCard(item) {
-            const timestampCriacao = item.dataCriacao || item.dataAtualizacao;
-            const criacao = formatarDataHoraMS(timestampCriacao);
+            const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
+            const relCriacao = tempoRelativo(timestampCriacao);
             
-            let htmlData = `Publicado em ${criacao.data} às ${criacao.hora}`;
+            let htmlData = relCriacao;
             
             if (item.dataAtualizacao && item.dataCriacao && item.dataAtualizacao > item.dataCriacao + 60000) {
-                const atualizacao = formatarDataHoraMS(item.dataAtualizacao);
-                htmlData += ` | Atualização: ${atualizacao.data} às ${atualizacao.hora}`;
+                const relAtualizacao = tempoRelativo(item.dataAtualizacao);
+                htmlData += ` | Atualizado ${relAtualizacao}`;
             }
 
             const textoResumo = item.texto ? item.texto.substring(0, 100) + "..." : "Clique para ler a matéria completa.";
