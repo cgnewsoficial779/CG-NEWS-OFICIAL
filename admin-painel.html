@@ -29,6 +29,11 @@
         input[type="text"]:focus, select:focus { border-color: #002a5c; background: #fff; box-shadow: 0 0 0 3px rgba(0, 42, 92, 0.1); }
         input[type="file"] { background: #fff; padding: 8px; border: 1px dashed #cfd4db; cursor: pointer; }
 
+        .file-input-wrapper { display: flex; gap: 8px; align-items: center; }
+        .file-input-wrapper input[type="file"] { flex: 1; }
+        .btn-remover-img { background: #fff; color: #cc0000; border: 1px solid #cc0000; padding: 10px 14px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px; transition: 0.2s; white-space: nowrap; }
+        .btn-remover-img:hover { background: #cc0000; color: white; }
+
         /* EDITOR DE TEXTO (QUILL) */
         .ql-container { height: 350px; font-size: 16px; background: #fff; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; font-family: Georgia, serif; }
         .ql-toolbar { background: #f8f9fa; border-top-left-radius: 6px; border-top-right-radius: 6px; border-color: #cfd4db; }
@@ -54,7 +59,6 @@
         .preview-container img:last-child { border-right: none; }
         
         .video-preview { width: 100%; border-radius: 6px; display: none; margin-top: 10px; border: 1px solid #cfd4db; background: #000; max-height: 400px; }
-
         .preview-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #666; font-size: 13px; background: #eee; min-height: 150px;}
 
         /* BOTÕES DE AÇÃO */
@@ -62,16 +66,28 @@
         .btn-submit:hover { background-color: #001d40; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,42,92,0.2); }
         .btn-cancelar { background-color: #cc0000; color: white; border: none; padding: 12px; width: 100%; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; display: none; text-transform: uppercase; }
 
-        /* LISTA DE MATÉRIAS */
-        .noticia-item { border: 1px solid #e1e4e8; padding: 15px; margin-bottom: 12px; border-radius: 8px; background: #fff; display: flex; flex-direction: column; gap: 10px; transition: 0.2s; }
+        /* LISTA DE MATÉRIAS COM VISUALIZAÇÃO PRÉVIA */
+        .noticia-item { border: 1px solid #e1e4e8; padding: 15px; margin-bottom: 12px; border-radius: 8px; background: #fff; display: flex; gap: 15px; align-items: center; transition: 0.2s; }
         .noticia-item:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-color: #cfd4db; }
-        .noticia-info strong { display: block; color: #002a5c; font-size: 16px; margin-bottom: 8px; line-height: 1.4; }
-        .noticia-info span { font-size: 11px; color: #555; background: #f0f2f5; padding: 4px 8px; border-radius: 4px; font-weight: 600; margin-right: 5px; border: 1px solid #e1e4e8;}
-        .acoes-btn { display: flex; gap: 10px; margin-top: 5px; }
-        .btn-editar { background: #f8f9fa; color: #002a5c; border: 1px solid #002a5c; padding: 8px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; flex: 1; transition: 0.2s; }
+        
+        .noticia-miniatura { width: 80px; height: 60px; border-radius: 6px; object-fit: cover; background: #ddd; flex-shrink: 0; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; color: #777; font-size: 10px; }
+        .noticia-miniatura img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+
+        .noticia-conteudo-info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .noticia-conteudo-info strong { color: #002a5c; font-size: 15px; line-height: 1.3; }
+        .noticia-meta-tags { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+        .noticia-meta-tags span { font-size: 11px; color: #555; background: #f0f2f5; padding: 3px 7px; border-radius: 4px; font-weight: 600; border: 1px solid #e1e4e8; }
+        
+        .acoes-btn { display: flex; gap: 8px; margin-top: 4px; }
+        .btn-editar { background: #f8f9fa; color: #002a5c; border: 1px solid #002a5c; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; transition: 0.2s; }
         .btn-editar:hover { background: #002a5c; color: white; }
-        .btn-apagar { background: #fff; color: #cc0000; border: 1px solid #cc0000; padding: 8px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; flex: 1; transition: 0.2s; }
+        .btn-apagar { background: #fff; color: #cc0000; border: 1px solid #cc0000; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; transition: 0.2s; }
         .btn-apagar:hover { background: #cc0000; color: white; }
+
+        @media (max-width: 600px) {
+            .noticia-item { flex-direction: column; align-items: flex-start; }
+            .noticia-miniatura { width: 100%; height: 120px; }
+        }
     </style>
 </head>
 <body>
@@ -79,7 +95,7 @@
     <div class="container">
         <div class="header-admin">
             <h1><i class="fas fa-globe"></i> PORTAL DE NOTÍCIAS ADMIN</h1>
-            <span>PRO V7.1</span>
+            <span>PRO V7.2</span>
         </div>
 
         <form id="formNoticia">
@@ -107,12 +123,18 @@
                 <div class="image-upload-grid">
                     <div class="form-group">
                         <label>Escolher Foto 1 (Principal)</label>
-                        <input type="file" id="imagemInput1" accept="image/*">
+                        <div class="file-input-wrapper">
+                            <input type="file" id="imagemInput1" accept="image/*">
+                            <button type="button" class="btn-remover-img" onclick="removerImagem(1)" title="Remover Foto 1"><i class="fas fa-trash-alt"></i> Limpar</button>
+                        </div>
                         <input type="hidden" id="imagemBase64_1">
                     </div>
                     <div class="form-group">
                         <label>Escolher Foto 2 (Montagem Opcional)</label>
-                        <input type="file" id="imagemInput2" accept="image/*">
+                        <div class="file-input-wrapper">
+                            <input type="file" id="imagemInput2" accept="image/*">
+                            <button type="button" class="btn-remover-img" onclick="removerImagem(2)" title="Remover Foto 2"><i class="fas fa-trash-alt"></i> Limpar</button>
+                        </div>
                         <input type="hidden" id="imagemBase64_2">
                     </div>
                 </div>
@@ -142,10 +164,12 @@
                 
                 <div class="form-group">
                     <label>Selecione um Vídeo do seu Celular/Computador</label>
-                    <input type="file" id="videoInput" accept="video/*">
+                    <div class="file-input-wrapper">
+                        <input type="file" id="videoInput" accept="video/*">
+                        <button type="button" class="btn-remover-img" onclick="removerVideo()" title="Remover Vídeo"><i class="fas fa-trash-alt"></i> Limpar</button>
+                    </div>
                     <input type="hidden" id="videoBase64">
                     
-                    <!-- Player de pré-visualização -->
                     <video id="videoPreview" class="video-preview" controls></video>
                 </div>
 
@@ -264,6 +288,13 @@
         document.getElementById('imagemInput1').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_1'));
         document.getElementById('imagemInput2').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_2'));
 
+        // FUNÇÃO PARA REMOVER IMAGENS MANUALMENTE
+        window.removerImagem = function(num) {
+            document.getElementById(`imagemInput${num}`).value = "";
+            document.getElementById(`imagemBase64_${num}`).value = "";
+            atualizarPreviewImagens();
+        };
+
         window.mudarLayout = function(ratio, btn) {
             document.querySelectorAll('.btn-ratio').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -308,6 +339,13 @@
             reader.readAsDataURL(file);
         });
 
+        window.removerVideo = function() {
+            document.getElementById('videoInput').value = "";
+            document.getElementById('videoBase64').value = "";
+            const videoPreview = document.getElementById('videoPreview');
+            videoPreview.style.display = 'none';
+            videoPreview.src = "";
+        };
 
         // --- SALVAR MATÉRIA NO BANCO ---
         document.getElementById('formNoticia').addEventListener('submit', async function(e) {
@@ -410,7 +448,7 @@
             return textoFormatado;
         }
 
-        // --- CARREGAR LISTA ---
+        // --- CARREGAR LISTA COM MINIATURA E TÍTULO ---
         window.carregarListaNoticias = async function() {
             const listaDiv = document.getElementById("lista-noticias");
             listaDiv.innerHTML = "<p>Buscando matérias no servidor...</p>";
@@ -433,19 +471,28 @@
                     const tempoCriacao = item.dataCriacao || item.dataAtualizacao;
                     const infoTempo = formatarTempoRelativo(tempoCriacao, item.dataAtualizacao);
 
+                    // Miniatura da foto 1 ou foto 2 se houver
+                    let miniaturaHtml = `<div class="noticia-miniatura"><i class="fas fa-image"></i></div>`;
+                    if (item.imagem1) {
+                        miniaturaHtml = `<div class="noticia-miniatura"><img src="${item.imagem1}" alt="Capa"></div>`;
+                    } else if (item.imagem2) {
+                        miniaturaHtml = `<div class="noticia-miniatura"><img src="${item.imagem2}" alt="Capa"></div>`;
+                    }
+
                     listaDiv.innerHTML += `
                         <div class="noticia-item">
-                            <div class="noticia-info">
+                            ${miniaturaHtml}
+                            <div class="noticia-conteudo-info">
                                 <strong>${item.titulo}</strong>
-                                <div>
+                                <div class="noticia-meta-tags">
                                     <span><i class="far fa-clock"></i> ${infoTempo}</span>
-                                    <span><i class="fas fa-tag"></i> ${item.categorias ? item.categorias.join(', ') : 'Sem categoria'}</span>
+                                    <span><i class="fas fa-tag"></i> ${item.categorias ? item.categorias.join(', ') : 'Geral'}</span>
                                     ${item.videoArquivo ? '<span style="color: #cc0000; border-color: #cc0000;"><i class="fas fa-video"></i> Vídeo</span>' : ''}
                                 </div>
-                            </div>
-                            <div class="acoes-btn">
-                                <button type="button" class="btn-editar" onclick="prepararEdicao('${id}')"><i class="fas fa-edit"></i> Editar</button>
-                                <button type="button" class="btn-apagar" onclick="apagarNoticia('${id}')"><i class="fas fa-trash"></i> Apagar</button>
+                                <div class="acoes-btn">
+                                    <button type="button" class="btn-editar" onclick="prepararEdicao('${id}')"><i class="fas fa-edit"></i> Editar</button>
+                                    <button type="button" class="btn-apagar" onclick="apagarNoticia('${id}')"><i class="fas fa-trash"></i> Apagar</button>
+                                </div>
                             </div>
                         </div>
                     `;
