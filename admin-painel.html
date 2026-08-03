@@ -8,14 +8,14 @@
     <!-- ÍCONES -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
-    <!-- QUILL.JS PARA O EDITOR DE TEXTO PROFISSIONAL -->
+    <!-- QUILL.JS PARA O EDITOR DE TEXTO -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
         body { background-color: #f0f2f5; padding: 10px; color: #1a1a1a; font-size: 16px; }
         
-        /* CONTAINER PRINCIPAL ADAPTADO PARA OCUPAR A TELA INTEIRA NO PC E CELULAR */
+        /* CONTAINER PRINCIPAL ADAPTADO PARA TELA CHEIA */
         .container { width: 100%; max-width: 100%; margin: 0 auto; background: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); position: relative; }
         @media(min-width: 1024px) {
             .container { padding: 30px; }
@@ -27,7 +27,7 @@
         .header-actions-right { display: flex; align-items: center; gap: 10px; }
         .header-admin span.badge-pro { background: #002a5c; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
 
-        /* BOTÃO DAS TRÊS BARRAS (MENU LATERAL) */
+        /* BOTÃO DAS TRÊS BARRAS */
         .btn-menu-hamburguer { background: #002a5c; color: white; border: none; width: 45px; height: 45px; border-radius: 8px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; box-shadow: 0 2px 6px rgba(0,42,92,0.25); }
         .btn-menu-hamburguer:hover { background: #001d40; }
 
@@ -42,13 +42,13 @@
         
         .sidebar-content { padding: 15px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 15px; }
 
-        /* BOTÃO DO MENU PARA ABRIR LISTA EM TELA CHEIA */
+        /* BOTÃO DO MENU PARA GERENCIAR MATÉRIAS */
         .btn-menu-gerenciar { background: #0275d8; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; width: 100%; box-shadow: 0 2px 6px rgba(2,117,216,0.3); }
         .btn-menu-gerenciar:hover { background: #025aa5; }
 
-        /* MODAL TELA CHEIA DE GERENCIAMENTO DE MATÉRIAS (TOTALMENTE EXPANDIDO) */
+        /* MODAL TELA CHEIA: GERENCIAR MATÉRIAS */
         .modal-fullscreen-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .modal-fullscreen-content { background: #f0f2f5; width: 100vw; height: 100vh; border-radius: 0; display: flex; flex-direction: column; overflow: hidden; box-shadow: none; }
+        .modal-fullscreen-content { background: #f0f2f5; width: 100vw; height: 100vh; border-radius: 0; display: flex; flex-direction: column; overflow: hidden; }
         @media(min-width: 768px) {
             .modal-fullscreen-content { width: 95vw; height: 95vh; border-radius: 12px; }
         }
@@ -57,22 +57,20 @@
         .modal-fs-close { background: #d93025; color: white; border: none; width: 38px; height: 38px; border-radius: 6px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         .modal-fs-body { padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 15px; }
 
-        /* PAINEL DE ESTATÍSTICAS VERTICAL NO MENU */
+        /* PAINEL DE ESTATÍSTICAS */
         .stats-box { background: linear-gradient(135deg, #f8f9fa 0%, #eef2f7 100%); border: 1px solid #d1d9e0; border-radius: 10px; padding: 15px; border-left: 5px solid #002a5c; }
         .stats-header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
         .stats-header h4 { font-size: 13px; text-transform: uppercase; color: #002a5c; font-weight: 800; display: flex; align-items: center; gap: 6px; }
         .stats-select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #b0b8c1; background: #fff; font-size: 14px; font-weight: 700; color: #333; outline: none; }
-        
         .stats-display { text-align: left; padding: 14px; background: #fff; border-radius: 8px; border: 1px solid #e1e4e8; display: flex; flex-direction: column; gap: 8px; }
         .stats-display .info-left .number { font-size: 30px; font-weight: 900; color: #002a5c; line-height: 1.1; }
         .stats-display .info-left .label-periodo { font-size: 12px; color: #555; text-transform: uppercase; font-weight: 700; }
         .stats-badge-live { background: #e6f4ea; color: #137333; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; border: 1px solid #ceead6; width: fit-content; }
 
-        /* BLOCOS VERTICAIS DE INTEGRAÇÃO GOOGLE NO MENU */
+        /* INTEGRAÇÕES GOOGLE */
         .google-integration-card { background: #f8f9fa; border: 1px solid #e1e4e8; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
         .google-integration-card label { font-size: 12px; font-weight: 800; color: #444; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
         .google-integration-card input, .google-integration-card textarea { width: 100%; padding: 10px; border: 1px solid #b0b8c1; border-radius: 6px; font-size: 14px; background: #fff; }
-        
         .btn-ativar-google { background: #1a73e8; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-transform: uppercase; width: 100%; }
         .btn-ativar-google.ativo { background: #137333; }
 
@@ -88,11 +86,11 @@
         .file-input-wrapper input[type="file"] { flex: 1; }
         .btn-remover-img { background: #fff; color: #d93025; border: 1px solid #d93025; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 13px; white-space: nowrap; }
 
-        /* EDITOR DE TEXTO (QUILL) */
+        /* EDITOR QUILL */
         .ql-container { height: 320px; font-size: 16px; background: #fff; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; font-family: Georgia, serif; }
         .ql-toolbar { background: #f8f9fa; border-top-left-radius: 6px; border-top-right-radius: 6px; border-color: #b0b8c1; }
 
-        /* CHECKBOXES DE CATEGORIA */
+        /* CHECKBOXES */
         .checkbox-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         @media(min-width: 600px) { .checkbox-group { grid-template-columns: repeat(3, 1fr); } }
         @media(min-width: 900px) { .checkbox-group { grid-template-columns: repeat(4, 1fr); } }
@@ -121,7 +119,7 @@
         .btn-preview { background-color: #0275d8; color: white; border: none; padding: 16px; flex: 1; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
         .btn-cancelar { background-color: #d93025; color: white; border: none; padding: 14px; width: 100%; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; display: none; text-transform: uppercase; }
 
-        /* LISTA DE MATÉRIAS (MAIOR E COM IMAGENS AMPLIADAS) */
+        /* LISTA DE MATÉRIAS NOS ITENS GERENCIAIS */
         .noticia-item { border: 1px solid #d1d9e0; padding: 15px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
         @media(min-width: 650px) { .noticia-item { flex-direction: row; align-items: center; } }
         
@@ -131,9 +129,7 @@
         
         .noticia-conteudo-info { flex: 1; display: flex; flex-direction: column; gap: 8px; }
         .noticia-conteudo-info strong { color: #002a5c; font-size: 16px; line-height: 1.4; font-weight: 800; }
-        @media(min-width: 768px) {
-            .noticia-conteudo-info strong { font-size: 18px; }
-        }
+        @media(min-width: 768px) { .noticia-conteudo-info strong { font-size: 18px; } }
         .noticia-meta-tags { display: flex; gap: 8px; flex-wrap: wrap; }
         .noticia-meta-tags span { font-size: 12px; color: #444; background: #f0f2f5; padding: 5px 10px; border-radius: 6px; font-weight: 700; border: 1px solid #d1d9e0; }
         .acoes-btn { display: flex; gap: 10px; margin-top: 6px; }
@@ -141,11 +137,16 @@
         .btn-editar { background: #f8f9fa; color: #002a5c; border: 1px solid #002a5c; }
         .btn-apagar { background: #fff; color: #d93025; border: 1px solid #d93025; }
 
-        /* MODAL DE PRÉVIA */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 9999; justify-content: center; align-items: center; padding: 10px; backdrop-filter: blur(4px); }
-        .modal-content { background: #fff; width: 100%; max-width: 800px; max-height: 92vh; border-radius: 12px; overflow-y: auto; padding: 25px; position: relative; }
-        .modal-close { position: absolute; top: 15px; right: 18px; font-size: 26px; cursor: pointer; color: #777; background: none; border: none; }
-        .preview-body-content { font-family: Georgia, serif; font-size: 17px; line-height: 1.7; color: #222; margin-top: 15px; }
+        /* MODAL DE PRÉVIA EM TELA CHEIA COM BOTÃO DE VOLTAR NO CANTO */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-content { background: #fff; width: 100vw; height: 100vh; max-width: 100%; max-height: 100%; border-radius: 0; overflow-y: auto; padding: 20px; position: relative; display: flex; flex-direction: column; }
+        @media(min-width: 768px) {
+            .modal-content { width: 90vw; height: 92vh; border-radius: 12px; padding: 35px; max-width: 900px; }
+        }
+        .modal-header-top { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #eee; padding-bottom: 12px; margin-bottom: 15px; }
+        .btn-voltar-edicao { background: #002a5c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+        .btn-voltar-edicao:hover { background: #001d40; }
+        .preview-body-content { font-family: Georgia, serif; font-size: 18px; line-height: 1.8; color: #222; margin-top: 15px; flex: 1; }
     </style>
 </head>
 <body>
@@ -155,7 +156,7 @@
         <div class="header-admin">
             <h1><i class="fas fa-newspaper"></i> CG NEWS <span style="font-size:11px; padding:3px 8px; background:#cc0000; color:#fff; border-radius:4px; margin-left:6px;">OFICIAL</span></h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V8.3</span>
+                <span class="badge-pro">V8.4</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -345,16 +346,11 @@
             </div>
 
             <div class="botoes-acao-container">
-                <button type="button" class="btn-preview" onclick="abrirPrevia()"><i class="fas fa-eye"></i> Ver Prévia</button>
+                <button type="button" class="btn-preview" onclick="abrirPrevia()"><i class="fas fa-eye"></i> Ver Prévia (Tela Cheia)</button>
                 <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> Publicar Matéria</button>
             </div>
             <button type="button" id="btnCancelar" class="btn-cancelar" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
         </form>
-
-        <h2 style="color: #002a5c; font-size: 16px; margin: 30px 0 15px 0; font-weight: 800; text-transform: uppercase; border-bottom: 2px solid #d1d9e0; padding-bottom: 8px;"><i class="fas fa-list-alt"></i> Matérias Recentes</h2>
-        <div id="lista-noticias">
-            <p style="color: #666; font-size: 14px;">Conectando...</p>
-        </div>
 
     </div>
 
@@ -371,12 +367,14 @@
         </div>
     </div>
 
-    <!-- MODAL DE PRÉVIA -->
+    <!-- MODAL DE PRÉVIA EM TELA CHEIA COM BOTÃO DE VOLTAR -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
-            <button class="modal-close" onclick="fecharPrevia()">&times;</button>
-            <div style="font-size: 12px; font-weight: bold; color: #cc0000; text-transform: uppercase; margin-bottom: 8px;" id="prevCategoria">CATEGORIA</div>
-            <h1 id="prevTitulo" style="color: #002a5c; font-size: 22px; font-weight: 900; margin-bottom: 12px; line-height: 1.3;">Título</h1>
+            <div class="modal-header-top">
+                <span style="font-size: 12px; font-weight: bold; color: #cc0000; text-transform: uppercase;" id="prevCategoria">CATEGORIA</span>
+                <button class="btn-voltar-edicao" onclick="fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar para Edição</button>
+            </div>
+            <h1 id="prevTitulo" style="color: #002a5c; font-size: 24px; font-weight: 900; margin-bottom: 12px; line-height: 1.3;">Título</h1>
             <div style="font-size: 13px; color: #666; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                 Por <span id="prevAutor">Redação</span>
             </div>
@@ -706,51 +704,37 @@
         });
 
         window.carregarListaNoticias = async function() {
-            const listaDiv = document.getElementById("lista-noticias");
-            listaDiv.innerHTML = "<p style='font-size:14px;'>Buscando matérias...</p>";
-
             try {
                 const q = query(collection(db, "noticias"), orderBy("dataAtualizacao", "desc"));
                 const snapshot = await getDocs(q);
-                listaDiv.innerHTML = "";
+                window.noticiasAdmin = {};
                 window.listaCompletaNoticias = [];
 
-                if (snapshot.empty) {
-                    listaDiv.innerHTML = "<p style='font-size:14px;'>Nenhuma matéria publicada.</p>";
-                    atualizarEstatisticasView();
-                    carregarConfigGoogle();
-                    return;
+                if (!snapshot.empty) {
+                    snapshot.forEach((docSnap) => {
+                        const item = docSnap.data();
+                        const id = docSnap.id;
+                        window.noticiasAdmin[id] = item;
+                        window.listaCompletaNoticias.push(item);
+                    });
                 }
 
-                snapshot.forEach((docSnap) => {
-                    const item = docSnap.data();
-                    const id = docSnap.id;
-                    window.noticiasAdmin[id] = item;
-                    window.listaCompletaNoticias.push(item);
-                });
-
-                renderizarListasDeNoticias();
                 atualizarEstatisticasView();
                 carregarConfigGoogle();
             } catch (error) {
-                listaDiv.innerHTML = "<p style='font-size:14px;'>Erro ao carregar.</p>";
+                console.log("Erro ao carregar dados.");
             }
         };
 
-        function renderizarListasDeNoticias() {
-            const listaDiv = document.getElementById("lista-noticias");
+        window.renderizarListasDeNoticias = function() {
             const listaFsDiv = document.getElementById("lista-noticias-fullscreen");
             
             if (window.listaCompletaNoticias.length === 0) {
-                listaDiv.innerHTML = "<p style='font-size:14px;'>Nenhuma matéria publicada.</p>";
-                if(listaFsDiv) listaFsDiv.innerHTML = "<p style='font-size:14px;'>Nenhuma matéria encontrada.</p>";
+                listaFsDiv.innerHTML = "<p style='font-size:14px;'>Nenhuma matéria encontrada.</p>";
                 return;
             }
 
-            let htmlPrincipal = "";
             let htmlFullscreen = "";
-
-            let contador = 0;
             for (const [id, item] of Object.entries(window.noticiasAdmin)) {
                 const fotoCapa = item.imagem1 || "";
                 let miniaturaHtml = `<div class="noticia-miniatura"><i class="fas fa-image"></i></div>`;
@@ -758,7 +742,7 @@
                     miniaturaHtml = `<div class="noticia-miniatura"><img src="${fotoCapa}"></div>`;
                 }
 
-                const cardHtml = `
+                htmlFullscreen += `
                     <div class="noticia-item">
                         ${miniaturaHtml}
                         <div class="noticia-conteudo-info">
@@ -774,17 +758,9 @@
                         </div>
                     </div>
                 `;
-
-                if (contador < 5) {
-                    htmlPrincipal += cardHtml;
-                }
-                htmlFullscreen += cardHtml;
-                contador++;
             }
-
-            listaDiv.innerHTML = htmlPrincipal;
-            if(listaFsDiv) listaFsDiv.innerHTML = htmlFullscreen;
-        }
+            listaFsDiv.innerHTML = htmlFullscreen;
+        };
 
         window.prepararEdicao = function(id) {
             const item = window.noticiasAdmin[id];
@@ -826,7 +802,7 @@
             if (confirm("⚠️ Deseja apagar esta matéria?")) {
                 try {
                     await deleteDoc(doc(db, "noticias", id));
-                    carregarListaNoticias();
+                    carregarListaNoticias().then(() => renderizarListasDeNoticias());
                 } catch (e) { alert("Erro ao apagar."); }
             }
         };
