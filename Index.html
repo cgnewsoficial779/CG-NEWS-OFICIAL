@@ -456,11 +456,11 @@
 <body>
 
     <header>
-        <div class="header-btn" onclick="abrirMenu()" title="Menu">
+        <div class="header-btn" id="btn-abrir-menu" title="Menu">
             <i class="fas fa-bars"></i>
         </div>
-        <div class="header-logo" style="cursor: pointer;" onclick="fecharMateria(); window.scrollTo(0,0);">CG NEWS OFICIAL</div>
-        <div class="header-btn" onclick="toggleBuscaPrincipal()" title="Pesquisar">
+        <div class="header-logo" id="logo-home" style="cursor: pointer;">CG NEWS OFICIAL</div>
+        <div class="header-btn" id="btn-toggle-busca" title="Pesquisar">
             <i class="fas fa-search"></i>
         </div>
     </header>
@@ -474,26 +474,26 @@
     </div>
 
     <div id="barra-busca">
-        <input type="text" id="input-busca" placeholder="O que você está procurando? Digite aqui..." onkeyup="realizarBuscaPrincipal()">
+        <input type="text" id="input-busca" placeholder="O que você está procurando? Digite aqui...">
     </div>
 
-    <div id="overlay" onclick="fecharMenu()"></div>
+    <div id="overlay"></div>
 
     <div id="sidebar" class="sidebar">
         <div class="sidebar-header">
             <h3>CG NEWS OFICIAL</h3>
-            <i class="fas fa-times" onclick="fecharMenu()"></i>
+            <i class="fas fa-times" id="btn-fechar-menu"></i>
         </div>
-        <a onclick="filtrarCategoria('Todas')"><i class="fas fa-home" style="width: 24px; color: #11136c;"></i> Últimas Notícias</a>
-        <a onclick="filtrarCategoria('Campo Grande')"><i class="fas fa-city" style="width: 24px; color: #11136c;"></i> Campo Grande</a>
-        <a onclick="filtrarCategoria('Mato Grosso do Sul')"><i class="fas fa-map-marked-alt" style="width: 24px; color: #11136c;"></i> Mato Grosso do Sul</a>
-        <a onclick="filtrarCategoria('Brasil')"><i class="fas fa-flag" style="width: 24px; color: #11136c;"></i> Brasil</a>
-        <a onclick="filtrarCategoria('Mundo')"><i class="fas fa-globe-americas" style="width: 24px; color: #11136c;"></i> Mundo</a>
-        <a onclick="filtrarCategoria('Política')"><i class="fas fa-landmark" style="width: 24px; color: #11136c;"></i> Política</a>
-        <a onclick="filtrarCategoria('Polícia')"><i class="fas fa-shield-alt" style="width: 24px; color: #11136c;"></i> Polícia</a>
-        <a onclick="filtrarCategoria('Trânsito')"><i class="fas fa-car-crash" style="width: 24px; color: #11136c;"></i> Trânsito</a>
-        <a onclick="filtrarCategoria('Esporte')"><i class="fas fa-futbol" style="width: 24px; color: #11136c;"></i> Esporte</a>
-        <a onclick="filtrarCategoria('In Memoriam')"><i class="fas fa-dove" style="width: 24px; color: #11136c;"></i> In Memoriam</a>
+        <a data-cat="Todas"><i class="fas fa-home" style="width: 24px; color: #11136c;"></i> Últimas Notícias</a>
+        <a data-cat="Campo Grande"><i class="fas fa-city" style="width: 24px; color: #11136c;"></i> Campo Grande</a>
+        <a data-cat="Mato Grosso do Sul"><i class="fas fa-map-marked-alt" style="width: 24px; color: #11136c;"></i> Mato Grosso do Sul</a>
+        <a data-cat="Brasil"><i class="fas fa-flag" style="width: 24px; color: #11136c;"></i> Brasil</a>
+        <a data-cat="Mundo"><i class="fas fa-globe-americas" style="width: 24px; color: #11136c;"></i> Mundo</a>
+        <a data-cat="Política"><i class="fas fa-landmark" style="width: 24px; color: #11136c;"></i> Política</a>
+        <a data-cat="Polícia"><i class="fas fa-shield-alt" style="width: 24px; color: #11136c;"></i> Polícia</a>
+        <a data-cat="Trânsito"><i class="fas fa-car-crash" style="width: 24px; color: #11136c;"></i> Trânsito</a>
+        <a data-cat="Esporte"><i class="fas fa-futbol" style="width: 24px; color: #11136c;"></i> Esporte</a>
+        <a data-cat="In Memoriam"><i class="fas fa-dove" style="width: 24px; color: #11136c;"></i> In Memoriam</a>
 
         <div class="sidebar-social-section">
             <div class="sidebar-social-title">Redes Sociais</div>
@@ -537,11 +537,11 @@
     <!-- TELA DA MATÉRIA COMPLETA -->
     <div id="modal-materia">
         <header>
-            <div class="header-btn" onclick="abrirMenu()">
+            <div class="header-btn" id="btn-abrir-menu-materia">
                 <i class="fas fa-bars"></i>
             </div>
-            <div class="header-logo" style="cursor: pointer;" onclick="fecharMateria(); window.scrollTo(0,0);">CG NEWS OFICIAL</div>
-            <div class="header-btn" onclick="toggleBuscaMateria()">
+            <div class="header-logo" id="logo-materia" style="cursor: pointer;">CG NEWS OFICIAL</div>
+            <div class="header-btn" id="btn-toggle-busca-materia">
                 <i class="fas fa-search"></i>
             </div>
         </header>
@@ -554,11 +554,11 @@
         </div>
 
         <div id="barra-busca-materia">
-            <input type="text" id="input-busca-materia" placeholder="Buscar por palavra-chave..." onkeyup="realizarBuscaMateria(event)">
+            <input type="text" id="input-busca-materia" placeholder="Buscar por palavra-chave...">
         </div>
 
         <div class="materia-container-box">
-            <div onclick="fecharMateria()" style="color: #11136c; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 25px; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s;">
+            <div id="btn-voltar-home" style="color: #11136c; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 25px; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s;">
                 <i class="fas fa-arrow-left"></i> Voltar para a página inicial
             </div>
             <div id="conteudo-materia"></div>
@@ -600,7 +600,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        window.bancoDeNoticias = []; 
+        let bancoDeNoticias = []; 
 
         function atualizarBarraData() {
             const agora = new Date();
@@ -669,17 +669,22 @@
                     <span style="color: #718096; font-weight: 500; margin-left: 6px;">• <i class="fas fa-sync-alt" style="font-size: 9px;"></i> ${relAtualizacao}</span>`;
         }
 
-        window.abrirMenu = function() {
+        function abrirMenu() {
             document.getElementById("sidebar").style.left = "0";
             document.getElementById("overlay").style.display = "block";
-        };
+        }
 
-        window.fecharMenu = function() {
+        function fecharMenu() {
             document.getElementById("sidebar").style.left = "-280px";
             document.getElementById("overlay").style.display = "none";
-        };
+        }
 
-        window.toggleBuscaPrincipal = function() {
+        document.getElementById("btn-abrir-menu").addEventListener("click", abrirMenu);
+        document.getElementById("btn-abrir-menu-materia").addEventListener("click", abrirMenu);
+        document.getElementById("btn-fechar-menu").addEventListener("click", fecharMenu);
+        document.getElementById("overlay").addEventListener("click", fecharMenu);
+
+        function toggleBuscaPrincipal() {
             const barra = document.getElementById("barra-busca");
             const input = document.getElementById("input-busca");
 
@@ -689,11 +694,11 @@
             } else {
                 barra.style.display = "none";
                 input.value = "";
-                window.filtrarCategoria('Todas');
+                filtrarCategoria('Todas');
             }
-        };
+        }
 
-        window.toggleBuscaMateria = function() {
+        function toggleBuscaMateria() {
             const barra = document.getElementById("barra-busca-materia");
             const input = document.getElementById("input-busca-materia");
 
@@ -704,10 +709,27 @@
                 barra.style.display = "none";
                 input.value = "";
             }
-        };
+        }
 
-        window.compartilhar = function(rede, tituloCustom, urlCustom) {
-            const urlAtual = urlCustom || window.location.href;
+        document.getElementById("btn-toggle-busca").addEventListener("click", toggleBuscaPrincipal);
+        document.getElementById("btn-toggle-busca-materia").addEventListener("click", toggleBuscaMateria);
+
+        document.getElementById("logo-home").addEventListener("click", () => {
+            fecharMateria();
+            window.scrollTo(0,0);
+        });
+        document.getElementById("logo-materia").addEventListener("click", () => {
+            fecharMateria();
+            window.scrollTo(0,0);
+        });
+        document.getElementById("btn-voltar-home").addEventListener("click", () => {
+            fecharMateria();
+            window.scrollTo(0,0);
+        });
+
+        // Evento global de compartilhamento (atribuído ao window para escopo de módulo)
+        window.compartilhar = function(rede, tituloCustom) {
+            const urlAtual = window.location.href;
             const tituloAtual = tituloCustom || document.title;
             let linkShare = "";
 
@@ -717,8 +739,6 @@
                 linkShare = `https://api.whatsapp.com/send?text=${encodeURIComponent(tituloAtual + " - " + urlAtual)}`;
             } else if (rede === 'twitter') {
                 linkShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tituloAtual)}&url=${encodeURIComponent(urlAtual)}`;
-            } else if (rede === 'linkedin') {
-                linkShare = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(urlAtual)}`;
             } else if (rede === 'threads') {
                 linkShare = `https://threads.net/intent/post?text=${encodeURIComponent(tituloAtual + " " + urlAtual)}`;
             }
@@ -729,7 +749,7 @@
         };
 
         window.abrirMateria = function(id) {
-            const item = window.bancoDeNoticias.find(n => n.idUnico === id);
+            const item = bancoDeNoticias.find(n => n.idUnico === id);
             if (!item) return;
 
             const modal = document.getElementById("modal-materia");
@@ -808,50 +828,20 @@
                 }
 
                 if (!areaCentralPlayer) {
-                    const apiUrl = `https://api.microlink.io?url=${encodeURIComponent(url)}`;
                     areaCentralPlayer = `
-                        <div id="card-og-container" style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; background: #000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-                            <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #1a202c; display: flex; justify-content: center; align-items: center; overflow: hidden;">
-                                <img id="og-card-image" src="" alt="Capa da Mídia" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85; display: none;" />
-                                <div id="og-card-loading" style="color: #fff; font-size: 13px;">Carregando mídia original...</div>
-                                <a href="${url}" target="_blank" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: #fff; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 20px; border: 2px solid #fff;">
-                                    ▶
-                                </a>
-                            </div>
-                            <div style="padding: 12px 16px; background: #fff; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px solid #eee;">
-                                <span id="og-card-title" style="font-size: 13px; font-weight: 700; color: #2d3748; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 65%;">Abrir publicação oficial</span>
-                                <a href="${url}" target="_blank" style="background-color: #11136c; color: #fff; padding: 8px 14px; border-radius: 20px; text-decoration: none; font-size: 11px; font-weight: bold; white-space: nowrap;">
-                                    Assistir na Plataforma
-                                </a>
-                            </div>
+                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; background: #000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 20px; text-align: center;">
+                            <a href="${url}" target="_blank" style="background-color: #11136c; color: #fff; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-size: 13px; font-weight: bold;">
+                                Assistir publicação oficial
+                            </a>
                         </div>
                     `;
-
-                    fetch(apiUrl)
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.status === "success" && data.data) {
-                                const imgUrl = data.data.image?.url || data.data.logo?.url;
-                                const titulo = data.data.title;
-                                if (imgUrl) {
-                                    const imgEl = document.getElementById("og-card-image");
-                                    if (imgEl) { imgEl.src = imgUrl; imgEl.style.display = "block"; }
-                                }
-                                if (titulo) {
-                                    const titleEl = document.getElementById("og-card-title");
-                                    if (titleEl) titleEl.innerText = titulo;
-                                }
-                            }
-                        })
-                        .catch(() => {})
-                        .finally(() => {
-                            const loadEl = document.getElementById("og-card-loading");
-                            if (loadEl) loadEl.style.display = "none";
-                        });
                 }
 
                 blocoVideoRedeSocial = `<div style="margin: 25px 0;">${areaCentralPlayer}</div>`;
             }
+
+            // Escapando aspas para evitar erro no onclick do HTML gerado
+            const tituloSeguro = item.titulo ? item.titulo.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
 
             conteudo.innerHTML = `
                 <h1 style="color: #1a202c; font-size: 26px; font-weight: 800; line-height: 1.25; margin-bottom: 15px;">${item.titulo}</h1>
@@ -865,11 +855,10 @@
                 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
                     <span style="font-size: 13px; color: #4a5568; font-weight: 600;">Compartilhe:</span>
                     <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                        <button onclick="compartilhar('facebook', '${item.titulo}')" title="Facebook" style="background: #1877f2; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fab fa-facebook-f"></i></button>
-                        <button onclick="compartilhar('whatsapp', '${item.titulo}')" title="WhatsApp" style="background: #25d366; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fab fa-whatsapp"></i></button>
-                        <button onclick="compartilhar('twitter', '${item.titulo}')" title="X (Twitter)" style="background: #000000; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fa-brands fa-x-twitter"></i></button>
-                        <button onclick="compartilhar('linkedin', '${item.titulo}')" title="LinkedIn" style="background: #0a66c2; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fab fa-linkedin-in"></i></button>
-                        <button onclick="compartilhar('threads', '${item.titulo}')" title="Threads" style="background: #000000; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fa-brands fa-threads"></i></button>
+                        <button onclick="compartilhar('facebook', '${tituloSeguro}')" title="Facebook" style="background: #1877f2; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fab fa-facebook-f"></i></button>
+                        <button onclick="compartilhar('whatsapp', '${tituloSeguro}')" title="WhatsApp" style="background: #25d366; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fab fa-whatsapp"></i></button>
+                        <button onclick="compartilhar('twitter', '${tituloSeguro}')" title="X (Twitter)" style="background: #000000; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fa-brands fa-x-twitter"></i></button>
+                        <button onclick="compartilhar('threads', '${tituloSeguro}')" title="Threads" style="background: #000000; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer;"><i class="fa-brands fa-threads"></i></button>
                     </div>
                 </div>
 
@@ -908,6 +897,8 @@
             if (item.categorias && item.categorias.length > 0) catText = item.categorias[0];
             else if (item.categoria) catText = item.categoria;
 
+            const tituloSeguro = item.titulo ? item.titulo.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
+
             return `
                 <div class="grid-card">
                     <div class="grid-img-container" onclick="abrirMateria('${item.idUnico}')">
@@ -923,10 +914,10 @@
                         <div class="card-share-bar">
                             <span class="card-share-label">Compartilhar:</span>
                             <div class="card-share-icons">
-                                <button class="card-share-btn wa" onclick="compartilhar('whatsapp', '${item.titulo}')" title="Compartilhar no WhatsApp"><i class="fab fa-whatsapp"></i></button>
-                                <button class="card-share-btn fb" onclick="compartilhar('facebook', '${item.titulo}')" title="Compartilhar no Facebook"><i class="fab fa-facebook-f"></i></button>
-                                <button class="card-share-btn tw" onclick="compartilhar('twitter', '${item.titulo}')" title="Compartilhar no X"><i class="fa-brands fa-x-twitter"></i></button>
-                                <button class="card-share-btn th" onclick="compartilhar('threads', '${item.titulo}')" title="Compartilhar no Threads"><i class="fa-brands fa-threads"></i></button>
+                                <button class="card-share-btn wa" onclick="compartilhar('whatsapp', '${tituloSeguro}')" title="Compartilhar no WhatsApp"><i class="fab fa-whatsapp"></i></button>
+                                <button class="card-share-btn fb" onclick="compartilhar('facebook', '${tituloSeguro}')" title="Compartilhar no Facebook"><i class="fab fa-facebook-f"></i></button>
+                                <button class="card-share-btn tw" onclick="compartilhar('twitter', '${tituloSeguro}')" title="Compartilhar no X"><i class="fa-brands fa-x-twitter"></i></button>
+                                <button class="card-share-btn th" onclick="compartilhar('threads', '${tituloSeguro}')" title="Compartilhar no Threads"><i class="fa-brands fa-threads"></i></button>
                             </div>
                         </div>
                     </div>
@@ -941,6 +932,7 @@
             const htmlData = `${dataStr.data} às ${dataStr.hora} | ${relAtualizacao}`;
 
             const textoResumo = item.texto ? item.texto.substring(0, 110) + "..." : "Clique para ler a matéria completa.";
+            const tituloSeguro = item.titulo ? item.titulo.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
 
             return `
                 <div class="news-list-item">
@@ -961,10 +953,10 @@
                         <div class="card-share-bar">
                             <span class="card-share-label">Compartilhar:</span>
                             <div class="card-share-icons">
-                                <button class="card-share-btn wa" onclick="compartilhar('whatsapp', '${item.titulo}')" title="Compartilhar no WhatsApp"><i class="fab fa-whatsapp"></i></button>
-                                <button class="card-share-btn fb" onclick="compartilhar('facebook', '${item.titulo}')" title="Compartilhar no Facebook"><i class="fab fa-facebook-f"></i></button>
-                                <button class="card-share-btn tw" onclick="compartilhar('twitter', '${item.titulo}')" title="Compartilhar no X"><i class="fa-brands fa-x-twitter"></i></button>
-                                <button class="card-share-btn th" onclick="compartilhar('threads', '${item.titulo}')" title="Compartilhar no Threads"><i class="fa-brands fa-threads"></i></button>
+                                <button class="card-share-btn wa" onclick="compartilhar('whatsapp', '${tituloSeguro}')" title="Compartilhar no WhatsApp"><i class="fab fa-whatsapp"></i></button>
+                                <button class="card-share-btn fb" onclick="compartilhar('facebook', '${tituloSeguro}')" title="Compartilhar no Facebook"><i class="fab fa-facebook-f"></i></button>
+                                <button class="card-share-btn tw" onclick="compartilhar('twitter', '${tituloSeguro}')" title="Compartilhar no X"><i class="fa-brands fa-x-twitter"></i></button>
+                                <button class="card-share-btn th" onclick="compartilhar('threads', '${tituloSeguro}')" title="Compartilhar no Threads"><i class="fa-brands fa-threads"></i></button>
                             </div>
                         </div>
                     </div>
@@ -1004,15 +996,15 @@
             }
         }
 
-        window.filtrarCategoria = function(categoriaDesejada) {
+        function filtrarCategoria(categoriaDesejada) {
             fecharMateria();
             fecharMenu();
             document.getElementById("input-busca").value = ""; 
             
             if (categoriaDesejada === 'Todas') {
-                renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
+                renderizarNoticias(bancoDeNoticias, "Últimas Notícias", true);
             } else {
-                const listaFiltrada = window.bancoDeNoticias.filter(item => {
+                const listaFiltrada = bancoDeNoticias.filter(item => {
                     if (item.categorias && item.categorias.length > 0) {
                         return item.categorias.includes(categoriaDesejada);
                     }
@@ -1020,17 +1012,24 @@
                 });
                 renderizarNoticias(listaFiltrada, categoriaDesejada, false); 
             }
-        };
+        }
 
-        window.realizarBuscaPrincipal = function() {
+        // Ligar cliques do menu lateral pelas categorias
+        document.querySelectorAll('.sidebar a[data-cat]').forEach(el => {
+            el.addEventListener('click', () => {
+                filtrarCategoria(el.getAttribute('data-cat'));
+            });
+        });
+
+        function realizarBuscaPrincipal() {
             const termo = document.getElementById("input-busca").value.toLowerCase().trim();
             
             if (termo === "") {
-                renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
+                renderizarNoticias(bancoDeNoticias, "Últimas Notícias", true);
                 return;
             }
 
-            const listaFiltrada = window.bancoDeNoticias.filter(item => {
+            const listaFiltrada = bancoDeNoticias.filter(item => {
                 const titulo = item.titulo ? item.titulo.toLowerCase() : "";
                 const texto = item.texto ? item.texto.toLowerCase() : "";
                 const categoria = item.categoria ? item.categoria.toLowerCase() : "";
@@ -1049,9 +1048,11 @@
             });
 
             renderizarNoticias(listaFiltrada, "Resultados da Busca", false);
-        };
+        }
 
-        window.realizarBuscaMateria = function(event) {
+        document.getElementById("input-busca").addEventListener("keyup", realizarBuscaPrincipal);
+
+        function realizarBuscaMateria(event) {
             if (event && event.key !== 'Enter') {
                 return;
             }
@@ -1060,11 +1061,11 @@
             
             if (termo === "") {
                 fecharMateria();
-                renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
+                renderizarNoticias(bancoDeNoticias, "Últimas Notícias", true);
                 return;
             }
 
-            const listaFiltrada = window.bancoDeNoticias.filter(item => {
+            const listaFiltrada = bancoDeNoticias.filter(item => {
                 const titulo = item.titulo ? item.titulo.toLowerCase() : "";
                 const texto = item.texto ? item.texto.toLowerCase() : "";
                 const categoria = item.categoria ? item.categoria.toLowerCase() : "";
@@ -1087,24 +1088,26 @@
             document.getElementById("input-busca").value = termo;
             renderizarNoticias(listaFiltrada, "Resultados da Busca", false);
             window.scrollTo(0, 0);
-        };
+        }
+
+        document.getElementById("input-busca-materia").addEventListener("keyup", realizarBuscaMateria);
 
         async function carregarNoticias() {
             try {
                 const q = query(collection(db, "noticias"), orderBy("dataAtualizacao", "desc"));
                 const snapshot = await getDocs(q);
 
-                window.bancoDeNoticias = [];
+                bancoDeNoticias = [];
                 let noticiaIndex = 0;
 
                 snapshot.forEach((docSnap) => {
                     const item = docSnap.data();
                     item.idUnico = "noticia_" + noticiaIndex;
-                    window.bancoDeNoticias.push(item);
+                    bancoDeNoticias.push(item);
                     noticiaIndex++;
                 });
 
-                renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
+                renderizarNoticias(bancoDeNoticias, "Últimas Notícias", true);
 
             } catch (erro) {
                 console.error("Erro ao carregar notícias:", erro);
