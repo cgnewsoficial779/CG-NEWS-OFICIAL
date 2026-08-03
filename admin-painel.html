@@ -3,78 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel 3.0 - CG NEWS OFICIAL</title>
+    <title>Sistema de Jornalismo - Painel Admin</title>
 
     <!-- ÍCONES -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
-    <!-- CROPPER.JS PARA EDIÇÃO DE IMAGEM -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
     
     <!-- QUILL.JS PARA O EDITOR DE TEXTO PROFISSIONAL -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-        body { background-color: #f0f2f5; padding: 15px 10px; color: #333; }
-        .container { max-width: 900px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        body { background-color: #f4f6f9; padding: 15px 10px; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.05); }
         
-        .header-admin { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #11136c; padding-bottom: 15px; margin-bottom: 25px; }
-        .header-admin h1 { color: #11136c; font-size: 20px; font-weight: 900; text-transform: uppercase; }
-        .header-admin span { background: #d92323; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; letter-spacing: 1px; }
+        .header-admin { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #002a5c; padding-bottom: 15px; margin-bottom: 25px; }
+        .header-admin h1 { color: #002a5c; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; }
+        .header-admin span { background: #cc0000; color: white; padding: 5px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; letter-spacing: 1px; }
 
-        .section-box { background: #fafafa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
-        .section-title { font-size: 15px; font-weight: bold; color: #11136c; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #eee; padding-bottom: 8px; text-transform: uppercase; }
+        .section-box { background: #fff; border: 1px solid #e1e4e8; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .section-title { font-size: 14px; font-weight: 800; color: #002a5c; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #eee; padding-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: 700; margin-bottom: 6px; color: #444; font-size: 12px; text-transform: uppercase; }
-        input[type="text"], select, input[type="file"] { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; outline: none; transition: 0.2s; background: #fff; }
-        input[type="text"]:focus { border-color: #11136c; box-shadow: 0 0 5px rgba(17, 19, 108, 0.2); }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-weight: 700; margin-bottom: 6px; color: #555; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        input[type="text"], select, input[type="file"] { width: 100%; padding: 12px; border: 1px solid #cfd4db; border-radius: 6px; font-size: 14px; outline: none; transition: 0.2s; background: #fafbfc; }
+        input[type="text"]:focus, select:focus { border-color: #002a5c; background: #fff; box-shadow: 0 0 0 3px rgba(0, 42, 92, 0.1); }
+        input[type="file"] { background: #fff; padding: 8px; border: 1px dashed #cfd4db; cursor: pointer; }
 
         /* EDITOR DE TEXTO (QUILL) */
-        .ql-container { height: 300px; font-size: 16px; background: #fff; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; }
-        .ql-toolbar { background: #f8f9fa; border-top-left-radius: 6px; border-top-right-radius: 6px; }
+        .ql-container { height: 350px; font-size: 16px; background: #fff; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; font-family: Georgia, serif; }
+        .ql-toolbar { background: #f8f9fa; border-top-left-radius: 6px; border-top-right-radius: 6px; border-color: #cfd4db; }
 
         /* CHECKBOXES DE CATEGORIA */
-        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
-        .checkbox-item { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ddd; padding: 10px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
-        .checkbox-item:hover { background: #f1f1f1; }
+        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+        .checkbox-item { display: flex; align-items: center; gap: 8px; background: #f8f9fa; border: 1px solid #e1e4e8; padding: 10px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .checkbox-item:hover { background: #eef1f5; }
         .checkbox-item input { width: 16px; height: 16px; cursor: pointer; }
-        .checkbox-item span { font-size: 13px; font-weight: 600; color: #333; }
+        .checkbox-item span { font-size: 13px; font-weight: 600; color: #444; }
 
-        /* ESTÚDIO DE IMAGEM CROPPER */
-        .cropper-wrapper { background: #222; max-height: 400px; width: 100%; display: none; overflow: hidden; border-radius: 6px; text-align: center; margin-top: 10px; }
-        #imageToCrop { display: block; max-width: 100%; max-height: 400px; margin: 0 auto; }
+        /* ESTÚDIO DE IMAGEM */
+        .image-upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        @media (max-width: 600px) { .image-upload-grid { grid-template-columns: 1fr; } }
         
-        .aspect-ratios { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px; background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #ddd; justify-content: center;}
-        .btn-ratio { background: #e0e0e0; border: none; padding: 8px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; color: #333; flex: 1; min-width: 80px; }
-        .btn-ratio:hover { background: #ccc; }
-        .btn-ratio.active { background: #11136c; color: white; }
-        .btn-confirm-crop { background: #28a745; color: white; border: none; padding: 10px 15px; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
+        .aspect-ratios { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; background: #f8f9fa; padding: 12px; border-radius: 6px; border: 1px solid #e1e4e8; justify-content: center;}
+        .btn-ratio { background: #fff; border: 1px solid #cfd4db; padding: 8px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; color: #555; flex: 1; min-width: 70px; transition: 0.2s; }
+        .btn-ratio:hover { background: #eef1f5; }
+        .btn-ratio.active { background: #002a5c; color: white; border-color: #002a5c; }
 
-        .preview-box { width: 100%; border: 2px dashed #bbb; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fff; margin-top: 10px; padding: 10px; min-height: 100px; }
-        .preview-box img { max-width: 100%; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .preview-container { width: 100%; background: #222; border-radius: 6px; display: flex; overflow: hidden; margin-top: 10px; transition: aspect-ratio 0.3s ease; aspect-ratio: 16/9; border: 1px solid #000; }
+        .preview-container img { flex: 1; width: 100%; height: 100%; object-fit: cover; border-right: 2px solid #fff; }
+        .preview-container img:last-child { border-right: none; }
+        
+        .video-preview { width: 100%; border-radius: 6px; display: none; margin-top: 10px; border: 1px solid #cfd4db; background: #000; max-height: 400px; }
+
+        .preview-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #666; font-size: 13px; background: #eee; min-height: 150px;}
 
         /* BOTÕES DE AÇÃO */
-        .btn-submit { background-color: #11136c; color: white; border: none; padding: 16px; width: 100%; font-size: 16px; font-weight: 900; border-radius: 6px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; text-transform: uppercase; }
-        .btn-submit:hover { background-color: #0a0b45; transform: scale(0.99); }
-        .btn-cancelar { background-color: #dc3545; color: white; border: none; padding: 12px; width: 100%; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; display: none; }
+        .btn-submit { background-color: #002a5c; color: white; border: none; padding: 16px; width: 100%; font-size: 16px; font-weight: 900; border-radius: 6px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-submit:hover { background-color: #001d40; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,42,92,0.2); }
+        .btn-cancelar { background-color: #cc0000; color: white; border: none; padding: 12px; width: 100%; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; display: none; text-transform: uppercase; }
 
         /* LISTA DE MATÉRIAS */
-        .noticia-item { border: 1px solid #ddd; padding: 15px; margin-bottom: 12px; border-radius: 8px; background: #fff; display: flex; flex-direction: column; gap: 10px; }
-        .noticia-info strong { display: block; color: #11136c; font-size: 16px; margin-bottom: 5px; line-height: 1.3; }
-        .noticia-info span { font-size: 12px; color: #666; background: #f0f0f0; padding: 3px 6px; border-radius: 4px; }
-        .acoes-btn { display: flex; gap: 10px; }
-        .btn-editar { background: #007bff; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; flex: 1; }
-        .btn-apagar { background: #dc3545; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; flex: 1; }
+        .noticia-item { border: 1px solid #e1e4e8; padding: 15px; margin-bottom: 12px; border-radius: 8px; background: #fff; display: flex; flex-direction: column; gap: 10px; transition: 0.2s; }
+        .noticia-item:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-color: #cfd4db; }
+        .noticia-info strong { display: block; color: #002a5c; font-size: 16px; margin-bottom: 8px; line-height: 1.4; }
+        .noticia-info span { font-size: 11px; color: #555; background: #f0f2f5; padding: 4px 8px; border-radius: 4px; font-weight: 600; margin-right: 5px; border: 1px solid #e1e4e8;}
+        .acoes-btn { display: flex; gap: 10px; margin-top: 5px; }
+        .btn-editar { background: #f8f9fa; color: #002a5c; border: 1px solid #002a5c; padding: 8px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; flex: 1; transition: 0.2s; }
+        .btn-editar:hover { background: #002a5c; color: white; }
+        .btn-apagar { background: #fff; color: #cc0000; border: 1px solid #cc0000; padding: 8px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; flex: 1; transition: 0.2s; }
+        .btn-apagar:hover { background: #cc0000; color: white; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div class="header-admin">
-            <h1><i class="fas fa-satellite-dish"></i> CG NEWS ADMIN</h1>
-            <span>VERSÃO 3.0</span>
+            <h1><i class="fas fa-globe"></i> PORTAL DE NOTÍCIAS ADMIN</h1>
+            <span>PRO V7.1</span>
         </div>
 
         <form id="formNoticia">
@@ -95,108 +100,98 @@
                 </div>
             </div>
 
-            <!-- ESTÚDIO DE FOTOS PRO -->
-            <div class="section-box">
-                <div class="section-title"><i class="fas fa-crop-alt"></i> Estúdio de Capa 3.0 (Corte Inteligente)</div>
+            <!-- SEÇÃO 1: IMAGENS DA GALERIA -->
+            <div class="section-box" style="border-left: 4px solid #002a5c;">
+                <div class="section-title"><i class="fas fa-images"></i> 1. Escolher Imagem (Capa)</div>
                 
-                <div class="form-group">
-                    <label>Selecione a Foto da Galeria</label>
-                    <input type="file" id="imagemInput" accept="image/*">
+                <div class="image-upload-grid">
+                    <div class="form-group">
+                        <label>Escolher Foto 1 (Principal)</label>
+                        <input type="file" id="imagemInput1" accept="image/*">
+                        <input type="hidden" id="imagemBase64_1">
+                    </div>
+                    <div class="form-group">
+                        <label>Escolher Foto 2 (Montagem Opcional)</label>
+                        <input type="file" id="imagemInput2" accept="image/*">
+                        <input type="hidden" id="imagemBase64_2">
+                    </div>
                 </div>
 
-                <!-- AQUI FOI CORRIGIDO O PROBLEMA DA TELA PRETA -->
-                <div class="cropper-wrapper" id="cropperWrapper">
-                    <img id="imageToCrop" src="">
+                <div style="font-size: 11px; font-weight: bold; color: #777; margin-bottom: 8px; text-align: center;">ESCOLHA O FORMATO DAS FOTOS:</div>
+                <div class="aspect-ratios">
+                    <button type="button" class="btn-ratio active" onclick="mudarLayout('16/9', this)">16:9 (Padrão)</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayout('4/3', this)">4:3 (Notícia)</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayout('1/1', this)">1:1 (Quadrado)</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayout('9/16', this)">9:16 (Vertical)</button>
                 </div>
+                <input type="hidden" id="formatoEscolhido" value="16/9">
 
-                <div class="aspect-ratios" id="ratioControls" style="display: none;">
-                    <div style="width: 100%; text-align: center; margin-bottom: 5px; font-size: 11px; font-weight: bold; color: #555;">MUDAR FORMATO DO CORTE:</div>
-                    <button type="button" class="btn-ratio active" onclick="mudarProporcao(16/9, this)">16:9 (Padrão)</button>
-                    <button type="button" class="btn-ratio" onclick="mudarProporcao(4/3, this)">4:3 (Notícia)</button>
-                    <button type="button" class="btn-ratio" onclick="mudarProporcao(1, this)">1:1 (Quadrado)</button>
-                    <button type="button" class="btn-ratio" onclick="mudarProporcao(9/16, this)">9:16 (Vertical)</button>
-                    <button type="button" class="btn-confirm-crop" onclick="cortarImagem()"><i class="fas fa-check-circle"></i> Confirmar Corte Agora</button>
+                <div class="preview-container" id="previewContainerImagens">
+                    <div class="preview-placeholder" id="previewTextImg"><i class="fas fa-camera" style="margin-right: 8px;"></i> Nenhuma imagem escolhida</div>
                 </div>
-
-                <label style="margin-top: 15px; font-size: 11px; color: #777;">COMO VAI FICAR NO SITE:</label>
-                <div class="preview-box" id="previewContainer">
-                    <span id="previewText" style="color: #999; font-size: 12px;">Nenhuma foto cortada</span>
-                    <img id="previewImg" src="" style="display: none;">
-                </div>
-                <input type="hidden" id="imagemBase64">
 
                 <div class="form-group" style="margin-top: 15px;">
-                    <label>Créditos da Foto (Obrigatório)</label>
-                    <input type="text" id="fonteImagem" placeholder="Ex: Divulgação / Reprodução Redes Sociais">
+                    <label>Crédito da Imagem (Obrigatório)</label>
+                    <input type="text" id="fonteImagem" placeholder="Ex: Nome do Fotógrafo / Reprodução Redes Sociais" required>
                 </div>
             </div>
 
-            <!-- CONTEÚDO DA NOTÍCIA -->
+            <!-- SEÇÃO 2: VÍDEOS DA GALERIA -->
+            <div class="section-box" style="border-left: 4px solid #cc0000;">
+                <div class="section-title"><i class="fas fa-video"></i> 2. Escolher Vídeo (Galeria)</div>
+                
+                <div class="form-group">
+                    <label>Selecione um Vídeo do seu Celular/Computador</label>
+                    <input type="file" id="videoInput" accept="video/*">
+                    <input type="hidden" id="videoBase64">
+                    
+                    <!-- Player de pré-visualização -->
+                    <video id="videoPreview" class="video-preview" controls></video>
+                </div>
+
+                <div class="form-group">
+                    <label>Crédito do Vídeo</label>
+                    <input type="text" id="creditosVideo" placeholder="Ex: Imagens de Câmera de Segurança / Leitor do Portal">
+                </div>
+            </div>
+
+            <!-- CONTEÚDO DA MATÉRIA -->
             <div class="section-box">
-                <div class="section-title"><i class="fas fa-newspaper"></i> Redação da Matéria</div>
+                <div class="section-title"><i class="fas fa-pen-nib"></i> Redação da Matéria</div>
 
                 <div class="form-group">
                     <label>Título da Matéria</label>
-                    <input type="text" id="titulo" placeholder="Digite uma manchete chamativa..." required style="font-size: 18px; font-weight: bold;">
+                    <input type="text" id="titulo" placeholder="Digite uma manchete impactante..." required style="font-size: 18px; font-weight: bold; color: #000;">
                 </div>
 
                 <div class="form-group">
                     <label>Autor / Repórter</label>
-                    <input type="text" id="autor" placeholder="Seu nome ou CG NEWS">
+                    <input type="text" id="autor" placeholder="Nome do jornalista responsável">
                 </div>
 
                 <div class="form-group">
                     <label>Corpo do Texto (Editor Profissional)</label>
-                    <!-- CONTAINER DO QUILL.JS -->
                     <div id="editor-container"></div>
                 </div>
 
                 <div class="form-group">
                     <label>Fonte da Informação</label>
-                    <input type="text" id="fonteNoticia" placeholder="De onde veio a notícia?">
+                    <input type="text" id="fonteNoticia" placeholder="Ex: Polícia Civil / Bombeiros / Assessoria">
                 </div>
             </div>
 
-            <!-- VÍDEOS E ANÚNCIOS -->
-            <div class="section-box">
-                <div class="section-title"><i class="fas fa-link"></i> Extras (Vídeos e Publicidade)</div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; margin-bottom: 10px;">
-                    <div class="form-group">
-                        <label>Plataforma</label>
-                        <select id="plataformaRede">
-                            <option value="">Nenhuma</option>
-                            <option value="instagram">Instagram</option>
-                            <option value="tiktok">TikTok</option>
-                            <option value="youtube">YouTube</option>
-                            <option value="facebook">Facebook</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Link do Vídeo / Post</label>
-                        <input type="text" id="linkRedeSocial" placeholder="Cole o link aqui...">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Link de Anúncio / Patrocinador</label>
-                    <input type="text" id="anuncioCod" placeholder="Link de publicidade (Opcional)">
-                </div>
-            </div>
-
-            <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-upload"></i> PUBLICAR MATÉRIA</button>
+            <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> PUBLICAR MATÉRIA</button>
             <button type="button" id="btnCancelar" class="btn-cancelar" onclick="cancelarEdicao()"><i class="fas fa-times"></i> CANCELAR EDIÇÃO</button>
         </form>
 
-        <h2 style="color: #11136c; font-size: 18px; margin: 30px 0 15px 0; font-weight: 900; text-transform: uppercase;"><i class="fas fa-database"></i> Central de Edição (Publicadas)</h2>
+        <h2 style="color: #002a5c; font-size: 16px; margin: 35px 0 15px 0; font-weight: 800; text-transform: uppercase; border-bottom: 2px solid #e1e4e8; padding-bottom: 8px;"><i class="fas fa-list-alt"></i> Matérias Publicadas</h2>
         <div id="lista-noticias">
-            <p style="color: #666; font-size: 14px;">Conectando ao servidor...</p>
+            <p style="color: #666; font-size: 14px;">Conectando ao banco de dados...</p>
         </div>
 
     </div>
 
     <!-- SCRIPTS ESSENCIAIS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
     <!-- FIREBASE MODULE -->
@@ -217,10 +212,10 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // INICIALIZAÇÃO DO EDITOR DE TEXTO RICO (QUILL)
+        // QUILL EDITOR
         const quill = new Quill('#editor-container', {
             theme: 'snow',
-            placeholder: 'Escreva a notícia com todos os detalhes aqui...',
+            placeholder: 'Escreva a matéria com todos os detalhes...',
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline', 'strike'],
@@ -228,115 +223,194 @@
                     [{ 'color': [] }, { 'background': [] }],
                     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                     ['link', 'blockquote'],
-                    ['clean'] // remover formatação
+                    ['clean']
                 ]
             }
         });
 
         let idEditando = null;
-        let cropper = null;
-        window.noticiasAdmin = {}; // Armazena os dados globalmente
+        window.noticiasAdmin = {};
 
-        // LOGICA DE CORTE DE IMAGEM 3.0
-        document.getElementById('imagemInput').addEventListener('change', function(e) {
+        // --- SISTEMA DE UPLOAD DE IMAGENS ---
+        function processarImagemParaBase64(file, inputHiddenId) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 1200;
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    if (width > MAX_WIDTH) {
+                        height = height * (MAX_WIDTH / width);
+                        width = MAX_WIDTH;
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    const base64 = canvas.toDataURL('image/jpeg', 0.85);
+                    document.getElementById(inputHiddenId).value = base64;
+                    atualizarPreviewImagens();
+                }
+                img.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        document.getElementById('imagemInput1').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_1'));
+        document.getElementById('imagemInput2').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_2'));
+
+        window.mudarLayout = function(ratio, btn) {
+            document.querySelectorAll('.btn-ratio').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.getElementById('formatoEscolhido').value = ratio;
+            document.getElementById('previewContainerImagens').style.aspectRatio = ratio;
+        };
+
+        function atualizarPreviewImagens() {
+            const img1 = document.getElementById('imagemBase64_1').value;
+            const img2 = document.getElementById('imagemBase64_2').value;
+            const container = document.getElementById('previewContainerImagens');
+            
+            if (!img1 && !img2) {
+                container.innerHTML = '<div class="preview-placeholder" id="previewTextImg"><i class="fas fa-camera" style="margin-right: 8px;"></i> Nenhuma imagem escolhida</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            if (img1) container.innerHTML += `<img src="${img1}">`;
+            if (img2) container.innerHTML += `<img src="${img2}">`;
+        }
+
+        // --- SISTEMA DE UPLOAD DE VÍDEO ---
+        document.getElementById('videoInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
+            
+            if(file.size > 10 * 1024 * 1024) { 
+                alert("Atenção: O vídeo é maior que 10MB. Isso pode demorar para salvar ou atingir o limite do banco.");
+            }
+
+            const videoPreview = document.getElementById('videoPreview');
+            const fileURL = URL.createObjectURL(file);
+            videoPreview.src = fileURL;
+            videoPreview.style.display = 'block';
 
             const reader = new FileReader();
             reader.onload = function(evt) {
-                const imgEl = document.getElementById('imageToCrop');
-                imgEl.src = evt.target.result;
-                
-                document.getElementById('cropperWrapper').style.display = 'block';
-                document.getElementById('ratioControls').style.display = 'flex';
-
-                if (cropper) cropper.destroy();
-                
-                // Configuração ideal para Celular (DragMode Move)
-                cropper = new Cropper(imgEl, {
-                    aspectRatio: 16 / 9,
-                    viewMode: 2, // Previne que a imagem fique perdida no preto
-                    dragMode: 'move', // Facilita arrastar no celular
-                    autoCropArea: 1,
-                    responsive: true,
-                    background: false
-                });
+                document.getElementById('videoBase64').value = evt.target.result;
             };
             reader.readAsDataURL(file);
         });
 
-        window.mudarProporcao = function(ratio, btn) {
-            if (cropper) cropper.setAspectRatio(ratio);
-            
-            // Muda a cor do botão ativo
-            document.querySelectorAll('.btn-ratio').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        };
 
-        window.cortarImagem = function() {
-            if (!cropper) return;
-            const canvas = cropper.getCroppedCanvas({ width: 1200, imageSmoothingEnabled: true, imageSmoothingQuality: 'high' });
-            const base64 = canvas.toDataURL('image/jpeg', 0.85);
-
-            document.getElementById('imagemBase64').value = base64;
-            const previewImg = document.getElementById('previewImg');
-            previewImg.src = base64;
-            previewImg.style.display = 'block';
-            document.getElementById('previewText').style.display = 'none';
-            alert('Corte perfeito! Imagem pronta para a capa.');
-        };
-
-        // SALVAR OU EDITAR (FIREBASE)
+        // --- SALVAR MATÉRIA NO BANCO ---
         document.getElementById('formNoticia').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            // Pega o conteúdo HTML rico do Quill
             const textoRico = quill.root.innerHTML;
-            if (textoRico === '<p><br></p>') {
-                alert("Por favor, escreva o texto da matéria.");
-                return;
-            }
+            if (textoRico === '<p><br></p>') { alert("Por favor, escreva o texto da matéria."); return; }
 
             document.getElementById('btnSalvar').innerHTML = "<i class='fas fa-spinner fa-spin'></i> SALVANDO...";
 
             const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
             const categoriasSelecionadas = Array.from(checkboxes).map(cb => cb.value);
 
-            const noticiaDados = {
-                categorias: categoriasSelecionadas,
-                categoria: categoriasSelecionadas.length > 0 ? categoriasSelecionadas[0] : "Geral",
-                imagem: document.getElementById('imagemBase64').value,
-                fonteImagem: document.getElementById('fonteImagem').value,
-                plataformaRede: document.getElementById('plataformaRede').value,
-                linkRedeSocial: document.getElementById('linkRedeSocial').value,
-                autor: document.getElementById('autor').value,
-                titulo: document.getElementById('titulo').value,
-                texto: textoRico, // Salva o texto com negrito, cores, etc.
-                fonteNoticia: document.getElementById('fonteNoticia').value,
-                anuncioCod: document.getElementById('anuncioCod').value,
-                dataAtualizacao: Date.now()
-            };
+            const agora = Date.now();
 
             try {
                 if (idEditando) {
-                    await updateDoc(doc(db, "noticias", idEditando), noticiaDados);
+                    const noticiaAtualizada = {
+                        categorias: categoriasSelecionadas,
+                        categoria: categoriasSelecionadas.length > 0 ? categoriasSelecionadas[0] : "Geral",
+                        imagem1: document.getElementById('imagemBase64_1').value,
+                        imagem2: document.getElementById('imagemBase64_2').value,
+                        formatoCapa: document.getElementById('formatoEscolhido').value,
+                        fonteImagem: document.getElementById('fonteImagem').value,
+                        videoArquivo: document.getElementById('videoBase64').value,
+                        creditosVideo: document.getElementById('creditosVideo').value,
+                        autor: document.getElementById('autor').value,
+                        titulo: document.getElementById('titulo').value,
+                        texto: textoRico,
+                        fonteNoticia: document.getElementById('fonteNoticia').value,
+                        dataAtualizacao: agora 
+                    };
+
+                    await updateDoc(doc(db, "noticias", idEditando), noticiaAtualizada);
                     alert("✅ MATÉRIA ATUALIZADA COM SUCESSO!");
                 } else {
-                    noticiaDados.dataCriacao = Date.now();
-                    await addDoc(collection(db, "noticias"), noticiaDados);
+                    const novaNoticia = {
+                        categorias: categoriasSelecionadas,
+                        categoria: categoriasSelecionadas.length > 0 ? categoriasSelecionadas[0] : "Geral",
+                        imagem1: document.getElementById('imagemBase64_1').value,
+                        imagem2: document.getElementById('imagemBase64_2').value,
+                        formatoCapa: document.getElementById('formatoEscolhido').value,
+                        fonteImagem: document.getElementById('fonteImagem').value,
+                        videoArquivo: document.getElementById('videoBase64').value,
+                        creditosVideo: document.getElementById('creditosVideo').value,
+                        autor: document.getElementById('autor').value,
+                        titulo: document.getElementById('titulo').value,
+                        texto: textoRico,
+                        fonteNoticia: document.getElementById('fonteNoticia').value,
+                        dataCriacao: agora,      
+                        dataAtualizacao: agora
+                    };
+
+                    await addDoc(collection(db, "noticias"), novaNoticia);
                     alert("🚀 MATÉRIA PUBLICADA NO SITE!");
                 }
                 cancelarEdicao();
                 carregarListaNoticias();
             } catch (error) {
                 console.error("Erro:", error);
-                alert("Erro ao salvar! Verifique a internet.");
+                alert("Erro ao salvar! Verifique sua conexão.");
             } finally {
-                document.getElementById('btnSalvar').innerHTML = "<i class='fas fa-upload'></i> PUBLICAR MATÉRIA";
+                document.getElementById('btnSalvar').innerHTML = "<i class='fas fa-paper-plane'></i> PUBLICAR MATÉRIA";
             }
         });
 
-        // CARREGAR LISTA
+        // --- FORMATAÇÃO DE TEMPO PROFISSIONAL PARA A LISTAGEM ---
+        function formatarTempoRelativo(dataCriacaoMs, dataAtualizacaoMs) {
+            const dCriacao = new Date(dataCriacaoMs);
+            
+            const dia = String(dCriacao.getDate()).padStart(2, '0');
+            const mes = String(dCriacao.getMonth() + 1).padStart(2, '0');
+            const ano = dCriacao.getFullYear();
+            const hora = String(dCriacao.getHours()).padStart(2, '0');
+            const min = String(dCriacao.getMinutes()).padStart(2, '0');
+            
+            let textoFormatado = `Publicado em ${dia}/${mes}/${ano} às ${hora}:${min}`;
+
+            if (dataAtualizacaoMs && (dataAtualizacaoMs - dataCriacaoMs > 60000)) {
+                const diffMs = Date.now() - dataAtualizacaoMs;
+                const diffMinutos = Math.floor(diffMs / 60000);
+                const diffHoras = Math.floor(diffMinutos / 60);
+                const diffDias = Math.floor(diffHoras / 24);
+
+                if (diffMinutos < 60) {
+                    textoFormatado += ` | Atualizado há ${diffMinutos === 1 ? '1 minuto' : diffMinutos + ' minutos'}`;
+                } else if (diffHoras < 24) {
+                    textoFormatado += ` | Atualizado há ${diffHoras === 1 ? '1 hora' : diffHoras + ' horas'}`;
+                } else if (diffDias < 30) {
+                    textoFormatado += ` | Atualizado há ${diffDias === 1 ? '1 dia' : diffDias + ' dias'}`;
+                } else {
+                    const dAlt = new Date(dataAtualizacaoMs);
+                    const dAltDia = String(dAlt.getDate()).padStart(2, '0');
+                    const dAltMes = String(dAlt.getMonth() + 1).padStart(2, '0');
+                    const dAltHora = String(dAlt.getHours()).padStart(2, '0');
+                    const dAltMin = String(dAlt.getMinutes()).padStart(2, '0');
+                    textoFormatado += ` | Atualizado em ${dAltDia}/${dAltMes} às ${dAltHora}:${dAltMin}`;
+                }
+            }
+
+            return textoFormatado;
+        }
+
+        // --- CARREGAR LISTA ---
         window.carregarListaNoticias = async function() {
             const listaDiv = document.getElementById("lista-noticias");
             listaDiv.innerHTML = "<p>Buscando matérias no servidor...</p>";
@@ -356,15 +430,17 @@
                     const id = docSnap.id;
                     window.noticiasAdmin[id] = item;
 
-                    const dataFormatada = new Date(item.dataAtualizacao).toLocaleString('pt-BR');
+                    const tempoCriacao = item.dataCriacao || item.dataAtualizacao;
+                    const infoTempo = formatarTempoRelativo(tempoCriacao, item.dataAtualizacao);
 
                     listaDiv.innerHTML += `
                         <div class="noticia-item">
                             <div class="noticia-info">
                                 <strong>${item.titulo}</strong>
                                 <div>
-                                    <span>${dataFormatada}</span>
-                                    <span>${item.categorias ? item.categorias.join(', ') : 'Sem categoria'}</span>
+                                    <span><i class="far fa-clock"></i> ${infoTempo}</span>
+                                    <span><i class="fas fa-tag"></i> ${item.categorias ? item.categorias.join(', ') : 'Sem categoria'}</span>
+                                    ${item.videoArquivo ? '<span style="color: #cc0000; border-color: #cc0000;"><i class="fas fa-video"></i> Vídeo</span>' : ''}
                                 </div>
                             </div>
                             <div class="acoes-btn">
@@ -380,7 +456,7 @@
             }
         };
 
-        // EDITAR (PUXA OS DADOS PARA CIMA)
+        // --- EDITAR MATÉRIA ---
         window.prepararEdicao = function(id) {
             const item = window.noticiasAdmin[id];
             if (!item) return;
@@ -389,32 +465,33 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
             document.getElementById("btnSalvar").innerHTML = "<i class='fas fa-sync'></i> ATUALIZAR MATÉRIA";
-            document.getElementById("btnSalvar").style.backgroundColor = "#28a745";
             document.getElementById("btnCancelar").style.display = "block";
 
-            // Preenche os campos
             document.getElementById("titulo").value = item.titulo || "";
-            quill.root.innerHTML = item.texto || ""; // Preenche o editor rico
+            quill.root.innerHTML = item.texto || "";
             document.getElementById("autor").value = item.autor || "";
-            document.getElementById("plataformaRede").value = item.plataformaRede || "";
-            document.getElementById("linkRedeSocial").value = item.linkRedeSocial || "";
             document.getElementById("fonteImagem").value = item.fonteImagem || "";
+            document.getElementById("creditosVideo").value = item.creditosVideo || "";
             document.getElementById("fonteNoticia").value = item.fonteNoticia || "";
-            document.getElementById("anuncioCod").value = item.anuncioCod || "";
-            document.getElementById("imagemBase64").value = item.imagem || "";
+            
+            document.getElementById("imagemBase64_1").value = item.imagem1 || "";
+            document.getElementById("imagemBase64_2").value = item.imagem2 || "";
+            if(item.formatoCapa) {
+                const btn = document.querySelector(`.btn-ratio[onclick*="'${item.formatoCapa}'"]`);
+                if(btn) window.mudarLayout(item.formatoCapa, btn);
+            }
+            atualizarPreviewImagens();
 
-            // Carrega a imagem no preview
-            if (item.imagem) {
-                const previewImg = document.getElementById('previewImg');
-                previewImg.src = item.imagem;
-                previewImg.style.display = 'block';
-                document.getElementById('previewText').style.display = 'none';
+            document.getElementById("videoBase64").value = item.videoArquivo || "";
+            const videoPreview = document.getElementById("videoPreview");
+            if (item.videoArquivo) {
+                videoPreview.src = item.videoArquivo;
+                videoPreview.style.display = "block";
             } else {
-                document.getElementById('previewImg').style.display = 'none';
-                document.getElementById('previewText').style.display = 'block';
+                videoPreview.style.display = "none";
+                videoPreview.src = "";
             }
 
-            // Marca as categorias
             document.querySelectorAll('input[name="categoria"]').forEach(cb => cb.checked = false);
             if (item.categorias) {
                 item.categorias.forEach(cat => {
@@ -424,40 +501,37 @@
             }
         };
 
-        // APAGAR
+        // --- APAGAR MATÉRIA ---
         window.apagarNoticia = async function(id) {
-            if (confirm("⚠️ TEM CERTEZA ABSOLUTA? Esta matéria será excluída para sempre do site!")) {
+            if (confirm("⚠️ TEM CERTEZA ABSOLUTA? Esta matéria será excluída para sempre do portal!")) {
                 try {
                     await deleteDoc(doc(db, "noticias", id));
                     alert("🗑️ Matéria apagada com sucesso!");
                     carregarListaNoticias();
                 } catch (error) {
-                    console.error("Erro ao apagar:", error);
                     alert("Erro ao apagar a matéria.");
                 }
             }
         };
 
-        // CANCELAR EDIÇÃO / LIMPAR TELA
+        // --- CANCELAR EDIÇÃO ---
         window.cancelarEdicao = function() {
             idEditando = null;
             document.getElementById("formNoticia").reset();
-            quill.setContents([]); // Limpa o editor de texto
+            quill.setContents([]);
             
-            document.getElementById("imagemBase64").value = "";
-            document.getElementById("previewImg").style.display = "none";
-            document.getElementById("previewText").style.display = "block";
-            
-            document.getElementById('cropperWrapper').style.display = "none";
-            document.getElementById('ratioControls').style.display = "none";
-            if (cropper) cropper.destroy();
+            document.getElementById("imagemBase64_1").value = "";
+            document.getElementById("imagemBase64_2").value = "";
+            atualizarPreviewImagens();
 
-            document.getElementById("btnSalvar").innerHTML = "<i class='fas fa-upload'></i> PUBLICAR MATÉRIA";
-            document.getElementById("btnSalvar").style.backgroundColor = "#11136c";
+            document.getElementById("videoBase64").value = "";
+            document.getElementById("videoPreview").style.display = "none";
+            document.getElementById("videoPreview").src = "";
+
+            document.getElementById("btnSalvar").innerHTML = "<i class='fas fa-paper-plane'></i> PUBLICAR MATÉRIA";
             document.getElementById("btnCancelar").style.display = "none";
         };
 
-        // Inicia carregando os posts
         carregarListaNoticias();
     </script>
 </body>
