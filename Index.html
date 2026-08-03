@@ -62,48 +62,49 @@
         }
         .sidebar a:hover { background-color: #f2f4f7; padding-left: 25px; }
 
-        /* REDES SOCIAIS NO MENU LATERAL */
+        /* REDES SOCIAIS EM LISTA VERTICAL NO MENU LATERAL */
         .sidebar-social-section {
-            padding: 20px 15px;
+            padding: 15px 20px;
             background-color: #f8f9fa;
             border-top: 2px solid #e0e0e0;
-            margin-top: auto;
         }
         .sidebar-social-title {
             font-size: 12px;
             font-weight: bold;
             color: #11136c;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            text-align: center;
         }
-        .sidebar-social-icons {
+        .sidebar-social-list {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 12px;
+            flex-direction: column;
+            gap: 8px;
         }
-        .sidebar-social-icons a {
-            background-color: #11136c;
-            color: white;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
+        .sidebar-social-item {
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: white;
+            border-radius: 6px;
             text-decoration: none;
+            color: #11136c;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             transition: 0.2s;
-            border: none;
-            padding: 0;
+            border: 1px solid #eaeaea;
         }
-        .sidebar-social-icons a:hover {
-            background-color: #ff6600;
-            padding-left: 0;
+        .sidebar-social-item:hover {
+            background-color: #11136c;
+            color: white;
+            padding-left: 16px;
         }
-        .sidebar-social-icons i, .sidebar-kwai-icon {
-            font-size: 16px;
+        .sidebar-social-item i, .sidebar-kwai-icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
         }
         .sidebar-kwai-icon {
             font-weight: 900;
@@ -324,17 +325,17 @@
         <a onclick="filtrarCategoria('Mundo')">Mundo</a>
 
         <div class="sidebar-social-section">
-            <div class="sidebar-social-title">Nossas Redes Sociais</div>
-            <div class="sidebar-social-icons">
-                <a href="https://wa.me/556796619364" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.facebook.com/share/1Bv1aCaxte/" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/cgnews.oficial?igsh=MTU4YmZ5eHhpaXpveQ==" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="https://www.tiktok.com/@cgnewsoficial?_r=1&_t=ZS-98YsDvVrtFg" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-                <a href="https://k.kwai.com/u/@cgnewsoficial/qmEARtCK" target="_blank" title="Kwai"><span class="sidebar-kwai-icon">K</span></a>
-                <a href="https://youtube.com/@cgnewsoficial?si=G9GeobnfJzC3jgRE" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-                <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://www.threads.com/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
+            <div class="sidebar-social-title">Redes Sociais</div>
+            <div class="sidebar-social-list">
+                <a href="https://wa.me/556796619364" target="_blank" class="sidebar-social-item"><i class="fab fa-whatsapp" style="color: #25d366;"></i> WhatsApp</a>
+                <a href="https://www.facebook.com/share/1Bv1aCaxte/" target="_blank" class="sidebar-social-item"><i class="fab fa-facebook-f" style="color: #1877f2;"></i> Facebook</a>
+                <a href="https://www.instagram.com/cgnews.oficial?igsh=MTU4YmZ5eHhpaXpveQ==" target="_blank" class="sidebar-social-item"><i class="fab fa-instagram" style="color: #e1306c;"></i> Instagram</a>
+                <a href="https://x.com/CGNEWS0FICIAL" target="_blank" class="sidebar-social-item"><i class="fa-brands fa-x-twitter" style="color: #000000;"></i> X (Twitter)</a>
+                <a href="https://www.tiktok.com/@cgnewsoficial?_r=1&_t=ZS-98YsDvVrtFg" target="_blank" class="sidebar-social-item"><i class="fab fa-tiktok" style="color: #000000;"></i> TikTok</a>
+                <a href="https://k.kwai.com/u/@cgnewsoficial/qmEARtCK" target="_blank" class="sidebar-social-item"><span class="sidebar-kwai-icon" style="color: #ff6600;">K</span> Kwai</a>
+                <a href="https://youtube.com/@cgnewsoficial?si=G9GeobnfJzC3jgRE" target="_blank" class="sidebar-social-item"><i class="fab fa-youtube" style="color: #ff0000;"></i> YouTube</a>
+                <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="sidebar-social-item"><i class="fab fa-linkedin-in" style="color: #0a66c2;"></i> LinkedIn</a>
+                <a href="https://www.threads.com/@cgnews.oficial" target="_blank" class="sidebar-social-item"><i class="fa-brands fa-threads" style="color: #000000;"></i> Threads</a>
             </div>
         </div>
     </div>
