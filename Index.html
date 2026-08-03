@@ -752,12 +752,14 @@
         }
 
         function gerarHtmlDatas(item) {
+            // A data de publicação original fica congelada aqui
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
             const criacao = formatarDataHoraMS(timestampCriacao);
             let html = `Publicado em ${criacao.data} às ${criacao.hora}`;
 
             const timestampAtualizacao = item.dataAtualizacao || timestampCriacao;
             
+            // Se houve atualização posterior, exibe o complemento ao lado sem alterar a data original
             if (timestampAtualizacao > (timestampCriacao + 60000)) {
                 const relAtualizacao = tempoRelativo(timestampAtualizacao);
                 html += ` • ${relAtualizacao}`;
@@ -1307,4 +1309,3 @@
     </script>
 </body>
 </html>
- 
