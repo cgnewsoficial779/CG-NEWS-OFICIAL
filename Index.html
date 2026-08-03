@@ -43,8 +43,8 @@
         
         /* MENU LATERAL */
         .sidebar {
-            height: 100%; width: 260px; position: fixed; z-index: 20000;
-            top: 0; left: -260px; background-color: #fff; overflow-y: auto;
+            height: 100%; width: 280px; position: fixed; z-index: 20000;
+            top: 0; left: -280px; background-color: #fff; overflow-y: auto;
             transition: 0.3s ease; box-shadow: 2px 0 10px rgba(0,0,0,0.3);
             display: flex; flex-direction: column;
         }
@@ -55,7 +55,7 @@
         .sidebar-header h3 { font-size: 16px; margin: 0; }
         .sidebar-header i { cursor: pointer; font-size: 22px; padding: 5px; }
         .sidebar a {
-            padding: 15px 20px; text-decoration: none; font-size: 15px; font-weight: 500;
+            padding: 14px 20px; text-decoration: none; font-size: 15px; font-weight: 500;
             color: #11136c; display: block; border-bottom: 1px solid #e0e0e0;
             transition: 0.2s;
             cursor: pointer;
@@ -319,8 +319,11 @@
             <i class="fas fa-times" onclick="fecharMenu()"></i>
         </div>
         <a onclick="filtrarCategoria('Todas')">Últimas Notícias</a>
-        <a onclick="filtrarCategoria('Polícia')">Polícia</a>
+        <a onclick="filtrarCategoria('Esporte')">Esporte</a>
         <a onclick="filtrarCategoria('Trânsito')">Trânsito</a>
+        <a onclick="filtrarCategoria('Política')">Política</a>
+        <a onclick="filtrarCategoria('In Memoriam')">In Memoriam</a>
+        <a onclick="filtrarCategoria('Polícia')">Polícia</a>
         <a onclick="filtrarCategoria('Campo Grande')">Campo Grande</a>
         <a onclick="filtrarCategoria('Mato Grosso do Sul')">Mato Grosso do Sul</a>
         <a onclick="filtrarCategoria('Brasil')">Brasil</a>
@@ -335,7 +338,7 @@
                 <a href="https://x.com/CGNEWS0FICIAL" target="_blank" class="sidebar-social-item"><i class="fa-brands fa-x-twitter" style="color: #000000;"></i> X (Twitter)</a>
                 <a href="https://www.tiktok.com/@cgnewsoficial?_r=1&_t=ZS-98YsDvVrtFg" target="_blank" class="sidebar-social-item"><i class="fab fa-tiktok" style="color: #000000;"></i> TikTok</a>
                 <a href="https://k.kwai.com/u/@cgnewsoficial/qmEARtCK" target="_blank" class="sidebar-social-item"><span class="sidebar-kwai-icon" style="color: #ff6600;">K</span> Kwai</a>
-                <a href="https://youtube.com/@cgnewsoficial?si=NDwJLSYXSUClV6lb" target="_blank" class="sidebar-social-item"><i class="fab fa-youtube" style="color: #ff0000;"></i> YouTube</a>
+                <a href="https://www.youtube.com/@cgnewsoficial" target="_blank" class="sidebar-social-item"><i class="fab fa-youtube" style="color: #ff0000;"></i> YouTube</a>
                 <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="sidebar-social-item"><i class="fab fa-linkedin-in" style="color: #0a66c2;"></i> LinkedIn</a>
                 <a href="https://www.threads.com/@cgnews.oficial" target="_blank" class="sidebar-social-item"><i class="fa-brands fa-threads" style="color: #000000;"></i> Threads</a>
             </div>
@@ -356,7 +359,7 @@
             <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
             <a href="https://www.tiktok.com/@cgnewsoficial?_r=1&_t=ZS-98YsDvVrtFg" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
             <a href="https://k.kwai.com/u/@cgnewsoficial/qmEARtCK" target="_blank" title="Kwai"><span class="kwai-icon">K</span></a>
-            <a href="https://youtube.com/@cgnewsoficial?si=NDwJLSYXSUClV6lb" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.youtube.com/@cgnewsoficial" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
             <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
             <a href="https://www.threads.com/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
         </div>
@@ -396,7 +399,7 @@
                 <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
                 <a href="https://www.tiktok.com/@cgnewsoficial?_r=1&_t=ZS-98YsDvVrtFg" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
                 <a href="https://k.kwai.com/u/@cgnewsoficial/qmEARtCK" target="_blank" title="Kwai"><span class="kwai-icon">K</span></a>
-                <a href="https://youtube.com/@cgnewsoficial?si=NDwJLSYXSUClV6lb" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.youtube.com/@cgnewsoficial" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
                 <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
                 <a href="https://www.threads.com/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
             </div>
@@ -476,7 +479,7 @@
         };
 
         window.fecharMenu = function() {
-            document.getElementById("sidebar").style.left = "-260px";
+            document.getElementById("sidebar").style.left = "-280px";
             document.getElementById("overlay").style.display = "none";
         };
 
@@ -546,7 +549,6 @@
                 `;
             }
 
-            // Bloco inteligente: Incorpora vídeo embutido (se permitido) ou exibe a miniatura interativa original da rede social
             let blocoVideoRedeSocial = "";
             const urlRede = item.linkRedeSocial ? item.linkRedeSocial.trim() : "";
 
@@ -578,7 +580,6 @@
 
                 let areaCentralPlayer = "";
 
-                // VERIFICA SE A PLATAFORMA PERMITE INCORPORAÇÃO DIRETA (EMBED DE VÍDEO REAL)
                 if (url.includes("youtube.com/watch?v=") || url.includes("youtu.be/") || url.includes("youtube.com/shorts/")) {
                     let ytId = "";
                     if (url.includes("youtu.be/")) {
@@ -589,7 +590,6 @@
                         ytId = url.split("watch?v=")[1]?.split("&")[0];
                     }
                     if (ytId) {
-                        // YouTube permite player embutido direto na página!
                         areaCentralPlayer = `
                             <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000;">
                                 <iframe src="https://www.youtube.com/embed/${ytId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
@@ -598,7 +598,6 @@
                     }
                 } 
                 else if (url.includes("facebook.com")) {
-                    // Facebook permite player embutido por iframe oficial (plugin de vídeo do FB)
                     let encodedFbUrl = encodeURIComponent(url);
                     areaCentralPlayer = `
                         <div style="position: relative; width: 100%; background: #000; display: flex; justify-content: center; overflow: hidden;">
@@ -607,11 +606,9 @@
                     `;
                 }
 
-                // Se a plataforma NÃO permite embed direto (Instagram, TikTok, Kwai, etc.), exibe a miniatura real e oficial com redirecionamento ao toque
                 if (!areaCentralPlayer) {
                     let imagemCapaVideoReal = item.imagemVideo || item.imagemCapaVideo || item.imagem || "";
 
-                    // Tratamento extra para pegar thumb do YouTube caso caia aqui
                     if (url.includes("youtube.com") || url.includes("youtu.be")) {
                         let ytId = "";
                         if (url.includes("youtu.be/")) ytId = url.split("youtu.be/")[1]?.split("?")[0];
@@ -903,4 +900,4 @@
         carregarNoticias();
     </script>
 </body>
-</html> 
+</html>
