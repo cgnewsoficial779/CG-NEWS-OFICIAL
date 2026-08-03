@@ -42,7 +42,7 @@
         }
         .top-social-icon {
             color: #25d366;
-            font-size: 16px;
+            font-size: 18px;
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -378,6 +378,66 @@
             .news-list-image { width: 220px; height: 130px; flex-shrink: 0; }
         }
 
+        /* SEÇÃO MAIS LIDAS E RECOMENDAÇÕES */
+        .section-box-container {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .section-box-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #11136c;
+            text-transform: uppercase;
+            border-bottom: 2px solid #11136c;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .mais-lidas-grid, .recomendadas-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        @media(min-width: 768px) {
+            .mais-lidas-grid, .recomendadas-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        .mini-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .mini-card:hover { border-color: #11136c; transform: translateY(-2px); }
+        .mini-card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #2d3748;
+            line-height: 1.35;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .mini-card-meta {
+            font-size: 10px;
+            color: #718096;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         /* ESPAÇOS LIMPOS PARA ANÚNCIOS / BANNERS (GOOGLE ADS) */
         .banner-anuncio-slot {
             width: 100%;
@@ -488,11 +548,11 @@
         </div>
     </header>
 
-    <!-- BARRA SUB-HEADER DE DATA -->
+    <!-- BARRA SUB-HEADER DE DATA E WHATSAPP COM ÍCONE -->
     <div class="sub-header-bar">
         <span class="top-date-text" id="data-atual-home"></span>
         <a href="https://wa.me/556796619364" target="_blank" class="top-social-icon" title="Fale conosco no WhatsApp">
-            <i class="fab fa-whatsapp"></i> WhatsApp da Redação
+            <i class="fab fa-whatsapp" style="font-size: 20px;"></i>
         </a>
     </div>
 
@@ -537,6 +597,12 @@
     <div class="container">
         <h2 id="titulo-principal" class="section-title">Últimas Notícias</h2>
         <div id="area-noticias"><p class="empty-msg">Carregando notícias...</p></div>
+
+        <!-- SEÇÃO MAIS LIDAS GERAL (TODOS OS NICHOS) NA HOME -->
+        <div class="section-box-container" id="secao-mais-lidas-home" style="display:none;">
+            <div class="section-box-title"><i class="fas fa-fire" style="color: #e53e3e;"></i> Mais Lidas da Redação</div>
+            <div class="mais-lidas-grid" id="grid-mais-lidas-home"></div>
+        </div>
     </div>
 
     <footer>
@@ -572,7 +638,7 @@
         <div class="sub-header-bar">
             <span class="top-date-text" id="data-atual-materia"></span>
             <a href="https://wa.me/556796619364" target="_blank" class="top-social-icon" title="WhatsApp">
-                <i class="fab fa-whatsapp"></i> WhatsApp da Redação
+                <i class="fab fa-whatsapp" style="font-size: 20px;"></i>
             </a>
         </div>
 
@@ -584,7 +650,20 @@
             <div onclick="fecharMateria()" style="color: #11136c; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 25px; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s;">
                 <i class="fas fa-arrow-left"></i> Voltar para a página inicial
             </div>
+            
             <div id="conteudo-materia"></div>
+
+            <!-- SEÇÃO DE RECOMENDAÇÕES DINÂMICAS POR CATEGORIA -->
+            <div class="section-box-container" id="secao-recomendadas" style="display:none;">
+                <div class="section-box-title"><i class="fas fa-newspaper" style="color: #11136c;"></i> Leia Também</div>
+                <div class="recomendadas-grid" id="grid-recomendadas"></div>
+            </div>
+
+            <!-- SEÇÃO MAIS LIDAS NA MATÉRIA (SOMA DE TODOS OS NICHO S) -->
+            <div class="section-box-container" id="secao-mais-lidas-materia" style="display:none;">
+                <div class="section-box-title"><i class="fas fa-fire" style="color: #e53e3e;"></i> Mais Lidas</div>
+                <div class="mais-lidas-grid" id="grid-mais-lidas-materia"></div>
+            </div>
         </div>
 
         <footer>
@@ -917,6 +996,11 @@
             modal.style.display = "block";
             document.body.style.overflow = "hidden"; 
             window.scrollTo(0, 0);
+
+            // Carregar Seção de Recomendações (mesma categoria)
+            carregarRecomendadas(item);
+            // Carregar Seção "Mais Lidas" na Matéria (soma de todos os nichos)
+            carregarMaisLidasGeral();
         };
 
         window.fecharMateria = function() {
@@ -926,7 +1010,7 @@
             document.body.style.overflow = "auto"; 
         };
 
-        function criarHtmlGridCard(item, isPrimeiro = false) {
+        function criarHtmlGridCard(item) {
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
             const timestampAtualizacao = item.dataAtualizacao || timestampCriacao;
             
@@ -940,7 +1024,6 @@
             else if (item.categoria) catText = item.categoria;
 
             const textoResumo = item.texto ? item.texto.substring(0, 110) + "..." : "Clique para ler a matéria completa.";
-            const tituloEscapado = encodeURIComponent(item.titulo);
 
             return `
                 <div class="grid-card">
@@ -1013,14 +1096,18 @@
         function renderizarNoticias(lista, titulo, formatoHome = false) {
             const tituloH2 = document.getElementById("titulo-principal");
             const container = document.getElementById("area-noticias");
+            const secaoMaisLidasHome = document.getElementById("secao-mais-lidas-home");
             
             container.innerHTML = "";
 
             if (formatoHome) {
                 tituloH2.style.display = "none";
+                if (secaoMaisLidasHome) secaoMaisLidasHome.style.display = "block";
+                carregarMaisLidasGeralHome();
             } else {
                 tituloH2.innerText = titulo;
                 tituloH2.style.display = "block";
+                if (secaoMaisLidasHome) secaoMaisLidasHome.style.display = "none";
             }
 
             if (lista.length === 0) {
@@ -1030,8 +1117,8 @@
 
             if (formatoHome) {
                 let htmlGrid = '<div class="home-grid">';
-                lista.forEach((item, index) => {
-                    htmlGrid += criarHtmlGridCard(item, index === 0);
+                lista.forEach((item) => {
+                    htmlGrid += criarHtmlGridCard(item);
                 });
                 htmlGrid += '</div>';
                 container.innerHTML = htmlGrid;
@@ -1039,6 +1126,95 @@
                 lista.forEach(item => {
                     container.innerHTML += criarHtmlListaCard(item);
                 });
+            }
+        }
+
+        // Função para carregar as Mais Lidas gerais somando todos os nichos
+        function carregarMaisLidasGeral() {
+            const secao = document.getElementById("secao-mais-lidas-materia");
+            const grid = document.getElementById("grid-mais-lidas-materia");
+            if (!window.bancoDeNoticias || window.bancoDeNoticias.length === 0) {
+                if (secao) secao.style.display = "none";
+                return;
+            }
+
+            // Pega as 3 principais notícias de todo o banco (simulando soma de acessos por ordenação recente/relevância global de todos os nichos)
+            const maisLidas = [...window.bancoDeNoticias].slice(0, 3);
+            if (maisLidas.length > 0 && grid) {
+                grid.innerHTML = "";
+                maisLidas.forEach(item => {
+                    const cat = item.categoria || "Geral";
+                    grid.innerHTML += `
+                        <div class="mini-card" onclick="abrirMateria('${item.idUnico}')">
+                            <div class="mini-card-title">${item.titulo}</div>
+                            <div class="mini-card-meta">
+                                <span><i class="fas fa-tag"></i> ${cat}</span>
+                                <span><i class="fas fa-fire" style="color:#e53e3e;"></i> Destaque</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                if (secao) secao.style.display = "block";
+            }
+        }
+
+        function carregarMaisLidasGeralHome() {
+            const secao = document.getElementById("secao-mais-lidas-home");
+            const grid = document.getElementById("grid-mais-lidas-home");
+            if (!window.bancoDeNoticias || window.bancoDeNoticias.length === 0) {
+                if (secao) secao.style.display = "none";
+                return;
+            }
+
+            const maisLidas = [...window.bancoDeNoticias].slice(0, 3);
+            if (maisLidas.length > 0 && grid) {
+                grid.innerHTML = "";
+                maisLidas.forEach(item => {
+                    const cat = item.categoria || "Geral";
+                    grid.innerHTML += `
+                        <div class="mini-card" onclick="abrirMateria('${item.idUnico}')">
+                            <div class="mini-card-title">${item.titulo}</div>
+                            <div class="mini-card-meta">
+                                <span><i class="fas fa-tag"></i> ${cat}</span>
+                                <span><i class="fas fa-fire" style="color:#e53e3e;"></i> Em Alta</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                if (secao) secao.style.display = "block";
+            }
+        }
+
+        // Função para recomendações dinâmicas com base estritamente na categoria da notícia aberta
+        function carregarRecomendadas(itemAtual) {
+            const secao = document.getElementById("secao-recomendadas");
+            const grid = document.getElementById("grid-recomendadas");
+            
+            const categoriaAlvo = itemAtual.categoria || (itemAtual.categorias ? itemAtual.categorias[0] : "");
+            
+            const recomendadas = window.bancoDeNoticias.filter(n => {
+                if (n.idUnico === itemAtual.idUnico) return false;
+                if (n.categoria && n.categoria === categoriaAlvo) return true;
+                if (n.categorias && n.categorias.includes(categoriaAlvo)) return true;
+                return false;
+            }).slice(0, 3);
+
+            if (recomendadas.length > 0 && grid) {
+                grid.innerHTML = "";
+                recomendadas.forEach(item => {
+                    grid.innerHTML += `
+                        <div class="mini-card" onclick="abrirMateria('${item.idUnico}')">
+                            <div class="mini-card-title">${item.titulo}</div>
+                            <div class="mini-card-meta">
+                                <span><i class="far fa-folder"></i> ${categoriaAlvo}</span>
+                                <span>Ler matéria</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                if (secao) secao.style.display = "block";
+            } else {
+                if (secao) secao.style.display = "none";
             }
         }
 
@@ -1154,3 +1330,5 @@
     </script>
 </body>
 </html>
+
+```
