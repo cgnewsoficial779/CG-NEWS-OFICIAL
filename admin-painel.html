@@ -81,14 +81,12 @@
         .file-input-wrapper input[type="file"] { flex: 1; }
         .btn-remover-img { background: #fff; color: #d93025; border: 1px solid #d93025; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 13px; white-space: nowrap; }
 
-        /* ABAS DE ANÚNCIO (CÓDIGO VS IMAGEM + LINK) */
         .ad-tabs { display: flex; gap: 10px; margin-bottom: 12px; }
         .ad-tab-btn { flex: 1; padding: 10px; background: #e2e8f0; border: none; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; }
         .ad-tab-btn.active { background: #002a5c; color: white; }
         .ad-tab-content { display: none; }
         .ad-tab-content.active { display: block; }
 
-        /* EDITOR QUILL */
         .ql-container { height: 320px; font-size: 16px; background: #fff; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; font-family: Georgia, serif; }
         .ql-toolbar { background: #f8f9fa; border-top-left-radius: 6px; border-top-right-radius: 6px; border-color: #b0b8c1; }
 
@@ -117,7 +115,7 @@
         .btn-preview { background-color: #0275d8; color: white; border: none; padding: 16px; flex: 1; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
         .btn-cancelar { background-color: #d93025; color: white; border: none; padding: 14px; width: 100%; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; display: none; text-transform: uppercase; }
 
-        /* ATUALIZADO: NOVO DESIGN DOS CARDS DE MATÉRIAS (IMAGEM MAIOR E TÍTULO AO LADO) */
+        /* CARDS DE MATÉRIAS ATUALIZADOS (V8.7) */
         .noticia-item { border: 1px solid #d1d9e0; padding: 14px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; gap: 15px; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
         
         .noticia-miniatura { width: 110px; height: 90px; border-radius: 8px; object-fit: cover; background: #ddd; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #777; font-size: 14px; }
@@ -137,7 +135,6 @@
         .btn-editar { background: #f8f9fa; color: #002a5c; border: 1px solid #002a5c; }
         .btn-apagar { background: #fff; color: #d93025; border: 1px solid #d93025; }
 
-        /* MODAL DE PRÉVIA EM TELA CHEIA */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-content { background: #fff; width: 100vw; height: 100vh; max-width: 100%; max-height: 100%; border-radius: 0; overflow-y: auto; padding: 20px; position: relative; display: flex; flex-direction: column; }
         @media(min-width: 768px) { .modal-content { width: 90vw; height: 92vh; border-radius: 12px; padding: 35px; max-width: 900px; } }
@@ -159,7 +156,6 @@
             </div>
         </div>
 
-        <!-- PAINEL LATERAL (SIDEBAR GAVETA) -->
         <div class="sidebar-overlay" id="sidebarOverlay" onclick="alternarSidebar()"></div>
         <div class="sidebar-panel" id="sidebarPanel">
             <div class="sidebar-header">
@@ -172,7 +168,6 @@
                     <i class="fas fa-list-ul"></i> Gerenciar Matérias
                 </button>
 
-                <!-- 1. MONITOR DE AUDIÊNCIA (CLICÁVEL PARA ABRIR GRÁFICO EM TELA CHEIA) -->
                 <div class="stats-box" onclick="abrirModalAudiencia()">
                     <div class="stats-header">
                         <h4><i class="fas fa-chart-line"></i> Audiência de Leitores <i class="fas fa-expand" style="float: right;"></i></h4>
@@ -188,7 +183,6 @@
                     </div>
                 </div>
 
-                <!-- 2. GOOGLE ANALYTICS -->
                 <div class="google-integration-card">
                     <label><i class="fab fa-google" style="color: #1a73e8;"></i> ID Google Analytics</label>
                     <input type="text" id="googleAnalyticsCode" placeholder="Ex: G-XXXXXXXXXX">
@@ -197,7 +191,6 @@
                     </button>
                 </div>
 
-                <!-- 3. GOOGLE ADSENSE -->
                 <div class="google-integration-card">
                     <label><i class="fas fa-dollar-sign" style="color: #137333;"></i> Google AdSense</label>
                     <textarea id="googleAdSenseCode" rows="2" placeholder="Cole o script do AdSense..."></textarea>
@@ -283,7 +276,6 @@
                 </div>
             </div>
 
-            <!-- ANÚNCIO / BANNER PATROCINADOR (CÓDIGO OU IMAGEM + LINK) -->
             <div class="section-box" style="border-left: 5px solid #f9ab00;">
                 <div class="section-title"><i class="fas fa-ad"></i> Banner Patrocinador</div>
                 
@@ -343,7 +335,6 @@
         </form>
     </div>
 
-    <!-- MODAL TELA CHEIA: GERENCIAR MATÉRIAS -->
     <div class="modal-fullscreen-overlay" id="modalFullscreenGerenciar">
         <div class="modal-fullscreen-content">
             <div class="modal-fs-header">
@@ -356,7 +347,6 @@
         </div>
     </div>
 
-    <!-- MODAL TELA CHEIA: GRÁFICOS E AUDIÊNCIA -->
     <div class="modal-fullscreen-overlay" id="modalFullscreenAudiencia">
         <div class="modal-fullscreen-content">
             <div class="modal-fs-header">
@@ -387,7 +377,6 @@
                     </div>
                 </div>
 
-                <!-- GRÁFICO VISUAL -->
                 <div style="background: #fff; padding: 20px; border-radius: 10px; border: 1px solid #d1d9e0; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 300px;">
                     <canvas id="graficoAudiencia" style="max-height: 320px; width: 100%;"></canvas>
                 </div>
@@ -395,7 +384,6 @@
         </div>
     </div>
 
-    <!-- MODAL DE PRÉVIA EM TELA CHEIA -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -412,7 +400,6 @@
         </div>
     </div>
 
-    <!-- SCRIPTS -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
     <script type="module">
@@ -685,7 +672,7 @@
 
                 await setDoc(doc(db, "configuracoes", "google"), payload, { merge: true });
                 marcarBotonAtivo(tipo, true);
-                alert("✅ Ativado com sucesso! Pronto para rastrear e exibir anúncios do Google.");
+                alert("✅ Ativado com sucesso!");
             } catch (e) {
                 alert("Erro ao ativar.");
                 btn.innerHTML = "<i class='fas fa-power-off'></i> Tentar Novamente";
