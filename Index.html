@@ -327,6 +327,22 @@
             .news-list-image { width: 220px; height: 130px; flex-shrink: 0; }
         }
 
+        /* ESPAÇOS LIMPOS PARA ANÚNCIOS / BANNERS (GOOGLE ADS) */
+        .banner-anuncio-slot {
+            width: 100%;
+            background-color: #fafbfc;
+            border: 1px dashed #cbd5e0;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+            color: #a0aec0;
+            font-size: 11px;
+            font-weight: 600;
+            margin: 20px 0;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
         /* RODAPÉ E REDES SOCIAIS */
         footer { 
             background-color: #11136c; 
@@ -827,11 +843,21 @@
                     </div>
                 </div>
 
+                <!-- ESPAÇO RESERVADO PARA BANNER / ANÚNCIO DO TOPO DA MATÉRIA -->
+                <div class="banner-anuncio-slot">
+                    Publicidade / Espaço para Banner
+                </div>
+
                 ${blocoMidiaPrincipal}
                 
                 <div style="font-size: 16px; line-height: 1.75; color: #2d3748; white-space: pre-wrap; margin-top: 15px;">${item.texto}</div>
 
                 ${blocoVideoRedeSocial}
+
+                <!-- ESPAÇO RESERVADO PARA BANNER / ANÚNCIO DO FIM DA MATÉRIA -->
+                <div class="banner-anuncio-slot">
+                    Publicidade / Espaço para Banner
+                </div>
                 
                 <div style="margin-top: 35px; padding-top: 15px; border-top: 1px solid #e2e8f0; display: flex; flex-wrap: wrap; gap: 10px;">
                     <div style="background: #1a202c; color: white; padding: 6px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; border-radius: 4px;">
