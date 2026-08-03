@@ -247,6 +247,7 @@
             color: #718096;
             font-weight: 500;
             font-size: 10px;
+            text-transform: none;
         }
         
         .grid-title {
@@ -717,26 +718,50 @@
 
         atualizarBarraData();
 
+        function converterTimestamp(valor) {
+            if (!valor) return null;
+            if (typeof valor === 'number') return valor;
+            if (typeof valor === 'object') {
+                if (typeof valor.toMillis === 'function') return valor.toMillis();
+                if (typeof valor.toDate === 'function') return valor.toDate().getTime();
+                if (valor.seconds !== undefined) return valor.seconds * 1000;
+                if (valor instanceof Date) return valor.getTime();
+            }
+            if (typeof valor === 'string') {
+                const parsed = Date.parse(valor);
+                if (!isNaN(parsed)) return parsed;
+                const num = Number(valor);
+                if (!isNaN(num)) return num;
+            }
+            return null;
+        }
+
         function tempoRelativo(timestamp) {
             if (!timestamp) return "";
+            const ms = converterTimestamp(timestamp);
+            if (!ms) return "";
+
             const agora = Date.now();
-            const diffMs = agora - timestamp;
+            const diffMs = agora - ms;
+            if (diffMs < 0) return "Atualizado agora mesmo";
+
             const diffMinutos = Math.floor(diffMs / (1000 * 60));
             const diffHoras = Math.floor(diffMs / (1000 * 60 * 60));
             const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
             const diffMeses = Math.floor(diffDias / 30);
             const diffAnos = Math.floor(diffDias / 365);
 
-            if (diffMinutos < 1) return "atualizado agora mesmo";
-            if (diffMinutos < 60) return `atualizado há ${diffMinutos} ${diffMinutos === 1 ? 'minuto' : 'minutos'}`;
-            if (diffHoras < 24) return `atualizado há ${diffHoras} ${diffHoras === 1 ? 'hora' : 'horas'}`;
-            if (diffDias < 30) return `atualizado há ${diffDias} ${diffDias === 1 ? 'dia' : 'dias'}`;
-            if (diffMeses < 12) return `atualizado há ${diffMeses} ${diffMeses === 1 ? 'mês' : 'meses'}`;
-            return `atualizado há ${diffAnos} ${diffAnos === 1 ? 'ano' : 'anos'}`;
+            if (diffMinutos < 1) return "Atualizado agora mesmo";
+            if (diffMinutos < 60) return `Atualizado há ${diffMinutos} ${diffMinutos === 1 ? 'minuto' : 'minutos'}`;
+            if (diffHoras < 24) return `Atualizado há ${diffHoras} ${diffHoras === 1 ? 'hora' : 'horas'}`;
+            if (diffDias < 30) return `Atualizado há ${diffDias} ${diffDias === 1 ? 'dia' : 'dias'}`;
+            if (diffMeses < 12) return `Atualizado há ${diffMeses} ${diffMeses === 1 ? 'mês' : 'meses'}`;
+            return `Atualizado há ${diffAnos} ${diffAnos === 1 ? 'ano' : 'anos'}`;
         }
 
         function formatarDataHoraMS(timestamp) {
-            const d = new Date(timestamp || Date.now());
+            const ms = converterTimestamp(timestamp) || Date.now();
+            const d = new Date(ms);
             const dataFormatada = d.toLocaleDateString('pt-BR', { 
                 timeZone: 'America/Campo_Grande', 
                 day: '2-digit', 
@@ -752,17 +777,37 @@
         }
 
         function gerarHtmlDatas(item) {
-            // A data de publicação original fica congelada aqui
-            const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
-            const criacao = formatarDataHoraMS(timestampCriacao);
+            // Tenta obter a data de publicação/criação original
+            let msCriacao = converterTimestamp(item.dataCriacao) || 
+                            converterTimestamp(item.dataPublicacao) || 
+                            converterTimestamp(item.criadoEm) || 
+                            converterTimestamp(item.timestamp);
+
+            // Tenta obter a data da última atualização
+            let msAtualizacao = converterTimestamp(item.dataAtualizacao) || 
+                                converterTimestamp(item.atualizadoEm);
+
+            // Se não houver data de criação separada no banco, usa a de atualização como base
+            if (!msCriacao) {
+                msCriacao = msAtualizacao || Date.now();
+            }
+
+            const criacao = formatarDataHoraMS(msCriacao);
             let html = `Publicado em ${criacao.data} às ${criacao.hora}`;
 
-            const timestampAtualizacao = item.dataAtualizacao || timestampCriacao;
-            
-            // Se houve atualização posterior, exibe o complemento ao lado sem alterar a data original
-            if (timestampAtualizacao > (timestampCriacao + 60000)) {
-                const relAtualizacao = tempoRelativo(timestampAtualizacao);
-                html += ` • ${relAtualizacao}`;
+            // Exibe a indicação de atualização se houver registro de modificação posterior
+            const houveAtualizacao = msAtualizacao && (
+                (msCriacao && msAtualizacao > (msCriacao + 10000)) ||
+                (item.dataCriacao && item.dataAtualizacao && item.dataCriacao !== item.dataAtualizacao) ||
+                (!item.dataCriacao && item.dataAtualizacao) ||
+                (item.editado === true || item.atualizado === true)
+            );
+
+            if (houveAtualizacao) {
+                const relAtualizacao = tempoRelativo(msAtualizacao);
+                if (relAtualizacao) {
+                    html += ` • ${relAtualizacao}`;
+                }
             }
 
             return html;
