@@ -62,7 +62,7 @@
         }
         .sidebar a:hover { background-color: #f2f4f7; padding-left: 25px; }
 
-        /* REDES SOCIAIS EM LISTA VERTICAL NO MENU LATERAL */
+        /* REDES SOCIAIS NO MENU LATERAL */
         .sidebar-social-section {
             padding: 15px 20px;
             background-color: #f8f9fa;
@@ -366,7 +366,6 @@
     <!-- TELA DA MATÉRIA COMPLETA -->
     <div id="modal-materia" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f2f4f7; z-index: 9999; overflow-y: auto;">
         
-        <!-- CABEÇALHO PADRÃO DA MATÉRIA -->
         <header>
             <div class="header-btn" onclick="abrirMenu()">
                 <i class="fas fa-bars"></i>
@@ -377,7 +376,6 @@
             </div>
         </header>
 
-        <!-- BARRA DE BUSCA DENTRO DA MATÉRIA (CORRIGIDA) -->
         <div id="barra-busca-materia">
             <input type="text" id="input-busca-materia" placeholder="Buscar por palavra-chave..." onkeyup="realizarBuscaMateria(event)">
         </div>
@@ -389,7 +387,6 @@
             <div id="conteudo-materia"></div>
         </div>
 
-        <!-- RODAPÉ COMPLETO NA TELA DA MATÉRIA -->
         <footer>
             <div class="footer-social-title">Nossas Redes Sociais</div>
             <div class="social-icons">
@@ -542,45 +539,17 @@
             const blocoDatas = gerarHtmlDatas(item);
 
             let blocoMidiaPrincipal = "";
-            const urlRede = item.linkRedeSocial ? item.linkRedeSocial.trim() : "";
-
-            if (urlRede !== "") {
-                if (urlRede.includes("youtube.com/watch?v=") || urlRede.includes("youtu.be/")) {
-                    let videoId = "";
-                    if (urlRede.includes("youtu.be/")) {
-                        videoId = urlRede.split("youtu.be/")[1]?.split("?")[0];
-                    } else if (urlRede.includes("watch?v=")) {
-                        videoId = urlRede.split("watch?v=")[1]?.split("&")[0];
-                    }
-                    if (videoId) {
-                        blocoMidiaPrincipal = `
-                            <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
-                                <iframe src="https://www.youtube.com/embed/${videoId}" style="width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
-                            </div>
-                            <div style="font-size: 12px; font-weight: bold; color: #555; margin-bottom: 20px;">Vídeo oficial incorporado do YouTube</div>
-                        `;
-                    }
-                } else if (urlRede.includes("youtube.com/shorts/")) {
-                    let shortId = urlRede.split("shorts/")[1]?.split("?")[0];
-                    if (shortId) {
-                        blocoMidiaPrincipal = `
-                            <div style="max-width: 340px; margin: 0 auto 6px auto; position: relative; aspect-ratio: 9/16; background: #000; border-radius: 8px; overflow: hidden;">
-                                <iframe src="https://www.youtube.com/embed/${shortId}" style="width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
-                            </div>
-                            <div style="text-align: center; font-size: 12px; font-weight: bold; color: #555; margin-bottom: 20px;">Short oficial do YouTube</div>
-                        `;
-                    }
-                }
-            }
-
-            if (!blocoMidiaPrincipal && item.imagem) {
+            if (item.imagem) {
                 blocoMidiaPrincipal = `
                     <img src="${item.imagem}" style="width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 4px; display: block;">
                     <div style="font-size: 12px; font-weight: bold; color: #555; margin-top: 6px; margin-bottom: 20px;">${item.fonteImagem || "Reprodução / Divulgação"}</div>
                 `;
             }
 
+            // Bloco inteligente: Incorpora vídeo embutido (se permitido) ou exibe a miniatura interativa original da rede social
             let blocoVideoRedeSocial = "";
+            const urlRede = item.linkRedeSocial ? item.linkRedeSocial.trim() : "";
+
             if (urlRede !== "") {
                 const url = urlRede;
                 let nomeRede = "Instagram";
@@ -607,7 +576,62 @@
                     nomeRede = "Threads"; iconeRedeClass = "fa-brands fa-threads"; textoBotao = "Ver no Threads"; corIconeRede = "#000000"; corBotaoPerfil = "#000000"; usuarioRede = "cgnews.oficial";
                 }
 
-                let imagemMidia = item.imagem ? item.imagem : "";
+                let areaCentralPlayer = "";
+
+                // VERIFICA SE A PLATAFORMA PERMITE INCORPORAÇÃO DIRETA (EMBED DE VÍDEO REAL)
+                if (url.includes("youtube.com/watch?v=") || url.includes("youtu.be/") || url.includes("youtube.com/shorts/")) {
+                    let ytId = "";
+                    if (url.includes("youtu.be/")) {
+                        ytId = url.split("youtu.be/")[1]?.split("?")[0];
+                    } else if (url.includes("shorts/")) {
+                        ytId = url.split("shorts/")[1]?.split("?")[0];
+                    } else if (url.includes("watch?v=")) {
+                        ytId = url.split("watch?v=")[1]?.split("&")[0];
+                    }
+                    if (ytId) {
+                        // YouTube permite player embutido direto na página!
+                        areaCentralPlayer = `
+                            <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000;">
+                                <iframe src="https://www.youtube.com/embed/${ytId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+                            </div>
+                        `;
+                    }
+                } 
+                else if (url.includes("facebook.com")) {
+                    // Facebook permite player embutido por iframe oficial (plugin de vídeo do FB)
+                    let encodedFbUrl = encodeURIComponent(url);
+                    areaCentralPlayer = `
+                        <div style="position: relative; width: 100%; background: #000; display: flex; justify-content: center; overflow: hidden;">
+                            <iframe src="https://www.facebook.com/plugins/video.php?height=314&href=${encodedFbUrl}&show_text=false&width=560&t=0" width="100%" height="350" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                        </div>
+                    `;
+                }
+
+                // Se a plataforma NÃO permite embed direto (Instagram, TikTok, Kwai, etc.), exibe a miniatura real e oficial com redirecionamento ao toque
+                if (!areaCentralPlayer) {
+                    let imagemCapaVideoReal = item.imagemVideo || item.imagemCapaVideo || item.imagem || "";
+
+                    // Tratamento extra para pegar thumb do YouTube caso caia aqui
+                    if (url.includes("youtube.com") || url.includes("youtu.be")) {
+                        let ytId = "";
+                        if (url.includes("youtu.be/")) ytId = url.split("youtu.be/")[1]?.split("?")[0];
+                        else if (url.includes("watch?v=")) ytId = url.split("watch?v=")[1]?.split("&")[0];
+                        if (ytId) imagemCapaVideoReal = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+                    }
+
+                    areaCentralPlayer = `
+                        <a href="${url}" target="_blank" style="display: block; position: relative; background: #000; aspect-ratio: 16/9; max-height: 480px; overflow: hidden; text-decoration: none;">
+                            ${imagemCapaVideoReal ? `<img src="${imagemCapaVideoReal}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.95;">` : `<div style="width:100%; height:100%; background:#111; display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px;">Abrir vídeo</div>`}
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.7); width: 68px; height: 68px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 26px; padding-left: 3px; border: 2px solid rgba(255,255,255,0.8);">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div style="position: absolute; bottom: 15px; left: 15px; right: 15px; background: rgba(0,0,0,0.6); padding: 8px 12px; border-radius: 6px; color: #fff; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
+                                <span><i class="${iconeRedeClass}" style="color: ${corIconeRede}; margin-right: 5px;"></i> Ver publicação original no ${nomeRede}</span>
+                                <i class="fas fa-external-link-alt" style="font-size: 11px;"></i>
+                            </div>
+                        </a>
+                    `;
+                }
 
                 blocoVideoRedeSocial = `
                     <div style="margin: 35px 0 20px 0; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
@@ -624,16 +648,7 @@
                             <a href="${linkPerfilRede}" target="_blank" style="background: ${corBotaoPerfil}; color: white; padding: 6px 14px; font-size: 13px; font-weight: 600; text-decoration: none; border-radius: 4px;">Seguir</a>
                         </div>
 
-                        <a href="${url}" target="_blank" style="display: block; position: relative; background: #000; aspect-ratio: 9/16; max-height: 480px; overflow: hidden;">
-                            ${imagemMidia ? `<img src="${imagemMidia}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.95;">` : `<div style="width:100%; height:100%; background:#111; display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px;">Ver Mídia</div>`}
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.7); width: 68px; height: 68px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 26px; padding-left: 3px; border: 2px solid rgba(255,255,255,0.8);">
-                                <i class="fas fa-play"></i>
-                            </div>
-                            <div style="position: absolute; bottom: 15px; left: 15px; right: 15px; background: rgba(0,0,0,0.6); padding: 8px 12px; border-radius: 6px; color: #fff; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
-                                <span><i class="${iconeRedeClass}" style="color: ${corIconeRede}; margin-right: 5px;"></i> Abrir link original no ${nomeRede}</span>
-                                <i class="fas fa-external-link-alt" style="font-size: 11px;"></i>
-                            </div>
-                        </a>
+                        ${areaCentralPlayer}
 
                         <div style="padding: 14px 15px; background: #fafafa; border-top: 1px solid #eee; text-align: center;">
                             <a href="${url}" target="_blank" style="display: inline-block; background: ${corBotaoPerfil}; color: white; width: 100%; padding: 10px; font-weight: 700; font-size: 14px; text-decoration: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
@@ -795,7 +810,6 @@
             }
         };
 
-        // FUNÇÃO DE BUSCA PRINCIPAL ATUALIZADA
         window.realizarBuscaPrincipal = function() {
             const termo = document.getElementById("input-busca").value.toLowerCase().trim();
             
@@ -825,7 +839,6 @@
             renderizarNoticias(listaFiltrada, "Resultados da Busca", false);
         };
 
-        // FUNÇÃO DE BUSCA DA MATÉRIA ATUALIZADA
         window.realizarBuscaMateria = function(event) {
             if (event && event.key !== 'Enter') {
                 return;
