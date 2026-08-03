@@ -22,7 +22,7 @@
         .header-btn { cursor: pointer; font-size: 22px; padding: 5px; }
 
         /* BARRA DE BUSCA */
-        #barra-busca {
+        #barra-busca, #barra-busca-materia {
             display: none;
             background-color: #fff;
             padding: 15px;
@@ -31,7 +31,7 @@
             top: 58px; 
             z-index: 999;
         }
-        #input-busca {
+        #input-busca, #input-busca-materia {
             width: 100%;
             padding: 12px;
             font-size: 16px;
@@ -39,11 +39,11 @@
             border-radius: 8px;
             outline: none;
         }
-        #input-busca:focus { border-color: #11136c; }
+        #input-busca:focus, #input-busca-materia:focus { border-color: #11136c; }
         
         /* MENU LATERAL */
         .sidebar {
-            height: 100%; width: 260px; position: fixed; z-index: 2000;
+            height: 100%; width: 260px; position: fixed; z-index: 20000;
             top: 0; left: -260px; background-color: #fff; overflow-y: auto;
             transition: 0.3s ease; box-shadow: 2px 0 10px rgba(0,0,0,0.3);
             display: flex; flex-direction: column;
@@ -114,7 +114,7 @@
         
         #overlay {
             position: fixed; display: none; width: 100%; height: 100%;
-            top: 0; left: 0; background-color: rgba(0,0,0,0.6); z-index: 1500; cursor: pointer;
+            top: 0; left: 0; background-color: rgba(0,0,0,0.6); z-index: 15000; cursor: pointer;
         }
 
         .container { max-width: 900px; margin: 20px auto; padding: 0 15px; min-height: 70vh; }
@@ -302,13 +302,13 @@
             <i class="fas fa-bars"></i>
         </div>
         <div style="cursor: pointer;" onclick="fecharMateria(); window.scrollTo(0,0);">CG NEWS OFICIAL</div>
-        <div class="header-btn" onclick="toggleBusca()">
+        <div class="header-btn" onclick="toggleBuscaPrincipal()">
             <i class="fas fa-search"></i>
         </div>
     </header>
 
     <div id="barra-busca">
-        <input type="text" id="input-busca" placeholder="Buscar por palavra-chave..." onkeyup="realizarBusca()">
+        <input type="text" id="input-busca" placeholder="Buscar por palavra-chave..." onkeyup="realizarBuscaPrincipal()">
     </div>
 
     <div id="overlay" onclick="fecharMenu()"></div>
@@ -366,20 +366,20 @@
     <!-- TELA DA MATÉRIA COMPLETA -->
     <div id="modal-materia" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f2f4f7; z-index: 9999; overflow-y: auto;">
         
-        <!-- CABEÇALHO PADRÃO DA MATÉRIA (AGORA COM OS MESMOS EVENTOS) -->
+        <!-- CABEÇALHO PADRÃO DA MATÉRIA -->
         <header>
             <div class="header-btn" onclick="abrirMenu()">
                 <i class="fas fa-bars"></i>
             </div>
             <div style="cursor: pointer;" onclick="fecharMateria(); window.scrollTo(0,0);">CG NEWS OFICIAL</div>
-            <div class="header-btn" onclick="toggleBusca()">
+            <div class="header-btn" onclick="toggleBuscaMateria()">
                 <i class="fas fa-search"></i>
             </div>
         </header>
 
         <!-- BARRA DE BUSCA DENTRO DA MATÉRIA -->
-        <div id="barra-busca-materia" style="display: none; background-color: #fff; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: sticky; top: 58px; z-index: 999;">
-            <input type="text" id="input-busca-materia" placeholder="Buscar por palavra-chave..." onkeyup="realizarBuscaMateria()" style="width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px; outline: none;">
+        <div id="barra-busca-materia">
+            <input type="text" id="input-busca-materia" placeholder="Buscar por palavra-chave..." onkeyup="realizarBuscaMateria()">
         </div>
 
         <div style="background: white; max-width: 900px; margin: 20px auto; min-height: 80vh; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-radius: 8px;">
@@ -476,22 +476,16 @@
         window.abrirMenu = function() {
             document.getElementById("sidebar").style.left = "0";
             document.getElementById("overlay").style.display = "block";
-            document.body.style.overflow = "hidden"; 
         };
 
         window.fecharMenu = function() {
             document.getElementById("sidebar").style.left = "-260px";
             document.getElementById("overlay").style.display = "none";
-            // Se o modal de matéria estiver fechado, restaura o scroll do body
-            if (document.getElementById("modal-materia").style.display !== "block") {
-                document.body.style.overflow = "auto";
-            }
         };
 
-        window.toggleBusca = function() {
-            const modalMateriaAberto = document.getElementById("modal-materia").style.display === "block";
-            const barra = modalMateriaAberto ? document.getElementById("barra-busca-materia") : document.getElementById("barra-busca");
-            const input = modalMateriaAberto ? document.getElementById("input-busca-materia") : document.getElementById("input-busca");
+        window.toggleBuscaPrincipal = function() {
+            const barra = document.getElementById("barra-busca");
+            const input = document.getElementById("input-busca");
 
             if (barra.style.display === "none" || barra.style.display === "") {
                 barra.style.display = "block";
@@ -499,11 +493,20 @@
             } else {
                 barra.style.display = "none";
                 input.value = "";
-                if (modalMateriaAberto) {
-                    fecharMateria();
-                } else {
-                    window.filtrarCategoria('Todas');
-                }
+                window.filtrarCategoria('Todas');
+            }
+        };
+
+        window.toggleBuscaMateria = function() {
+            const barra = document.getElementById("barra-busca-materia");
+            const input = document.getElementById("input-busca-materia");
+
+            if (barra.style.display === "none" || barra.style.display === "") {
+                barra.style.display = "block";
+                input.focus();
+            } else {
+                barra.style.display = "none";
+                input.value = "";
             }
         };
 
@@ -682,6 +685,7 @@
         window.fecharMateria = function() {
             document.getElementById("modal-materia").style.display = "none";
             document.getElementById("barra-busca-materia").style.display = "none";
+            document.getElementById("input-busca-materia").value = "";
             document.body.style.overflow = "auto"; 
         };
 
@@ -777,7 +781,6 @@
             fecharMateria();
             fecharMenu();
             document.getElementById("input-busca").value = ""; 
-            document.getElementById("input-busca-materia").value = "";
             
             if (categoriaDesejada === 'Todas') {
                 renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
@@ -792,7 +795,7 @@
             }
         };
 
-        window.realizarBusca = function() {
+        window.realizarBuscaPrincipal = function() {
             const termo = document.getElementById("input-busca").value.toLowerCase();
             
             if (termo === "") {
@@ -811,11 +814,22 @@
 
         window.realizarBuscaMateria = function() {
             const termo = document.getElementById("input-busca-materia").value.toLowerCase();
-            if (termo !== "") {
-                fecharMateria();
-                document.getElementById("input-busca").value = termo;
-                window.realizarBusca();
+            
+            if (termo === "") {
+                renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
+                return;
             }
+
+            const listaFiltrada = window.bancoDeNoticias.filter(item => {
+                const temNoTitulo = item.titulo && item.titulo.toLowerCase().includes(termo);
+                const temNoTexto = item.texto && item.texto.toLowerCase().includes(termo);
+                return temNoTitulo || temNoTexto;
+            });
+
+            fecharMateria();
+            document.getElementById("input-busca").value = termo;
+            renderizarNoticias(listaFiltrada, "Resultados da Busca", false);
+            window.scrollTo(0, 0);
         };
 
         async function carregarNoticias() {
