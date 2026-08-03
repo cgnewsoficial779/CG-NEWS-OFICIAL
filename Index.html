@@ -429,8 +429,9 @@
         function gerarHtmlDatas(item) {
             const timestampCriacao = item.dataCriacao || item.dataAtualizacao || Date.now();
             const criacao = formatarDataHoraMS(timestampCriacao);
+            const relCriacao = tempoRelativo(timestampCriacao);
             
-            let html = `<span>Publicado em ${criacao.data} às ${criacao.hora}</span>`;
+            let html = `<span>Publicado em ${criacao.data} às ${criacao.hora} | ${relCriacao}</span>`;
 
             if (item.dataAtualizacao && item.dataCriacao && item.dataAtualizacao > item.dataCriacao + 60000) {
                 const atualizacao = formatarDataHoraMS(item.dataAtualizacao);
