@@ -11,15 +11,15 @@
     <!-- QUILL.JS PARA O EDITOR DE TEXTO -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
+    <!-- CHART.JS PARA OS GRÁFICOS DE AUDIÊNCIA -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
         body { background-color: #f0f2f5; padding: 10px; color: #1a1a1a; font-size: 16px; }
         
-        /* CONTAINER PRINCIPAL ADAPTADO PARA TELA CHEIA */
         .container { width: 100%; max-width: 100%; margin: 0 auto; background: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); position: relative; }
-        @media(min-width: 1024px) {
-            .container { padding: 30px; }
-        }
+        @media(min-width: 1024px) { .container { padding: 30px; } }
         
         .header-admin { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #002a5c; padding-bottom: 15px; margin-bottom: 20px; }
         .header-admin h1 { color: #002a5c; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
@@ -27,7 +27,6 @@
         .header-actions-right { display: flex; align-items: center; gap: 10px; }
         .header-admin span.badge-pro { background: #002a5c; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
 
-        /* BOTÃO DAS TRÊS BARRAS */
         .btn-menu-hamburguer { background: #002a5c; color: white; border: none; width: 45px; height: 45px; border-radius: 8px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; box-shadow: 0 2px 6px rgba(0,42,92,0.25); }
         .btn-menu-hamburguer:hover { background: #001d40; }
 
@@ -42,32 +41,28 @@
         
         .sidebar-content { padding: 15px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 15px; }
 
-        /* BOTÃO DO MENU PARA GERENCIAR MATÉRIAS */
         .btn-menu-gerenciar { background: #0275d8; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; width: 100%; box-shadow: 0 2px 6px rgba(2,117,216,0.3); }
         .btn-menu-gerenciar:hover { background: #025aa5; }
 
-        /* MODAL TELA CHEIA: GERENCIAR MATÉRIAS */
+        /* MODAL TELA CHEIA GERAL */
         .modal-fullscreen-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-fullscreen-content { background: #f0f2f5; width: 100vw; height: 100vh; border-radius: 0; display: flex; flex-direction: column; overflow: hidden; }
-        @media(min-width: 768px) {
-            .modal-fullscreen-content { width: 95vw; height: 95vh; border-radius: 12px; }
-        }
+        @media(min-width: 768px) { .modal-fullscreen-content { width: 95vw; height: 95vh; border-radius: 12px; } }
         .modal-fs-header { background: #002a5c; color: white; padding: 18px 25px; display: flex; align-items: center; justify-content: space-between; }
         .modal-fs-header h2 { font-size: 18px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
         .modal-fs-close { background: #d93025; color: white; border: none; width: 38px; height: 38px; border-radius: 6px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         .modal-fs-body { padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 15px; }
 
-        /* PAINEL DE ESTATÍSTICAS */
-        .stats-box { background: linear-gradient(135deg, #f8f9fa 0%, #eef2f7 100%); border: 1px solid #d1d9e0; border-radius: 10px; padding: 15px; border-left: 5px solid #002a5c; }
+        /* PAINEL DE ESTATÍSTICAS CLICÁVEL */
+        .stats-box { background: linear-gradient(135deg, #f8f9fa 0%, #eef2f7 100%); border: 1px solid #d1d9e0; border-radius: 10px; padding: 15px; border-left: 5px solid #002a5c; cursor: pointer; transition: 0.2s; }
+        .stats-box:hover { background: #e2e8f0; }
         .stats-header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
         .stats-header h4 { font-size: 13px; text-transform: uppercase; color: #002a5c; font-weight: 800; display: flex; align-items: center; gap: 6px; }
-        .stats-select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #b0b8c1; background: #fff; font-size: 14px; font-weight: 700; color: #333; outline: none; }
         .stats-display { text-align: left; padding: 14px; background: #fff; border-radius: 8px; border: 1px solid #e1e4e8; display: flex; flex-direction: column; gap: 8px; }
         .stats-display .info-left .number { font-size: 30px; font-weight: 900; color: #002a5c; line-height: 1.1; }
         .stats-display .info-left .label-periodo { font-size: 12px; color: #555; text-transform: uppercase; font-weight: 700; }
         .stats-badge-live { background: #e6f4ea; color: #137333; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; border: 1px solid #ceead6; width: fit-content; }
 
-        /* INTEGRAÇÕES GOOGLE */
         .google-integration-card { background: #f8f9fa; border: 1px solid #e1e4e8; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
         .google-integration-card label { font-size: 12px; font-weight: 800; color: #444; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
         .google-integration-card input, .google-integration-card textarea { width: 100%; padding: 10px; border: 1px solid #b0b8c1; border-radius: 6px; font-size: 14px; background: #fff; }
@@ -86,11 +81,17 @@
         .file-input-wrapper input[type="file"] { flex: 1; }
         .btn-remover-img { background: #fff; color: #d93025; border: 1px solid #d93025; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 13px; white-space: nowrap; }
 
+        /* ABAS DE ANÚNCIO (CÓDIGO VS IMAGEM + LINK) */
+        .ad-tabs { display: flex; gap: 10px; margin-bottom: 12px; }
+        .ad-tab-btn { flex: 1; padding: 10px; background: #e2e8f0; border: none; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; }
+        .ad-tab-btn.active { background: #002a5c; color: white; }
+        .ad-tab-content { display: none; }
+        .ad-tab-content.active { display: block; }
+
         /* EDITOR QUILL */
         .ql-container { height: 320px; font-size: 16px; background: #fff; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; font-family: Georgia, serif; }
         .ql-toolbar { background: #f8f9fa; border-top-left-radius: 6px; border-top-right-radius: 6px; border-color: #b0b8c1; }
 
-        /* CHECKBOXES */
         .checkbox-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         @media(min-width: 600px) { .checkbox-group { grid-template-columns: repeat(3, 1fr); } }
         @media(min-width: 900px) { .checkbox-group { grid-template-columns: repeat(4, 1fr); } }
@@ -98,7 +99,6 @@
         .checkbox-item input { width: 20px; height: 20px; accent-color: #002a5c; }
         .checkbox-item span { font-size: 13px; font-weight: 700; color: #333; }
 
-        /* ESTÚDIO DE IMAGEM */
         .image-upload-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 12px; }
         @media(min-width: 600px) { .image-upload-grid { grid-template-columns: 1fr 1fr; } }
         
@@ -109,9 +109,7 @@
         .preview-container { width: 100%; background: #000; border-radius: 8px; display: flex; overflow: hidden; margin-top: 10px; aspect-ratio: 16/9; border: 1px solid #000; }
         .preview-container img { flex: 1; width: 50% !important; height: 100% !important; object-fit: cover !important; }
         .video-preview { width: 100%; border-radius: 8px; display: none; margin-top: 10px; border: 1px solid #b0b8c1; background: #000; max-height: 350px; }
-        .preview-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #666; font-size: 13px; font-weight: 600; background: #eee; min-height: 160px; }
 
-        /* BOTÕES DE AÇÃO */
         .botoes-acao-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
         @media(min-width: 500px) { .botoes-acao-container { flex-direction: row; } }
         
@@ -119,17 +117,14 @@
         .btn-preview { background-color: #0275d8; color: white; border: none; padding: 16px; flex: 1; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
         .btn-cancelar { background-color: #d93025; color: white; border: none; padding: 14px; width: 100%; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; display: none; text-transform: uppercase; }
 
-        /* LISTA DE MATÉRIAS NOS ITENS GERENCIAIS */
         .noticia-item { border: 1px solid #d1d9e0; padding: 15px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
         @media(min-width: 650px) { .noticia-item { flex-direction: row; align-items: center; } }
-        
         .noticia-miniatura { width: 100%; height: 160px; border-radius: 8px; object-fit: cover; background: #ddd; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #777; font-size: 13px; }
         @media(min-width: 650px) { .noticia-miniatura { width: 160px; height: 110px; } }
         .noticia-miniatura img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
         
         .noticia-conteudo-info { flex: 1; display: flex; flex-direction: column; gap: 8px; }
         .noticia-conteudo-info strong { color: #002a5c; font-size: 16px; line-height: 1.4; font-weight: 800; }
-        @media(min-width: 768px) { .noticia-conteudo-info strong { font-size: 18px; } }
         .noticia-meta-tags { display: flex; gap: 8px; flex-wrap: wrap; }
         .noticia-meta-tags span { font-size: 12px; color: #444; background: #f0f2f5; padding: 5px 10px; border-radius: 6px; font-weight: 700; border: 1px solid #d1d9e0; }
         .acoes-btn { display: flex; gap: 10px; margin-top: 6px; }
@@ -137,26 +132,22 @@
         .btn-editar { background: #f8f9fa; color: #002a5c; border: 1px solid #002a5c; }
         .btn-apagar { background: #fff; color: #d93025; border: 1px solid #d93025; }
 
-        /* MODAL DE PRÉVIA EM TELA CHEIA COM BOTÃO DE VOLTAR NO CANTO */
+        /* MODAL DE PRÉVIA EM TELA CHEIA */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-content { background: #fff; width: 100vw; height: 100vh; max-width: 100%; max-height: 100%; border-radius: 0; overflow-y: auto; padding: 20px; position: relative; display: flex; flex-direction: column; }
-        @media(min-width: 768px) {
-            .modal-content { width: 90vw; height: 92vh; border-radius: 12px; padding: 35px; max-width: 900px; }
-        }
+        @media(min-width: 768px) { .modal-content { width: 90vw; height: 92vh; border-radius: 12px; padding: 35px; max-width: 900px; } }
         .modal-header-top { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #eee; padding-bottom: 12px; margin-bottom: 15px; }
         .btn-voltar-edicao { background: #002a5c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
-        .btn-voltar-edicao:hover { background: #001d40; }
         .preview-body-content { font-family: Georgia, serif; font-size: 18px; line-height: 1.8; color: #222; margin-top: 15px; flex: 1; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- CABEÇALHO -->
         <div class="header-admin">
             <h1><i class="fas fa-newspaper"></i> CG NEWS <span style="font-size:11px; padding:3px 8px; background:#cc0000; color:#fff; border-radius:4px; margin-left:6px;">OFICIAL</span></h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V8.4</span>
+                <span class="badge-pro">V8.6</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -172,39 +163,19 @@
             </div>
             <div class="sidebar-content">
                 
-                <!-- BOTÃO PARA ABRIR TODAS AS MATÉRIAS EM TELA CHEIA -->
                 <button type="button" class="btn-menu-gerenciar" onclick="abrirModalGerenciamento()">
                     <i class="fas fa-list-ul"></i> Gerenciar Matérias
                 </button>
 
-                <!-- 1. MONITOR DE AUDIÊNCIA -->
-                <div class="stats-box">
+                <!-- 1. MONITOR DE AUDIÊNCIA (CLICÁVEL PARA ABRIR GRÁFICO EM TELA CHEIA) -->
+                <div class="stats-box" onclick="abrirModalAudiencia()">
                     <div class="stats-header">
-                        <h4><i class="fas fa-chart-line"></i> Audiência de Leitores</h4>
-                        <select id="filtroPeriodo" class="stats-select" onchange="atualizarEstatisticasView()">
-                            <option value="hoje">Hoje (24h)</option>
-                            <option value="1dia">1 Dia Específico</option>
-                            <option value="7dias">Últimos 7 Dias</option>
-                            <option value="15dias">Últimos 15 Dias</option>
-                            <option value="1mes">Este Mês</option>
-                            <option value="2meses">Últimos 2 Meses</option>
-                            <option value="3meses">Últimos 3 Meses</option>
-                            <option value="4meses">Últimos 4 Meses</option>
-                            <option value="5meses">Últimos 5 Meses</option>
-                            <option value="6meses">Últimos 6 Meses</option>
-                            <option value="7meses">Últimos 7 Meses</option>
-                            <option value="8meses">Últimos 8 Meses</option>
-                            <option value="9meses">Últimos 9 Meses</option>
-                            <option value="10meses">Últimos 10 Meses</option>
-                            <option value="11meses">Últimos 11 Meses</option>
-                            <option value="12meses">Últimos 12 Meses (1 Ano)</option>
-                            <option value="total" selected>Total Geral de Acessos</option>
-                        </select>
+                        <h4><i class="fas fa-chart-line"></i> Audiência de Leitores <i class="fas fa-expand" style="float: right;"></i></h4>
                     </div>
                     <div class="stats-display">
                         <div class="info-left">
-                            <div class="number" id="valorVisualizacoes">0</div>
-                            <div class="label-periodo" id="rotuloPeriodo">Total Geral de Leitores</div>
+                            <div class="number" id="valorVisualizacoesSide">0</div>
+                            <div class="label-periodo">Toque para ver gráficos detalhados</div>
                         </div>
                         <div class="stats-badge-live">
                             <i class="fas fa-circle" style="font-size: 7px;"></i> Rastreio Ativo
@@ -212,7 +183,7 @@
                     </div>
                 </div>
 
-                <!-- 2. ATIVAR CÓDIGO DO GOOGLE -->
+                <!-- 2. GOOGLE ANALYTICS -->
                 <div class="google-integration-card">
                     <label><i class="fab fa-google" style="color: #1a73e8;"></i> ID Google Analytics</label>
                     <input type="text" id="googleAnalyticsCode" placeholder="Ex: G-XXXXXXXXXX">
@@ -221,7 +192,7 @@
                     </button>
                 </div>
 
-                <!-- 3. ATIVAR CÓDIGO DE MONETIZAÇÃO -->
+                <!-- 3. GOOGLE ADSENSE -->
                 <div class="google-integration-card">
                     <label><i class="fas fa-dollar-sign" style="color: #137333;"></i> Google AdSense</label>
                     <textarea id="googleAdSenseCode" rows="2" placeholder="Cole o script do AdSense..."></textarea>
@@ -235,7 +206,6 @@
 
         <form id="formNoticia">
             
-            <!-- CATEGORIAS -->
             <div class="section-box">
                 <div class="section-title"><i class="fas fa-tags"></i> Nicho / Categoria</div>
                 <div class="checkbox-group">
@@ -251,10 +221,8 @@
                 </div>
             </div>
 
-            <!-- SEÇÃO 1: IMAGENS -->
             <div class="section-box" style="border-left: 5px solid #002a5c;">
                 <div class="section-title"><i class="fas fa-images"></i> 1. Imagem de Capa</div>
-                
                 <div class="image-upload-grid">
                     <div class="form-group">
                         <label>Foto 1 (Principal)</label>
@@ -293,7 +261,6 @@
                 </div>
             </div>
 
-            <!-- SEÇÃO 2: VÍDEO -->
             <div class="section-box" style="border-left: 5px solid #d93025;">
                 <div class="section-title"><i class="fas fa-video"></i> 2. Vídeo (Opcional)</div>
                 <div class="form-group">
@@ -311,34 +278,52 @@
                 </div>
             </div>
 
-            <!-- ANÚNCIO MANUAL -->
+            <!-- ANÚNCIO / BANNER PATROCINADOR ATUALIZADO (CÓDIGO OU IMAGEM + LINK) -->
             <div class="section-box" style="border-left: 5px solid #f9ab00;">
                 <div class="section-title"><i class="fas fa-ad"></i> Banner Patrocinador</div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label>Código do Banner</label>
-                    <textarea id="codigoAnuncio" rows="2" placeholder="Cole aqui o banner ou anúncio..."></textarea>
+                
+                <div class="ad-tabs">
+                    <button type="button" class="ad-tab-btn active" onclick="mudarAbaAnuncio('codigo', this)">Código / Script HTML</button>
+                    <button type="button" class="ad-tab-btn" onclick="mudarAbaAnuncio('imagem', this)">Imagem do Banner + Link</button>
+                </div>
+
+                <div id="conteudoAdCodigo" class="ad-tab-content active">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Código do Banner / Anúncio</label>
+                        <textarea id="codigoAnuncio" rows="2" placeholder="Cole aqui o banner ou anúncio..."></textarea>
+                    </div>
+                </div>
+
+                <div id="conteudoAdImagem" class="ad-tab-content">
+                    <div class="form-group">
+                        <label>Imagem do Patrocinador</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="bannerImgInput" accept="image/*">
+                            <button type="button" class="btn-remover-img" onclick="removerBannerImg()"><i class="fas fa-trash-alt"></i> Limpar</button>
+                        </div>
+                        <input type="hidden" id="bannerImgBase64">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Link de Direcionamento (URL ao clicar)</label>
+                        <input type="text" id="bannerLinkUrl" placeholder="https://wa.me/seu-anuncio ou link do site">
+                    </div>
                 </div>
             </div>
 
-            <!-- CONTEÚDO DA MATÉRIA -->
             <div class="section-box">
                 <div class="section-title"><i class="fas fa-pen-nib"></i> Redação da Matéria</div>
-
                 <div class="form-group">
                     <label>Título da Matéria</label>
                     <input type="text" id="titulo" placeholder="Manchete impactante..." required style="font-size: 17px; font-weight: bold; color: #000;">
                 </div>
-
                 <div class="form-group">
                     <label>Autor / Repórter</label>
                     <input type="text" id="autor" placeholder="Nome do jornalista">
                 </div>
-
                 <div class="form-group">
                     <label>Corpo do Texto</label>
                     <div id="editor-container"></div>
                 </div>
-
                 <div class="form-group">
                     <label>Fonte da Informação</label>
                     <input type="text" id="fonteNoticia" placeholder="Ex: Polícia Civil / Bombeiros">
@@ -351,7 +336,6 @@
             </div>
             <button type="button" id="btnCancelar" class="btn-cancelar" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
         </form>
-
     </div>
 
     <!-- MODAL TELA CHEIA: GERENCIAR MATÉRIAS -->
@@ -367,7 +351,46 @@
         </div>
     </div>
 
-    <!-- MODAL DE PRÉVIA EM TELA CHEIA COM BOTÃO DE VOLTAR -->
+    <!-- MODAL TELA CHEIA: GRÁFICOS E AUDIÊNCIA -->
+    <div class="modal-fullscreen-overlay" id="modalFullscreenAudiencia">
+        <div class="modal-fullscreen-content">
+            <div class="modal-fs-header">
+                <h2><i class="fas fa-chart-bar"></i> Painel Avançado de Audiência</h2>
+                <button class="modal-fs-close" onclick="fecharModalAudiencia()">&times;</button>
+            </div>
+            <div class="modal-fs-body">
+                <div class="stats-box" style="cursor: default;">
+                    <div class="stats-header">
+                        <h4><i class="fas fa-filter">} Selecionar Período de Análise</h4>
+                        <select id="filtroPeriodoModal" class="stats-select" onchange="atualizarEstatisticasView()">
+                            <option value="nenhum">Nenhum (Zerar contagem exibida)</option>
+                            <option value="1dia">1 Dia Específico</option>
+                            <option value="7dias">7 Dias</option>
+                            <option value="15dias">15 Dias</option>
+                            <option value="1mes">1 Mês</option>
+                            <option value="3meses">3 Meses</option>
+                            <option value="6meses">6 Meses</option>
+                            <option value="12meses" selected>1 Ano (12 Meses)</option>
+                            <option value="total">Total Geral</option>
+                        </select>
+                    </div>
+                    <div class="stats-display" style="margin-top: 10px;">
+                        <div class="info-left">
+                            <div class="number" id="valorVisualizacoesModal">0</div>
+                            <div class="label-periodo">Total de Visualizações no Período Selecionado</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRÁFICO VISUAL -->
+                <div style="background: #fff; padding: 20px; border-radius: 10px; border: 1px solid #d1d9e0; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 300px;">
+                    <canvas id="graficoAudiencia" style="max-height: 320px; width: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE PRÉVIA EM TELA CHEIA -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -422,6 +445,7 @@
         let idEditando = null;
         window.noticiasAdmin = {};
         window.listaCompletaNoticias = [];
+        let chartInstance = null;
 
         window.alternarSidebar = function() {
             const panel = document.getElementById('sidebarPanel');
@@ -446,7 +470,28 @@
             document.getElementById('modalFullscreenGerenciar').style.display = 'none';
         };
 
-        function processarImagemParaBase64(file, inputHiddenId) {
+        window.abrirModalAudiencia = function() {
+            alternarSidebar();
+            document.getElementById('modalFullscreenAudiencia').style.display = 'flex';
+            atualizarEstatisticasView();
+        };
+
+        window.fecharModalAudiencia = function() {
+            document.getElementById('modalFullscreenAudiencia').style.display = 'none';
+        };
+
+        window.mudarAbaAnuncio = function(tipo, btn) {
+            document.querySelectorAll('.ad-tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.ad-tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            if (tipo === 'codigo') {
+                document.getElementById('conteudoAdCodigo').classList.add('active');
+            } else {
+                document.getElementById('conteudoAdImagem').classList.add('active');
+            }
+        };
+
+        function processarImagemParaBase64(file, inputHiddenId, callback) {
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(evt) {
@@ -466,20 +511,26 @@
                     ctx.drawImage(img, 0, 0, width, height);
                     const base64 = canvas.toDataURL('image/jpeg', 0.85);
                     document.getElementById(inputHiddenId).value = base64;
-                    atualizarPreviewImagens();
+                    if(callback) callback();
                 }
                 img.src = evt.target.result;
             };
             reader.readAsDataURL(file);
         }
 
-        document.getElementById('imagemInput1').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_1'));
-        document.getElementById('imagemInput2').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_2'));
+        document.getElementById('imagemInput1').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_1', atualizarPreviewImagens));
+        document.getElementById('imagemInput2').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_2', atualizarPreviewImagens));
+        document.getElementById('bannerImgInput').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'bannerImgBase64'));
 
         window.removerImagem = function(num) {
             document.getElementById(`imagemInput${num}`).value = "";
             document.getElementById(`imagemBase64_${num}`).value = "";
             atualizarPreviewImagens();
+        };
+
+        window.removerBannerImg = function() {
+            document.getElementById('bannerImgInput').value = "";
+            document.getElementById('bannerImgBase64').value = "";
         };
 
         window.mudarLayout = function(ratio, btn) {
@@ -533,33 +584,59 @@
         };
 
         window.atualizarEstatisticasView = function() {
-            const filtro = document.getElementById('filtroPeriodo').value;
+            const filtro = document.getElementById('filtroPeriodoModal').value;
             let totalViews = 0;
             const agora = Date.now();
             const umDiaMs = 24 * 60 * 60 * 1000;
             const umMesMs = 30 * umDiaMs;
 
-            window.listaCompletaNoticias.forEach(item => {
-                const viewsMatéria = item.visualizacoes || 0;
-                const dataCriacao = item.dataCriacao || item.dataAtualizacao || agora;
-                const diferencaMs = agora - dataCriacao;
+            if (filtro === 'nenhum') {
+                totalViews = 0;
+            } else {
+                window.listaCompletaNoticias.forEach(item => {
+                    const viewsMatéria = item.visualizacoes || 0;
+                    const dataCriacao = item.dataCriacao || item.dataAtualizacao || agora;
+                    const diferencaMs = agora - dataCriacao;
 
-                if (filtro === 'hoje' || filtro === '1dia') {
-                    if (diferencaMs <= umDiaMs) totalViews += viewsMatéria;
-                } else if (filtro === '7dias' && diferencaMs <= (7 * umDiaMs)) {
-                    totalViews += viewsMatéria;
-                } else if (filtro === '15dias' && diferencaMs <= (15 * umDiaMs)) {
-                    totalViews += viewsMatéria;
-                } else if (filtro.includes('mes')) {
-                    const meses = parseInt(filtro) || 1;
-                    if (diferencaMs <= (meses * umMesMs)) totalViews += viewsMatéria;
-                } else if (filtro === 'total') {
-                    totalViews += viewsMatéria;
+                    if (filtro === '1dia' && diferencaMs <= umDiaMs) totalViews += viewsMatéria;
+                    else if (filtro === '7dias' && diferencaMs <= (7 * umDiaMs)) totalViews += viewsMatéria;
+                    else if (filtro === '15dias' && diferencaMs <= (15 * umDiaMs)) totalViews += viewsMatéria;
+                    else if (filtro === '1mes' && diferencaMs <= umMesMs) totalViews += viewsMatéria;
+                    else if (filtro === '3meses' && diferencaMs <= (3 * umMesMs)) totalViews += viewsMatéria;
+                    else if (filtro === '6meses' && diferencaMs <= (6 * umMesMs)) totalViews += viewsMatéria;
+                    else if (filtro === '12meses' && diferencaMs <= (12 * umMesMs)) totalViews += viewsMatéria;
+                    else if (filtro === 'total') totalViews += viewsMatéria;
+                });
+            }
+
+            document.getElementById('valorVisualizacoesSide').innerText = totalViews.toLocaleString('pt-BR');
+            document.getElementById('valorVisualizacoesModal').innerText = totalViews.toLocaleString('pt-BR');
+            renderizarGrafico(totalViews);
+        };
+
+        function renderizarGrafico(totalViews) {
+            const ctx = document.getElementById('graficoAudiencia').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Acessos Registrados'],
+                    datasets: [{
+                        label: 'Leitores',
+                        data: [totalViews],
+                        backgroundColor: '#002a5c',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
                 }
             });
-
-            document.getElementById('valorVisualizacoes').innerText = totalViews.toLocaleString('pt-BR');
-        };
+        }
 
         window.carregarConfigGoogle = async function() {
             try {
@@ -603,7 +680,7 @@
 
                 await setDoc(doc(db, "configuracoes", "google"), payload, { merge: true });
                 marcarBotonAtivo(tipo, true);
-                alert("✅ Ativado com sucesso!");
+                alert("✅ Ativado com sucesso! Pronto para rastrear e exibir anúncios do Google.");
             } catch (e) {
                 alert("Erro ao ativar.");
                 btn.innerHTML = "<i class='fas fa-power-off'></i> Tentar Novamente";
@@ -678,6 +755,8 @@
                     videoArquivo: document.getElementById('videoBase64').value,
                     creditosVideo: document.getElementById('creditosVideo').value,
                     codigoAnuncio: document.getElementById('codigoAnuncio').value,
+                    bannerImgBase64: document.getElementById('bannerImgBase64').value,
+                    bannerLinkUrl: document.getElementById('bannerLinkUrl').value,
                     autor: document.getElementById('autor').value,
                     titulo: document.getElementById('titulo').value,
                     texto: textoRico,
@@ -728,7 +807,6 @@
 
         window.renderizarListasDeNoticias = function() {
             const listaFsDiv = document.getElementById("lista-noticias-fullscreen");
-            
             if (window.listaCompletaNoticias.length === 0) {
                 listaFsDiv.innerHTML = "<p style='font-size:14px;'>Nenhuma matéria encontrada.</p>";
                 return;
@@ -778,6 +856,8 @@
             document.getElementById("fonteImagem").value = item.fonteImagem || "";
             document.getElementById("creditosVideo").value = item.creditosVideo || "";
             document.getElementById("codigoAnuncio").value = item.codigoAnuncio || "";
+            document.getElementById("bannerImgBase64").value = item.bannerImgBase64 || "";
+            document.getElementById("bannerLinkUrl").value = item.bannerLinkUrl || "";
             document.getElementById("fonteNoticia").value = item.fonteNoticia || "";
             
             document.getElementById("imagemBase64_1").value = item.imagem1 || "";
@@ -813,6 +893,7 @@
             quill.setContents([]);
             document.getElementById("imagemBase64_1").value = "";
             document.getElementById("imagemBase64_2").value = "";
+            document.getElementById("bannerImgBase64").value = "";
             atualizarPreviewImagens();
             document.getElementById("btnSalvar").innerHTML = "<i class='fas fa-paper-plane'></i> Publicar Matéria";
             document.getElementById("btnCancelar").style.display = "none";
