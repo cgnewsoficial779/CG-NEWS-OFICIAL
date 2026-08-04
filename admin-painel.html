@@ -895,12 +895,17 @@
 
             if (url.includes("facebook.com") || url.includes("fb.watch")) {
                 let cleanUrl = encodeURIComponent(url);
-                let isVideo = url.includes("/videos/") || url.includes("/reel/") || url.includes("watch") || url.includes("/share/r/");
-                let altura = isVideo ? "540" : "500";
+                let isVideo = url.includes("/videos/") || url.includes("/reel/") || url.includes("watch") || url.includes("/share/v/") || url.includes("/share/r/");
                 
-                return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
-                            <iframe src="https://www.facebook.com/plugins/post.php?href=${cleanUrl}&show_text=true&width=500" width="100%" height="${altura}" style="border:none;overflow:hidden;max-width:500px;border-radius:8px;background:#fff;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-                        </div>`;
+                if (isVideo) {
+                    return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;background:#000;border-radius:8px;">
+                                <iframe src="https://www.facebook.com/plugins/video.php?href=${cleanUrl}&show_text=0&width=500" width="100%" height="480" style="border:none;overflow:hidden;max-width:500px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                            </div>`;
+                } else {
+                    return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
+                                <iframe src="https://www.facebook.com/plugins/post.php?href=${cleanUrl}&show_text=true&width=500" width="100%" height="500" style="border:none;overflow:hidden;max-width:500px;border-radius:8px;background:#fff;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                            </div>`;
+                }
             }
 
             if (url.includes("x.com") || url.includes("twitter.com")) {
