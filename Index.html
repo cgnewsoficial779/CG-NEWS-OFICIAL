@@ -186,7 +186,7 @@
         .grid-img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* PREENCHE O 4:3 DE FORMA HARMONIOSA */
+            object-fit: cover;
             display: block;
         }
         
@@ -737,7 +737,6 @@
 
         atualizarBarraData();
 
-        // ATUALIZADO: AGORA DETECTA QUALQUER NOME DE CAMPO QUE O PAINEL USE PARA A FOTO (INCLUSIVE ARQUIVO LOCAL / BASE64)
         function obterUrlImagem(item) {
             if (!item) return "";
             return item.imagem || 
@@ -917,7 +916,6 @@
 
             let blocoMidiaPrincipal = "";
             if (imgUrlMateria) {
-                // FOTO ORIGINAL EXATA PUBLICADA NO PAINEL (SEM CORTES)
                 blocoMidiaPrincipal = `
                     <div style="margin: 20px 0; text-align: center; background: #000; border-radius: 6px; overflow: hidden;">
                         <img src="${imgUrlMateria}" style="width: 100%; height: auto; max-height: 600px; object-fit: contain; display: block; margin: 0 auto;">
@@ -1224,23 +1222,24 @@
             const imgUrl = obterUrlImagem(item);
             const textoResumo = item.texto ? item.texto.substring(0, 110) + "..." : "Clique para ler a matéria completa.";
 
+            // ATUALIZADO: AGORA O CLIQUE NO CARD ABRE CORRETAMENTE A MATÉRIA PASSANDO O ID ÚNICO
             return `
-                <div class="news-list-item">
-                    <div class="news-list-image-container" onclick="abrirMateria('${item.idUnico}')">
+                <div class="news-list-item" onclick="abrirMateria('${item.idUnico}')">
+                    <div class="news-list-image-container">
                         ${imgUrl ? 
                             `<img src="${imgUrl}" class="news-list-image">` : 
                             `<div style="color:#a0aec0; font-size:12px;">Sem foto</div>`
                         }
                     </div>
                     <div class="news-list-content">
-                        <div class="news-list-title" onclick="abrirMateria('${item.idUnico}')">${item.titulo}</div>
-                        <div class="news-list-meta" onclick="abrirMateria('${item.idUnico}')">
+                        <div class="news-list-title">${item.titulo}</div>
+                        <div class="news-list-meta">
                             <span><i class="far fa-clock"></i> ${htmlData}</span>
                             ${item.autor ? `<span><i class="far fa-user"></i> ${item.autor}</span>` : ""}
                         </div>
-                        <div class="news-list-excerpt" onclick="abrirMateria('${item.idUnico}')">${textoResumo}</div>
+                        <div class="news-list-excerpt">${textoResumo}</div>
 
-                        <div class="card-share-bar">
+                        <div class="card-share-bar" onclick="event.stopPropagation()">
                             <span class="card-share-label">Compartilhar:</span>
                             <div class="card-share-icons">
                                 <button class="card-share-btn wa" onclick="compartilhar('whatsapp', '${item.titulo}')" title="Compartilhar no WhatsApp"><i class="fab fa-whatsapp"></i></button>
