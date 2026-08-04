@@ -893,7 +893,6 @@
                 }
             }
 
-            // SUPORTE OTIMIZADO PARA FACEBOOK (Gera o card original do post, vídeo ou reel via iframe oEmbed da Meta)
             if (url.includes("facebook.com") || url.includes("fb.watch")) {
                 let cleanUrl = encodeURIComponent(url);
                 let isVideo = url.includes("/videos/") || url.includes("/reel/") || url.includes("watch") || url.includes("/share/r/");
@@ -904,7 +903,6 @@
                         </div>`;
             }
 
-            // SUPORTE AO X (TWITTER)
             if (url.includes("x.com") || url.includes("twitter.com")) {
                 let cleanUrl = url.split("?")[0];
                 return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;">
