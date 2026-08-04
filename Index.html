@@ -1072,6 +1072,9 @@
 
             modal.style.display = "block";
             document.body.style.overflow = "hidden"; 
+            
+            // GARANTE QUE A TELA DA MATÉRIA VAI ABRIR SEMPRE NO TOPO EXATO
+            modal.scrollTo(0, 0);
             window.scrollTo(0, 0);
 
             renderizarRecomendadas();
@@ -1154,7 +1157,6 @@
                 const htmlData = gerarHtmlDatas(item);
                 const imgUrl = obterUrlImagem(item);
 
-                // CORRIGIDO: O CLIQUE AGORA ABRE CORRETAMENTE A MATÉRIA EM TELA CHEIA VIA MODAL
                 container.innerHTML += `
                     <div class="ranking-list-item" onclick="abrirMateria('${item.idUnico}')">
                         <div class="ranking-number-box">${numeroRanking}</div>
@@ -1223,7 +1225,6 @@
             const imgUrl = obterUrlImagem(item);
             const textoResumo = item.texto ? item.texto.substring(0, 110) + "..." : "Clique para ler a matéria completa.";
 
-            // CORRIGIDO: O CLIQUE AGORA ABRE CORRETAMENTE A MATÉRIA EM TELA CHEIA VIA MODAL
             return `
                 <div class="news-list-item" onclick="abrirMateria('${item.idUnico}')">
                     <div class="news-list-image-container">
