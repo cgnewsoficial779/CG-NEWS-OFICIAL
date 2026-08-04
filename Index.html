@@ -774,19 +774,21 @@
 
         atualizarBarraData();
 
+        // CORREÇÃO: Varre todas as variações possíveis de nomes de campos de imagem salvos no banco
         function obterUrlImagem(item) {
             if (!item) return "";
-            return item.imagem || 
-                   item.foto || 
-                   item.capa || 
-                   item.imageUrl || 
-                   item.urlImagem || 
-                   item.img || 
-                   item.url || 
-                   item.arquivo || 
-                   item.fotoBase64 || 
-                   item.imagemBase64 ||
-                   item.imagemUrl || "";
+            const url = item.imagem || 
+                        item.foto || 
+                        item.capa || 
+                        item.imageUrl || 
+                        item.urlImagem || 
+                        item.img || 
+                        item.url || 
+                        item.arquivo || 
+                        item.fotoBase64 || 
+                        item.imagemBase64 ||
+                        item.imagemUrl || "";
+            return url.trim();
         }
 
         function converterTimestamp(valor) {
@@ -1281,11 +1283,6 @@
                 btnVerMais.style.display = "none";
             }
         }
-
-        window.expandirMaisLidas = function() {
-            window.limiteMaisLidas += 5;
-            renderizarMaisLidasMateria();
-        };
 
         window.expandirMaisLidas = function() {
             window.limiteMaisLidas += 5;
