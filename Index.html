@@ -900,13 +900,21 @@
             }
         };
 
-        window.abrirMateria = function(id) {
+        window.abrirMateria = function(id, salvarHistorico = true) {
             const item = window.bancoDeNoticias.find(n => n.idUnico === id);
             if (!item) return;
 
             window.materiaAtualObj = item;
             window.limiteRecomendadas = 10;
             window.limiteMaisLidas = 5;
+
+            // SALVA NO LOCALSTORAGE E ALTERA A URL PARA PRESERVAR AO ATUALIZAR (F5)
+            localStorage.setItem('ultimaMateriaAberta', id);
+            if (salvarHistorico) {
+                const urlObj = new URL(window.location.href);
+                urlObj.searchParams.set('materia', id);
+                window.history.pushState({ id: id }, '', urlObj.toString());
+            }
 
             const modal = document.getElementById("modal-materia");
             const conteudo = document.getElementById("conteudo-materia");
@@ -1073,7 +1081,6 @@
             modal.style.display = "block";
             document.body.style.overflow = "hidden"; 
             
-            // GARANTE QUE A TELA DA MATÉRIA VAI ABRIR SEMPRE NO TOPO EXATO
             modal.scrollTo(0, 0);
             window.scrollTo(0, 0);
 
@@ -1086,7 +1093,24 @@
             document.getElementById("barra-busca-materia").style.display = "none";
             document.getElementById("input-busca-materia").value = "";
             document.body.style.overflow = "auto"; 
+
+            // LIMPA OS DADOS DE MATÉRIA ABERTA AO FECHAR MANUALMENTE
+            localStorage.removeItem('ultimaMateriaAberta');
+            const urlObj = new URL(window.location.href);
+            urlObj.searchParams.delete('materia');
+            window.history.pushState({}, '', urlObj.toString());
         };
+
+        // TRATA O BOTÃO DE "VOLTAR" DO NAVEGADOR
+        window.addEventListener('popstate', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const materiaId = urlParams.get('materia');
+            if (!materiaId) {
+                document.getElementById("modal-materia").style.display = "none";
+                document.body.style.overflow = "auto";
+                localStorage.removeItem('ultimaMateriaAberta');
+            }
+        });
 
         function renderizarRecomendadas() {
             const secao = document.getElementById("secao-recomendadas");
@@ -1388,6 +1412,18 @@
                 });
 
                 renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
+
+                // VERIFICA SE HÁ UMA MATÉRIA SALVA NA URL OU NO LOCALSTORAGE AO CARREGAR/ATUALIZAR
+                const urlParams = new URLSearchParams(window.location.search);
+                const materiaUrl = urlParams.get('materia');
+                const materiaSalva = materiaUrl || localStorage.getItem('ultimaMateriaAberta');
+
+                if (materiaSalva) {
+                    const existe = window.bancoDeNoticias.find(n => n.idUnico === materiaSalva);
+                    if (existe) {
+                        abrirMateria(materiaSalva, false);
+                    }
+                }
 
             } catch (erro) {
                 console.error("Erro ao carregar notícias:", erro);
