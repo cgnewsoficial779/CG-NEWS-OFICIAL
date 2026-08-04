@@ -586,7 +586,13 @@
 
                     if(rascunho.formatoVideoEscolhido) {
                         const btnV = document.querySelector(`#ratiosVideo .btn-ratio[onclick*="'${rascunho.formatoVideoEscolhido}'"]`);
-                        if(btnV) mudarLayoutVideo(rascunho.formatoVideoEscolhido, btnV);
+                        if(btnV) {
+                            mudarLayoutVideo(rascunho.formatoVideoEscolhido, btnV);
+                        } else {
+                            // Se for um formato customizado automático
+                            document.getElementById('formatoVideoEscolhido').value = rascunho.formatoVideoEscolhido;
+                            document.getElementById('videoPreview').style.aspectRatio = rascunho.formatoVideoEscolhido;
+                        }
                     }
 
                     if(rascunho.imagemBase64_1) document.getElementById('imagemBase64_1').value = rascunho.imagemBase64_1;
@@ -736,17 +742,30 @@
             }
         }
 
+        // LÓGICA DE VÍDEO ATUALIZADA (100% AUTOMÁTICA)
         document.getElementById('videoInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
             const videoPreview = document.getElementById('videoPreview');
-            
-            const ratioAtual = document.getElementById('formatoVideoEscolhido').value;
-            videoPreview.style.aspectRatio = ratioAtual;
 
             const urlBlob = URL.createObjectURL(file);
             videoPreview.src = urlBlob;
             videoPreview.style.display = 'block';
+
+            // Detecta automaticamente a proporção original do vídeo
+            videoPreview.onloadedmetadata = function() {
+                const largura = this.videoWidth;
+                const altura = this.videoHeight;
+                const proporcaoAutomatica = largura + '/' + altura;
+                
+                this.style.aspectRatio = proporcaoAutomatica;
+                document.getElementById('formatoVideoEscolhido').value = proporcaoAutomatica;
+                
+                // Desmarca os botões, já que o formato agora é exato e automático
+                document.querySelectorAll('#ratiosVideo .btn-ratio').forEach(b => b.classList.remove('active'));
+                
+                window.salvarRascunho();
+            };
 
             const reader = new FileReader();
             reader.onload = async function(evt) {
@@ -940,7 +959,6 @@
                     </div>`;
         }
 
-        // LÓGICA DE EXIBIÇÃO DA PRÉVIA COM POSICIONAMENTO INTELIGENTE
         window.abrirPrevia = function() {
             document.getElementById('prevTitulo').innerText = document.getElementById('titulo').value || "Título";
             document.getElementById('prevAutor').innerText = document.getElementById('autor').value || "Redação";
@@ -1172,7 +1190,12 @@
 
             if(item.formatoVideo) {
                 const btnV = document.querySelector(`#ratiosVideo .btn-ratio[onclick*="'${item.formatoVideo}'"]`);
-                if(btnV) window.mudarLayoutVideo(item.formatoVideo, btnV);
+                if(btnV) {
+                    window.mudarLayoutVideo(item.formatoVideo, btnV);
+                } else {
+                    document.getElementById('formatoVideoEscolhido').value = item.formatoVideo;
+                    document.getElementById('videoPreview').style.aspectRatio = item.formatoVideo;
+                }
             }
 
             atualizarPreviewImagens();
