@@ -896,7 +896,6 @@
             // SUPORTE COMPLETO AO X (TWITTER) - GERA O CARD ORIGINAL
             if (url.includes("x.com") || url.includes("twitter.com")) {
                 let cleanUrl = url.split("?")[0];
-                // Garante que o embed carregue o widget oficial do X para mostrar fotos, vídeos e textos
                 return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;">
                             <blockquote class="twitter-tweet" data-theme="light">
                                 <a href="${cleanUrl}"></a>
@@ -936,7 +935,6 @@
             const containerRede = document.getElementById('prevContainerRedeSocial');
             containerRede.innerHTML = gerarEmbedRedeSocial(linkRede);
             
-            // Reexecuta scripts dinâmicos de embed (como o widget do X) se existirem
             setTimeout(() => {
                 const scripts = containerRede.getElementsByTagName('script');
                 for (let i = 0; i < scripts.length; i++) {
