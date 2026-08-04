@@ -331,9 +331,9 @@
                 </div>
 
                 <div class="form-group" style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px dashed #002a5c; margin-top: 15px;">
-                    <label style="color: #002a5c;"><i class="fab fa-facebook-f"></i> Link do X, Facebook, Instagram ou YouTube</label>
-                    <input type="text" id="linkRedeSocial" placeholder="Cole o link (ex: https://www.facebook.com/share/r/...)">
-                    <small style="display: block; margin-top: 5px; color: #555; font-size: 11px;">O player ou card original da rede social será gerado automaticamente para visualização.</small>
+                    <label style="color: #002a5c;"><i class="fas fa-share-alt"></i> Link de Rede Social (X, Facebook, Instagram, YouTube)</label>
+                    <input type="text" id="linkRedeSocial" placeholder="Cole o link da publicação, reel ou vídeo...">
+                    <small style="display: block; margin-top: 5px; color: #555; font-size: 11px;">O player ou card oficial será gerado automaticamente para visualização e clique.</small>
                 </div>
             </div>
 
@@ -413,7 +413,7 @@
             <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;" id="prevFonteArea">
                 <strong style="font-size: 13px; color: #444;" id="prevFonteNoticia">Fonte: </strong>
             </div>
-            <div id="prevContainerRedeSocial" style="margin-top: 15px; display: flex; justify-content: center; width: 100%;"></div>
+            <div id="prevContainerRedeSocial" style="margin-top: 15px; display: flex; justify-content: center;"></div>
         </div>
     </div>
 
@@ -893,21 +893,7 @@
                 }
             }
 
-            if (url.includes("facebook.com") || url.includes("fb.watch")) {
-                let cleanUrl = encodeURIComponent(url);
-                let isVideo = url.includes("/videos/") || url.includes("/reel/") || url.includes("watch") || url.includes("/share/v/") || url.includes("/share/r/");
-                
-                if (isVideo) {
-                    return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;background:#000;border-radius:8px;">
-                                <iframe src="https://www.facebook.com/plugins/video.php?href=${cleanUrl}&show_text=0&width=500" width="100%" height="480" style="border:none;overflow:hidden;max-width:500px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-                            </div>`;
-                } else {
-                    return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
-                                <iframe src="https://www.facebook.com/plugins/post.php?href=${cleanUrl}&show_text=true&width=500" width="100%" height="500" style="border:none;overflow:hidden;max-width:500px;border-radius:8px;background:#fff;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-                            </div>`;
-                }
-            }
-
+            // SUPORTE COMPLETO AO X (TWITTER)
             if (url.includes("x.com") || url.includes("twitter.com")) {
                 let cleanUrl = url.split("?")[0];
                 return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;">
@@ -924,6 +910,37 @@
                 return `<div style="display:flex;justify-content:center;margin-top:10px;">
                             <iframe src="${cleanUrl}embed/" width="100%" height="480" frameborder="0" scrolling="no" allowtransparency="true" style="max-width:540px;border-radius:8px;background:#fff;"></iframe>
                         </div>`;
+            }
+
+            // SUPORTE TOTAL A FACEBOOK (REELS, VÍDEOS, POSTS E FOTOS)
+            if (url.includes("facebook.com") || url.includes("fb.watch")) {
+                let encodedUrl = encodeURIComponent(url);
+                
+                if (url.includes("/reel/") || url.includes("/share/r/") || url.includes("/share/v/") || url.includes("/videos/") || url.includes("fb.watch")) {
+                    return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
+                                <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=${encodedUrl}&show_text=false&width=476&t=0" 
+                                    width="476" 
+                                    height="476" 
+                                    style="border:none;overflow:hidden;max-width:100%;border-radius:8px;background:#000;" 
+                                    scrolling="no" 
+                                    frameborder="0" 
+                                    allowfullscreen="true" 
+                                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+                                </iframe>
+                            </div>`;
+                } else {
+                    return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
+                                <iframe src="https://www.facebook.com/plugins/post.php?href=${encodedUrl}&show_text=true&width=500" 
+                                    width="500" 
+                                    height="650" 
+                                    style="border:none;overflow:hidden;max-width:100%;border-radius:8px;background:#fff;" 
+                                    scrolling="no" 
+                                    frameborder="0" 
+                                    allowfullscreen="true" 
+                                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+                                </iframe>
+                            </div>`;
+                }
             }
 
             return `<div style="margin-top:10px;padding:12px;background:#f0f2f5;border-radius:8px;border-left:4px solid #002a5c;">
@@ -957,7 +974,7 @@
                     s.async = true;
                     document.body.appendChild(s);
                 }
-            }, 400);
+            }, 300);
 
             const img1 = document.getElementById('imagemBase64_1').value;
             const img2 = document.getElementById('imagemBase64_2').value;
