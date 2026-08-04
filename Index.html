@@ -774,10 +774,12 @@
 
         atualizarBarraData();
 
-        // CORREÇÃO: Varre todas as variações possíveis de nomes de campos de imagem salvos no banco
+        // ATUALIZADO: Prioridade total para imagem1 e imagem2 vindas do painel admin
         function obterUrlImagem(item) {
             if (!item) return "";
-            const url = item.imagem || 
+            const url = item.imagem1 || 
+                        item.imagem2 || 
+                        item.imagem || 
                         item.foto || 
                         item.capa || 
                         item.imageUrl || 
@@ -788,7 +790,7 @@
                         item.fotoBase64 || 
                         item.imagemBase64 ||
                         item.imagemUrl || "";
-            return url.trim();
+            return typeof url === 'string' ? url.trim() : "";
         }
 
         function converterTimestamp(valor) {
@@ -958,16 +960,40 @@
             const conteudo = document.getElementById("conteudo-materia");
 
             const blocoDatas = gerarHtmlDatas(item);
-            const imgUrlMateria = obterUrlImagem(item);
+
+            // Suporte completo a imagem1 e imagem2 na página da matéria com suporte à proporção escolhida
+            const formato = item.formatoCapa || '16/9';
+            const aspectRatioCSS = formato.replace(':', '/');
 
             let blocoMidiaPrincipal = "";
-            if (imgUrlMateria) {
-                blocoMidiaPrincipal = `
-                    <div style="margin: 20px 0; text-align: center; background: #000; border-radius: 6px; overflow: hidden;">
-                        <img src="${imgUrlMateria}" style="width: 100%; height: auto; max-height: 600px; object-fit: contain; display: block; margin: 0 auto;">
-                        <div style="font-size: 11px; font-weight: 600; color: #a0aec0; padding: 6px; background: #111;">${item.fonteImagem || "Reprodução / Divulgação"}</div>
-                    </div>
-                `;
+            const img1 = item.imagem1 ? item.imagem1.trim() : "";
+            const img2 = item.imagem2 ? item.imagem2.trim() : "";
+
+            if (img1 || img2) {
+                blocoMidiaPrincipal += `<div style="margin: 20px 0; width: 100%; aspect-ratio: ${aspectRatioCSS}; background: #000; border-radius: 6px; overflow: hidden; display: flex;">`;
+                
+                if (img1 && img2) {
+                    blocoMidiaPrincipal += `<img src="${img1}" style="flex: 1; width: 50%; height: 100%; object-fit: cover; border-right: 2px solid #fff;">`;
+                    blocoMidiaPrincipal += `<img src="${img2}" style="flex: 1; width: 50%; height: 100%; object-fit: cover;">`;
+                } else if (img1) {
+                    blocoMidiaPrincipal += `<img src="${img1}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
+                } else if (img2) {
+                    blocoMidiaPrincipal += `<img src="${img2}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
+                }
+                
+                blocoMidiaPrincipal += `</div>`;
+                blocoMidiaPrincipal += `<div style="font-size: 11px; font-weight: 600; color: #a0aec0; padding: 6px; background: #111; border-radius: 0 0 6px 6px; margin-top: -20px; margin-bottom: 20px;">Foto: ${item.fonteImagem || "Reprodução / Divulgação"}</div>`;
+            } else {
+                // Fallback caso venha em outro formato antigo
+                const imgFallback = obterUrlImagem(item);
+                if (imgFallback) {
+                    blocoMidiaPrincipal = `
+                        <div style="margin: 20px 0; text-align: center; background: #000; border-radius: 6px; overflow: hidden;">
+                            <img src="${imgFallback}" style="width: 100%; height: auto; max-height: 600px; object-fit: contain; display: block; margin: 0 auto;">
+                            <div style="font-size: 11px; font-weight: 600; color: #a0aec0; padding: 6px; background: #111;">Foto: ${item.fonteImagem || "Reprodução / Divulgação"}</div>
+                        </div>
+                    `;
+                }
             }
 
             let blocoVideoRedeSocial = "";
