@@ -27,7 +27,6 @@
         .btn-menu-hamburguer { background: #002a5c; color: white; border: none; width: 45px; height: 45px; border-radius: 8px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; box-shadow: 0 2px 6px rgba(0,42,92,0.25); }
         .btn-menu-hamburguer:hover { background: #001d40; }
 
-        /* PAINEL LATERAL (SIDEBAR GAVETA) */
         .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9998; backdrop-filter: blur(3px); }
         .sidebar-panel { position: fixed; top: 0; right: -420px; width: 100%; max-width: 380px; height: 100%; background: #fff; z-index: 9999; box-shadow: -5px 0 30px rgba(0,0,0,0.15); transition: right 0.35s ease; display: flex; flex-direction: column; }
         .sidebar-panel.ativo { right: 0; }
@@ -41,7 +40,6 @@
         .btn-menu-gerenciar { background: #0275d8; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; width: 100%; box-shadow: 0 2px 6px rgba(2,117,216,0.3); }
         .btn-menu-gerenciar:hover { background: #025aa5; }
 
-        /* MODAL TELA CHEIA GERAL */
         .modal-fullscreen-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-fullscreen-content { background: #f0f2f5; width: 100vw; height: 100vh; border-radius: 0; display: flex; flex-direction: column; overflow: hidden; }
         @media(min-width: 768px) { .modal-fullscreen-content { width: 95vw; height: 95vh; border-radius: 12px; } }
@@ -50,7 +48,6 @@
         .modal-fs-close { background: #d93025; color: white; border: none; width: 38px; height: 38px; border-radius: 6px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         .modal-fs-body { padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 15px; }
 
-        /* PAINEL DE ESTATÍSTICAS CLICÁVEL */
         .stats-box { background: linear-gradient(135deg, #f8f9fa 0%, #eef2f7 100%); border: 1px solid #d1d9e0; border-radius: 10px; padding: 15px; border-left: 5px solid #002a5c; cursor: pointer; transition: 0.2s; }
         .stats-box:hover { background: #e2e8f0; }
         .stats-header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
@@ -142,7 +139,7 @@
         <div class="header-admin">
             <h1><i class="fas fa-newspaper"></i> CG NEWS <span style="font-size:11px; padding:3px 8px; background:#cc0000; color:#fff; border-radius:4px; margin-left:6px;">OFICIAL</span></h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V9.4</span>
+                <span class="badge-pro">V9.5</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -334,9 +331,9 @@
                 </div>
 
                 <div class="form-group" style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px dashed #002a5c; margin-top: 15px;">
-                    <label style="color: #002a5c;"><i class="fas fa-share-alt"></i> Link de Rede Social (Shorts, YouTube, Instagram, etc.)</label>
-                    <input type="text" id="linkRedeSocial" placeholder="Cole o link do post do Instagram ou vídeo do YouTube aqui...">
-                    <small style="display: block; margin-top: 5px; color: #555; font-size: 11px;">Ex: https://youtube.com/shorts/... O vídeo será exibido automaticamente na página pública.</small>
+                    <label style="color: #002a5c;"><i class="fab fa-twitter"></i> Link do X (Twitter) / Vídeo ou Post</label>
+                    <input type="text" id="linkRedeSocial" placeholder="Cole o link do X (ex: https://x.com/.../status/...)">
+                    <small style="display: block; margin-top: 5px; color: #555; font-size: 11px;">O card original do X será gerado automaticamente para visualização e clique.</small>
                 </div>
             </div>
 
@@ -416,7 +413,7 @@
             <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;" id="prevFonteArea">
                 <strong style="font-size: 13px; color: #444;" id="prevFonteNoticia">Fonte: </strong>
             </div>
-            <div id="prevContainerRedeSocial" style="margin-top: 15px;"></div>
+            <div id="prevContainerRedeSocial" style="margin-top: 15px; display: flex; justify-content: center;"></div>
         </div>
     </div>
 
@@ -459,7 +456,6 @@
         window.listaCompletaNoticias = [];
         let chartInstance = null;
 
-        // --- SISTEMA DE BANCO DE DADOS DE MIDIA (IndexedDB) ---
         function abrirDBMedia() {
             return new Promise((resolve, reject) => {
                 const req = indexedDB.open("CGNewsDB", 1);
@@ -502,7 +498,6 @@
             } catch(e) {}
         }
 
-        // --- SISTEMA DE RASCUNHO AUTOMÁTICO ---
         let timerSave;
         window.salvarRascunho = function() {
             if (idEditando) return;
@@ -898,6 +893,18 @@
                 }
             }
 
+            // SUPORTE COMPLETO AO X (TWITTER) - GERA O CARD ORIGINAL
+            if (url.includes("x.com") || url.includes("twitter.com")) {
+                let cleanUrl = url.split("?")[0];
+                // Garante que o embed carregue o widget oficial do X para mostrar fotos, vídeos e textos
+                return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;">
+                            <blockquote class="twitter-tweet" data-theme="light">
+                                <a href="${cleanUrl}"></a>
+                            </blockquote>
+                            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"><\/script>
+                        </div>`;
+            }
+
             if (url.includes("instagram.com")) {
                 let cleanUrl = url.split("?")[0];
                 if (!cleanUrl.endsWith("/")) cleanUrl += "/";
@@ -908,7 +915,7 @@
 
             return `<div style="margin-top:10px;padding:12px;background:#f0f2f5;border-radius:8px;border-left:4px solid #002a5c;">
                         <a href="${url}" target="_blank" style="color:#002a5c;font-weight:bold;text-decoration:none;display:flex;align-items:center;gap:8px;">
-                            <i class="fas fa-play-circle" style="font-size:20px;"></i> Assistir na rede social original
+                            <i class="fas fa-external-link-alt" style="font-size:18px;"></i> Acessar link externo
                         </a>
                     </div>`;
         }
@@ -926,7 +933,19 @@
             document.getElementById('prevFonteNoticia').innerText = `Fonte: ${fonteNoticiaVal || "Não informada"}`;
 
             const linkRede = document.getElementById('linkRedeSocial').value;
-            document.getElementById('prevContainerRedeSocial').innerHTML = gerarEmbedRedeSocial(linkRede);
+            const containerRede = document.getElementById('prevContainerRedeSocial');
+            containerRede.innerHTML = gerarEmbedRedeSocial(linkRede);
+            
+            // Reexecuta scripts dinâmicos de embed (como o widget do X) se existirem
+            setTimeout(() => {
+                const scripts = containerRede.getElementsByTagName('script');
+                for (let i = 0; i < scripts.length; i++) {
+                    const s = document.createElement('script');
+                    s.src = scripts[i].src;
+                    s.async = true;
+                    document.body.appendChild(s);
+                }
+            }, 300);
 
             const img1 = document.getElementById('imagemBase64_1').value;
             const img2 = document.getElementById('imagemBase64_2').value;
