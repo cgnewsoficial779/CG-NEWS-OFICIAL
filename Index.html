@@ -176,20 +176,18 @@
         
         .grid-img-container {
             width: 100%;
+            aspect-ratio: 4/3; /* FORMATO 4:3 FIXO NA HOME */
             background-color: #f7fafc;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
         }
-        /* AGORA RESPEITA O TAMANHO ORIGINAL DA SUA FOTO */
         .grid-img {
             width: 100%;
-            height: auto;
-            max-height: 450px;
-            object-fit: contain;
+            height: 100%;
+            object-fit: cover; /* PREENCHE O 4:3 DE FORMA HARMONIOSA */
             display: block;
-            background: #000;
         }
         
         .grid-content-wrap {
@@ -299,12 +297,20 @@
         }
         .news-list-item:hover { border-color: #cbd5e0; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
         
+        .news-list-image-container {
+            width: 100%;
+            aspect-ratio: 4/3; /* FORMATO 4:3 NAS LISTAS */
+            background: #f7fafc;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         .news-list-image {
             width: 100%;
-            max-height: 250px;
-            object-fit: contain;
-            background: #000;
-            border-radius: 6px;
+            height: 100%;
+            object-fit: cover;
         }
         .news-list-content {
             display: flex;
@@ -340,8 +346,8 @@
         }
 
         @media (min-width: 640px) {
-            .news-list-item { flex-direction: row; align-items: center; padding: 14px; }
-            .news-list-image { width: 180px; max-height: 130px; flex-shrink: 0; }
+            .news-list-item { flex-direction: row; align-items: center; padding: 14px; gap: 15px; }
+            .news-list-image-container { width: 180px; height: 135px; flex-shrink: 0; aspect-ratio: unset; }
         }
 
         /* RANKING MAIS LIDAS */
@@ -370,13 +376,21 @@
             text-align: center;
             line-height: 1;
         }
-        .ranking-thumb {
+        .ranking-thumb-container {
             width: 80px;
-            max-height: 60px;
-            object-fit: contain;
-            background: #000;
+            height: 60px;
+            background: #f7fafc;
             border-radius: 6px;
+            overflow: hidden;
             flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ranking-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .ranking-info {
             display: flex;
@@ -723,7 +737,6 @@
 
         atualizarBarraData();
 
-        // BUSCA A FOTO EM QUALQUER CAMPO POSSÍVEL DO BANCO DE DADOS
         function obterUrlImagem(item) {
             if (!item) return "";
             return item.imagem || item.foto || item.capa || item.imageUrl || item.urlImagem || item.img || item.url || item.arquivo || "";
@@ -893,6 +906,7 @@
 
             let blocoMidiaPrincipal = "";
             if (imgUrlMateria) {
+                // FOTO ORIGINAL EXATA PUBLICADA NO PAINEL (SEM CORTES)
                 blocoMidiaPrincipal = `
                     <div style="margin: 20px 0; text-align: center; background: #000; border-radius: 6px; overflow: hidden;">
                         <img src="${imgUrlMateria}" style="width: 100%; height: auto; max-height: 600px; object-fit: contain; display: block; margin: 0 auto;">
@@ -1134,7 +1148,9 @@
                 container.innerHTML += `
                     <div class="ranking-list-item" onclick="abrirMateria('${item.idUnico}')">
                         <div class="ranking-number-box">${numeroRanking}</div>
-                        ${imgUrl ? `<img src="${imgUrl}" class="ranking-thumb" alt="Capa">` : `<div class="ranking-thumb" style="display:flex;align-items:center;justify-content:center;color:#a0aec0;font-size:10px;">Sem foto</div>`}
+                        <div class="ranking-thumb-container">
+                            ${imgUrl ? `<img src="${imgUrl}" class="ranking-thumb" alt="Capa">` : `<div style="color:#a0aec0;font-size:10px;text-align:center;">Sem foto</div>`}
+                        </div>
                         <div class="ranking-info">
                             <div class="ranking-title">${item.titulo}</div>
                             <div class="ranking-meta"><i class="fas fa-tag"></i> ${cat} • ${htmlData}</div>
@@ -1149,11 +1165,6 @@
                 btnVerMais.style.display = "none";
             }
         }
-
-        window.expandirMaisLidas = function() {
-            window.limiteMaisLidas += 5;
-            renderizarMaisLidasMateria();
-        };
 
         window.expandirMaisLidas = function() {
             window.limiteMaisLidas += 5;
@@ -1175,7 +1186,7 @@
                     <div class="grid-img-container" onclick="abrirMateria('${item.idUnico}')">
                         ${imgUrl ? 
                             `<img src="${imgUrl}" class="grid-img">` : 
-                            `<div class="grid-img" style="height:180px; display:flex; align-items:center; justify-content:center; color:#a0aec0; font-size:12px; background:#e2e8f0;">Sem foto</div>`
+                            `<div style="color:#a0aec0; font-size:12px;">Sem foto</div>`
                         }
                     </div>
                     <div class="grid-content-wrap">
@@ -1204,10 +1215,10 @@
 
             return `
                 <div class="news-list-item">
-                    <div onclick="abrirMateria('${item.idUnico}')">
+                    <div class="news-list-image-container" onclick="abrirMateria('${item.idUnico}')">
                         ${imgUrl ? 
                             `<img src="${imgUrl}" class="news-list-image">` : 
-                            `<div class="news-list-image" style="width:100%; height:140px; background:#e2e8f0; display:flex; align-items:center; justify-content:center; color:#a0aec0; font-size:12px;">Sem foto</div>`
+                            `<div style="color:#a0aec0; font-size:12px;">Sem foto</div>`
                         }
                     </div>
                     <div class="news-list-content">
