@@ -161,39 +161,6 @@
             margin-top: 10px;
         }
         
-        .home-grid .grid-card:first-child {
-            grid-column: 1 / -1;
-            background: #ffffff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-            border: 1px solid #e2e8f0;
-            display: grid;
-            grid-template-columns: 1fr;
-            margin-bottom: 10px;
-        }
-        .home-grid .grid-card:first-child .grid-img-container {
-            width: 100%;
-            aspect-ratio: 16/9;
-        }
-        .home-grid .grid-card:first-child .grid-content-wrap {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .home-grid .grid-card:first-child .grid-title {
-            font-size: 22px;
-            text-align: left;
-            line-height: 1.35;
-            color: #1a202c;
-        }
-        .home-grid .grid-card:first-child .grid-cat {
-            text-align: left;
-            font-size: 12px;
-            margin-bottom: 8px;
-        }
-
         .grid-card {
             background: #ffffff;
             border-radius: 8px;
@@ -209,17 +176,21 @@
         
         .grid-img-container {
             width: 100%;
-            aspect-ratio: 16/10;
-            background-color: #e2e8f0;
+            background-color: #f7fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
         }
+        /* AGORA RESPEITA O TAMANHO ORIGINAL DA SUA FOTO */
         .grid-img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
+            height: auto;
+            max-height: 450px;
+            object-fit: contain;
+            display: block;
+            background: #000;
         }
-        .grid-card:hover .grid-img { transform: scale(1.03); }
         
         .grid-content-wrap {
             padding: 15px;
@@ -306,14 +277,10 @@
 
         @media (min-width: 768px) {
             .home-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-            .home-grid .grid-card:first-child { grid-template-columns: 1.3fr 1fr; }
-            .home-grid .grid-card:first-child .grid-img-container { aspect-ratio: auto; height: 100%; min-height: 280px; }
-            .home-grid .grid-card:first-child .grid-title { font-size: 24px; }
         }
 
         @media (min-width: 1024px) {
             .home-grid { grid-template-columns: repeat(3, 1fr); }
-            .home-grid .grid-card:first-child { grid-column: span 3; grid-template-columns: 1.2fr 1fr; }
         }
 
         /* LISTA DE NOTÍCIAS */
@@ -334,8 +301,9 @@
         
         .news-list-image {
             width: 100%;
-            height: 180px;
-            object-fit: cover;
+            max-height: 250px;
+            object-fit: contain;
+            background: #000;
             border-radius: 6px;
         }
         .news-list-content {
@@ -373,7 +341,7 @@
 
         @media (min-width: 640px) {
             .news-list-item { flex-direction: row; align-items: center; padding: 14px; }
-            .news-list-image { width: 180px; height: 110px; flex-shrink: 0; }
+            .news-list-image { width: 180px; max-height: 130px; flex-shrink: 0; }
         }
 
         /* RANKING MAIS LIDAS */
@@ -403,12 +371,12 @@
             line-height: 1;
         }
         .ranking-thumb {
-            width: 90px;
-            height: 65px;
-            object-fit: cover;
+            width: 80px;
+            max-height: 60px;
+            object-fit: contain;
+            background: #000;
             border-radius: 6px;
             flex-shrink: 0;
-            background-color: #e2e8f0;
         }
         .ranking-info {
             display: flex;
@@ -755,10 +723,10 @@
 
         atualizarBarraData();
 
-        // FUNÇÃO INTELIGENTE PARA PEGAR A FOTO DA GALERIA (INDENPENDENTE DO NOME DA PROPRIEDADE NO FIREBASE)
+        // BUSCA A FOTO EM QUALQUER CAMPO POSSÍVEL DO BANCO DE DADOS
         function obterUrlImagem(item) {
             if (!item) return "";
-            return item.imagem || item.foto || item.capa || item.imageUrl || item.urlImagem || item.img || "";
+            return item.imagem || item.foto || item.capa || item.imageUrl || item.urlImagem || item.img || item.url || item.arquivo || "";
         }
 
         function converterTimestamp(valor) {
@@ -926,9 +894,9 @@
             let blocoMidiaPrincipal = "";
             if (imgUrlMateria) {
                 blocoMidiaPrincipal = `
-                    <div style="margin: 20px 0;">
-                        <img src="${imgUrlMateria}" style="width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; display: block;">
-                        <div style="font-size: 11px; font-weight: 600; color: #718096; margin-top: 6px;">${item.fonteImagem || "Reprodução / Divulgação"}</div>
+                    <div style="margin: 20px 0; text-align: center; background: #000; border-radius: 6px; overflow: hidden;">
+                        <img src="${imgUrlMateria}" style="width: 100%; height: auto; max-height: 600px; object-fit: contain; display: block; margin: 0 auto;">
+                        <div style="font-size: 11px; font-weight: 600; color: #a0aec0; padding: 6px; background: #111;">${item.fonteImagem || "Reprodução / Divulgação"}</div>
                     </div>
                 `;
             }
@@ -1187,6 +1155,11 @@
             renderizarMaisLidasMateria();
         };
 
+        window.expandirMaisLidas = function() {
+            window.limiteMaisLidas += 5;
+            renderizarMaisLidasMateria();
+        };
+
         function criarHtmlGridCard(item) {
             const htmlData = gerarHtmlDatas(item);
             const imgUrl = obterUrlImagem(item);
@@ -1202,7 +1175,7 @@
                     <div class="grid-img-container" onclick="abrirMateria('${item.idUnico}')">
                         ${imgUrl ? 
                             `<img src="${imgUrl}" class="grid-img">` : 
-                            `<div class="grid-img" style="display:flex; align-items:center; justify-content:center; color:#a0aec0; font-size:12px;">Sem foto</div>`
+                            `<div class="grid-img" style="height:180px; display:flex; align-items:center; justify-content:center; color:#a0aec0; font-size:12px; background:#e2e8f0;">Sem foto</div>`
                         }
                     </div>
                     <div class="grid-content-wrap">
@@ -1234,7 +1207,7 @@
                     <div onclick="abrirMateria('${item.idUnico}')">
                         ${imgUrl ? 
                             `<img src="${imgUrl}" class="news-list-image">` : 
-                            `<div class="news-list-image" style="background:#e2e8f0; display:flex; align-items:center; justify-content:center; color:#a0aec0; font-size:12px;">Sem foto</div>`
+                            `<div class="news-list-image" style="width:100%; height:140px; background:#e2e8f0; display:flex; align-items:center; justify-content:center; color:#a0aec0; font-size:12px;">Sem foto</div>`
                         }
                     </div>
                     <div class="news-list-content">
