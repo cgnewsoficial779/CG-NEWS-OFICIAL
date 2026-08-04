@@ -611,6 +611,7 @@
             <i class="fas fa-times" onclick="fecharMenu()"></i>
         </div>
         <a onclick="irParaHome()"><i class="fas fa-home" style="width: 24px; color: #11136c;"></i> Voltar ao Início</a>
+        <a onclick="mostrarUltimasNoticias()"><i class="fas fa-newspaper" style="width: 24px; color: #11136c;"></i> Últimas Notícias</a>
         <a onclick="filtrarCategoria('Campo Grande')"><i class="fas fa-city" style="width: 24px; color: #11136c;"></i> Campo Grande</a>
         <a onclick="filtrarCategoria('Mato Grosso do Sul')"><i class="fas fa-map-marked-alt" style="width: 24px; color: #11136c;"></i> Mato Grosso do Sul</a>
         <a onclick="filtrarCategoria('Brasil')"><i class="fas fa-flag" style="width: 24px; color: #11136c;"></i> Brasil</a>
@@ -1141,17 +1142,49 @@
             renderizarHomePorCategorias();
         };
 
+        window.mostrarUltimasNoticias = function() {
+            fecharMateria();
+            fecharMenu();
+            document.getElementById("input-busca").value = "";
+
+            const urlObj = new URL(window.location.href);
+            urlObj.searchParams.delete('materia');
+            urlObj.searchParams.delete('categoria');
+            urlObj.searchParams.set('ultimas', 'true');
+            window.history.pushState({ ultimas: true }, '', urlObj.toString());
+
+            const tituloH2 = document.getElementById("titulo-principal");
+            const container = document.getElementById("area-noticias");
+
+            tituloH2.innerText = "Últimas Notícias";
+            tituloH2.style.display = "block";
+            container.innerHTML = "";
+
+            if (!window.bancoDeNoticias || window.bancoDeNoticias.length === 0) {
+                container.innerHTML = `<p class="empty-msg">Nenhuma notícia encontrada no momento.</p>`;
+                return;
+            }
+
+            window.bancoDeNoticias.forEach(item => {
+                container.innerHTML += criarHtmlListaCard(item);
+            });
+            window.scrollTo(0, 0);
+        };
+
         window.addEventListener('popstate', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const materiaId = urlParams.get('materia');
             const categoriaUrl = urlParams.get('categoria');
+            const ultimasUrl = urlParams.get('ultimas');
 
             if (!materiaId) {
                 document.getElementById("modal-materia").style.display = "none";
                 document.body.style.overflow = "auto";
                 localStorage.removeItem('ultimaMateriaAberta');
 
-                if (categoriaUrl) {
+                if (ultimasUrl === 'true') {
+                    window.mostrarUltimasNoticias();
+                } else if (categoriaUrl) {
                     filtrarCategoria(categoriaUrl, false);
                 } else {
                     renderizarHomePorCategorias();
@@ -1248,6 +1281,11 @@
                 btnVerMais.style.display = "none";
             }
         }
+
+        window.expandirMaisLidas = function() {
+            window.limiteMaisLidas += 5;
+            renderizarMaisLidasMateria();
+        };
 
         window.expandirMaisLidas = function() {
             window.limiteMaisLidas += 5;
@@ -1382,6 +1420,7 @@
             const urlObj = new URL(window.location.href);
             urlObj.searchParams.delete('materia');
             urlObj.searchParams.delete('categoria');
+            urlObj.searchParams.delete('ultimas');
             window.history.pushState({}, '', urlObj.toString());
             window.scrollTo(0, 0);
         }
@@ -1394,6 +1433,7 @@
             if (salvarHistorico) {
                 const urlObj = new URL(window.location.href);
                 urlObj.searchParams.delete('materia');
+                urlObj.searchParams.delete('ultimas');
                 urlObj.searchParams.set('categoria', categoriaDesejada);
                 window.history.pushState({ categoria: categoriaDesejada }, '', urlObj.toString());
             }
@@ -1534,6 +1574,7 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 const materiaUrl = urlParams.get('materia');
                 const categoriaUrl = urlParams.get('categoria');
+                const ultimasUrl = urlParams.get('ultimas');
                 
                 const materiaSalva = materiaUrl || localStorage.getItem('ultimaMateriaAberta');
                 const categoriaSalva = categoriaUrl || localStorage.getItem('ultimaCategoria');
@@ -1546,7 +1587,9 @@
                     }
                 }
 
-                if (categoriaSalva) {
+                if (ultimasUrl === 'true') {
+                    window.mostrarUltimasNoticias();
+                } else if (categoriaSalva) {
                     filtrarCategoria(categoriaSalva, false);
                 } else {
                     renderizarHomePorCategorias();
