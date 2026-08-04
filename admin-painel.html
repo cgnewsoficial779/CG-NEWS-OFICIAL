@@ -139,7 +139,7 @@
         <div class="header-admin">
             <h1><i class="fas fa-newspaper"></i> CG NEWS <span style="font-size:11px; padding:3px 8px; background:#cc0000; color:#fff; border-radius:4px; margin-left:6px;">OFICIAL</span></h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V9.5</span>
+                <span class="badge-pro">V9.6</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -893,7 +893,6 @@
                 }
             }
 
-            // SUPORTE COMPLETO AO X (TWITTER)
             if (url.includes("x.com") || url.includes("twitter.com")) {
                 let cleanUrl = url.split("?")[0];
                 return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;">
@@ -912,35 +911,22 @@
                         </div>`;
             }
 
-            // SUPORTE TOTAL A FACEBOOK (REELS, VÍDEOS, POSTS E FOTOS)
+            // CORREÇÃO ROBUSTA PARA O FACEBOOK (SUPORTE A LINKS CURTOS E REDIRECIONAMENTOS)
             if (url.includes("facebook.com") || url.includes("fb.watch")) {
                 let encodedUrl = encodeURIComponent(url);
                 
-                if (url.includes("/reel/") || url.includes("/share/r/") || url.includes("/share/v/") || url.includes("/videos/") || url.includes("fb.watch")) {
-                    return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
-                                <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=${encodedUrl}&show_text=false&width=476&t=0" 
-                                    width="476" 
-                                    height="476" 
-                                    style="border:none;overflow:hidden;max-width:100%;border-radius:8px;background:#000;" 
-                                    scrolling="no" 
-                                    frameborder="0" 
-                                    allowfullscreen="true" 
-                                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
-                                </iframe>
-                            </div>`;
-                } else {
-                    return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
-                                <iframe src="https://www.facebook.com/plugins/post.php?href=${encodedUrl}&show_text=true&width=500" 
-                                    width="500" 
-                                    height="650" 
-                                    style="border:none;overflow:hidden;max-width:100%;border-radius:8px;background:#fff;" 
-                                    scrolling="no" 
-                                    frameborder="0" 
-                                    allowfullscreen="true" 
-                                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
-                                </iframe>
-                            </div>`;
-                }
+                // Se for link de compartilhamento curto (/share/r/ ou /share/v/), usamos o player padrão de post/vídeo universal do FB
+                return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
+                            <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=${encodedUrl}&show_text=false&width=476&t=0" 
+                                width="476" 
+                                height="476" 
+                                style="border:none;overflow:hidden;max-width:100%;border-radius:8px;background:#000;" 
+                                scrolling="no" 
+                                frameborder="0" 
+                                allowfullscreen="true" 
+                                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+                            </iframe>
+                        </div>`;
             }
 
             return `<div style="margin-top:10px;padding:12px;background:#f0f2f5;border-radius:8px;border-left:4px solid #002a5c;">
