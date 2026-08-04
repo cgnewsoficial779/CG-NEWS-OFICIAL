@@ -176,7 +176,7 @@
         
         .grid-img-container {
             width: 100%;
-            aspect-ratio: 4/3; /* FORMATO 4:3 FIXO NA HOME */
+            aspect-ratio: 4/3;
             background-color: #f7fafc;
             display: flex;
             align-items: center;
@@ -299,7 +299,7 @@
         
         .news-list-image-container {
             width: 100%;
-            aspect-ratio: 4/3; /* FORMATO 4:3 NAS LISTAS */
+            aspect-ratio: 4/3;
             background: #f7fafc;
             border-radius: 6px;
             overflow: hidden;
@@ -1154,6 +1154,7 @@
                 const htmlData = gerarHtmlDatas(item);
                 const imgUrl = obterUrlImagem(item);
 
+                // CORRIGIDO: O CLIQUE AGORA ABRE CORRETAMENTE A MATÉRIA EM TELA CHEIA VIA MODAL
                 container.innerHTML += `
                     <div class="ranking-list-item" onclick="abrirMateria('${item.idUnico}')">
                         <div class="ranking-number-box">${numeroRanking}</div>
@@ -1222,7 +1223,7 @@
             const imgUrl = obterUrlImagem(item);
             const textoResumo = item.texto ? item.texto.substring(0, 110) + "..." : "Clique para ler a matéria completa.";
 
-            // ATUALIZADO: AGORA O CLIQUE NO CARD ABRE CORRETAMENTE A MATÉRIA PASSANDO O ID ÚNICO
+            // CORRIGIDO: O CLIQUE AGORA ABRE CORRETAMENTE A MATÉRIA EM TELA CHEIA VIA MODAL
             return `
                 <div class="news-list-item" onclick="abrirMateria('${item.idUnico}')">
                     <div class="news-list-image-container">
