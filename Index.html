@@ -562,7 +562,7 @@
         <div class="header-btn" onclick="abrirMenu()" title="Menu">
             <i class="fas fa-bars"></i>
         </div>
-        <div class="header-logo" style="cursor: pointer;" onclick="fecharMateria(); window.scrollTo(0,0);">CG NEWS OFICIAL</div>
+        <div class="header-logo" style="cursor: pointer;" onclick="irParaHome();">CG NEWS OFICIAL</div>
         <div class="header-btn" onclick="toggleBuscaPrincipal()" title="Pesquisar">
             <i class="fas fa-search"></i>
         </div>
@@ -641,7 +641,7 @@
             <div class="header-btn" onclick="abrirMenu()">
                 <i class="fas fa-bars"></i>
             </div>
-            <div class="header-logo" style="cursor: pointer;" onclick="fecharMateria(); window.scrollTo(0,0);">CG NEWS OFICIAL</div>
+            <div class="header-logo" style="cursor: pointer;" onclick="irParaHome();">CG NEWS OFICIAL</div>
             <div class="header-btn" onclick="toggleBuscaMateria()">
                 <i class="fas fa-search"></i>
             </div>
@@ -908,7 +908,6 @@
             window.limiteRecomendadas = 10;
             window.limiteMaisLidas = 5;
 
-            // SALVA NO LOCALSTORAGE E ALTERA A URL PARA PRESERVAR AO ATUALIZAR (F5)
             localStorage.setItem('ultimaMateriaAberta', id);
             if (salvarHistorico) {
                 const urlObj = new URL(window.location.href);
@@ -1094,21 +1093,32 @@
             document.getElementById("input-busca-materia").value = "";
             document.body.style.overflow = "auto"; 
 
-            // LIMPA OS DADOS DE MATÉRIA ABERTA AO FECHAR MANUALMENTE
             localStorage.removeItem('ultimaMateriaAberta');
             const urlObj = new URL(window.location.href);
             urlObj.searchParams.delete('materia');
             window.history.pushState({}, '', urlObj.toString());
         };
 
-        // TRATA O BOTÃO DE "VOLTAR" DO NAVEGADOR
+        window.irParaHome = function() {
+            fecharMateria();
+            filtrarCategoria('Todas', true);
+        };
+
         window.addEventListener('popstate', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const materiaId = urlParams.get('materia');
+            const categoriaUrl = urlParams.get('categoria');
+
             if (!materiaId) {
                 document.getElementById("modal-materia").style.display = "none";
                 document.body.style.overflow = "auto";
                 localStorage.removeItem('ultimaMateriaAberta');
+
+                if (categoriaUrl) {
+                    filtrarCategoria(categoriaUrl, false);
+                } else {
+                    filtrarCategoria('Todas', false);
+                }
             }
         });
 
@@ -1311,10 +1321,28 @@
             }
         }
 
-        window.filtrarCategoria = function(categoriaDesejada) {
+        window.filtrarCategoria = function(categoriaDesejada, salvarHistorico = true) {
             fecharMateria();
             fecharMenu();
             document.getElementById("input-busca").value = ""; 
+
+            // SALVA A CATEGORIA NO LOCALSTORAGE E NA URL
+            if (categoriaDesejada === 'Todas') {
+                localStorage.removeItem('ultimaCategoria');
+            } else {
+                localStorage.setItem('ultimaCategoria', categoriaDesejada);
+            }
+
+            if (salvarHistorico) {
+                const urlObj = new URL(window.location.href);
+                urlObj.searchParams.delete('materia');
+                if (categoriaDesejada === 'Todas') {
+                    urlObj.searchParams.delete('categoria');
+                } else {
+                    urlObj.searchParams.set('categoria', categoriaDesejada);
+                }
+                window.history.pushState({ categoria: categoriaDesejada }, '', urlObj.toString());
+            }
             
             if (categoriaDesejada === 'Todas') {
                 renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
@@ -1411,18 +1439,26 @@
                     noticiaIndex++;
                 });
 
-                renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
-
-                // VERIFICA SE HÁ UMA MATÉRIA SALVA NA URL OU NO LOCALSTORAGE AO CARREGAR/ATUALIZAR
+                // VERIFICA SE HÁ MATÉRIA OU CATEGORIA SALVA NA URL OU NO LOCALSTORAGE AO CARREGAR/ATUALIZAR
                 const urlParams = new URLSearchParams(window.location.search);
                 const materiaUrl = urlParams.get('materia');
+                const categoriaUrl = urlParams.get('categoria');
+                
                 const materiaSalva = materiaUrl || localStorage.getItem('ultimaMateriaAberta');
+                const categoriaSalva = categoriaUrl || localStorage.getItem('ultimaCategoria');
 
                 if (materiaSalva) {
                     const existe = window.bancoDeNoticias.find(n => n.idUnico === materiaSalva);
                     if (existe) {
                         abrirMateria(materiaSalva, false);
+                        return;
                     }
+                }
+
+                if (categoriaSalva) {
+                    filtrarCategoria(categoriaSalva, false);
+                } else {
+                    renderizarNoticias(window.bancoDeNoticias, "Últimas Notícias", true);
                 }
 
             } catch (erro) {
