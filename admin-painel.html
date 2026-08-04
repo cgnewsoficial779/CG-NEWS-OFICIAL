@@ -97,7 +97,6 @@
         .image-upload-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 12px; }
         @media(min-width: 600px) { .image-upload-grid { grid-template-columns: 1fr 1fr; } }
         
-        /* BOTOES DE PROPORCAO */
         .aspect-ratios { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; background: #f8f9fa; padding: 12px; border-radius: 8px; border: 1px solid #e1e4e8; justify-content: center; }
         .btn-ratio { background: #fff; border: 1px solid #b0b8c1; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; color: #555; flex: 1; min-width: 60px; text-align: center; }
         .btn-ratio.active { background: #002a5c; color: white; border-color: #002a5c; }
@@ -696,7 +695,6 @@
             window.salvarRascunho();
         };
 
-        /* FUNÇÃO INDEPENDENTE: Muda o formato apenas da Imagem */
         window.mudarLayoutImagem = function(ratio, btn) {
             document.querySelectorAll('#ratiosImagem .btn-ratio').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -705,7 +703,6 @@
             window.salvarRascunho();
         };
 
-        /* FUNÇÃO INDEPENDENTE: Muda o formato apenas do Vídeo */
         window.mudarLayoutVideo = function(ratio, btn) {
             document.querySelectorAll('#ratiosVideo .btn-ratio').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
