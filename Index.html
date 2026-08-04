@@ -153,7 +153,7 @@
         .section-title { font-size: 18px; color: #11136c; border-left: 4px solid #11136c; padding-left: 10px; margin: 25px 0 20px 0; display: none; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .empty-msg { font-size: 14px; color: #718096; font-style: italic; margin: 40px 0; text-align: center; }
 
-        /* GRID DA HOME - ESTILO PORTAL PROFISSIONAL */
+        /* GRID DA HOME */
         .home-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -161,7 +161,6 @@
             margin-top: 10px;
         }
         
-        /* DESTAQUE PRINCIPAL (MANCHETE) */
         .home-grid .grid-card:first-child {
             grid-column: 1 / -1;
             background: #ffffff;
@@ -195,7 +194,6 @@
             margin-bottom: 8px;
         }
 
-        /* DEMAIS CARDS DA GRID */
         .grid-card {
             background: #ffffff;
             border-radius: 8px;
@@ -269,7 +267,6 @@
             margin-bottom: 12px;
         }
 
-        /* BARRA DE COMPARTILHAMENTO RÁPIDO NOS CARDS DA HOME */
         .card-share-bar {
             display: flex;
             align-items: center;
@@ -319,7 +316,7 @@
             .home-grid .grid-card:first-child { grid-column: span 3; grid-template-columns: 1.2fr 1fr; }
         }
 
-        /* LISTA DE NOTÍCIAS (CATEGORIAS/BUSCA) */
+        /* LISTA DE NOTÍCIAS (CATEGORIAS/BUSCA/RECOMENDAÇÕES) */
         .news-list-item {
             display: flex;
             flex-direction: column;
@@ -348,10 +345,10 @@
             flex-grow: 1;
         }
         .news-list-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: #1a202c;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             line-height: 1.35;
         }
         .news-list-meta {
@@ -366,7 +363,7 @@
         .news-list-excerpt {
             font-size: 13px;
             color: #4a5568;
-            line-height: 1.5;
+            line-height: 1.45;
             display: -webkit-box;
             -webkit-line-clamp: 2; 
             -webkit-box-orient: vertical;
@@ -375,11 +372,67 @@
         }
 
         @media (min-width: 640px) {
-            .news-list-item { flex-direction: row; align-items: center; padding: 18px; }
-            .news-list-image { width: 220px; height: 130px; flex-shrink: 0; }
+            .news-list-item { flex-direction: row; align-items: center; padding: 14px; }
+            .news-list-image { width: 180px; height: 110px; flex-shrink: 0; }
         }
 
-        /* SEÇÃO MAIS LIDAS E RECOMENDAÇÕES */
+        /* ESTILO PARA NOTÍCIAS MAIS LIDAS COM RANKING (TIPO FOTO 2) */
+        .ranking-list-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #fff;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .ranking-list-item:hover {
+            border-color: #11136c;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            transform: translateX(3px);
+        }
+        .ranking-number-box {
+            font-size: 26px;
+            font-weight: 900;
+            color: #11136c;
+            min-width: 32px;
+            text-align: center;
+            line-height: 1;
+        }
+        .ranking-thumb {
+            width: 90px;
+            height: 65px;
+            object-fit: cover;
+            border-radius: 6px;
+            flex-shrink: 0;
+            background-color: #e2e8f0;
+        }
+        .ranking-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-grow: 1;
+        }
+        .ranking-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2d3748;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .ranking-meta {
+            font-size: 10px;
+            color: #718096;
+            font-weight: 600;
+        }
+
+        /* ESTRUTURA DAS SEÇÕES DE RECOMENDAÇÕES E MAIS LIDAS */
         .section-box-container {
             background: #fff;
             border: 1px solid #e2e8f0;
@@ -387,59 +440,45 @@
             padding: 20px;
             margin: 30px 0;
             box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            text-align: left;
         }
         .section-box-title {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 800;
             color: #11136c;
             text-transform: uppercase;
             border-bottom: 2px solid #11136c;
             padding-bottom: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-        .mais-lidas-grid, .recomendadas-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-        @media(min-width: 768px) {
-            .mais-lidas-grid, .recomendadas-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-        .mini-card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .mini-card:hover { border-color: #11136c; transform: translateY(-2px); }
-        .mini-card-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: #2d3748;
-            line-height: 1.35;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-bottom: 8px;
-        }
-        .mini-card-meta {
-            font-size: 10px;
-            color: #718096;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: left;
         }
 
-        /* ESPAÇOS LIMPOS PARA ANÚNCIOS / BANNERS (GOOGLE ADS) */
+        /* BOTÃO "VER MAIS NOTÍCIAS" */
+        .btn-ver-mais {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background-color: #11136c;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .btn-ver-mais:hover {
+            background-color: #0a0b45;
+            transform: translateY(-1px);
+        }
+
         .banner-anuncio-slot {
             width: 100%;
             background-color: #fafbfc;
@@ -455,7 +494,7 @@
             text-transform: uppercase;
         }
 
-        /* RODAPÉ E REDES SOCIAIS */
+        /* RODAPÉ */
         footer { 
             background-color: #11136c; 
             color: white; 
@@ -597,11 +636,6 @@
     <div class="container">
         <h2 id="titulo-principal" class="section-title">Últimas Notícias</h2>
         <div id="area-noticias"><p class="empty-msg">Carregando notícias...</p></div>
-
-        <div class="section-box-container" id="secao-mais-lidas-home" style="display:none;">
-            <div class="section-box-title"><i class="fas fa-fire" style="color: #e53e3e;"></i> Mais Lidas da Redação</div>
-            <div class="mais-lidas-grid" id="grid-mais-lidas-home"></div>
-        </div>
     </div>
 
     <footer>
@@ -652,13 +686,15 @@
             <div id="conteudo-materia"></div>
 
             <div class="section-box-container" id="secao-recomendadas" style="display:none;">
-                <div class="section-box-title"><i class="fas fa-newspaper" style="color: #11136c;"></i> Leia Também</div>
-                <div class="recomendadas-grid" id="grid-recomendadas"></div>
+                <div class="section-box-title"><i class="fas fa-thumbs-up" style="color: #11136c;"></i> Recomendações</div>
+                <div id="lista-recomendadas"></div>
+                <button id="btn-ver-mais-recomendadas" class="btn-ver-mais" style="display:none;" onclick="expandirRecomendadas()">Ver mais notícias</button>
             </div>
 
             <div class="section-box-container" id="secao-mais-lidas-materia" style="display:none;">
-                <div class="section-box-title"><i class="fas fa-fire" style="color: #e53e3e;"></i> Mais Lidas</div>
-                <div class="mais-lidas-grid" id="grid-mais-lidas-materia"></div>
+                <div class="section-box-title"><i class="fas fa-fire" style="color: #e53e3e;"></i> Mais Vistas</div>
+                <div id="lista-mais-lidas-materia"></div>
+                <button id="btn-ver-mais-mais-lidas" class="btn-ver-mais" style="display:none;" onclick="expandirMaisLidas()">Ver mais notícias</button>
             </div>
         </div>
 
@@ -699,6 +735,11 @@
         const db = getFirestore(app);
 
         window.bancoDeNoticias = []; 
+        
+        // VARIÁVEIS DE CONTROLE DE EXIBIÇÃO DE RECOMENDAÇÕES E MAIS LIDAS
+        window.materiaAtualObj = null;
+        window.limiteRecomendadas = 10;
+        window.limiteMaisLidas = 5;
 
         function atualizarBarraData() {
             const agora = new Date();
@@ -777,17 +818,14 @@
         }
 
         function gerarHtmlDatas(item) {
-            // Tenta obter a data de publicação/criação original
             let msCriacao = converterTimestamp(item.dataCriacao) || 
                             converterTimestamp(item.dataPublicacao) || 
                             converterTimestamp(item.criadoEm) || 
                             converterTimestamp(item.timestamp);
 
-            // Tenta obter a data da última atualização
             let msAtualizacao = converterTimestamp(item.dataAtualizacao) || 
                                 converterTimestamp(item.atualizadoEm);
 
-            // Se não houver data de criação separada no banco, usa a de atualização como base
             if (!msCriacao) {
                 msCriacao = msAtualizacao || Date.now();
             }
@@ -795,7 +833,6 @@
             const criacao = formatarDataHoraMS(msCriacao);
             let html = `Publicado em ${criacao.data} às ${criacao.hora}`;
 
-            // Exibe a indicação de atualização se houver registro de modificação posterior
             const houveAtualizacao = msAtualizacao && (
                 (msCriacao && msAtualizacao > (msCriacao + 10000)) ||
                 (item.dataCriacao && item.dataAtualizacao && item.dataCriacao !== item.dataAtualizacao) ||
@@ -873,6 +910,10 @@
         window.abrirMateria = function(id) {
             const item = window.bancoDeNoticias.find(n => n.idUnico === id);
             if (!item) return;
+
+            window.materiaAtualObj = item;
+            window.limiteRecomendadas = 10;
+            window.limiteMaisLidas = 5;
 
             const modal = document.getElementById("modal-materia");
             const conteudo = document.getElementById("conteudo-materia");
@@ -1039,8 +1080,9 @@
             document.body.style.overflow = "hidden"; 
             window.scrollTo(0, 0);
 
-            carregarRecomendadas(item);
-            carregarMaisLidasGeral();
+            // CARREGA AS DUAS SEÇÕES NO FINAL DA MATÉRIA
+            renderizarRecomendadas();
+            renderizarMaisLidasMateria();
         };
 
         window.fecharMateria = function() {
@@ -1048,6 +1090,105 @@
             document.getElementById("barra-busca-materia").style.display = "none";
             document.getElementById("input-busca-materia").value = "";
             document.body.style.overflow = "auto"; 
+        };
+
+        /* 1. SEÇÃO DE RECOMENDAÇÕES DO MESMO NICHO/CATEGORIA */
+        function renderizarRecomendadas() {
+            const secao = document.getElementById("secao-recomendadas");
+            const container = document.getElementById("lista-recomendadas");
+            const btnVerMais = document.getElementById("btn-ver-mais-recomendadas");
+
+            if (!window.materiaAtualObj || !window.bancoDeNoticias) return;
+
+            const itemAtual = window.materiaAtualObj;
+            const categoriaAlvo = itemAtual.categoria || (itemAtual.categorias ? itemAtual.categorias[0] : "");
+
+            // Filtra matérias do MESMO NICHO / CATEGORIA (exceto a atual)
+            const todasDoNicho = window.bancoDeNoticias.filter(n => {
+                if (n.idUnico === itemAtual.idUnico) return false;
+                if (n.categoria && n.categoria === categoriaAlvo) return true;
+                if (n.categorias && Array.isArray(n.categorias) && n.categorias.includes(categoriaAlvo)) return true;
+                return false;
+            });
+
+            if (todasDoNicho.length === 0) {
+                secao.style.display = "none";
+                return;
+            }
+
+            secao.style.display = "block";
+            container.innerHTML = "";
+
+            const exibidas = todasDoNicho.slice(0, window.limiteRecomendadas);
+
+            exibidas.forEach(item => {
+                container.innerHTML += criarHtmlListaCard(item);
+            });
+
+            // Se houver mais notícias do mesmo nicho além do limite atual, mostra o botão "Ver mais notícias"
+            if (todasDoNicho.length > window.limiteRecomendadas) {
+                btnVerMais.style.display = "block";
+            } else {
+                btnVerMais.style.display = "none";
+            }
+        }
+
+        window.expandirRecomendadas = function() {
+            window.limiteRecomendadas += 10;
+            renderizarRecomendadas();
+        };
+
+        /* 2. SEÇÃO MAIS VISTAS (RANKING COM NÚMEROS 1, 2, 3...) */
+        function renderizarMaisLidasMateria() {
+            const secao = document.getElementById("secao-mais-lidas-materia");
+            const container = document.getElementById("lista-mais-lidas-materia");
+            const btnVerMais = document.getElementById("btn-ver-mais-mais-lidas");
+
+            if (!window.bancoDeNoticias || window.bancoDeNoticias.length === 0) {
+                secao.style.display = "none";
+                return;
+            }
+
+            // Ordena as notícias por visualizações/acessos
+            const maisLidasOrdenadas = [...window.bancoDeNoticias].sort((a, b) => {
+                const visA = Number(a.visualizacoes || a.acessos || a.views || 0);
+                const visB = Number(b.visualizacoes || b.acessos || b.views || 0);
+                return visB - visA;
+            });
+
+            secao.style.display = "block";
+            container.innerHTML = "";
+
+            const exibidas = maisLidasOrdenadas.slice(0, window.limiteMaisLidas);
+
+            exibidas.forEach((item, index) => {
+                const numeroRanking = index + 1;
+                const cat = item.categoria || "Geral";
+                const htmlData = gerarHtmlDatas(item);
+
+                container.innerHTML += `
+                    <div class="ranking-list-item" onclick="abrirMateria('${item.idUnico}')">
+                        <div class="ranking-number-box">${numeroRanking}</div>
+                        ${item.imagem ? `<img src="${item.imagem}" class="ranking-thumb" alt="Capa">` : `<div class="ranking-thumb" style="display:flex;align-items:center;justify-content:center;color:#a0aec0;font-size:10px;">Sem foto</div>`}
+                        <div class="ranking-info">
+                            <div class="ranking-title">${item.titulo}</div>
+                            <div class="ranking-meta"><i class="fas fa-tag"></i> ${cat} • ${htmlData}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Exibe botão "Ver mais notícias" para mostrar +5
+            if (maisLidasOrdenadas.length > window.limiteMaisLidas) {
+                btnVerMais.style.display = "block";
+            } else {
+                btnVerMais.style.display = "none";
+            }
+        }
+
+        window.expandirMaisLidas = function() {
+            window.limiteMaisLidas += 5;
+            renderizarMaisLidasMateria();
         };
 
         function criarHtmlGridCard(item) {
@@ -1123,18 +1264,14 @@
         function renderizarNoticias(lista, titulo, formatoHome = false) {
             const tituloH2 = document.getElementById("titulo-principal");
             const container = document.getElementById("area-noticias");
-            const secaoMaisLidasHome = document.getElementById("secao-mais-lidas-home");
             
             container.innerHTML = "";
 
             if (formatoHome) {
                 tituloH2.style.display = "none";
-                if (secaoMaisLidasHome) secaoMaisLidasHome.style.display = "block";
-                carregarMaisLidasGeralHome();
             } else {
                 tituloH2.innerText = titulo;
                 tituloH2.style.display = "block";
-                if (secaoMaisLidasHome) secaoMaisLidasHome.style.display = "none";
             }
 
             if (lista.length === 0) {
@@ -1153,92 +1290,6 @@
                 lista.forEach(item => {
                     container.innerHTML += criarHtmlListaCard(item);
                 });
-            }
-        }
-
-        function carregarMaisLidasGeral() {
-            const secao = document.getElementById("secao-mais-lidas-materia");
-            const grid = document.getElementById("grid-mais-lidas-materia");
-            if (!window.bancoDeNoticias || window.bancoDeNoticias.length === 0) {
-                if (secao) secao.style.display = "none";
-                return;
-            }
-
-            const maisLidas = [...window.bancoDeNoticias].slice(0, 3);
-            if (maisLidas.length > 0 && grid) {
-                grid.innerHTML = "";
-                maisLidas.forEach(item => {
-                    const cat = item.categoria || "Geral";
-                    grid.innerHTML += `
-                        <div class="mini-card" onclick="abrirMateria('${item.idUnico}')">
-                            <div class="mini-card-title">${item.titulo}</div>
-                            <div class="mini-card-meta">
-                                <span><i class="fas fa-tag"></i> ${cat}</span>
-                                <span><i class="fas fa-fire" style="color:#e53e3e;"></i> Destaque</span>
-                            </div>
-                        </div>
-                    `;
-                });
-                if (secao) secao.style.display = "block";
-            }
-        }
-
-        function carregarMaisLidasGeralHome() {
-            const secao = document.getElementById("secao-mais-lidas-home");
-            const grid = document.getElementById("grid-mais-lidas-home");
-            if (!window.bancoDeNoticias || window.bancoDeNoticias.length === 0) {
-                if (secao) secao.style.display = "none";
-                return;
-            }
-
-            const maisLidas = [...window.bancoDeNoticias].slice(0, 3);
-            if (maisLidas.length > 0 && grid) {
-                grid.innerHTML = "";
-                maisLidas.forEach(item => {
-                    const cat = item.categoria || "Geral";
-                    grid.innerHTML += `
-                        <div class="mini-card" onclick="abrirMateria('${item.idUnico}')">
-                            <div class="mini-card-title">${item.titulo}</div>
-                            <div class="mini-card-meta">
-                                <span><i class="fas fa-tag"></i> ${cat}</span>
-                                <span><i class="fas fa-fire" style="color:#e53e3e;"></i> Em Alta</span>
-                            </div>
-                        </div>
-                    `;
-                });
-                if (secao) secao.style.display = "block";
-            }
-        }
-
-        function carregarRecomendadas(itemAtual) {
-            const secao = document.getElementById("secao-recomendadas");
-            const grid = document.getElementById("grid-recomendadas");
-            
-            const categoriaAlvo = itemAtual.categoria || (itemAtual.categorias ? itemAtual.categorias[0] : "");
-            
-            const recomendadas = window.bancoDeNoticias.filter(n => {
-                if (n.idUnico === itemAtual.idUnico) return false;
-                if (n.categoria && n.categoria === categoriaAlvo) return true;
-                if (n.categorias && n.categorias.includes(categoriaAlvo)) return true;
-                return false;
-            }).slice(0, 3);
-
-            if (recomendadas.length > 0 && grid) {
-                grid.innerHTML = "";
-                recomendadas.forEach(item => {
-                    grid.innerHTML += `
-                        <div class="mini-card" onclick="abrirMateria('${item.idUnico}')">
-                            <div class="mini-card-title">${item.titulo}</div>
-                            <div class="mini-card-meta">
-                                <span><i class="far fa-folder"></i> ${categoriaAlvo}</span>
-                                <span>Ler matéria</span>
-                            </div>
-                        </div>
-                    `;
-                });
-                if (secao) secao.style.display = "block";
-            } else {
-                if (secao) secao.style.display = "none";
             }
         }
 
