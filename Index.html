@@ -23,7 +23,7 @@
         }
         .header-btn { cursor: pointer; font-size: 20px; padding: 8px; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; }
         .header-btn:hover { opacity: 0.8; }
-        .header-logo { letter-spacing: 0.5px; font-weight: 800; font-size: 18px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .header-logo { letter-spacing: 0.5px; font-weight: 800; font-size: 18px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
 
         @media (min-width: 768px) {
             .header-logo { font-size: 20px; }
@@ -159,7 +159,7 @@
         .section-title { font-size: 18px; color: #11136c; border-left: 4px solid #11136c; padding-left: 10px; margin: 25px 0 20px 0; display: none; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .empty-msg { font-size: 14px; color: #718096; font-style: italic; margin: 40px 0; text-align: center; }
 
-        /* GRID DA HOME */
+        /* GRID DA HOME (ESTILO 3x3) */
         .home-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -573,7 +573,7 @@
         <div class="header-btn" onclick="abrirMenu()" title="Menu">
             <i class="fas fa-bars"></i>
         </div>
-        <div class="header-logo" style="cursor: pointer;" onclick="irParaHome();">CG NEWS OFICIAL</div>
+        <div class="header-logo" onclick="irParaHome();">CG NEWS OFICIAL</div>
         <div class="header-btn" onclick="toggleBuscaPrincipal()" title="Pesquisar">
             <i class="fas fa-search"></i>
         </div>
@@ -597,7 +597,8 @@
             <h3>CG NEWS OFICIAL</h3>
             <i class="fas fa-times" onclick="fecharMenu()"></i>
         </div>
-        <a onclick="filtrarCategoria('Todas')"><i class="fas fa-home" style="width: 24px; color: #11136c;"></i> Últimas Notícias</a>
+        <a onclick="irParaHome()"><i class="fas fa-home" style="width: 24px; color: #11136c;"></i> Voltar ao Início</a>
+        <a onclick="filtrarCategoria('Todas')"><i class="fas fa-globe" style="width: 24px; color: #11136c;"></i> Últimas Notícias</a>
         <a onclick="filtrarCategoria('Campo Grande')"><i class="fas fa-city" style="width: 24px; color: #11136c;"></i> Campo Grande</a>
         <a onclick="filtrarCategoria('Mato Grosso do Sul')"><i class="fas fa-map-marked-alt" style="width: 24px; color: #11136c;"></i> Mato Grosso do Sul</a>
         <a onclick="filtrarCategoria('Brasil')"><i class="fas fa-flag" style="width: 24px; color: #11136c;"></i> Brasil</a>
@@ -652,7 +653,7 @@
             <div class="header-btn" onclick="abrirMenu()">
                 <i class="fas fa-bars"></i>
             </div>
-            <div class="header-logo" style="cursor: pointer;" onclick="irParaHome();">CG NEWS OFICIAL</div>
+            <div class="header-logo" onclick="irParaHome();">CG NEWS OFICIAL</div>
             <div class="header-btn" onclick="toggleBuscaMateria()">
                 <i class="fas fa-search"></i>
             </div>
@@ -670,8 +671,8 @@
         </div>
 
         <div class="materia-container-box">
-            <div onclick="fecharMateria()" style="color: #11136c; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 25px; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s;">
-                <i class="fas fa-arrow-left"></i> Voltar para a página inicial
+            <div onclick="irParaHome()" style="color: #11136c; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 25px; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s;">
+                <i class="fas fa-arrow-left"></i> Voltar ao Início
             </div>
             
             <div id="conteudo-materia"></div>
@@ -1112,6 +1113,7 @@
 
         window.irParaHome = function() {
             fecharMateria();
+            fecharMenu();
             filtrarCategoria('Todas', true);
         };
 
