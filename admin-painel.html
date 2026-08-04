@@ -479,11 +479,11 @@
         window.listaCompletaNoticias = [];
         let chartInstance = null;
 
-        // --- LÓGICA DOS PAINÉIS EXTRAS DINÂMICOS ---
+        // --- LÓGICA DOS PAINÉIS EXTRAS DINÂMICOS COM PROPORÇÕES ---
         let contImagensExtras = 0;
         let contVideosExtras = 0;
 
-        window.adicionarPainelImagem = function() {
+        window.adicionarPainelImagem = function(ratioSalva = '16/9', base64Salva = '', creditoSalvo = '') {
             contImagensExtras++;
             const idAtual = contImagensExtras;
             const container = document.getElementById('container-imagens-extras');
@@ -498,15 +498,30 @@
                     <label>Foto Extra ${idAtual}</label>
                     <div class="file-input-wrapper">
                         <input type="file" id="imagemInputExtra_${idAtual}" accept="image/*">
+                        <button type="button" class="btn-remover-img" onclick="removerImagemExtra(${idAtual})"><i class="fas fa-trash-alt"></i> Limpar</button>
                     </div>
-                    <input type="hidden" id="imagemBase64Extra_${idAtual}">
+                    <input type="hidden" id="imagemBase64Extra_${idAtual}" value="${base64Salva}">
                 </div>
-                <div class="preview-container" id="previewContainerImgExtra_${idAtual}" style="aspect-ratio: 16/9;">
-                    <div class="preview-placeholder"><i class="fas fa-camera" style="margin-right: 6px;"></i> Prévia</div>
+
+                <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">FORMATO DA FOTO EXTRA ${idAtual}:</div>
+                <div class="aspect-ratios" id="ratiosImgExtra_${idAtual}">
+                    <button type="button" class="btn-ratio ${ratioSalva==='16/9'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '16/9', this)">16:9</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='9/16'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '9/16', this)">9:16</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='4/3'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '4/3', this)">4:3</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='3/4'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '3/4', this)">3:4</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='1/1'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '1/1', this)">1:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='3/2'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='18/9'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '18/9', this)">18:9</button>
                 </div>
+                <input type="hidden" id="formatoImgExtraEscolhido_${idAtual}" value="${ratioSalva}">
+
+                <div class="preview-container" id="previewContainerImgExtra_${idAtual}" style="aspect-ratio: ${ratioSalva.replace(':','/')};">
+                    ${base64Salva ? `<img src="${base64Salva}" style="width: 100%; height: 100%; object-fit: cover;">` : `<div class="preview-placeholder"><i class="fas fa-camera" style="margin-right: 6px;"></i> Prévia</div>`}
+                </div>
+                
                 <div class="form-group" style="margin-top: 15px;">
                     <label>Crédito desta imagem</label>
-                    <input type="text" id="fonteImagemExtra_${idAtual}" class="credito-img-extra" placeholder="Ex: Nome do Fotógrafo">
+                    <input type="text" id="fonteImagemExtra_${idAtual}" class="credito-img-extra" value="${creditoSalvo}" placeholder="Ex: Nome do Fotógrafo">
                 </div>
             `;
             container.appendChild(novoPainel);
@@ -520,7 +535,20 @@
             });
         };
 
-        window.adicionarPainelVideo = function() {
+        window.mudarLayoutImgExtra = function(id, ratio, btn) {
+            document.querySelectorAll(`#ratiosImgExtra_${id} .btn-ratio`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`formatoImgExtraEscolhido_${id}`).value = ratio;
+            document.getElementById(`previewContainerImgExtra_${id}`).style.aspectRatio = ratio.replace(':', '/');
+        };
+
+        window.removerImagemExtra = function(id) {
+            document.getElementById(`imagemInputExtra_${id}`).value = "";
+            document.getElementById(`imagemBase64Extra_${id}`).value = "";
+            document.getElementById(`previewContainerImgExtra_${id}`).innerHTML = `<div class="preview-placeholder"><i class="fas fa-camera" style="margin-right: 6px;"></i> Prévia</div>`;
+        };
+
+        window.adicionarPainelVideo = function(ratioSalva = '16/9', base64Salva = '', creditoSalvo = '') {
             contVideosExtras++;
             const idAtual = contVideosExtras;
             const container = document.getElementById('container-videos-extras');
@@ -535,13 +563,28 @@
                     <label>Vídeo Extra ${idAtual}</label>
                     <div class="file-input-wrapper">
                         <input type="file" id="videoInputExtra_${idAtual}" accept="video/*">
+                        <button type="button" class="btn-remover-img" onclick="removerVideoExtra(${idAtual})"><i class="fas fa-trash-alt"></i> Limpar</button>
                     </div>
-                    <input type="hidden" id="videoBase64Extra_${idAtual}" class="base64-vid-extra">
+                    <input type="hidden" id="videoBase64Extra_${idAtual}" class="base64-vid-extra" value="${base64Salva}">
                 </div>
-                <video id="videoPreviewExtra_${idAtual}" class="video-preview" controls></video>
+
+                <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">FORMATO / PROPORÇÃO DO VÍDEO EXTRA ${idAtual}:</div>
+                <div class="aspect-ratios" id="ratiosVidExtra_${idAtual}">
+                    <button type="button" class="btn-ratio ${ratioSalva==='16/9'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '16/9', this)">16:9</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='9/16'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '9/16', this)">9:16</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='4/3'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '4/3', this)">4:3</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='3/4'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '3/4', this)">3:4</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='1/1'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '1/1', this)">1:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='3/2'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='18/9'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '18/9', this)">18:9</button>
+                </div>
+                <input type="hidden" id="formatoVidExtraEscolhido_${idAtual}" value="${ratioSalva}">
+
+                <video id="videoPreviewExtra_${idAtual}" class="video-preview" src="${base64Salva}" style="display: ${base64Salva?'block':'none'}; aspect-ratio: ${ratioSalva.replace(':','/')};" controls></video>
+                
                 <div class="form-group" style="margin-top: 15px;">
                     <label>Crédito deste vídeo</label>
-                    <input type="text" id="creditosVideoExtra_${idAtual}" class="credito-vid-extra" placeholder="Ex: Câmera de Segurança">
+                    <input type="text" id="creditosVideoExtra_${idAtual}" class="credito-vid-extra" value="${creditoSalvo}" placeholder="Ex: Câmera de Segurança">
                 </div>
             `;
             container.appendChild(novoPainel);
@@ -554,16 +597,27 @@
                 videoPreview.src = URL.createObjectURL(file);
                 videoPreview.style.display = 'block';
 
-                videoPreview.onloadedmetadata = function() {
-                    this.style.aspectRatio = this.videoWidth + '/' + this.videoHeight;
-                };
-
                 const reader = new FileReader();
                 reader.onload = function(evt) {
                     document.getElementById(`videoBase64Extra_${idAtual}`).value = evt.target.result;
                 };
                 reader.readAsDataURL(file);
             });
+        };
+
+        window.mudarLayoutVidExtra = function(id, ratio, btn) {
+            document.querySelectorAll(`#ratiosVidExtra_${id} .btn-ratio`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`formatoVidExtraEscolhido_${id}`).value = ratio;
+            document.getElementById(`videoPreviewExtra_${id}`).style.aspectRatio = ratio.replace(':', '/');
+        };
+
+        window.removerVideoExtra = function(id) {
+            document.getElementById(`videoInputExtra_${id}`).value = "";
+            document.getElementById(`videoBase64Extra_${id}`).value = "";
+            const vPrev = document.getElementById(`videoPreviewExtra_${id}`);
+            vPrev.style.display = 'none';
+            vPrev.src = "";
         };
 
         window.removerPainelExtra = function(idPainel) {
@@ -859,19 +913,6 @@
             videoPreview.src = urlBlob;
             videoPreview.style.display = 'block';
 
-            videoPreview.onloadedmetadata = function() {
-                const largura = this.videoWidth;
-                const altura = this.videoHeight;
-                const proporcaoAutomatica = largura + '/' + altura;
-                
-                this.style.aspectRatio = proporcaoAutomatica;
-                document.getElementById('formatoVideoEscolhido').value = proporcaoAutomatica;
-                
-                document.querySelectorAll('#ratiosVideo .btn-ratio').forEach(b => b.classList.remove('active'));
-                
-                window.salvarRascunho();
-            };
-
             const reader = new FileReader();
             reader.onload = async function(evt) {
                 const base64Video = evt.target.result;
@@ -1129,14 +1170,17 @@
                 }, 300);
             }
 
-            // CARREGANDO GALERIAS EXTRAS NA PRÉVIA
+            // CARREGANDO GALERIAS EXTRAS NA PRÉVIA COM SEUS RESPECTIVOS FORMATOS
             let htmlGaleria = "";
             for(let i=1; i<=contImagensExtras; i++) {
                 const img = document.getElementById(`imagemBase64Extra_${i}`)?.value;
                 const cred = document.getElementById(`fonteImagemExtra_${i}`)?.value;
+                const ratio = document.getElementById(`formatoImgExtraEscolhido_${i}`)?.value.replace(':', '/') || '16/9';
                 if(img) {
                     htmlGaleria += `<div style="margin-top: 15px;">
-                        <img src="${img}" style="width: 100%; border-radius: 8px;">
+                        <div style="width: 100%; aspect-ratio: ${ratio}; background: #000; border-radius: 8px; overflow: hidden;">
+                            <img src="${img}" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
                         ${cred ? `<div style="font-size: 11px; color: #777; margin-top: 5px;">Crédito: ${cred}</div>` : ''}
                     </div>`;
                 }
@@ -1144,9 +1188,10 @@
             for(let i=1; i<=contVideosExtras; i++) {
                 const vid = document.getElementById(`videoBase64Extra_${i}`)?.value;
                 const cred = document.getElementById(`creditosVideoExtra_${i}`)?.value;
+                const ratio = document.getElementById(`formatoVidExtraEscolhido_${i}`)?.value.replace(':', '/') || '16/9';
                 if(vid) {
                     htmlGaleria += `<div style="margin-top: 15px;">
-                        <video src="${vid}" controls style="width: 100%; border-radius: 8px; background: #000;"></video>
+                        <video src="${vid}" controls style="width: 100%; aspect-ratio: ${ratio}; border-radius: 8px; background: #000; object-fit: contain;"></video>
                         ${cred ? `<div style="font-size: 11px; color: #777; margin-top: 5px;">Crédito: ${cred}</div>` : ''}
                     </div>`;
                 }
@@ -1171,13 +1216,18 @@
             const categoriasSelecionadas = Array.from(checkboxes).map(cb => cb.value);
             const agora = Date.now();
 
-            // RESGATE DAS LISTAS EXTRAS
+            // RESGATE DAS LISTAS EXTRAS COM AS PROPORÇÕES
             const imagensExtrasArray = [];
             for (let i = 1; i <= contImagensExtras; i++) {
                 const imgVal = document.getElementById(`imagemBase64Extra_${i}`);
                 const credVal = document.getElementById(`fonteImagemExtra_${i}`);
+                const ratioVal = document.getElementById(`formatoImgExtraEscolhido_${i}`);
                 if (imgVal && imgVal.value) {
-                    imagensExtrasArray.push({ base64: imgVal.value, credito: credVal ? credVal.value : "" });
+                    imagensExtrasArray.push({ 
+                        base64: imgVal.value, 
+                        credito: credVal ? credVal.value : "",
+                        formato: ratioVal ? ratioVal.value : "16/9"
+                    });
                 }
             }
 
@@ -1185,8 +1235,13 @@
             for (let i = 1; i <= contVideosExtras; i++) {
                 const vidVal = document.getElementById(`videoBase64Extra_${i}`);
                 const credVal = document.getElementById(`creditosVideoExtra_${i}`);
+                const ratioVal = document.getElementById(`formatoVidExtraEscolhido_${i}`);
                 if (vidVal && vidVal.value) {
-                    videosExtrasArray.push({ base64: vidVal.value, credito: credVal ? credVal.value : "" });
+                    videosExtrasArray.push({ 
+                        base64: vidVal.value, 
+                        credito: credVal ? credVal.value : "",
+                        formato: ratioVal ? ratioVal.value : "16/9"
+                    });
                 }
             }
 
@@ -1352,7 +1407,7 @@
 
             atualizarPreviewImagens();
 
-            // CARREGAR IMAGENS E VÍDEOS EXTRAS NA EDIÇÃO
+            // CARREGAR IMAGENS E VÍDEOS EXTRAS COM SEUS FORMATOS NA EDIÇÃO
             document.getElementById('container-imagens-extras').innerHTML = "";
             document.getElementById('container-videos-extras').innerHTML = "";
             contImagensExtras = 0;
@@ -1360,23 +1415,13 @@
 
             if (item.imagensExtras && item.imagensExtras.length > 0) {
                 item.imagensExtras.forEach((imgObj) => {
-                    adicionarPainelImagem();
-                    const idx = contImagensExtras;
-                    document.getElementById(`imagemBase64Extra_${idx}`).value = imgObj.base64;
-                    document.getElementById(`fonteImagemExtra_${idx}`).value = imgObj.credito || "";
-                    document.getElementById(`previewContainerImgExtra_${idx}`).innerHTML = `<img src="${imgObj.base64}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                    adicionarPainelImagem(imgObj.formato || '16/9', imgObj.base64, imgObj.credito || '');
                 });
             }
 
             if (item.videosExtras && item.videosExtras.length > 0) {
                 item.videosExtras.forEach((vidObj) => {
-                    adicionarPainelVideo();
-                    const idx = contVideosExtras;
-                    document.getElementById(`videoBase64Extra_${idx}`).value = vidObj.base64;
-                    document.getElementById(`creditosVideoExtra_${idx}`).value = vidObj.credito || "";
-                    const vPrev = document.getElementById(`videoPreviewExtra_${idx}`);
-                    vPrev.src = vidObj.base64;
-                    vPrev.style.display = 'block';
+                    adicionarPainelVideo(vidObj.formato || '16/9', vidObj.base64, vidObj.credito || '');
                 });
             }
 
