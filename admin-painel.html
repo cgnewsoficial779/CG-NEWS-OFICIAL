@@ -331,9 +331,9 @@
                 </div>
 
                 <div class="form-group" style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px dashed #002a5c; margin-top: 15px;">
-                    <label style="color: #002a5c;"><i class="fab fa-twitter"></i> Link do X (Twitter) / Vídeo ou Post</label>
-                    <input type="text" id="linkRedeSocial" placeholder="Cole o link do X (ex: https://x.com/.../status/...)">
-                    <small style="display: block; margin-top: 5px; color: #555; font-size: 11px;">O card original do X será gerado automaticamente para visualização e clique.</small>
+                    <label style="color: #002a5c;"><i class="fas fa-share-alt"></i> Link do X, Facebook, Instagram ou YouTube</label>
+                    <input type="text" id="linkRedeSocial" placeholder="Cole o link (X, Facebook, Insta ou YouTube)">
+                    <small style="display: block; margin-top: 5px; color: #555; font-size: 11px;">O card ou player original da rede social será gerado automaticamente.</small>
                 </div>
             </div>
 
@@ -893,7 +893,7 @@
                 }
             }
 
-            // SUPORTE COMPLETO AO X (TWITTER) - GERA O CARD ORIGINAL
+            // SUPORTE AO X (TWITTER) - GERA O CARD ORIGINAL
             if (url.includes("x.com") || url.includes("twitter.com")) {
                 let cleanUrl = url.split("?")[0];
                 return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;">
@@ -904,11 +904,23 @@
                         </div>`;
             }
 
+            // SUPORTE AO INSTAGRAM
             if (url.includes("instagram.com")) {
                 let cleanUrl = url.split("?")[0];
                 if (!cleanUrl.endsWith("/")) cleanUrl += "/";
                 return `<div style="display:flex;justify-content:center;margin-top:10px;">
                             <iframe src="${cleanUrl}embed/" width="100%" height="480" frameborder="0" scrolling="no" allowtransparency="true" style="max-width:540px;border-radius:8px;background:#fff;"></iframe>
+                        </div>`;
+            }
+
+            // SUPORTE AO FACEBOOK (Posts, Vídeos e Reels)
+            if (url.includes("facebook.com") || url.includes("fb.watch")) {
+                let encodedUrl = encodeURIComponent(url);
+                let isVideo = url.includes("/videos/") || url.includes("/reel/") || url.includes("fb.watch");
+                let altura = isVideo ? "480" : "550";
+                
+                return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
+                            <iframe src="https://www.facebook.com/plugins/post.php?href=${encodedUrl}&show_text=true&width=500" width="100%" height="${altura}" style="border:none;overflow:hidden;max-width:500px;border-radius:8px;background:#fff;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
                         </div>`;
             }
 
