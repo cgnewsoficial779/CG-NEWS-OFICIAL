@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Painel Editor - CG News Pro</title>
 
-    <!-- ÍCONES -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
-    <!-- QUILL.JS PARA O EDITOR DE TEXTO -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
-    <!-- CHART.JS PARA OS GRÁFICOS DE AUDIÊNCIA -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
@@ -115,7 +112,7 @@
         .btn-preview { background-color: #0275d8; color: white; border: none; padding: 16px; flex: 1; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
         .btn-cancelar { background-color: #d93025; color: white; border: none; padding: 14px; width: 100%; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; display: none; text-transform: uppercase; }
 
-        /* CARDS DE MATÉRIAS ATUALIZADOS (V8.9) */
+        /* CARDS DE MATÉRIAS ATUALIZADOS */
         .noticia-item { border: 1px solid #d1d9e0; padding: 14px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; gap: 15px; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
         
         .noticia-miniatura { width: 110px; height: 90px; border-radius: 8px; object-fit: cover; background: #ddd; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #777; font-size: 14px; }
@@ -149,7 +146,7 @@
         <div class="header-admin">
             <h1><i class="fas fa-newspaper"></i> CG NEWS <span style="font-size:11px; padding:3px 8px; background:#cc0000; color:#fff; border-radius:4px; margin-left:6px;">OFICIAL</span></h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V8.9</span>
+                <span class="badge-pro">V9.0</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -325,6 +322,12 @@
                     <label>Fonte da Informação</label>
                     <input type="text" id="fonteNoticia" placeholder="Ex: Polícia Civil / Bombeiros">
                 </div>
+
+                <div class="form-group" style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px dashed #002a5c; margin-top: 15px;">
+                    <label style="color: #002a5c;"><i class="fas fa-share-alt"></i> Link do Vídeo em Rede Social (Instagram, YouTube, TikTok, etc.)</label>
+                    <input type="text" id="linkRedeSocial" placeholder="Cole o link do post do Instagram ou vídeo do YouTube aqui...">
+                    <small style="display: block; margin-top: 5px; color: #555; font-size: 11px;">O vídeo real da rede social será exibido automaticamente logo após a fonte na página pública.</small>
+                </div>
             </div>
 
             <div class="botoes-acao-container">
@@ -397,6 +400,11 @@
             <div id="prevContainerMidia" style="width: 100%; margin-bottom: 15px; border-radius: 8px; overflow: hidden; background: #000;"></div>
             <div style="font-size: 11px; color: #777; margin-bottom: 15px;" id="prevCreditoImg"></div>
             <div class="preview-body-content" id="prevTexto"></div>
+            
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;" id="prevFonteArea">
+                <strong style="font-size: 13px; color: #444;" id="prevFonteNoticia">Fonte: </strong>
+            </div>
+            <div id="prevContainerRedeSocial" style="margin-top: 15px;"></div>
         </div>
     </div>
 
@@ -687,6 +695,43 @@
             }
         }
 
+        // Função inteligente para converter links de redes sociais em players incorporados reais
+        function gerarEmbedRedeSocial(url) {
+            if (!url) return "";
+            url = url.trim();
+
+            // YouTube (watch?v= ou youtu.be/)
+            if (url.includes("youtube.com") || url.includes("youtu.be")) {
+                let videoId = "";
+                if (url.includes("v=")) {
+                    videoId = url.split("v=")[1].split("&")[0];
+                } else if (url.includes("youtu.be/")) {
+                    videoId = url.split("youtu.be/")[1].split("?")[0];
+                }
+                if (videoId) {
+                    return `<div style="position:relative;width:100%;padding-bottom:56.25%;height:0;background:#000;border-radius:8px;overflow:hidden;margin-top:10px;">
+                                <iframe src="https://www.youtube.com/embed/${videoId}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+                            </div>`;
+                }
+            }
+
+            // Instagram (posts ou reels)
+            if (url.includes("instagram.com")) {
+                let cleanUrl = url.split("?")[0];
+                if (!cleanUrl.endsWith("/")) cleanUrl += "/";
+                return `<div style="display:flex;justify-content:center;margin-top:10px;">
+                            <iframe src="${cleanUrl}embed/" width="100%" height="480" frameborder="0" scrolling="no" allowtransparency="true" style="max-width:540px;border-radius:8px;background:#fff;"></iframe>
+                        </div>`;
+            }
+
+            // Link padrão genérico formatado se não for YouTube ou Instagram
+            return `<div style="margin-top:10px;padding:12px;background:#f0f2f5;border-radius:8px;border-left:4px solid #002a5c;">
+                        <a href="${url}" target="_blank" style="color:#002a5c;font-weight:bold;text-decoration:none;display:flex;align-items:center;gap:8px;">
+                            <i class="fas fa-play-circle" style="font-size:20px;"></i> Assistir vídeo na rede social original
+                        </a>
+                    </div>`;
+        }
+
         window.abrirPrevia = function() {
             document.getElementById('prevTitulo').innerText = document.getElementById('titulo').value || "Título";
             document.getElementById('prevAutor').innerText = document.getElementById('autor').value || "Redação";
@@ -695,6 +740,13 @@
             const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
             document.getElementById('prevCategoria').innerText = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
             document.getElementById('prevCreditoImg').innerText = `Foto: ${document.getElementById('fonteImagem').value || "N/A"}`;
+
+            // Exibição da Fonte e do Vídeo da Rede Social logo abaixo
+            const fonteNoticiaVal = document.getElementById('fonteNoticia').value;
+            document.getElementById('prevFonteNoticia').innerText = `Fonte: ${fonteNoticiaVal || "Não informada"}`;
+
+            const linkRede = document.getElementById('linkRedeSocial').value;
+            document.getElementById('prevContainerRedeSocial').innerHTML = gerarEmbedRedeSocial(linkRede);
 
             const img1 = document.getElementById('imagemBase64_1').value;
             const img2 = document.getElementById('imagemBase64_2').value;
@@ -737,7 +789,6 @@
             const agora = Date.now();
 
             try {
-                // CORREÇÃO: Garante explicitamente que as chaves imagem1 e imagem2 sejam salvas corretamente no Firebase
                 const imgVal1 = document.getElementById('imagemBase64_1').value || "";
                 const imgVal2 = document.getElementById('imagemBase64_2').value || "";
 
@@ -757,6 +808,7 @@
                     titulo: document.getElementById('titulo').value,
                     texto: textoRico,
                     fonteNoticia: document.getElementById('fonteNoticia').value,
+                    linkRedeSocial: document.getElementById('linkRedeSocial').value, // Salva o link da rede social
                     dataAtualizacao: agora 
                 };
 
@@ -810,7 +862,6 @@
 
             let htmlFullscreen = "";
             for (const [id, item] of Object.entries(window.noticiasAdmin)) {
-                // CORREÇÃO: Compatibilidade retroativa para buscar tanto imagem1 quanto imagem antiga se houver
                 const fotoCapa = item.imagem1 || item.imagem || "";
                 let miniaturaHtml = `<div class="noticia-miniatura"><i class="fas fa-image"></i></div>`;
                 if (fotoCapa) {
@@ -856,8 +907,8 @@
             document.getElementById("bannerImgBase64").value = item.bannerImgBase64 || "";
             document.getElementById("bannerLinkUrl").value = item.bannerLinkUrl || "";
             document.getElementById("fonteNoticia").value = item.fonteNoticia || "";
+            document.getElementById("linkRedeSocial").value = item.linkRedeSocial || ""; // Carrega o link da rede social
             
-            // CORREÇÃO: Carrega corretamente as imagens 1 e 2 para edição sem sumir com a foto
             document.getElementById("imagemBase64_1").value = item.imagem1 || item.imagem || "";
             document.getElementById("imagemBase64_2").value = item.imagem2 || "";
             
@@ -892,6 +943,7 @@
             document.getElementById("imagemBase64_1").value = "";
             document.getElementById("imagemBase64_2").value = "";
             document.getElementById("bannerImgBase64").value = "";
+            document.getElementById("linkRedeSocial").value = "";
             atualizarPreviewImagens();
             document.getElementById("btnSalvar").innerHTML = "<i class='fas fa-paper-plane'></i> Publicar Matéria";
             document.getElementById("btnCancelar").style.display = "none";
