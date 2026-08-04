@@ -115,7 +115,7 @@
         .btn-preview { background-color: #0275d8; color: white; border: none; padding: 16px; flex: 1; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
         .btn-cancelar { background-color: #d93025; color: white; border: none; padding: 14px; width: 100%; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; display: none; text-transform: uppercase; }
 
-        /* CARDS DE MATÉRIAS ATUALIZADOS (V8.7) */
+        /* CARDS DE MATÉRIAS ATUALIZADOS (V8.9) */
         .noticia-item { border: 1px solid #d1d9e0; padding: 14px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; gap: 15px; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
         
         .noticia-miniatura { width: 110px; height: 90px; border-radius: 8px; object-fit: cover; background: #ddd; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #777; font-size: 14px; }
@@ -149,7 +149,7 @@
         <div class="header-admin">
             <h1><i class="fas fa-newspaper"></i> CG NEWS <span style="font-size:11px; padding:3px 8px; background:#cc0000; color:#fff; border-radius:4px; margin-left:6px;">OFICIAL</span></h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V8.7</span>
+                <span class="badge-pro">V8.9</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -737,11 +737,15 @@
             const agora = Date.now();
 
             try {
+                // CORREÇÃO: Garante explicitamente que as chaves imagem1 e imagem2 sejam salvas corretamente no Firebase
+                const imgVal1 = document.getElementById('imagemBase64_1').value || "";
+                const imgVal2 = document.getElementById('imagemBase64_2').value || "";
+
                 const dadosMatéria = {
                     categorias: categoriasSelecionadas,
                     categoria: categoriasSelecionadas.length > 0 ? categoriasSelecionadas[0] : "Geral",
-                    imagem1: document.getElementById('imagemBase64_1').value,
-                    imagem2: document.getElementById('imagemBase64_2').value,
+                    imagem1: imgVal1,
+                    imagem2: imgVal2,
                     formatoCapa: document.getElementById('formatoEscolhido').value,
                     fonteImagem: document.getElementById('fonteImagem').value,
                     videoArquivo: document.getElementById('videoBase64').value,
@@ -806,7 +810,8 @@
 
             let htmlFullscreen = "";
             for (const [id, item] of Object.entries(window.noticiasAdmin)) {
-                const fotoCapa = item.imagem1 || "";
+                // CORREÇÃO: Compatibilidade retroativa para buscar tanto imagem1 quanto imagem antiga se houver
+                const fotoCapa = item.imagem1 || item.imagem || "";
                 let miniaturaHtml = `<div class="noticia-miniatura"><i class="fas fa-image"></i></div>`;
                 if (fotoCapa) {
                     miniaturaHtml = `<div class="noticia-miniatura"><img src="${fotoCapa}"></div>`;
@@ -852,7 +857,8 @@
             document.getElementById("bannerLinkUrl").value = item.bannerLinkUrl || "";
             document.getElementById("fonteNoticia").value = item.fonteNoticia || "";
             
-            document.getElementById("imagemBase64_1").value = item.imagem1 || "";
+            // CORREÇÃO: Carrega corretamente as imagens 1 e 2 para edição sem sumir com a foto
+            document.getElementById("imagemBase64_1").value = item.imagem1 || item.imagem || "";
             document.getElementById("imagemBase64_2").value = item.imagem2 || "";
             
             if(item.formatoCapa) {
