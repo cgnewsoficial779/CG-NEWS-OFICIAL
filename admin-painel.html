@@ -913,15 +913,28 @@
                         </div>`;
             }
 
-            // SUPORTE AO FACEBOOK (Posts, Vídeos e Reels)
-            if (url.includes("facebook.com") || url.includes("fb.watch")) {
-                let encodedUrl = encodeURIComponent(url);
-                let isVideo = url.includes("/videos/") || url.includes("/reel/") || url.includes("fb.watch");
-                let altura = isVideo ? "480" : "550";
+            // SUPORTE AO FACEBOOK (Posts, Vídeos, Reels e Links Curtos share/r/ ou share/v/)
+            if (url.includes("facebook.com") || url.includes("fb.watch") || url.includes("fb.me")) {
+                let finalFbUrl = url;
                 
-                return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
-                            <iframe src="https://www.facebook.com/plugins/post.php?href=${encodedUrl}&show_text=true&width=500" width="100%" height="${altura}" style="border:none;overflow:hidden;max-width:500px;border-radius:8px;background:#fff;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-                        </div>`;
+                // Conversor inteligente para links curtos de compartilhamento do app do Facebook
+                if (url.includes("/share/r/") || url.includes("/share/v/") || url.includes("fb.watch")) {
+                    finalFbUrl = "https://www.facebook.com/watch/?v=" + encodeURIComponent(url);
+                }
+
+                let encodedUrl = encodeURIComponent(finalFbUrl);
+                let isVideo = finalFbUrl.includes("/videos/") || finalFbUrl.includes("/reel/") || finalFbUrl.includes("watch/?v=") || url.includes("fb.watch");
+                let altura = isVideo ? "540" : "550";
+                
+                if (isVideo) {
+                    return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
+                                <iframe src="https://www.facebook.com/plugins/video.php?href=${encodedUrl}&show_text=0&width=500" width="100%" height="${altura}" style="border:none;overflow:hidden;max-width:500px;border-radius:8px;background:#fff;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                            </div>`;
+                } else {
+                    return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
+                                <iframe src="https://www.facebook.com/plugins/post.php?href=${encodedUrl}&show_text=true&width=500" width="100%" height="${altura}" style="border:none;overflow:hidden;max-width:500px;border-radius:8px;background:#fff;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                            </div>`;
+                }
             }
 
             return `<div style="margin-top:10px;padding:12px;background:#f0f2f5;border-radius:8px;border-left:4px solid #002a5c;">
