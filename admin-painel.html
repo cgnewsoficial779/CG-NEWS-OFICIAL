@@ -97,6 +97,7 @@
         .image-upload-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 12px; }
         @media(min-width: 600px) { .image-upload-grid { grid-template-columns: 1fr 1fr; } }
         
+        /* BOTOES DE PROPORCAO */
         .aspect-ratios { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; background: #f8f9fa; padding: 12px; border-radius: 8px; border: 1px solid #e1e4e8; justify-content: center; }
         .btn-ratio { background: #fff; border: 1px solid #b0b8c1; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; color: #555; flex: 1; min-width: 60px; text-align: center; }
         .btn-ratio.active { background: #002a5c; color: white; border-color: #002a5c; }
@@ -104,7 +105,6 @@
         .preview-container { width: 100%; background: #000; border-radius: 8px; display: flex; overflow: hidden; margin-top: 10px; aspect-ratio: 16/9; border: 1px solid #000; }
         .preview-container img { flex: 1; width: 50% !important; height: 100% !important; object-fit: cover !important; }
         
-        /* ATUALIZADO: Suporte dinâmico à proporção no elemento de vídeo */
         .video-preview { width: 100%; border-radius: 8px; display: none; margin-top: 10px; border: 1px solid #b0b8c1; background: #000; aspect-ratio: 16/9; object-fit: contain; }
 
         .botoes-acao-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
@@ -231,15 +231,15 @@
                     </div>
                 </div>
 
-                <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">FORMATO DA MÍDIA (FOTO/VÍDEO):</div>
-                <div class="aspect-ratios">
-                    <button type="button" class="btn-ratio active" onclick="mudarLayout('16/9', this)">16:9</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayout('9/16', this)">9:16</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayout('4/3', this)">4:3</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayout('3/4', this)">3:4</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayout('1/1', this)">1:1</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayout('3/2', this)">3:2</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayout('18/9', this)">18:9</button>
+                <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">FORMATO DA IMAGEM DE CAPA:</div>
+                <div class="aspect-ratios" id="ratiosImagem">
+                    <button type="button" class="btn-ratio active" onclick="mudarLayoutImagem('16/9', this)">16:9</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('9/16', this)">9:16</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('4/3', this)">4:3</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('3/4', this)">3:4</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('1/1', this)">1:1</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('18/9', this)">18:9</button>
                 </div>
                 <input type="hidden" id="formatoEscolhido" value="16/9">
 
@@ -262,9 +262,23 @@
                         <button type="button" class="btn-remover-img" onclick="removerVideo()"><i class="fas fa-trash-alt"></i> Limpar</button>
                     </div>
                     <input type="hidden" id="videoBase64">
-                    <video id="videoPreview" class="video-preview" controls></video>
                 </div>
-                <div class="form-group">
+
+                <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">FORMATO / PROPORÇÃO DO VÍDEO:</div>
+                <div class="aspect-ratios" id="ratiosVideo">
+                    <button type="button" class="btn-ratio active" onclick="mudarLayoutVideo('16/9', this)">16:9</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('9/16', this)">9:16</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('4/3', this)">4:3</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('3/4', this)">3:4</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('1/1', this)">1:1</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('18/9', this)">18:9</button>
+                </div>
+                <input type="hidden" id="formatoVideoEscolhido" value="16/9">
+
+                <video id="videoPreview" class="video-preview" controls></video>
+
+                <div class="form-group" style="margin-top: 15px;">
                     <label>Crédito do Vídeo</label>
                     <input type="text" id="creditosVideo" placeholder="Ex: Câmera de Segurança">
                 </div>
@@ -446,7 +460,7 @@
         window.listaCompletaNoticias = [];
         let chartInstance = null;
 
-        // --- SISTEMA DE BANCO DE DADOS DE MIDIA (IndexedDB) PARA ARMAZENAR VÍDEOS GRANDES ---
+        // --- SISTEMA DE BANCO DE DADOS DE MIDIA (IndexedDB) ---
         function abrirDBMedia() {
             return new Promise((resolve, reject) => {
                 const req = indexedDB.open("CGNewsDB", 1);
@@ -489,7 +503,7 @@
             } catch(e) {}
         }
 
-        // --- SISTEMA DE RASCUNHO AUTOMÁTICO (AUTO-SAVE) ---
+        // --- SISTEMA DE RASCUNHO AUTOMÁTICO ---
         let timerSave;
         window.salvarRascunho = function() {
             if (idEditando) return;
@@ -508,7 +522,8 @@
                     bannerLinkUrl: document.getElementById('bannerLinkUrl').value,
                     textoRico: quill.root.innerHTML,
                     categorias: categorias,
-                    formatoEscolhido: document.getElementById('formatoEscolhido').value
+                    formatoEscolhido: document.getElementById('formatoEscolhido').value,
+                    formatoVideoEscolhido: document.getElementById('formatoVideoEscolhido').value
                 };
 
                 try {
@@ -521,7 +536,6 @@
                     localStorage.setItem('cgnews_rascunho', JSON.stringify(rascunho));
                 }
 
-                // Salvar o vídeo de forma segura no IndexedDB
                 const vid = document.getElementById('videoBase64').value;
                 if(vid) {
                     await salvarVideoNoRascunhoDB(vid);
@@ -565,15 +579,19 @@
                     }
 
                     if(rascunho.formatoEscolhido) {
-                        const btn = document.querySelector(`.btn-ratio[onclick*="'${rascunho.formatoEscolhido}'"]`);
-                        if(btn) mudarLayout(rascunho.formatoEscolhido, btn);
+                        const btn = document.querySelector(`#ratiosImagem .btn-ratio[onclick*="'${rascunho.formatoEscolhido}'"]`);
+                        if(btn) mudarLayoutImagem(rascunho.formatoEscolhido, btn);
+                    }
+
+                    if(rascunho.formatoVideoEscolhido) {
+                        const btnV = document.querySelector(`#ratiosVideo .btn-ratio[onclick*="'${rascunho.formatoVideoEscolhido}'"]`);
+                        if(btnV) mudarLayoutVideo(rascunho.formatoVideoEscolhido, btnV);
                     }
 
                     if(rascunho.imagemBase64_1) document.getElementById('imagemBase64_1').value = rascunho.imagemBase64_1;
                     if(rascunho.imagemBase64_2) document.getElementById('imagemBase64_2').value = rascunho.imagemBase64_2;
                     atualizarPreviewImagens();
 
-                    // Recuperar vídeo salvo no IndexedDB se existir
                     const videoSalvo = await obterVideoRascunhoDB();
                     if(videoSalvo) {
                         document.getElementById('videoBase64').value = videoSalvo;
@@ -678,19 +696,23 @@
             window.salvarRascunho();
         };
 
-        /* ATUALIZADO: Aplica proporção dinamicamente para Imagem E para o Vídeo */
-        window.mudarLayout = function(ratio, btn) {
-            document.querySelectorAll('.btn-ratio').forEach(b => b.classList.remove('active'));
+        /* FUNÇÃO INDEPENDENTE: Muda o formato apenas da Imagem */
+        window.mudarLayoutImagem = function(ratio, btn) {
+            document.querySelectorAll('#ratiosImagem .btn-ratio').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             document.getElementById('formatoEscolhido').value = ratio;
-            
-            // Aplica ao container de foto
             document.getElementById('previewContainerImagens').style.aspectRatio = ratio;
+            window.salvarRascunho();
+        };
+
+        /* FUNÇÃO INDEPENDENTE: Muda o formato apenas do Vídeo */
+        window.mudarLayoutVideo = function(ratio, btn) {
+            document.querySelectorAll('#ratiosVideo .btn-ratio').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('formatoVideoEscolhido').value = ratio;
             
-            // Aplica dinamicamente ao container de vídeo
             const videoPreview = document.getElementById('videoPreview');
             videoPreview.style.aspectRatio = ratio;
-            
             window.salvarRascunho();
         };
 
@@ -720,8 +742,7 @@
             if (!file) return;
             const videoPreview = document.getElementById('videoPreview');
             
-            // Aplica a proporção atual selecionada
-            const ratioAtual = document.getElementById('formatoEscolhido').value;
+            const ratioAtual = document.getElementById('formatoVideoEscolhido').value;
             videoPreview.style.aspectRatio = ratioAtual;
 
             const urlBlob = URL.createObjectURL(file);
@@ -916,14 +937,14 @@
             
             const containerMidia = document.getElementById('prevContainerMidia');
             containerMidia.innerHTML = "";
-            const formato = document.getElementById('formatoEscolhido').value;
-            const aspectRatioCSS = formato.replace(':', '/');
+            const formatoImg = document.getElementById('formatoEscolhido').value.replace(':', '/');
+            const formatoVid = document.getElementById('formatoVideoEscolhido').value.replace(':', '/');
 
             if (videoArquivo) {
-                containerMidia.innerHTML = `<video src="${videoArquivo}" controls style="width: 100%; aspect-ratio: ${aspectRatioCSS}; background: #000; border-radius: 8px; display: block; object-fit: contain;"></video>`;
+                containerMidia.innerHTML = `<video src="${videoArquivo}" controls style="width: 100%; aspect-ratio: ${formatoVid}; background: #000; border-radius: 8px; display: block; object-fit: contain;"></video>`;
             } 
             else if (img1 || img2) {
-                let htmlImgs = `<div style="display: flex; width: 100%; aspect-ratio: ${aspectRatioCSS}; background: #000; overflow: hidden;">`;
+                let htmlImgs = `<div style="display: flex; width: 100%; aspect-ratio: ${formatoImg}; background: #000; overflow: hidden;">`;
                 if (img1 && img2) {
                     htmlImgs += `<img src="${img1}" style="flex: 1; width: 50%; height: 100%; object-fit: cover; border-right: 2px solid #fff;">`;
                     htmlImgs += `<img src="${img2}" style="flex: 1; width: 50%; height: 100%; object-fit: cover;">`;
@@ -966,6 +987,7 @@
                     imagem1: imgVal1,
                     imagem2: imgVal2,
                     formatoCapa: document.getElementById('formatoEscolhido').value,
+                    formatoVideo: document.getElementById('formatoVideoEscolhido').value,
                     fonteImagem: document.getElementById('fonteImagem').value,
                     videoArquivo: document.getElementById('videoBase64').value,
                     creditosVideo: document.getElementById('creditosVideo').value,
@@ -1099,9 +1121,15 @@
             }
 
             if(item.formatoCapa) {
-                const btn = document.querySelector(`.btn-ratio[onclick*="'${item.formatoCapa}'"]`);
-                if(btn) window.mudarLayout(item.formatoCapa, btn);
+                const btn = document.querySelector(`#ratiosImagem .btn-ratio[onclick*="'${item.formatoCapa}'"]`);
+                if(btn) window.mudarLayoutImagem(item.formatoCapa, btn);
             }
+
+            if(item.formatoVideo) {
+                const btnV = document.querySelector(`#ratiosVideo .btn-ratio[onclick*="'${item.formatoVideo}'"]`);
+                if(btnV) window.mudarLayoutVideo(item.formatoVideo, btnV);
+            }
+
             atualizarPreviewImagens();
 
             document.querySelectorAll('input[name="categoria"]').forEach(cb => cb.checked = false);
