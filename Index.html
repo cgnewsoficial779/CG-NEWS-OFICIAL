@@ -10,19 +10,25 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
         html { scroll-behavior: smooth; }
-        body { background-color: #f4f6f9; color: #1a1a1a; }
+        body { background-color: #f4f6f9; color: #1a1a1a; overflow-x: hidden; }
         
         /* CABEÇALHO AZUL PROFISSIONAL */
         header { 
             background-color: #11136c; color: white; 
-            padding: 15px 20px; font-size: 20px; font-weight: bold;
+            padding: 12px 20px; font-size: 20px; font-weight: bold;
             display: flex; justify-content: space-between; align-items: center;
             position: relative; z-index: 1000;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            width: 100%;
         }
-        .header-btn { cursor: pointer; font-size: 20px; padding: 5px; transition: opacity 0.2s; }
+        .header-btn { cursor: pointer; font-size: 20px; padding: 8px; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; }
         .header-btn:hover { opacity: 0.8; }
-        .header-logo { letter-spacing: 0.5px; font-weight: 800; font-size: 20px; }
+        .header-logo { letter-spacing: 0.5px; font-weight: 800; font-size: 18px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        @media (min-width: 768px) {
+            .header-logo { font-size: 20px; }
+            header { padding: 15px 30px; }
+        }
 
         /* BARRA DE DATA E CLIMA ESTILO GRANDE PORTAL */
         .sub-header-bar {
@@ -148,7 +154,7 @@
             top: 0; left: 0; background-color: rgba(0,0,0,0.6); z-index: 15000; cursor: pointer;
         }
 
-        .container { max-width: 1050px; margin: 25px auto; padding: 0 15px; min-height: 70vh; }
+        .container { max-width: 1150px; margin: 25px auto; padding: 0 15px; min-height: 70vh; }
         
         .section-title { font-size: 18px; color: #11136c; border-left: 4px solid #11136c; padding-left: 10px; margin: 25px 0 20px 0; display: none; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .empty-msg { font-size: 14px; color: #718096; font-style: italic; margin: 40px 0; text-align: center; }
@@ -176,7 +182,7 @@
         
         .grid-img-container {
             width: 100%;
-            aspect-ratio: 4/3;
+            aspect-ratio: 16/9;
             background-color: #f7fafc;
             display: flex;
             align-items: center;
@@ -274,7 +280,8 @@
         .card-share-btn.th:hover { background: #000000; color: white; border-color: #000000; }
 
         @media (min-width: 768px) {
-            .home-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .home-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; }
+            .grid-img-container { aspect-ratio: 16/10; }
         }
 
         @media (min-width: 1024px) {
@@ -299,7 +306,7 @@
         
         .news-list-image-container {
             width: 100%;
-            aspect-ratio: 4/3;
+            aspect-ratio: 16/9;
             background: #f7fafc;
             border-radius: 6px;
             overflow: hidden;
@@ -346,8 +353,8 @@
         }
 
         @media (min-width: 640px) {
-            .news-list-item { flex-direction: row; align-items: center; padding: 14px; gap: 15px; }
-            .news-list-image-container { width: 180px; height: 135px; flex-shrink: 0; aspect-ratio: unset; }
+            .news-list-item { flex-direction: row; align-items: center; padding: 16px; gap: 20px; }
+            .news-list-image-container { width: 220px; height: 135px; flex-shrink: 0; aspect-ratio: unset; }
         }
 
         /* RANKING MAIS LIDAS */
@@ -464,7 +471,7 @@
             background-color: #fafbfc;
             border: 1px dashed #cbd5e0;
             border-radius: 6px;
-            padding: 12px;
+            padding: 14px;
             text-align: center;
             color: #a0aec0;
             font-size: 11px;
@@ -498,7 +505,7 @@
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            gap: 18px;
+            gap: 15px;
         }
         .social-icons a {
             color: white;
@@ -547,12 +554,16 @@
         }
         .materia-container-box {
             background: white; 
-            max-width: 800px; 
-            margin: 30px auto; 
-            padding: 30px; 
+            max-width: 850px; 
+            margin: 20px auto; 
+            padding: 20px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.06); 
             border-radius: 8px;
             border: 1px solid #e2e8f0;
+        }
+
+        @media (min-width: 768px) {
+            .materia-container-box { margin: 40px auto; padding: 40px; }
         }
     </style>
 </head>
@@ -1038,7 +1049,7 @@
             }
 
             conteudo.innerHTML = `
-                <h1 style="color: #1a202c; font-size: 26px; font-weight: 800; line-height: 1.25; margin-bottom: 15px;">${item.titulo}</h1>
+                <h1 style="color: #1a202c; font-size: 24px; font-weight: 800; line-height: 1.3; margin-bottom: 15px;">${item.titulo}</h1>
                 
                 <div style="color: #4a5568; font-size: 12px; font-weight: 600; margin-bottom: 15px; display: flex; flex-direction: column; gap: 4px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px;">
                     <div><i class="far fa-clock"></i> ${blocoDatas}</div>
@@ -1326,7 +1337,6 @@
             fecharMenu();
             document.getElementById("input-busca").value = ""; 
 
-            // SALVA A CATEGORIA NO LOCALSTORAGE E NA URL
             if (categoriaDesejada === 'Todas') {
                 localStorage.removeItem('ultimaCategoria');
             } else {
@@ -1439,7 +1449,6 @@
                     noticiaIndex++;
                 });
 
-                // VERIFICA SE HÁ MATÉRIA OU CATEGORIA SALVA NA URL OU NO LOCALSTORAGE AO CARREGAR/ATUALIZAR
                 const urlParams = new URLSearchParams(window.location.search);
                 const materiaUrl = urlParams.get('materia');
                 const categoriaUrl = urlParams.get('categoria');
