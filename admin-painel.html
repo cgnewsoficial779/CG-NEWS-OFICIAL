@@ -139,7 +139,7 @@
         <div class="header-admin">
             <h1><i class="fas fa-newspaper"></i> CG NEWS <span style="font-size:11px; padding:3px 8px; background:#cc0000; color:#fff; border-radius:4px; margin-left:6px;">OFICIAL</span></h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V9.6</span>
+                <span class="badge-pro">V9.7</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -396,6 +396,7 @@
         </div>
     </div>
 
+    <!-- MODAL DE PRÉVIA AJUSTADO COM A NOVA ORDEM DE MÍDIA -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -406,14 +407,20 @@
             <div style="font-size: 13px; color: #666; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                 Por <span id="prevAutor">Redação</span>
             </div>
+            
+            <!-- TOPO: SEMPRE A FOTO DE CAPA PRINCIPAL -->
             <div id="prevContainerMidia" style="width: 100%; margin-bottom: 15px; border-radius: 8px; overflow: hidden; background: #000;"></div>
             <div style="font-size: 11px; color: #777; margin-bottom: 15px;" id="prevCreditoImg"></div>
+            
+            <!-- CORPO DO TEXTO -->
             <div class="preview-body-content" id="prevTexto"></div>
             
+            <!-- FIM DA MATÉRIA: SLOT INFERIOR UNIFICADO PARA VÍDEO DO CELULAR OU LINK DE REDE SOCIAL -->
+            <div id="prevContainerMidiaInferior" style="width: 100%; margin-top: 20px; border-radius: 8px; overflow: hidden;"></div>
+
             <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;" id="prevFonteArea">
                 <strong style="font-size: 13px; color: #444;" id="prevFonteNoticia">Fonte: </strong>
             </div>
-            <div id="prevContainerRedeSocial" style="margin-top: 15px; display: flex; justify-content: center;"></div>
         </div>
     </div>
 
@@ -911,11 +918,8 @@
                         </div>`;
             }
 
-            // CORREÇÃO ROBUSTA PARA O FACEBOOK (SUPORTE A LINKS CURTOS E REDIRECIONAMENTOS)
             if (url.includes("facebook.com") || url.includes("fb.watch")) {
                 let encodedUrl = encodeURIComponent(url);
-                
-                // Se for link de compartilhamento curto (/share/r/ ou /share/v/), usamos o player padrão de post/vídeo universal do FB
                 return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
                             <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=${encodedUrl}&show_text=false&width=476&t=0" 
                                 width="476" 
@@ -936,6 +940,7 @@
                     </div>`;
         }
 
+        // LÓGICA DE EXIBIÇÃO DA PRÉVIA COM POSICIONAMENTO INTELIGENTE
         window.abrirPrevia = function() {
             document.getElementById('prevTitulo').innerText = document.getElementById('titulo').value || "Título";
             document.getElementById('prevAutor').innerText = document.getElementById('autor').value || "Redação";
@@ -943,38 +948,27 @@
             
             const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
             document.getElementById('prevCategoria').innerText = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
-            document.getElementById('prevCreditoImg').innerText = `Crédito: ${document.getElementById('fonteImagem').value || document.getElementById('creditosVideo').value || "N/A"}`;
+            document.getElementById('prevCreditoImg').innerText = `Crédito: ${document.getElementById('fonteImagem').value || "N/A"}`;
 
             const fonteNoticiaVal = document.getElementById('fonteNoticia').value;
             document.getElementById('prevFonteNoticia').innerText = `Fonte: ${fonteNoticiaVal || "Não informada"}`;
 
-            const linkRede = document.getElementById('linkRedeSocial').value;
-            const containerRede = document.getElementById('prevContainerRedeSocial');
-            containerRede.innerHTML = gerarEmbedRedeSocial(linkRede);
-            
-            setTimeout(() => {
-                const scripts = containerRede.getElementsByTagName('script');
-                for (let i = 0; i < scripts.length; i++) {
-                    const s = document.createElement('script');
-                    s.src = scripts[i].src;
-                    s.async = true;
-                    document.body.appendChild(s);
-                }
-            }, 300);
-
             const img1 = document.getElementById('imagemBase64_1').value;
             const img2 = document.getElementById('imagemBase64_2').value;
             const videoArquivo = document.getElementById('videoBase64').value;
+            const linkRede = document.getElementById('linkRedeSocial').value;
             
-            const containerMidia = document.getElementById('prevContainerMidia');
-            containerMidia.innerHTML = "";
+            const containerMidiaTopo = document.getElementById('prevContainerMidia');
+            const containerMidiaInferior = document.getElementById('prevContainerMidiaInferior');
+            
+            containerMidiaTopo.innerHTML = "";
+            containerMidiaInferior.innerHTML = "";
+
             const formatoImg = document.getElementById('formatoEscolhido').value.replace(':', '/');
             const formatoVid = document.getElementById('formatoVideoEscolhido').value.replace(':', '/');
 
-            if (videoArquivo) {
-                containerMidia.innerHTML = `<video src="${videoArquivo}" controls style="width: 100%; aspect-ratio: ${formatoVid}; background: #000; border-radius: 8px; display: block; object-fit: contain;"></video>`;
-            } 
-            else if (img1 || img2) {
+            // 1. TOPO: A FOTO DE CAPA SEMPRE FICA LÁ EM CIMA
+            if (img1 || img2) {
                 let htmlImgs = `<div style="display: flex; width: 100%; aspect-ratio: ${formatoImg}; background: #000; overflow: hidden;">`;
                 if (img1 && img2) {
                     htmlImgs += `<img src="${img1}" style="flex: 1; width: 50%; height: 100%; object-fit: cover; border-right: 2px solid #fff;">`;
@@ -985,9 +979,29 @@
                     htmlImgs += `<img src="${img2}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
                 }
                 htmlImgs += `</div>`;
-                containerMidia.innerHTML = htmlImgs;
+                containerMidiaTopo.innerHTML = htmlImgs;
             } else {
-                containerMidia.innerHTML = `<div style="padding: 20px; text-align: center; color: #777; background: #eee;">Sem imagem ou vídeo principal</div>`;
+                containerMidiaTopo.innerHTML = `<div style="padding: 20px; text-align: center; color: #777; background: #eee;">Sem imagem de capa principal</div>`;
+            }
+
+            // 2. FIM DA MATÉRIA: SE HOUVER VÍDEO DO CELULAR OU LINK DE REDE SOCIAL, ELES DESCEM PARA O SLOT INFERIOR
+            if (videoArquivo) {
+                const creditoVidVal = document.getElementById('creditosVideo').value;
+                containerMidiaInferior.innerHTML = `
+                    <video src="${videoArquivo}" controls style="width: 100%; aspect-ratio: ${formatoVid}; background: #000; border-radius: 8px; display: block; object-fit: contain;"></video>
+                    ${creditoVidVal ? `<div style="font-size: 11px; color: #777; margin-top: 5px;">Crédito do Vídeo: ${creditoVidVal}</div>` : ''}
+                `;
+            } else if (linkRede) {
+                containerMidiaInferior.innerHTML = gerarEmbedRedeSocial(linkRede);
+                setTimeout(() => {
+                    const scripts = containerMidiaInferior.getElementsByTagName('script');
+                    for (let i = 0; i < scripts.length; i++) {
+                        const s = document.createElement('script');
+                        s.src = scripts[i].src;
+                        s.async = true;
+                        document.body.appendChild(s);
+                    }
+                }, 300);
             }
 
             document.getElementById('modalPrevia').style.display = 'flex';
