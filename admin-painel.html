@@ -103,7 +103,9 @@
 
         .preview-container { width: 100%; background: #000; border-radius: 8px; display: flex; overflow: hidden; margin-top: 10px; aspect-ratio: 16/9; border: 1px solid #000; }
         .preview-container img { flex: 1; width: 50% !important; height: 100% !important; object-fit: cover !important; }
-        .video-preview { width: 100%; border-radius: 8px; display: none; margin-top: 10px; border: 1px solid #b0b8c1; background: #000; max-height: 350px; }
+        
+        /* ATUALIZADO: Suporte dinâmico à proporção no elemento de vídeo */
+        .video-preview { width: 100%; border-radius: 8px; display: none; margin-top: 10px; border: 1px solid #b0b8c1; background: #000; aspect-ratio: 16/9; object-fit: contain; }
 
         .botoes-acao-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
         @media(min-width: 500px) { .botoes-acao-container { flex-direction: row; } }
@@ -112,21 +114,14 @@
         .btn-preview { background-color: #0275d8; color: white; border: none; padding: 16px; flex: 1; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
         .btn-cancelar { background-color: #d93025; color: white; border: none; padding: 14px; width: 100%; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; display: none; text-transform: uppercase; }
 
-        /* CARDS DE MATÉRIAS ATUALIZADOS */
         .noticia-item { border: 1px solid #d1d9e0; padding: 14px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; gap: 15px; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
-        
         .noticia-miniatura { width: 110px; height: 90px; border-radius: 8px; object-fit: cover; background: #ddd; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #777; font-size: 14px; overflow: hidden; }
-        @media(min-width: 600px) {
-            .noticia-miniatura { width: 150px; height: 110px; }
-        }
+        @media(min-width: 600px) { .noticia-miniatura { width: 150px; height: 110px; } }
         .noticia-miniatura img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
-        
         .noticia-conteudo-info { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
         .noticia-conteudo-info strong { color: #002a5c; font-size: 15px; line-height: 1.35; font-weight: 800; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        
         .noticia-meta-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
         .noticia-meta-tags span { font-size: 11px; color: #444; background: #f0f2f5; padding: 4px 8px; border-radius: 6px; font-weight: 700; border: 1px solid #d1d9e0; }
-        
         .acoes-btn { display: flex; gap: 8px; margin-top: 6px; }
         .btn-editar, .btn-apagar { padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 5px; }
         .btn-editar { background: #f8f9fa; color: #002a5c; border: 1px solid #002a5c; }
@@ -139,7 +134,6 @@
         .btn-voltar-edicao { background: #002a5c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         .preview-body-content { font-family: Georgia, serif; font-size: 18px; line-height: 1.8; color: #222; margin-top: 15px; flex: 1; }
 
-        /* Notificação de Auto-Save */
         .toast-save { position: fixed; bottom: 20px; right: 20px; background: #137333; color: white; padding: 10px 20px; border-radius: 6px; font-size: 12px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none; z-index: 99999; }
     </style>
 </head>
@@ -149,7 +143,7 @@
         <div class="header-admin">
             <h1><i class="fas fa-newspaper"></i> CG NEWS <span style="font-size:11px; padding:3px 8px; background:#cc0000; color:#fff; border-radius:4px; margin-left:6px;">OFICIAL</span></h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V9.3</span>
+                <span class="badge-pro">V9.4</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -163,7 +157,6 @@
                 <button class="sidebar-close" onclick="alternarSidebar()">&times;</button>
             </div>
             <div class="sidebar-content">
-                
                 <button type="button" class="btn-menu-gerenciar" onclick="abrirModalGerenciamento()">
                     <i class="fas fa-list-ul"></i> Gerenciar Matérias
                 </button>
@@ -198,12 +191,10 @@
                         <i class="fas fa-power-off"></i> Ativar Receita
                     </button>
                 </div>
-
             </div>
         </div>
 
         <form id="formNoticia">
-            
             <div class="section-box">
                 <div class="section-title"><i class="fas fa-tags"></i> Nicho / Categoria</div>
                 <div class="checkbox-group" id="categoriasGroup">
@@ -455,13 +446,56 @@
         window.listaCompletaNoticias = [];
         let chartInstance = null;
 
+        // --- SISTEMA DE BANCO DE DADOS DE MIDIA (IndexedDB) PARA ARMAZENAR VÍDEOS GRANDES ---
+        function abrirDBMedia() {
+            return new Promise((resolve, reject) => {
+                const req = indexedDB.open("CGNewsDB", 1);
+                req.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains("media")) {
+                        db.createObjectStore("media");
+                    }
+                };
+                req.onsuccess = (e) => resolve(e.target.result);
+                req.onerror = (e) => reject(e);
+            });
+        }
+
+        async function salvarVideoNoRascunhoDB(videoData) {
+            try {
+                const idb = await abrirDBMedia();
+                const tx = idb.transaction("media", "readwrite");
+                tx.objectStore("media").put(videoData, "rascunho_video");
+            } catch(e) { console.error(e); }
+        }
+
+        async function obterVideoRascunhoDB() {
+            try {
+                const idb = await abrirDBMedia();
+                return new Promise((resolve) => {
+                    const tx = idb.transaction("media", "readonly");
+                    const req = tx.objectStore("media").get("rascunho_video");
+                    req.onsuccess = () => resolve(req.result || "");
+                    req.onerror = () => resolve("");
+                });
+            } catch(e) { return ""; }
+        }
+
+        async function limparVideoRascunhoDB() {
+            try {
+                const idb = await abrirDBMedia();
+                const tx = idb.transaction("media", "readwrite");
+                tx.objectStore("media").delete("rascunho_video");
+            } catch(e) {}
+        }
+
         // --- SISTEMA DE RASCUNHO AUTOMÁTICO (AUTO-SAVE) ---
         let timerSave;
         window.salvarRascunho = function() {
-            if (idEditando) return; // Não salva rascunho se estiver apenas editando matéria antiga
+            if (idEditando) return;
 
             clearTimeout(timerSave);
-            timerSave = setTimeout(() => {
+            timerSave = setTimeout(async () => {
                 const categorias = Array.from(document.querySelectorAll('input[name="categoria"]:checked')).map(cb => cb.value);
                 const rascunho = {
                     titulo: document.getElementById('titulo').value,
@@ -478,30 +512,34 @@
                 };
 
                 try {
-                    // Tenta salvar imagem no cache. Pode falhar se for muito grande.
                     rascunho.imagemBase64_1 = document.getElementById('imagemBase64_1').value;
                     rascunho.imagemBase64_2 = document.getElementById('imagemBase64_2').value;
                     localStorage.setItem('cgnews_rascunho', JSON.stringify(rascunho));
                 } catch(e) {
-                    console.warn("Imagem muito grande para o cache. Salvando apenas os textos.");
                     rascunho.imagemBase64_1 = "";
                     rascunho.imagemBase64_2 = "";
                     localStorage.setItem('cgnews_rascunho', JSON.stringify(rascunho));
                 }
 
-                // Exibe toast de salvamento
+                // Salvar o vídeo de forma segura no IndexedDB
+                const vid = document.getElementById('videoBase64').value;
+                if(vid) {
+                    await salvarVideoNoRascunhoDB(vid);
+                }
+
                 const toast = document.getElementById('toastSave');
                 toast.style.display = 'block';
                 setTimeout(() => { toast.style.display = 'none'; }, 1500);
 
-            }, 1000); // Salva 1s após parar de digitar
+            }, 1000);
         };
 
         function limparRascunho() {
             localStorage.removeItem('cgnews_rascunho');
+            limparVideoRascunhoDB();
         }
 
-        window.onload = function() {
+        window.onload = async function() {
             const salvo = localStorage.getItem('cgnews_rascunho');
             if(salvo && !idEditando) {
                 try {
@@ -534,15 +572,22 @@
                     if(rascunho.imagemBase64_1) document.getElementById('imagemBase64_1').value = rascunho.imagemBase64_1;
                     if(rascunho.imagemBase64_2) document.getElementById('imagemBase64_2').value = rascunho.imagemBase64_2;
                     atualizarPreviewImagens();
+
+                    // Recuperar vídeo salvo no IndexedDB se existir
+                    const videoSalvo = await obterVideoRascunhoDB();
+                    if(videoSalvo) {
+                        document.getElementById('videoBase64').value = videoSalvo;
+                        const videoPreview = document.getElementById('videoPreview');
+                        videoPreview.src = videoSalvo;
+                        videoPreview.style.display = 'block';
+                    }
                 } catch(e) {}
             }
         };
 
-        // Adiciona eventos para disparar o auto-save
         document.getElementById('formNoticia').addEventListener('input', window.salvarRascunho);
         document.getElementById('formNoticia').addEventListener('change', window.salvarRascunho);
         quill.on('text-change', window.salvarRascunho);
-        // --------------------------------------------------
 
         window.alternarSidebar = function() {
             const panel = document.getElementById('sidebarPanel');
@@ -633,11 +678,19 @@
             window.salvarRascunho();
         };
 
+        /* ATUALIZADO: Aplica proporção dinamicamente para Imagem E para o Vídeo */
         window.mudarLayout = function(ratio, btn) {
             document.querySelectorAll('.btn-ratio').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             document.getElementById('formatoEscolhido').value = ratio;
+            
+            // Aplica ao container de foto
             document.getElementById('previewContainerImagens').style.aspectRatio = ratio;
+            
+            // Aplica dinamicamente ao container de vídeo
+            const videoPreview = document.getElementById('videoPreview');
+            videoPreview.style.aspectRatio = ratio;
+            
             window.salvarRascunho();
         };
 
@@ -666,12 +719,20 @@
             const file = e.target.files[0];
             if (!file) return;
             const videoPreview = document.getElementById('videoPreview');
-            videoPreview.src = URL.createObjectURL(file);
+            
+            // Aplica a proporção atual selecionada
+            const ratioAtual = document.getElementById('formatoEscolhido').value;
+            videoPreview.style.aspectRatio = ratioAtual;
+
+            const urlBlob = URL.createObjectURL(file);
+            videoPreview.src = urlBlob;
             videoPreview.style.display = 'block';
 
             const reader = new FileReader();
-            reader.onload = function(evt) {
-                document.getElementById('videoBase64').value = evt.target.result;
+            reader.onload = async function(evt) {
+                const base64Video = evt.target.result;
+                document.getElementById('videoBase64').value = base64Video;
+                await salvarVideoNoRascunhoDB(base64Video);
             };
             reader.readAsDataURL(file);
         });
@@ -682,6 +743,8 @@
             const videoPreview = document.getElementById('videoPreview');
             videoPreview.style.display = 'none';
             videoPreview.src = "";
+            limparVideoRascunhoDB();
+            window.salvarRascunho();
         };
 
         window.atualizarEstatisticasView = function() {
@@ -796,7 +859,6 @@
             }
         }
 
-        /* --- CORRIGIDO: EXTRAÇÃO DE YOUTUBE SHORTS --- */
         function gerarEmbedRedeSocial(url) {
             if (!url) return "";
             url = url.trim();
@@ -808,7 +870,6 @@
                 } else if (url.includes("youtu.be/")) {
                     videoId = url.split("youtu.be/")[1].split("?")[0];
                 } else if (url.includes("youtube.com/shorts/")) {
-                    // Pega o ID de Shorts
                     videoId = url.split("youtube.com/shorts/")[1].split("?")[0];
                 }
                 
@@ -851,14 +912,13 @@
 
             const img1 = document.getElementById('imagemBase64_1').value;
             const img2 = document.getElementById('imagemBase64_2').value;
-            const videoArquivo = document.getElementById('videoBase64').value; // PEGA O VÍDEO UPADO
+            const videoArquivo = document.getElementById('videoBase64').value;
             
             const containerMidia = document.getElementById('prevContainerMidia');
             containerMidia.innerHTML = "";
             const formato = document.getElementById('formatoEscolhido').value;
             const aspectRatioCSS = formato.replace(':', '/');
 
-            // --- CORRIGIDO: EXIBE VÍDEO DA GALERIA NA PRÉVIA SE EXISTIR ---
             if (videoArquivo) {
                 containerMidia.innerHTML = `<video src="${videoArquivo}" controls style="width: 100%; aspect-ratio: ${aspectRatioCSS}; background: #000; border-radius: 8px; display: block; object-fit: contain;"></video>`;
             } 
@@ -1031,6 +1091,13 @@
             document.getElementById("imagemBase64_1").value = item.imagem1 || item.imagem || "";
             document.getElementById("imagemBase64_2").value = item.imagem2 || "";
             
+            if(item.videoArquivo) {
+                document.getElementById('videoBase64').value = item.videoArquivo;
+                const videoPreview = document.getElementById('videoPreview');
+                videoPreview.src = item.videoArquivo;
+                videoPreview.style.display = 'block';
+            }
+
             if(item.formatoCapa) {
                 const btn = document.querySelector(`.btn-ratio[onclick*="'${item.formatoCapa}'"]`);
                 if(btn) window.mudarLayout(item.formatoCapa, btn);
@@ -1063,6 +1130,7 @@
             document.getElementById("imagemBase64_2").value = "";
             document.getElementById("bannerImgBase64").value = "";
             document.getElementById("linkRedeSocial").value = "";
+            removerVideo();
             atualizarPreviewImagens();
             limparRascunho();
             document.getElementById("btnSalvar").innerHTML = "<i class='fas fa-paper-plane'></i> Publicar Matéria";
