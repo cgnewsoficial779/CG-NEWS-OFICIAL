@@ -98,7 +98,7 @@
         @media(min-width: 600px) { .image-upload-grid { grid-template-columns: 1fr 1fr; } }
         
         .aspect-ratios { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; background: #f8f9fa; padding: 12px; border-radius: 8px; border: 1px solid #e1e4e8; justify-content: center; }
-        .btn-ratio { background: #fff; border: 1px solid #b0b8c1; padding: 10px 14px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; color: #555; flex: 1; min-width: 80px; }
+        .btn-ratio { background: #fff; border: 1px solid #b0b8c1; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; color: #555; flex: 1; min-width: 60px; text-align: center; }
         .btn-ratio.active { background: #002a5c; color: white; border-color: #002a5c; }
 
         .preview-container { width: 100%; background: #000; border-radius: 8px; display: flex; overflow: hidden; margin-top: 10px; aspect-ratio: 16/9; border: 1px solid #000; }
@@ -138,6 +138,9 @@
         .modal-header-top { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #eee; padding-bottom: 12px; margin-bottom: 15px; }
         .btn-voltar-edicao { background: #002a5c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         .preview-body-content { font-family: Georgia, serif; font-size: 18px; line-height: 1.8; color: #222; margin-top: 15px; flex: 1; }
+
+        /* Notificação de Auto-Save */
+        .toast-save { position: fixed; bottom: 20px; right: 20px; background: #137333; color: white; padding: 10px 20px; border-radius: 6px; font-size: 12px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none; z-index: 99999; }
     </style>
 </head>
 <body>
@@ -146,8 +149,7 @@
         <div class="header-admin">
             <h1><i class="fas fa-newspaper"></i> CG NEWS <span style="font-size:11px; padding:3px 8px; background:#cc0000; color:#fff; border-radius:4px; margin-left:6px;">OFICIAL</span></h1>
             <div class="header-actions-right">
-                <!-- Alterado para versão 9.2 -->
-                <span class="badge-pro">V9.2</span>
+                <span class="badge-pro">V9.3</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -204,7 +206,7 @@
             
             <div class="section-box">
                 <div class="section-title"><i class="fas fa-tags"></i> Nicho / Categoria</div>
-                <div class="checkbox-group">
+                <div class="checkbox-group" id="categoriasGroup">
                     <label class="checkbox-item"><input type="checkbox" name="categoria" value="Polícia"><span>Polícia</span></label>
                     <label class="checkbox-item"><input type="checkbox" name="categoria" value="Trânsito"><span>Trânsito</span></label>
                     <label class="checkbox-item"><input type="checkbox" name="categoria" value="Política"><span>Política</span></label>
@@ -238,12 +240,15 @@
                     </div>
                 </div>
 
-                <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">FORMATO DA FOTO:</div>
+                <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">FORMATO DA MÍDIA (FOTO/VÍDEO):</div>
                 <div class="aspect-ratios">
                     <button type="button" class="btn-ratio active" onclick="mudarLayout('16/9', this)">16:9</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayout('4/3', this)">4:3</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayout('1/1', this)">1:1</button>
                     <button type="button" class="btn-ratio" onclick="mudarLayout('9/16', this)">9:16</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayout('4/3', this)">4:3</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayout('3/4', this)">3:4</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayout('1/1', this)">1:1</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayout('3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayout('18/9', this)">18:9</button>
                 </div>
                 <input type="hidden" id="formatoEscolhido" value="16/9">
 
@@ -253,14 +258,14 @@
 
                 <div class="form-group" style="margin-top: 15px;">
                     <label>Crédito da Imagem</label>
-                    <input type="text" id="fonteImagem" placeholder="Ex: Nome do Fotógrafo / Reprodução" required>
+                    <input type="text" id="fonteImagem" placeholder="Ex: Nome do Fotógrafo / Reprodução">
                 </div>
             </div>
 
             <div class="section-box" style="border-left: 5px solid #d93025;">
-                <div class="section-title"><i class="fas fa-video"></i> 2. Vídeo (Opcional)</div>
+                <div class="section-title"><i class="fas fa-video"></i> 2. Vídeo Galeria (Opcional)</div>
                 <div class="form-group">
-                    <label>Arquivo de Vídeo</label>
+                    <label>Arquivo de Vídeo do Celular</label>
                     <div class="file-input-wrapper">
                         <input type="file" id="videoInput" accept="video/*">
                         <button type="button" class="btn-remover-img" onclick="removerVideo()"><i class="fas fa-trash-alt"></i> Limpar</button>
@@ -325,9 +330,9 @@
                 </div>
 
                 <div class="form-group" style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px dashed #002a5c; margin-top: 15px;">
-                    <label style="color: #002a5c;"><i class="fas fa-share-alt"></i> Link do Vídeo em Rede Social (Instagram, YouTube, TikTok, etc.)</label>
+                    <label style="color: #002a5c;"><i class="fas fa-share-alt"></i> Link de Rede Social (Shorts, YouTube, Instagram, etc.)</label>
                     <input type="text" id="linkRedeSocial" placeholder="Cole o link do post do Instagram ou vídeo do YouTube aqui...">
-                    <small style="display: block; margin-top: 5px; color: #555; font-size: 11px;">O vídeo real da rede social será exibido automaticamente logo após a fonte na página pública.</small>
+                    <small style="display: block; margin-top: 5px; color: #555; font-size: 11px;">Ex: https://youtube.com/shorts/... O vídeo será exibido automaticamente na página pública.</small>
                 </div>
             </div>
 
@@ -338,6 +343,8 @@
             <button type="button" id="btnCancelar" class="btn-cancelar" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
         </form>
     </div>
+
+    <div id="toastSave" class="toast-save"><i class="fas fa-cloud-upload-alt"></i> Rascunho salvo!</div>
 
     <div class="modal-fullscreen-overlay" id="modalFullscreenGerenciar">
         <div class="modal-fullscreen-content">
@@ -448,6 +455,95 @@
         window.listaCompletaNoticias = [];
         let chartInstance = null;
 
+        // --- SISTEMA DE RASCUNHO AUTOMÁTICO (AUTO-SAVE) ---
+        let timerSave;
+        window.salvarRascunho = function() {
+            if (idEditando) return; // Não salva rascunho se estiver apenas editando matéria antiga
+
+            clearTimeout(timerSave);
+            timerSave = setTimeout(() => {
+                const categorias = Array.from(document.querySelectorAll('input[name="categoria"]:checked')).map(cb => cb.value);
+                const rascunho = {
+                    titulo: document.getElementById('titulo').value,
+                    autor: document.getElementById('autor').value,
+                    fonteNoticia: document.getElementById('fonteNoticia').value,
+                    linkRedeSocial: document.getElementById('linkRedeSocial').value,
+                    fonteImagem: document.getElementById('fonteImagem').value,
+                    creditosVideo: document.getElementById('creditosVideo').value,
+                    codigoAnuncio: document.getElementById('codigoAnuncio').value,
+                    bannerLinkUrl: document.getElementById('bannerLinkUrl').value,
+                    textoRico: quill.root.innerHTML,
+                    categorias: categorias,
+                    formatoEscolhido: document.getElementById('formatoEscolhido').value
+                };
+
+                try {
+                    // Tenta salvar imagem no cache. Pode falhar se for muito grande.
+                    rascunho.imagemBase64_1 = document.getElementById('imagemBase64_1').value;
+                    rascunho.imagemBase64_2 = document.getElementById('imagemBase64_2').value;
+                    localStorage.setItem('cgnews_rascunho', JSON.stringify(rascunho));
+                } catch(e) {
+                    console.warn("Imagem muito grande para o cache. Salvando apenas os textos.");
+                    rascunho.imagemBase64_1 = "";
+                    rascunho.imagemBase64_2 = "";
+                    localStorage.setItem('cgnews_rascunho', JSON.stringify(rascunho));
+                }
+
+                // Exibe toast de salvamento
+                const toast = document.getElementById('toastSave');
+                toast.style.display = 'block';
+                setTimeout(() => { toast.style.display = 'none'; }, 1500);
+
+            }, 1000); // Salva 1s após parar de digitar
+        };
+
+        function limparRascunho() {
+            localStorage.removeItem('cgnews_rascunho');
+        }
+
+        window.onload = function() {
+            const salvo = localStorage.getItem('cgnews_rascunho');
+            if(salvo && !idEditando) {
+                try {
+                    const rascunho = JSON.parse(salvo);
+                    document.getElementById('titulo').value = rascunho.titulo || "";
+                    document.getElementById('autor').value = rascunho.autor || "";
+                    document.getElementById('fonteNoticia').value = rascunho.fonteNoticia || "";
+                    document.getElementById('linkRedeSocial').value = rascunho.linkRedeSocial || "";
+                    document.getElementById('fonteImagem').value = rascunho.fonteImagem || "";
+                    document.getElementById('creditosVideo').value = rascunho.creditosVideo || "";
+                    document.getElementById('codigoAnuncio').value = rascunho.codigoAnuncio || "";
+                    document.getElementById('bannerLinkUrl').value = rascunho.bannerLinkUrl || "";
+
+                    if(rascunho.textoRico && rascunho.textoRico !== '<p><br></p>') {
+                        quill.root.innerHTML = rascunho.textoRico;
+                    }
+
+                    if(rascunho.categorias) {
+                        rascunho.categorias.forEach(cat => {
+                            const check = document.querySelector(`input[name="categoria"][value="${cat}"]`);
+                            if(check) check.checked = true;
+                        });
+                    }
+
+                    if(rascunho.formatoEscolhido) {
+                        const btn = document.querySelector(`.btn-ratio[onclick*="'${rascunho.formatoEscolhido}'"]`);
+                        if(btn) mudarLayout(rascunho.formatoEscolhido, btn);
+                    }
+
+                    if(rascunho.imagemBase64_1) document.getElementById('imagemBase64_1').value = rascunho.imagemBase64_1;
+                    if(rascunho.imagemBase64_2) document.getElementById('imagemBase64_2').value = rascunho.imagemBase64_2;
+                    atualizarPreviewImagens();
+                } catch(e) {}
+            }
+        };
+
+        // Adiciona eventos para disparar o auto-save
+        document.getElementById('formNoticia').addEventListener('input', window.salvarRascunho);
+        document.getElementById('formNoticia').addEventListener('change', window.salvarRascunho);
+        quill.on('text-change', window.salvarRascunho);
+        // --------------------------------------------------
+
         window.alternarSidebar = function() {
             const panel = document.getElementById('sidebarPanel');
             const overlay = document.getElementById('sidebarOverlay');
@@ -513,6 +609,7 @@
                     const base64 = canvas.toDataURL('image/jpeg', 0.85);
                     document.getElementById(inputHiddenId).value = base64;
                     if(callback) callback();
+                    window.salvarRascunho();
                 }
                 img.src = evt.target.result;
             };
@@ -527,11 +624,13 @@
             document.getElementById(`imagemInput${num}`).value = "";
             document.getElementById(`imagemBase64_${num}`).value = "";
             atualizarPreviewImagens();
+            window.salvarRascunho();
         };
 
         window.removerBannerImg = function() {
             document.getElementById('bannerImgInput').value = "";
             document.getElementById('bannerImgBase64').value = "";
+            window.salvarRascunho();
         };
 
         window.mudarLayout = function(ratio, btn) {
@@ -539,6 +638,7 @@
             btn.classList.add('active');
             document.getElementById('formatoEscolhido').value = ratio;
             document.getElementById('previewContainerImagens').style.aspectRatio = ratio;
+            window.salvarRascunho();
         };
 
         function atualizarPreviewImagens() {
@@ -696,7 +796,7 @@
             }
         }
 
-        /* ----- CORREÇÃO AQUI: ADICIONADA VERIFICAÇÃO PARA O FORMATO 'SHORTS' DO YOUTUBE ----- */
+        /* --- CORRIGIDO: EXTRAÇÃO DE YOUTUBE SHORTS --- */
         function gerarEmbedRedeSocial(url) {
             if (!url) return "";
             url = url.trim();
@@ -708,7 +808,7 @@
                 } else if (url.includes("youtu.be/")) {
                     videoId = url.split("youtu.be/")[1].split("?")[0];
                 } else if (url.includes("youtube.com/shorts/")) {
-                    // Extrai ID do formato de Shorts
+                    // Pega o ID de Shorts
                     videoId = url.split("youtube.com/shorts/")[1].split("?")[0];
                 }
                 
@@ -729,7 +829,7 @@
 
             return `<div style="margin-top:10px;padding:12px;background:#f0f2f5;border-radius:8px;border-left:4px solid #002a5c;">
                         <a href="${url}" target="_blank" style="color:#002a5c;font-weight:bold;text-decoration:none;display:flex;align-items:center;gap:8px;">
-                            <i class="fas fa-play-circle" style="font-size:20px;"></i> Assistir vídeo na rede social original
+                            <i class="fas fa-play-circle" style="font-size:20px;"></i> Assistir na rede social original
                         </a>
                     </div>`;
         }
@@ -751,20 +851,19 @@
 
             const img1 = document.getElementById('imagemBase64_1').value;
             const img2 = document.getElementById('imagemBase64_2').value;
-            /* ----- CORREÇÃO AQUI: PUXANDO O VÍDEO UPADO NA GALERIA ----- */
-            const videoArquivo = document.getElementById('videoBase64').value;
+            const videoArquivo = document.getElementById('videoBase64').value; // PEGA O VÍDEO UPADO
             
             const containerMidia = document.getElementById('prevContainerMidia');
             containerMidia.innerHTML = "";
             const formato = document.getElementById('formatoEscolhido').value;
+            const aspectRatioCSS = formato.replace(':', '/');
 
-            // Se o usuário upou um vídeo da galeria, exibe o player do vídeo na prévia.
+            // --- CORRIGIDO: EXIBE VÍDEO DA GALERIA NA PRÉVIA SE EXISTIR ---
             if (videoArquivo) {
-                containerMidia.innerHTML = `<video src="${videoArquivo}" controls style="width: 100%; max-height: 400px; background: #000; border-radius: 8px; display: block;"></video>`;
+                containerMidia.innerHTML = `<video src="${videoArquivo}" controls style="width: 100%; aspect-ratio: ${aspectRatioCSS}; background: #000; border-radius: 8px; display: block; object-fit: contain;"></video>`;
             } 
-            // Caso contrário, tenta exibir as fotos.
             else if (img1 || img2) {
-                let htmlImgs = `<div style="display: flex; width: 100%; aspect-ratio: ${formato.replace(':', '/')}; background: #000; overflow: hidden;">`;
+                let htmlImgs = `<div style="display: flex; width: 100%; aspect-ratio: ${aspectRatioCSS}; background: #000; overflow: hidden;">`;
                 if (img1 && img2) {
                     htmlImgs += `<img src="${img1}" style="flex: 1; width: 50%; height: 100%; object-fit: cover; border-right: 2px solid #fff;">`;
                     htmlImgs += `<img src="${img2}" style="flex: 1; width: 50%; height: 100%; object-fit: cover;">`;
@@ -776,7 +875,7 @@
                 htmlImgs += `</div>`;
                 containerMidia.innerHTML = htmlImgs;
             } else {
-                containerMidia.innerHTML = `<div style="padding: 20px; text-align: center; color: #777; background: #eee;">Sem imagem ou vídeo em destaque</div>`;
+                containerMidia.innerHTML = `<div style="padding: 20px; text-align: center; color: #777; background: #eee;">Sem imagem ou vídeo principal</div>`;
             }
 
             document.getElementById('modalPrevia').style.display = 'flex';
@@ -830,6 +929,7 @@
                     await addDoc(collection(db, "noticias"), dadosMatéria);
                     alert("🚀 MATÉRIA PUBLICADA!");
                 }
+                limparRascunho();
                 cancelarEdicao();
                 carregarListaNoticias();
             } catch (error) {
@@ -964,6 +1064,7 @@
             document.getElementById("bannerImgBase64").value = "";
             document.getElementById("linkRedeSocial").value = "";
             atualizarPreviewImagens();
+            limparRascunho();
             document.getElementById("btnSalvar").innerHTML = "<i class='fas fa-paper-plane'></i> Publicar Matéria";
             document.getElementById("btnCancelar").style.display = "none";
         };
