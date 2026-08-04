@@ -195,7 +195,7 @@
         
         .grid-img-container {
             width: 100%;
-            aspect-ratio: 16/9;
+            aspect-ratio: 4/3; /* Fixado em 4:3 para todos os tamanhos de tela */
             background-color: #f7fafc;
             display: flex;
             align-items: center;
@@ -294,7 +294,7 @@
 
         @media (min-width: 768px) {
             .home-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; }
-            .grid-img-container { aspect-ratio: 16/10; }
+            /* Removido o sobrescrito de aspect-ratio anterior para manter sempre 4/3 */
         }
 
         @media (min-width: 1024px) {
@@ -319,7 +319,7 @@
         
         .news-list-image-container {
             width: 100%;
-            aspect-ratio: 16/9;
+            aspect-ratio: 4/3; /* Mantém 4:3 também nas listas em dispositivos móveis */
             background: #f7fafc;
             border-radius: 6px;
             overflow: hidden;
@@ -367,7 +367,7 @@
 
         @media (min-width: 640px) {
             .news-list-item { flex-direction: row; align-items: center; padding: 16px; gap: 20px; }
-            .news-list-image-container { width: 220px; height: 135px; flex-shrink: 0; aspect-ratio: unset; }
+            .news-list-image-container { width: 220px; height: 165px; flex-shrink: 0; aspect-ratio: 4/3; } /* Forçado para manter o 4:3 proporcional na listagem desktop */
         }
 
         /* RANKING MAIS LIDAS */
@@ -792,10 +792,9 @@
             return typeof url === 'string' ? url.trim() : "";
         }
 
-        // Função auxiliar unificada para gerar o HTML do bloco de imagens (seja 1 ou 2 imagens lado a lado) respeitando o aspecto
+        // Função auxiliar ajustada para forçar o formato de capa sempre para 4/3 nos cards da home/listas
         function gerarHtmlMidiaCard(item) {
-            const formato = item.formatoCapa || '16/9';
-            const aspectRatioCSS = formato.replace(':', '/');
+            const aspectRatioCSS = '4/3'; // Forçado permanentemente para 4:3
 
             const img1 = item.imagem1 ? item.imagem1.trim() : "";
             const img2 = item.imagem2 ? item.imagem2.trim() : "";
@@ -995,7 +994,7 @@
 
             const blocoDatas = gerarHtmlDatas(item);
 
-            const formato = item.formatoCapa || '16/9';
+            const formato = item.formatoCapa || '4/3';
             const aspectRatioCSS = formato.replace(':', '/');
 
             let blocoMidiaPrincipal = "";
