@@ -316,7 +316,7 @@
             .home-grid .grid-card:first-child { grid-column: span 3; grid-template-columns: 1.2fr 1fr; }
         }
 
-        /* LISTA DE NOTÍCIAS (CATEGORIAS/BUSCA/RECOMENDAÇÕES) */
+        /* LISTA DE NOTÍCIAS */
         .news-list-item {
             display: flex;
             flex-direction: column;
@@ -376,7 +376,7 @@
             .news-list-image { width: 180px; height: 110px; flex-shrink: 0; }
         }
 
-        /* ESTILO PARA NOTÍCIAS MAIS LIDAS COM RANKING (TIPO FOTO 2) */
+        /* RANKING MAIS LIDAS */
         .ranking-list-item {
             display: flex;
             align-items: center;
@@ -432,7 +432,6 @@
             font-weight: 600;
         }
 
-        /* ESTRUTURA DAS SEÇÕES DE RECOMENDAÇÕES E MAIS LIDAS */
         .section-box-container {
             background: #fff;
             border: 1px solid #e2e8f0;
@@ -456,7 +455,6 @@
             text-align: left;
         }
 
-        /* BOTÃO "VER MAIS NOTÍCIAS" */
         .btn-ver-mais {
             display: block;
             width: 100%;
@@ -735,8 +733,6 @@
         const db = getFirestore(app);
 
         window.bancoDeNoticias = []; 
-        
-        // VARIÁVEIS DE CONTROLE DE EXIBIÇÃO DE RECOMENDAÇÕES E MAIS LIDAS
         window.materiaAtualObj = null;
         window.limiteRecomendadas = 10;
         window.limiteMaisLidas = 5;
@@ -758,6 +754,12 @@
         }
 
         atualizarBarraData();
+
+        // FUNÇÃO INTELIGENTE PARA PEGAR A FOTO DA GALERIA (INDENPENDENTE DO NOME DA PROPRIEDADE NO FIREBASE)
+        function obterUrlImagem(item) {
+            if (!item) return "";
+            return item.imagem || item.foto || item.capa || item.imageUrl || item.urlImagem || item.img || "";
+        }
 
         function converterTimestamp(valor) {
             if (!valor) return null;
@@ -919,12 +921,13 @@
             const conteudo = document.getElementById("conteudo-materia");
 
             const blocoDatas = gerarHtmlDatas(item);
+            const imgUrlMateria = obterUrlImagem(item);
 
             let blocoMidiaPrincipal = "";
-            if (item.imagem) {
+            if (imgUrlMateria) {
                 blocoMidiaPrincipal = `
                     <div style="margin: 20px 0;">
-                        <img src="${item.imagem}" style="width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; display: block;">
+                        <img src="${imgUrlMateria}" style="width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; display: block;">
                         <div style="font-size: 11px; font-weight: 600; color: #718096; margin-top: 6px;">${item.fonteImagem || "Reprodução / Divulgação"}</div>
                     </div>
                 `;
@@ -1080,7 +1083,6 @@
             document.body.style.overflow = "hidden"; 
             window.scrollTo(0, 0);
 
-            // CARREGA AS DUAS SEÇÕES NO FINAL DA MATÉRIA
             renderizarRecomendadas();
             renderizarMaisLidasMateria();
         };
@@ -1092,7 +1094,6 @@
             document.body.style.overflow = "auto"; 
         };
 
-        /* 1. SEÇÃO DE RECOMENDAÇÕES DO MESMO NICHO/CATEGORIA */
         function renderizarRecomendadas() {
             const secao = document.getElementById("secao-recomendadas");
             const container = document.getElementById("lista-recomendadas");
@@ -1103,7 +1104,6 @@
             const itemAtual = window.materiaAtualObj;
             const categoriaAlvo = itemAtual.categoria || (itemAtual.categorias ? itemAtual.categorias[0] : "");
 
-            // Filtra matérias do MESMO NICHO / CATEGORIA (exceto a atual)
             const todasDoNicho = window.bancoDeNoticias.filter(n => {
                 if (n.idUnico === itemAtual.idUnico) return false;
                 if (n.categoria && n.categoria === categoriaAlvo) return true;
@@ -1120,12 +1120,10 @@
             container.innerHTML = "";
 
             const exibidas = todasDoNicho.slice(0, window.limiteRecomendadas);
-
             exibidas.forEach(item => {
                 container.innerHTML += criarHtmlListaCard(item);
             });
 
-            // Se houver mais notícias do mesmo nicho além do limite atual, mostra o botão "Ver mais notícias"
             if (todasDoNicho.length > window.limiteRecomendadas) {
                 btnVerMais.style.display = "block";
             } else {
@@ -1138,7 +1136,6 @@
             renderizarRecomendadas();
         };
 
-        /* 2. SEÇÃO MAIS VISTAS (RANKING COM NÚMEROS 1, 2, 3...) */
         function renderizarMaisLidasMateria() {
             const secao = document.getElementById("secao-mais-lidas-materia");
             const container = document.getElementById("lista-mais-lidas-materia");
@@ -1149,7 +1146,6 @@
                 return;
             }
 
-            // Ordena as notícias por visualizações/acessos
             const maisLidasOrdenadas = [...window.bancoDeNoticias].sort((a, b) => {
                 const visA = Number(a.visualizacoes || a.acessos || a.views || 0);
                 const visB = Number(b.visualizacoes || b.acessos || b.views || 0);
@@ -1165,11 +1161,12 @@
                 const numeroRanking = index + 1;
                 const cat = item.categoria || "Geral";
                 const htmlData = gerarHtmlDatas(item);
+                const imgUrl = obterUrlImagem(item);
 
                 container.innerHTML += `
                     <div class="ranking-list-item" onclick="abrirMateria('${item.idUnico}')">
                         <div class="ranking-number-box">${numeroRanking}</div>
-                        ${item.imagem ? `<img src="${item.imagem}" class="ranking-thumb" alt="Capa">` : `<div class="ranking-thumb" style="display:flex;align-items:center;justify-content:center;color:#a0aec0;font-size:10px;">Sem foto</div>`}
+                        ${imgUrl ? `<img src="${imgUrl}" class="ranking-thumb" alt="Capa">` : `<div class="ranking-thumb" style="display:flex;align-items:center;justify-content:center;color:#a0aec0;font-size:10px;">Sem foto</div>`}
                         <div class="ranking-info">
                             <div class="ranking-title">${item.titulo}</div>
                             <div class="ranking-meta"><i class="fas fa-tag"></i> ${cat} • ${htmlData}</div>
@@ -1178,7 +1175,6 @@
                 `;
             });
 
-            // Exibe botão "Ver mais notícias" para mostrar +5
             if (maisLidasOrdenadas.length > window.limiteMaisLidas) {
                 btnVerMais.style.display = "block";
             } else {
@@ -1193,6 +1189,7 @@
 
         function criarHtmlGridCard(item) {
             const htmlData = gerarHtmlDatas(item);
+            const imgUrl = obterUrlImagem(item);
 
             let catText = "NOTÍCIA";
             if (item.categorias && item.categorias.length > 0) catText = item.categorias[0];
@@ -1203,8 +1200,8 @@
             return `
                 <div class="grid-card">
                     <div class="grid-img-container" onclick="abrirMateria('${item.idUnico}')">
-                        ${item.imagem ? 
-                            `<img src="${item.imagem}" class="grid-img">` : 
+                        ${imgUrl ? 
+                            `<img src="${imgUrl}" class="grid-img">` : 
                             `<div class="grid-img" style="display:flex; align-items:center; justify-content:center; color:#a0aec0; font-size:12px;">Sem foto</div>`
                         }
                     </div>
@@ -1229,13 +1226,14 @@
 
         function criarHtmlListaCard(item) {
             const htmlData = gerarHtmlDatas(item);
+            const imgUrl = obterUrlImagem(item);
             const textoResumo = item.texto ? item.texto.substring(0, 110) + "..." : "Clique para ler a matéria completa.";
 
             return `
                 <div class="news-list-item">
                     <div onclick="abrirMateria('${item.idUnico}')">
-                        ${item.imagem ? 
-                            `<img src="${item.imagem}" class="news-list-image">` : 
+                        ${imgUrl ? 
+                            `<img src="${imgUrl}" class="news-list-image">` : 
                             `<div class="news-list-image" style="background:#e2e8f0; display:flex; align-items:center; justify-content:center; color:#a0aec0; font-size:12px;">Sem foto</div>`
                         }
                     </div>
