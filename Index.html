@@ -792,6 +792,41 @@
             return typeof url === 'string' ? url.trim() : "";
         }
 
+        // Função auxiliar unificada para gerar o HTML do bloco de imagens (seja 1 ou 2 imagens lado a lado) respeitando o aspecto
+        function gerarHtmlMidiaCard(item) {
+            const formato = item.formatoCapa || '16/9';
+            const aspectRatioCSS = formato.replace(':', '/');
+
+            const img1 = item.imagem1 ? item.imagem1.trim() : "";
+            const img2 = item.imagem2 ? item.imagem2.trim() : "";
+
+            if (img1 || img2) {
+                let html = `<div style="width: 100%; aspect-ratio: ${aspectRatioCSS}; background: #000; overflow: hidden; display: flex;">`;
+                
+                if (img1 && img2) {
+                    html += `<img src="${img1}" style="flex: 1; width: 50%; height: 100%; object-fit: cover; border-right: 2px solid #fff;">`;
+                    html += `<img src="${img2}" style="flex: 1; width: 50%; height: 100%; object-fit: cover;">`;
+                } else if (img1) {
+                    html += `<img src="${img1}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
+                } else if (img2) {
+                    html += `<img src="${img2}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
+                }
+                
+                html += `</div>`;
+                return html;
+            } else {
+                const imgFallback = obterUrlImagem(item);
+                if (imgFallback) {
+                    return `
+                        <div style="width: 100%; aspect-ratio: ${aspectRatioCSS}; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                            <img src="${imgFallback}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        </div>
+                    `;
+                }
+            }
+            return `<div style="color:#a0aec0; font-size:12px; text-align:center; padding: 20px;">Sem foto</div>`;
+        }
+
         function converterTimestamp(valor) {
             if (!valor) return null;
             if (typeof valor === 'number') return valor;
@@ -960,7 +995,6 @@
 
             const blocoDatas = gerarHtmlDatas(item);
 
-            // CORREÇÃO APLICADA AQUI: Respeita estritamente o formato de capa escolhido (ex: 16/9, 4/3, 1/1, etc.)
             const formato = item.formatoCapa || '16/9';
             const aspectRatioCSS = formato.replace(':', '/');
 
@@ -1315,7 +1349,7 @@
 
         function criarHtmlGridCard(item) {
             const htmlData = gerarHtmlDatas(item);
-            const imgUrl = obterUrlImagem(item);
+            const htmlMidia = gerarHtmlMidiaCard(item);
 
             let catText = "NOTÍCIA";
             if (item.categorias && item.categorias.length > 0) catText = item.categorias[0];
@@ -1326,10 +1360,7 @@
             return `
                 <div class="grid-card">
                     <div class="grid-img-container" onclick="abrirMateria('${item.idUnico}')">
-                        ${imgUrl ? 
-                            `<img src="${imgUrl}" class="grid-img">` : 
-                            `<div style="color:#a0aec0; font-size:12px;">Sem foto</div>`
-                        }
+                        ${htmlMidia}
                     </div>
                     <div class="grid-content-wrap">
                         <div class="grid-cat" onclick="abrirMateria('${item.idUnico}')">${catText} <span class="data-padrao">${htmlData}</span></div>
@@ -1352,16 +1383,13 @@
 
         function criarHtmlListaCard(item) {
             const htmlData = gerarHtmlDatas(item);
-            const imgUrl = obterUrlImagem(item);
+            const htmlMidia = gerarHtmlMidiaCard(item);
             const textoResumo = item.texto ? item.texto.substring(0, 110) + "..." : "Clique para ler a matéria completa.";
 
             return `
                 <div class="news-list-item" onclick="abrirMateria('${item.idUnico}')">
                     <div class="news-list-image-container">
-                        ${imgUrl ? 
-                            `<img src="${imgUrl}" class="news-list-image">` : 
-                            `<div style="color:#a0aec0; font-size:12px;">Sem foto</div>`
-                        }
+                        ${htmlMidia}
                     </div>
                     <div class="news-list-content">
                         <div class="news-list-title">${item.titulo}</div>
