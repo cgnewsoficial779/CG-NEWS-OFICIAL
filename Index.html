@@ -737,9 +737,20 @@
 
         atualizarBarraData();
 
+        // ATUALIZADO: AGORA DETECTA QUALQUER NOME DE CAMPO QUE O PAINEL USE PARA A FOTO (INCLUSIVE ARQUIVO LOCAL / BASE64)
         function obterUrlImagem(item) {
             if (!item) return "";
-            return item.imagem || item.foto || item.capa || item.imageUrl || item.urlImagem || item.img || item.url || item.arquivo || "";
+            return item.imagem || 
+                   item.foto || 
+                   item.capa || 
+                   item.imageUrl || 
+                   item.urlImagem || 
+                   item.img || 
+                   item.url || 
+                   item.arquivo || 
+                   item.fotoBase64 || 
+                   item.imagemBase64 ||
+                   item.imagemUrl || "";
         }
 
         function converterTimestamp(valor) {
