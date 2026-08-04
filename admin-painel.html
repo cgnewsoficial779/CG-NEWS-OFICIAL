@@ -135,10 +135,6 @@
 </head>
 <body>
 
-    <!-- SDK do Facebook para carregar embeds e vídeos corretamente -->
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v18.0"></script>
-
     <div class="container">
         <div class="header-admin">
             <h1><i class="fas fa-newspaper"></i> CG NEWS <span style="font-size:11px; padding:3px 8px; background:#cc0000; color:#fff; border-radius:4px; margin-left:6px;">OFICIAL</span></h1>
@@ -897,19 +893,15 @@
                 }
             }
 
-            // SUPORTE COMPLETO AO FACEBOOK (Posts, Reels e Vídeos)
+            // SUPORTE OTIMIZADO PARA FACEBOOK (Gera o card original do post, vídeo ou reel via iframe oEmbed da Meta)
             if (url.includes("facebook.com") || url.includes("fb.watch")) {
-                let encodedUrl = encodeURIComponent(url);
-                // Verifica se é vídeo ou reel para usar a tag de player de vídeo ou post padrão do FB
-                if (url.includes("/videos/") || url.includes("/reel/") || url.includes("watch")) {
-                    return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
-                                <div class="fb-video" data-href="${url}" data-width="auto" data-show-text="true"></div>
-                            </div>`;
-                } else {
-                    return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
-                                <div class="fb-post" data-href="${url}" data-width="500" data-show-text="true"></div>
-                            </div>`;
-                }
+                let cleanUrl = encodeURIComponent(url);
+                let isVideo = url.includes("/videos/") || url.includes("/reel/") || url.includes("watch") || url.includes("/share/r/");
+                let altura = isVideo ? "540" : "500";
+                
+                return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
+                            <iframe src="https://www.facebook.com/plugins/post.php?href=${cleanUrl}&show_text=true&width=500" width="100%" height="${altura}" style="border:none;overflow:hidden;max-width:500px;border-radius:8px;background:#fff;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                        </div>`;
             }
 
             // SUPORTE AO X (TWITTER)
@@ -954,11 +946,7 @@
             const containerRede = document.getElementById('prevContainerRedeSocial');
             containerRede.innerHTML = gerarEmbedRedeSocial(linkRede);
             
-            // Reexecuta os parsers do Facebook e Twitter após injetar o HTML na prévia
             setTimeout(() => {
-                if (window.FB) {
-                    window.FB.XFBML.parse();
-                }
                 const scripts = containerRede.getElementsByTagName('script');
                 for (let i = 0; i < scripts.length; i++) {
                     const s = document.createElement('script');
