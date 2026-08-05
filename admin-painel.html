@@ -69,6 +69,10 @@
         .form-group { margin-bottom: 18px; }
         label { display: block; font-weight: 700; margin-bottom: 6px; color: #444; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
         input[type="text"], select, input[type="file"], textarea { width: 100%; padding: 14px; border: 1px solid #b0b8c1; border-radius: 6px; font-size: 16px; outline: none; background: #fafbfc; color: #111; }
+        
+        /* CAMPO DO TÍTULO DA MATÉRIA AMPLIADO E DESTACADO */
+        textarea.titulo-textarea { resize: vertical; min-height: 90px; font-size: 19px; font-weight: 900; color: #002a5c; line-height: 1.4; padding: 16px; background: #fff; border: 2px solid #002a5c; }
+
         input[type="file"] { background: #fff; padding: 10px; border: 1px dashed #b0b8c1; cursor: pointer; }
 
         .file-input-wrapper { display: flex; gap: 10px; align-items: center; }
@@ -145,7 +149,7 @@
         <div class="header-admin">
             <h1><i class="fas fa-newspaper"></i> NEWS <span style="font-size:11px; padding:3px 8px; background:#cc0000; color:#fff; border-radius:4px; margin-left:6px;">PRO</span></h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V9.8</span>
+                <span class="badge-pro">V9.9</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -331,10 +335,13 @@
 
             <div class="section-box">
                 <div class="section-title"><i class="fas fa-pen-nib"></i> Redação da Matéria</div>
+                
+                <!-- CAMPO DA MANCHETE AMPLIADO -->
                 <div class="form-group">
-                    <label>Título da Matéria</label>
-                    <input type="text" id="titulo" placeholder="Manchete impactante..." required style="font-size: 17px; font-weight: bold; color: #000;">
+                    <label style="color: #002a5c; font-size: 13px;">Título da Matéria (Manchete)</label>
+                    <textarea id="titulo" class="titulo-textarea" placeholder="Digite uma manchete impactante e chamativa..." required></textarea>
                 </div>
+
                 <div class="form-group">
                     <label>Autor / Repórter</label>
                     <input type="text" id="autor" placeholder="Nome do jornalista">
@@ -414,7 +421,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE PRÉVIA AJUSTADO -->
+    <!-- MODAL DE PRÉVIA -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -479,7 +486,6 @@
         window.listaCompletaNoticias = [];
         let chartInstance = null;
 
-        // --- LÓGICA DOS PAINÉIS EXTRAS DINÂMICOS COM PROPORÇÕES ---
         let contImagensExtras = 0;
         let contVideosExtras = 0;
 
@@ -624,7 +630,6 @@
             const painel = document.getElementById(idPainel);
             if (painel) painel.remove();
         };
-        // ---------------------------------------------
 
         function abrirDBMedia() {
             return new Promise((resolve, reject) => {
@@ -1133,7 +1138,6 @@
             const formatoImg = document.getElementById('formatoEscolhido').value.replace(':', '/');
             const formatoVid = document.getElementById('formatoVideoEscolhido').value.replace(':', '/');
 
-            // TOPO
             if (img1 || img2) {
                 let htmlImgs = `<div style="display: flex; width: 100%; aspect-ratio: ${formatoImg}; background: #000; overflow: hidden;">`;
                 if (img1 && img2) {
@@ -1150,7 +1154,6 @@
                 containerMidiaTopo.innerHTML = `<div style="padding: 20px; text-align: center; color: #777; background: #eee;">Sem imagem de capa principal</div>`;
             }
 
-            // FIM DA MATÉRIA
             if (videoArquivo) {
                 const creditoVidVal = document.getElementById('creditosVideo').value;
                 containerMidiaInferior.innerHTML = `
@@ -1170,7 +1173,6 @@
                 }, 300);
             }
 
-            // CARREGANDO GALERIAS EXTRAS NA PRÉVIA COM SEUS RESPECTIVOS FORMATOS
             let htmlGaleria = "";
             for(let i=1; i<=contImagensExtras; i++) {
                 const img = document.getElementById(`imagemBase64Extra_${i}`)?.value;
@@ -1216,7 +1218,6 @@
             const categoriasSelecionadas = Array.from(checkboxes).map(cb => cb.value);
             const agora = Date.now();
 
-            // RESGATE DAS LISTAS EXTRAS COM AS PROPORÇÕES
             const imagensExtrasArray = [];
             for (let i = 1; i <= contImagensExtras; i++) {
                 const imgVal = document.getElementById(`imagemBase64Extra_${i}`);
@@ -1407,7 +1408,6 @@
 
             atualizarPreviewImagens();
 
-            // CARREGAR IMAGENS E VÍDEOS EXTRAS COM SEUS FORMATOS NA EDIÇÃO
             document.getElementById('container-imagens-extras').innerHTML = "";
             document.getElementById('container-videos-extras').innerHTML = "";
             contImagensExtras = 0;
@@ -1455,7 +1455,6 @@
             atualizarPreviewImagens();
             limparRascunho();
 
-            // Limpa as galerias extras da interface
             document.getElementById('container-imagens-extras').innerHTML = "";
             document.getElementById('container-videos-extras').innerHTML = "";
             contImagensExtras = 0;
