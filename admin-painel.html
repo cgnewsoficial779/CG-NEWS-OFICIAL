@@ -61,6 +61,10 @@
         .btn-ativar-google { background: #1a73e8; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-transform: uppercase; width: 100%; }
         .btn-ativar-google.ativo { background: #137333; }
 
+        /* NOVO BOTÃO DE PAINEL DE ANÚNCIOS NO MENU LATERAL */
+        .btn-painel-anuncios-menu { background: #f9ab00; color: #1a1a1a; border: none; padding: 14px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; width: 100%; box-shadow: 0 2px 6px rgba(249,171,0,0.3); transition: 0.2s; }
+        .btn-painel-anuncios-menu:hover { background: #e09600; }
+
         .section-box { background: #fff; border: 1px solid #d1d9e0; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
         .section-title { font-size: 14px; font-weight: 800; color: #002a5c; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; text-transform: uppercase; }
 
@@ -96,7 +100,7 @@
         @media(min-width: 600px) { .image-upload-grid { grid-template-columns: 1fr 1fr; } }
         
         .aspect-ratios { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; background: #f8f9fa; padding: 12px; border-radius: 8px; border: 1px solid #e1e4e8; justify-content: center; }
-        .btn-ratio { background: #fff; border: 1px solid #b0b8c1; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; color: #555; flex: 1; min-width: 60px; text-align: center; }
+        .btn-ratio { background: #fff; border: 1px solid #b0b8c1; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; color: #555; flex: 1; min-width: 50px; text-align: center; }
         .btn-ratio.active { background: #002a5c; color: white; border-color: #002a5c; }
 
         .preview-container { width: 100%; background: #000; border-radius: 8px; display: flex; overflow: hidden; margin-top: 10px; aspect-ratio: 16/9; border: 1px solid #000; }
@@ -141,11 +145,16 @@
         .painel-extra { border-top: 2px dashed #d1d9e0; padding-top: 20px; margin-top: 20px; position: relative; }
         .btn-remover-painel-extra { position: absolute; top: 10px; right: 0; background: #fff; color: #d93025; border: 1px solid #d93025; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 10; }
 
-        /* Estilo para Banners na Prévia (Arrastar e Soltar) */
+        /* Estilo para Banners na Prévia (Arrastar, Soltar, Botão Fechar e Botão Saiba Mais) */
         .draggable-banner { position: absolute; touch-action: none; cursor: grab; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: box-shadow 0.2s; }
         .draggable-banner:active { cursor: grabbing; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
         .draggable-banner-edit-mode { border: 2px dashed #0275d8 !important; background: rgba(255,255,255,0.9); }
         .resize-handle { position: absolute; bottom: -12px; right: -12px; background: #0275d8; width: 28px; height: 28px; border-radius: 50%; cursor: nwse-resize; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; z-index: 1001; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        
+        .banner-close-btn { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.7); color: #fff; border: none; width: 24px; height: 24px; border-radius: 50%; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1002; }
+        .banner-close-btn:hover { background: #d93025; }
+
+        .banner-video-saibamais { position: absolute; bottom: 15px; right: 15px; background: #1a73e8; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; text-decoration: none; z-index: 1002; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
@@ -154,7 +163,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V10.2</span>
+                <span class="badge-pro">V10.3</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -202,6 +211,11 @@
                         <i class="fas fa-power-off"></i> Ativar Receita
                     </button>
                 </div>
+
+                <!-- Botão de Acesso ao Painel de Anúncios solicitado logo abaixo do Google Ads -->
+                <button type="button" class="btn-painel-anuncios-menu" onclick="abrirPainelAnunciosConfig()">
+                    <i class="fas fa-bullhorn"></i> Painel de Anúncios
+                </button>
             </div>
         </div>
 
@@ -250,7 +264,16 @@
                     <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('3/4', this)">3:4</button>
                     <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('1/1', this)">1:1</button>
                     <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('2/3', this)">2:3</button>
                     <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('18/9', this)">18:9</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('9/18', this)">9:18</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('2/1', this)">2:1</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('2.35/1', this)">2.35:1</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('1.85/1', this)">1.85:1</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('2.39/1', this)">2.39:1</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('128/27', this)">128:27</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('5.8/1', this)">5.8"</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('auto', this)">Original</button>
                 </div>
                 <input type="hidden" id="formatoEscolhido" value="16/9">
 
@@ -288,7 +311,16 @@
                     <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('3/4', this)">3:4</button>
                     <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('1/1', this)">1:1</button>
                     <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('2/3', this)">2:3</button>
                     <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('18/9', this)">18:9</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('9/18', this)">9:18</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('2/1', this)">2:1</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('2.35/1', this)">2.35:1</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('1.85/1', this)">1.85:1</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('2.39/1', this)">2.39:1</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('128/27', this)">128:27</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('5.8/1', this)">5.8"</button>
+                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('auto', this)">Original</button>
                 </div>
                 <input type="hidden" id="formatoVideoEscolhido" value="16/9">
 
@@ -305,15 +337,15 @@
                 </button>
             </div>
 
-            <div class="section-box" style="border-left: 5px solid #f9ab00;">
+            <div class="section-box" style="border-left: 5px solid #f9ab00;" id="secaoPainelAnunciosMaster">
                 <div class="section-title"><i class="fas fa-ad"></i> 3. Banners Patrocinadores / Anúncios / GIFs</div>
                 
-                <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Adicione quantos banners/anúncios quiser. Você poderá ajustar a posição e o tamanho exato de cada um dentro da aba "Ver Prévia".</p>
+                <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Adicione quantos banners/anúncios quiser de forma dinâmica. Escolha onde exibir, configure proporções e links. Você poderá ajustar a posição exata de cada um na prévia.</p>
                 
                 <div id="container-banners-extras"></div>
 
                 <button type="button" class="btn-add-painel" style="border-color: #f9ab00; color: #b07c00;" onclick="adicionarPainelBanner()">
-                    <i class="fas fa-plus-circle"></i> Adicionar Mais Banners, GIFs ou Imagens
+                    <i class="fas fa-plus-circle"></i> Adicionar + Anúncio
                 </button>
             </div>
 
@@ -479,6 +511,16 @@
         let contBannersExtras = 0;
         window.bannersData = {};
 
+        window.abrirPainelAnunciosConfig = function() {
+            alternarSidebar();
+            const elem = document.getElementById('secaoPainelAnunciosMaster');
+            if(elem) {
+                elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                elem.style.border = '2px solid #f9ab00';
+                setTimeout(() => { elem.style.border = ''; }, 2000);
+            }
+        };
+
         window.mudarAbaBannerExtra = function(id, tipo, btn) {
             document.querySelectorAll(`#painel-banner-extra-${id} .ad-tab-btn`).forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -513,7 +555,7 @@
 
             const obj = salvo || {
                 tipo: 'imagem', codigoAnuncio: '', bannerImgBase64: '', 
-                formatoBanner: '16/9', bannerLinkUrl: '', posX: 20, posY: 200 + (id * 50), scale: 1
+                formatoBanner: '16/9', bannerLinkUrl: '', localExibicao: 'inicio', posX: 20, posY: 200 + (id * 50), scale: 1
             };
 
             window.bannersData[id] = { posX: obj.posX, posY: obj.posY, scale: obj.scale };
@@ -524,11 +566,20 @@
             
             painel.innerHTML = `
                 <button type="button" class="btn-remover-painel-extra" onclick="removerPainelExtra('painel-banner-extra-${id}')"><i class="fas fa-times"></i> Remover</button>
-                <div style="font-weight: 800; color: #b07c00; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-ad"></i> Configuração do Banner ${id}</div>
+                <div style="font-weight: 800; color: #b07c00; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-ad"></i> Configuração do Anúncio / Banner ${id}</div>
                 
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label><i class="fas fa-map-marker-alt"></i> Local de Exibição do Anúncio</label>
+                    <select id="localExibicaoBanner_${id}" onchange="window.salvarRascunho()">
+                        <option value="inicio" ${obj.localExibicao==='inicio'?'selected':''}>Tela Inicial (Voltar ao Início)</option>
+                        <option value="ultimas" ${obj.localExibicao==='ultimas'?'selected':''}>Últimas Notícias</option>
+                        <option value="especifica" ${obj.localExibicao==='especifica'?'selected':''}>Notícia Específica (nesta matéria)</option>
+                    </select>
+                </div>
+
                 <div class="ad-tabs">
                     <button type="button" class="ad-tab-btn ${obj.tipo==='codigo'?'active':''}" onclick="mudarAbaBannerExtra(${id}, 'codigo', this)">Código / Script HTML</button>
-                    <button type="button" class="ad-tab-btn ${obj.tipo==='imagem'?'active':''}" onclick="mudarAbaBannerExtra(${id}, 'imagem', this)">Imagem / GIF</button>
+                    <button type="button" class="ad-tab-btn ${obj.tipo==='imagem'?'active':''}" onclick="mudarAbaBannerExtra(${id}, 'imagem', this)">Imagem / GIF / Vídeo</button>
                 </div>
                 <input type="hidden" id="tipoBannerExtra_${id}" value="${obj.tipo}">
 
@@ -541,7 +592,7 @@
 
                 <div id="conteudoAdImagem_${id}" class="ad-tab-content ${obj.tipo==='imagem'?'active':''}">
                     <div class="form-group">
-                        <label>Arquivo de Imagem ou GIF</label>
+                        <label>Arquivo de Mídia (Imagem, GIF ou Vídeo)</label>
                         <div class="file-input-wrapper">
                             <input type="file" id="bannerImgInputExtra_${id}" accept="image/*,video/mp4,image/gif">
                             <button type="button" class="btn-remover-img" onclick="removerBannerImgExtra(${id})"><i class="fas fa-trash-alt"></i> Limpar</button>
@@ -549,17 +600,29 @@
                         <input type="hidden" id="bannerImgBase64Extra_${id}" value="${obj.bannerImgBase64}">
                     </div>
 
-                    <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">PROPORÇÃO BASE:</div>
+                    <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">PROPORÇÃO DE ASPECTO DA MÍDIA:</div>
                     <div class="aspect-ratios" id="ratiosBannerExtra_${id}">
                         <button type="button" class="btn-ratio ${obj.formatoBanner==='16/9'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '16/9', this)">16:9</button>
                         <button type="button" class="btn-ratio ${obj.formatoBanner==='9/16'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '9/16', this)">9:16</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='4/3'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '4/3', this)">4:3</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='3/4'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '3/4', this)">3:4</button>
                         <button type="button" class="btn-ratio ${obj.formatoBanner==='1/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '1/1', this)">1:1</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='4/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '4/1', this)">4:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='3/2'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '3/2', this)">3:2</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2/3'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '2/3', this)">2:3</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='18/9'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '18/9', this)">18:9</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='9/18'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '9/18', this)">9:18</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '2/1', this)">2:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2.35/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '2.35/1', this)">2.35:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='1.85/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '1.85/1', this)">1.85:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2.39/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '2.39/1', this)">2.39:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='128/27'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '128/27', this)">128:27</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='5.8/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '5.8/1', this)">5.8"</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='auto'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, 'auto', this)">Original</button>
                     </div>
                     <input type="hidden" id="formatoBannerExtraEscolhido_${id}" value="${obj.formatoBanner}">
 
                     <div class="form-group" style="margin-top: 15px; margin-bottom: 0;">
-                        <label>Link de Direcionamento</label>
+                        <label>Link de Destino (Site ou Rede Social)</label>
                         <input type="text" id="bannerLinkUrlExtra_${id}" value="${obj.bannerLinkUrl}" placeholder="https://...">
                     </div>
                 </div>
@@ -598,7 +661,7 @@
                     <input type="hidden" id="imagemBase64Extra_${idAtual}" value="${base64Salva}">
                 </div>
 
-                <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">FORMATO DA FOTO EXTRA ${idAtual}:</div>
+                <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">PROPORÇÃO DA FOTO EXTRA ${idAtual}:</div>
                 <div class="aspect-ratios" id="ratiosImgExtra_${idAtual}">
                     <button type="button" class="btn-ratio ${ratioSalva==='16/9'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '16/9', this)">16:9</button>
                     <button type="button" class="btn-ratio ${ratioSalva==='9/16'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '9/16', this)">9:16</button>
@@ -606,11 +669,20 @@
                     <button type="button" class="btn-ratio ${ratioSalva==='3/4'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '3/4', this)">3:4</button>
                     <button type="button" class="btn-ratio ${ratioSalva==='1/1'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '1/1', this)">1:1</button>
                     <button type="button" class="btn-ratio ${ratioSalva==='3/2'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2/3'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '2/3', this)">2:3</button>
                     <button type="button" class="btn-ratio ${ratioSalva==='18/9'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '18/9', this)">18:9</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='9/18'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '9/18', this)">9:18</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2/1'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '2/1', this)">2:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2.35/1'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '2.35/1', this)">2.35:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='1.85/1'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '1.85/1', this)">1.85:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2.39/1'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '2.39/1', this)">2.39:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='128/27'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '128/27', this)">128:27</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='5.8/1'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '5.8/1', this)">5.8"</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='auto'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, 'auto', this)">Original</button>
                 </div>
                 <input type="hidden" id="formatoImgExtraEscolhido_${idAtual}" value="${ratioSalva}">
 
-                <div class="preview-container" id="previewContainerImgExtra_${idAtual}" style="aspect-ratio: ${ratioSalva.replace(':','/')};">
+                <div class="preview-container" id="previewContainerImgExtra_${idAtual}" style="aspect-ratio: ${ratioSalva === 'auto' ? '16/9' : ratioSalva.replace(':', '/')};">
                     ${base64Salva ? `<img src="${base64Salva}" style="width: 100%; height: 100%; object-fit: cover;">` : `<div class="preview-placeholder"><i class="fas fa-camera" style="margin-right: 6px;"></i> Prévia</div>`}
                 </div>
                 
@@ -634,7 +706,7 @@
             document.querySelectorAll(`#ratiosImgExtra_${id} .btn-ratio`).forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             document.getElementById(`formatoImgExtraEscolhido_${id}`).value = ratio;
-            document.getElementById(`previewContainerImgExtra_${id}`).style.aspectRatio = ratio.replace(':', '/');
+            document.getElementById(`previewContainerImgExtra_${id}`).style.aspectRatio = ratio === 'auto' ? '16/9' : ratio.replace(':', '/');
         };
 
         window.removerImagemExtra = function(id) {
@@ -663,7 +735,7 @@
                     <input type="hidden" id="videoBase64Extra_${idAtual}" class="base64-vid-extra" value="${base64Salva}">
                 </div>
 
-                <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">FORMATO / PROPORÇÃO DO VÍDEO EXTRA ${idAtual}:</div>
+                <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">PROPORÇÃO DO VÍDEO EXTRA ${idAtual}:</div>
                 <div class="aspect-ratios" id="ratiosVidExtra_${idAtual}">
                     <button type="button" class="btn-ratio ${ratioSalva==='16/9'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '16/9', this)">16:9</button>
                     <button type="button" class="btn-ratio ${ratioSalva==='9/16'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '9/16', this)">9:16</button>
@@ -671,11 +743,20 @@
                     <button type="button" class="btn-ratio ${ratioSalva==='3/4'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '3/4', this)">3:4</button>
                     <button type="button" class="btn-ratio ${ratioSalva==='1/1'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '1/1', this)">1:1</button>
                     <button type="button" class="btn-ratio ${ratioSalva==='3/2'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2/3'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '2/3', this)">2:3</button>
                     <button type="button" class="btn-ratio ${ratioSalva==='18/9'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '18/9', this)">18:9</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='9/18'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '9/18', this)">9:18</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2/1'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '2/1', this)">2:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2.35/1'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '2.35/1', this)">2.35:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='1.85/1'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '1.85/1', this)">1.85:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2.39/1'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '2.39/1', this)">2.39:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='128/27'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '128/27', this)">128:27</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='5.8/1'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '5.8/1', this)">5.8"</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='auto'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, 'auto', this)">Original</button>
                 </div>
                 <input type="hidden" id="formatoVidExtraEscolhido_${idAtual}" value="${ratioSalva}">
 
-                <video id="videoPreviewExtra_${idAtual}" class="video-preview" src="${base64Salva}" style="display: ${base64Salva?'block':'none'}; aspect-ratio: ${ratioSalva.replace(':','/')};" controls></video>
+                <video id="videoPreviewExtra_${idAtual}" class="video-preview" src="${base64Salva}" style="display: ${base64Salva?'block':'none'}; aspect-ratio: ${ratioSalva === 'auto' ? '16/9' : ratioSalva.replace(':', '/')};" controls></video>
                 
                 <div class="form-group" style="margin-top: 15px;">
                     <label>Crédito deste vídeo</label>
@@ -704,7 +785,7 @@
             document.querySelectorAll(`#ratiosVidExtra_${id} .btn-ratio`).forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             document.getElementById(`formatoVidExtraEscolhido_${id}`).value = ratio;
-            document.getElementById(`videoPreviewExtra_${id}`).style.aspectRatio = ratio.replace(':', '/');
+            document.getElementById(`videoPreviewExtra_${id}`).style.aspectRatio = ratio === 'auto' ? '16/9' : ratio.replace(':', '/');
         };
 
         window.removerVideoExtra = function(id) {
@@ -776,6 +857,7 @@
                             bannerImgBase64: document.getElementById(`bannerImgBase64Extra_${i}`).value,
                             formatoBanner: document.getElementById(`formatoBannerExtraEscolhido_${i}`).value,
                             bannerLinkUrl: document.getElementById(`bannerLinkUrlExtra_${i}`).value,
+                            localExibicao: document.getElementById(`localExibicaoBanner_${i}`).value,
                             posX: window.bannersData[i]?.posX || 0,
                             posY: window.bannersData[i]?.posY || 0,
                             scale: window.bannersData[i]?.scale || 1
@@ -858,7 +940,7 @@
                             mudarLayoutVideo(rascunho.formatoVideoEscolhido, btnV);
                         } else {
                             document.getElementById('formatoVideoEscolhido').value = rascunho.formatoVideoEscolhido;
-                            document.getElementById('videoPreview').style.aspectRatio = rascunho.formatoVideoEscolhido;
+                            document.getElementById('videoPreview').style.aspectRatio = rascunho.formatoVideoEscolhido === 'auto' ? '16/9' : rascunho.formatoVideoEscolhido;
                         }
                     }
 
@@ -945,7 +1027,7 @@
             document.querySelectorAll('#ratiosImagem .btn-ratio').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             document.getElementById('formatoEscolhido').value = ratio;
-            document.getElementById('previewContainerImagens').style.aspectRatio = ratio;
+            document.getElementById('previewContainerImagens').style.aspectRatio = ratio === 'auto' ? '16/9' : ratio;
             window.salvarRascunho();
         };
 
@@ -955,7 +1037,7 @@
             document.getElementById('formatoVideoEscolhido').value = ratio;
             
             const videoPreview = document.getElementById('videoPreview');
-            videoPreview.style.aspectRatio = ratio;
+            videoPreview.style.aspectRatio = ratio === 'auto' ? '16/9' : ratio;
             window.salvarRascunho();
         };
 
@@ -1189,8 +1271,10 @@
 
             wrapper.querySelectorAll('.draggable-banner').forEach(el => el.remove());
 
-            const formatoImg = document.getElementById('formatoEscolhido').value.replace(':', '/');
-            const formatoVid = document.getElementById('formatoVideoEscolhido').value.replace(':', '/');
+            const rawFormatoImg = document.getElementById('formatoEscolhido').value;
+            const formatoImg = rawFormatoImg === 'auto' ? '16/9' : rawFormatoImg.replace(':', '/');
+            const rawFormatoVid = document.getElementById('formatoVideoEscolhido').value;
+            const formatoVid = rawFormatoVid === 'auto' ? '16/9' : rawFormatoVid.replace(':', '/');
 
             if (img1 || img2) {
                 let htmlImgs = `<div style="display: flex; width: 100%; aspect-ratio: ${formatoImg}; background: #000; overflow: hidden;">`;
@@ -1222,7 +1306,8 @@
             for(let i=1; i<=contImagensExtras; i++) {
                 const img = document.getElementById(`imagemBase64Extra_${i}`)?.value;
                 const cred = document.getElementById(`fonteImagemExtra_${i}`)?.value;
-                const ratio = document.getElementById(`formatoImgExtraEscolhido_${i}`)?.value.replace(':', '/') || '16/9';
+                const rawRatio = document.getElementById(`formatoImgExtraEscolhido_${i}`)?.value || '16/9';
+                const ratio = rawRatio === 'auto' ? '16/9' : rawRatio.replace(':', '/');
                 if(img) {
                     htmlGaleria += `<div style="margin-top: 15px;">
                         <div style="width: 100%; aspect-ratio: ${ratio}; background: #000; border-radius: 8px; overflow: hidden;">
@@ -1235,7 +1320,8 @@
             for(let i=1; i<=contVideosExtras; i++) {
                 const vid = document.getElementById(`videoBase64Extra_${i}`)?.value;
                 const cred = document.getElementById(`creditosVideoExtra_${i}`)?.value;
-                const ratio = document.getElementById(`formatoVidExtraEscolhido_${i}`)?.value.replace(':', '/') || '16/9';
+                const rawRatio = document.getElementById(`formatoVidExtraEscolhido_${i}`)?.value || '16/9';
+                const ratio = rawRatio === 'auto' ? '16/9' : rawRatio.replace(':', '/');
                 if(vid) {
                     htmlGaleria += `<div style="margin-top: 15px;">
                         <video src="${vid}" controls style="width: 100%; aspect-ratio: ${ratio}; border-radius: 8px; background: #000; object-fit: contain;"></video>
@@ -1253,15 +1339,27 @@
                 const base64 = document.getElementById(`bannerImgBase64Extra_${i}`).value;
                 const code = document.getElementById(`codigoAnuncioExtra_${i}`).value;
                 const link = document.getElementById(`bannerLinkUrlExtra_${i}`).value;
-                const ratio = document.getElementById(`formatoBannerExtraEscolhido_${i}`).value.replace(':', '/');
+                const rawRatio = document.getElementById(`formatoBannerExtraEscolhido_${i}`).value;
+                const ratio = rawRatio === 'auto' ? '16/9' : rawRatio.replace(':', '/');
                 const bd = window.bannersData[i] || {posX: 0, posY: 0, scale: 1};
 
                 let contentHtml = '';
                 if(tipo === 'imagem' && base64) {
-                    contentHtml = `<img src="${base64}" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none;">`;
-                    if(link) contentHtml = `<a href="${link}" target="_blank" style="display:block;width:100%;height:100%;pointer-events:none;">${contentHtml}</a>`;
+                    // Verifica se a mídia é vídeo (exceção solicitada)
+                    if (base64.startsWith('data:video') || base64.includes('video/')) {
+                        contentHtml = `
+                            <video src="${base64}" controls style="width: 100%; height: 100%; object-fit: contain; background:#000;"></video>
+                            ${link ? `<a href="${link}" target="_blank" class="banner-video-saibamais">Saiba Mais</a>` : ''}
+                        `;
+                    } else {
+                        // Banner em formato de Imagem ou GIF com link por trás
+                        contentHtml = `<img src="${base64}" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none;">`;
+                        if(link) {
+                            contentHtml = `<a href="${link}" target="_blank" style="display:block;width:100%;height:100%;">${contentHtml}</a>`;
+                        }
+                    }
                 } else if(tipo === 'codigo' && code) {
-                    contentHtml = `<div style="pointer-events:none; width:100%; height:100%; overflow:hidden;">${code}</div>`;
+                    contentHtml = `<div style="width:100%; height:100%; overflow:hidden;">${code}</div>`;
                 }
 
                 if(contentHtml) {
@@ -1276,6 +1374,7 @@
                     el.style.transformOrigin = 'top left';
 
                     el.innerHTML = `
+                        <button type="button" class="banner-close-btn" onclick="document.getElementById('prevBannerDrag_${i}').style.display='none'" title="Fechar Publicidade">&times;</button>
                         ${contentHtml}
                         <div class="resize-handle"><i class="fas fa-expand-arrows-alt"></i></div>
                     `;
@@ -1295,9 +1394,10 @@
             let startScale = dataObj.scale;
             let startYMouse = 0;
             const handle = el.querySelector('.resize-handle');
+            const closeBtn = el.querySelector('.banner-close-btn');
 
             el.addEventListener('mousedown', (e) => {
-                if(e.target === handle || handle.contains(e.target)) return;
+                if(e.target === handle || handle.contains(e.target) || e.target === closeBtn || closeBtn.contains(e.target)) return;
                 isDragging = true;
                 el.classList.add('draggable-banner-edit-mode');
             });
@@ -1331,6 +1431,7 @@
 
             let lastTouchX, lastTouchY;
             el.addEventListener('touchstart', (e) => {
+                if(e.target === closeBtn || closeBtn.contains(e.target)) return;
                 if(e.touches.length === 1) {
                     if(e.target === handle || handle.contains(e.target)) {
                         isResizing = true;
@@ -1436,6 +1537,7 @@
                         bannerImgBase64: document.getElementById(`bannerImgBase64Extra_${i}`).value,
                         formatoBanner: document.getElementById(`formatoBannerExtraEscolhido_${i}`).value,
                         bannerLinkUrl: document.getElementById(`bannerLinkUrlExtra_${i}`).value,
+                        localExibicao: document.getElementById(`localExibicaoBanner_${i}`).value,
                         posX: window.bannersData[i]?.posX || 0,
                         posY: window.bannersData[i]?.posY || 0,
                         scale: window.bannersData[i]?.scale || 1
@@ -1579,71 +1681,73 @@
 
             document.getElementById("btnSalvar").innerHTML = "<i class='fas fa-sync'></i> Atualizar";
             document.getElementById("btnCancelar").style.display = "block";
-            document.getElementById("titulo").value = item.titulo || "";
+
+            document.getElementById('titulo').value = item.titulo || "";
+            document.getElementById('autor').value = item.autor || "";
+            document.getElementById('fonteNoticia').value = item.fonteNoticia || "";
+            document.getElementById('linkRedeSocial').value = item.linkRedeSocial || "";
+            document.getElementById('fonteImagem').value = item.fonteImagem || "";
+            document.getElementById('creditosVideo').value = item.creditosVideo || "";
             quill.root.innerHTML = item.texto || "";
-            document.getElementById("autor").value = item.autor || "";
-            document.getElementById("fonteImagem").value = item.fonteImagem || "";
-            document.getElementById("creditosVideo").value = item.creditosVideo || "";
-            document.getElementById("fonteNoticia").value = item.fonteNoticia || "";
-            document.getElementById("linkRedeSocial").value = item.linkRedeSocial || "";
-            
-            document.getElementById("imagemBase64_1").value = item.imagem1 || item.imagem || "";
-            document.getElementById("imagemBase64_2").value = item.imagem2 || "";
 
-            if(item.videoArquivo) {
-                document.getElementById('videoBase64').value = item.videoArquivo;
-                const videoPreview = document.getElementById('videoPreview');
-                videoPreview.src = item.videoArquivo;
-                videoPreview.style.display = 'block';
+            document.querySelectorAll('input[name="categoria"]').forEach(cb => cb.checked = false);
+            if (item.categorias) {
+                item.categorias.forEach(cat => {
+                    const cb = document.querySelector(`input[name="categoria"][value="${cat}"]`);
+                    if(cb) cb.checked = true;
+                });
             }
 
-            if(item.formatoCapa) {
+            if (item.formatoCapa) {
                 const btn = document.querySelector(`#ratiosImagem .btn-ratio[onclick*="'${item.formatoCapa}'"]`);
-                if(btn) window.mudarLayoutImagem(item.formatoCapa, btn);
+                if(btn) mudarLayoutImagem(item.formatoCapa, btn);
             }
 
-            if(item.formatoVideo) {
+            if (item.formatoVideo) {
                 const btnV = document.querySelector(`#ratiosVideo .btn-ratio[onclick*="'${item.formatoVideo}'"]`);
-                if(btnV) {
-                    window.mudarLayoutVideo(item.formatoVideo, btnV);
-                } else {
-                    document.getElementById('formatoVideoEscolhido').value = item.formatoVideo;
-                    document.getElementById('videoPreview').style.aspectRatio = item.formatoVideo;
-                }
+                if(btnV) mudarLayoutVideo(item.formatoVideo, btnV);
             }
 
+            document.getElementById('imagemBase64_1').value = item.imagem1 || "";
+            document.getElementById('imagemBase64_2').value = item.imagem2 || "";
             atualizarPreviewImagens();
 
+            const vBase = item.videoArquivo || "";
+            document.getElementById('videoBase64').value = vBase;
+            const vPrev = document.getElementById('videoPreview');
+            if (vBase) {
+                vPrev.src = vBase;
+                vPrev.style.display = 'block';
+            } else {
+                vPrev.src = "";
+                vPrev.style.display = 'none';
+            }
+
             document.getElementById('container-imagens-extras').innerHTML = "";
-            document.getElementById('container-videos-extras').innerHTML = "";
-            document.getElementById('container-banners-extras').innerHTML = "";
             contImagensExtras = 0;
+            if (item.imagensExtras && item.imagensExtras.length > 0) {
+                item.imagensExtras.forEach(ie => adicionarPainelImagem(ie.formato || '16/9', ie.base64 || '', ie.credito || ''));
+            }
+
+            document.getElementById('container-videos-extras').innerHTML = "";
             contVideosExtras = 0;
+            if (item.videosExtras && item.videosExtras.length > 0) {
+                item.videosExtras.forEach(ve => adicionarPainelVideo(ve.formato || '16/9', ve.base64 || '', ve.credito || ''));
+            }
+
+            document.getElementById('container-banners-extras').innerHTML = "";
             contBannersExtras = 0;
             window.bannersData = {};
-
-            if (item.imagensExtras && item.imagensExtras.length > 0) {
-                item.imagensExtras.forEach((imgObj) => {
-                    adicionarPainelImagem(imgObj.formato || '16/9', imgObj.base64, imgObj.credito || '');
-                });
-            }
-
-            if (item.videosExtras && item.videosExtras.length > 0) {
-                item.videosExtras.forEach((vidObj) => {
-                    adicionarPainelVideo(vidObj.formato || '16/9', vidObj.base64, vidObj.credito || '');
-                });
-            }
-
             if (item.banners && item.banners.length > 0) {
-                item.banners.forEach((b) => adicionarPainelBanner(b));
+                item.banners.forEach(b => adicionarPainelBanner(b));
             }
         };
 
         window.apagarNoticia = async function(id) {
-            if(confirm("Tem certeza que deseja apagar esta matéria?")) {
+            if (confirm("Tem certeza que deseja apagar esta matéria?")) {
                 try {
                     await deleteDoc(doc(db, "noticias", id));
-                    alert("Matéria apagada com sucesso!");
+                    alert("🗑️ Matéria apagada com sucesso!");
                     carregarListaNoticias();
                     renderizarListasDeNoticias();
                 } catch(e) {
