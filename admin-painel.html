@@ -102,7 +102,7 @@
         .btn-ratio.active { background: #002a5c; color: white; border-color: #002a5c; }
 
         .preview-container { width: 100%; background: #000; border-radius: 8px; display: flex; overflow: hidden; margin-top: 10px; aspect-ratio: 16/9; border: 1px solid #000; }
-        .preview-container img { flex: 1; width: 50% !important; height: 100% !important; object-fit: cover !important; }
+        .preview-container img, .preview-container video { flex: 1; width: 100% !important; height: 100% !important; object-fit: cover !important; }
         
         .video-preview { width: 100%; border-radius: 8px; display: none; margin-top: 10px; border: 1px solid #b0b8c1; background: #000; aspect-ratio: 16/9; object-fit: contain; }
 
@@ -147,7 +147,7 @@
         <div class="header-admin">
             <h1><i class="fas fa-newspaper"></i> NEWS <span style="font-size:11px; padding:3px 8px; background:#cc0000; color:#fff; border-radius:4px; margin-left:6px;">PRO</span></h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V10.0</span>
+                <span class="badge-pro">V10.1</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -299,11 +299,11 @@
             </div>
 
             <div class="section-box" style="border-left: 5px solid #f9ab00;">
-                <div class="section-title"><i class="fas fa-ad"></i> Banner Patrocinador</div>
+                <div class="section-title"><i class="fas fa-ad"></i> Banner Patrocinador / Anúncios / GIFs / Animados</div>
                 
                 <div class="ad-tabs">
                     <button type="button" class="ad-tab-btn active" onclick="mudarAbaAnuncio('codigo', this)">Código / Script HTML</button>
-                    <button type="button" class="ad-tab-btn" onclick="mudarAbaAnuncio('imagem', this)">Imagem do Banner + Link</button>
+                    <button type="button" class="ad-tab-btn" onclick="mudarAbaAnuncio('imagem', this)">Banner / GIF / Animado + Link</button>
                 </div>
 
                 <div id="conteudoAdCodigo" class="ad-tab-content active">
@@ -315,15 +315,38 @@
 
                 <div id="conteudoAdImagem" class="ad-tab-content">
                     <div class="form-group">
-                        <label>Imagem do Patrocinador</label>
+                        <label>Arquivo de Imagem, GIF ou Animação do Patrocinador</label>
                         <div class="file-input-wrapper">
-                            <input type="file" id="bannerImgInput" accept="image/*">
+                            <input type="file" id="bannerImgInput" accept="image/*,video/mp4,image/gif">
                             <button type="button" class="btn-remover-img" onclick="removerBannerImg()"><i class="fas fa-trash-alt"></i> Limpar</button>
                         </div>
                         <input type="hidden" id="bannerImgBase64">
                     </div>
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label>Link de Direcionamento (URL ao clicar)</label>
+
+                    <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">TODAS AS PROPORÇÕES DE MERCADO (BANNER / GIF / ANÚNCIO):</div>
+                    <div class="aspect-ratios" id="ratiosBanner">
+                        <button type="button" class="btn-ratio active" onclick="mudarLayoutBanner('16/9', this)" title="Widescreen / Full HD">16:9</button>
+                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('9/16', this)" title="Stories / Reels / TikTok">9:16</button>
+                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('1/1', this)" title="Quadrado / Instagram Feed">1:1</button>
+                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('4/3', this)" title="Padrão Clássico">4:3</button>
+                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('3/4', this)" title="Retrato Vertical">3:4</button>
+                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('3/2', this)" title="Fotografia padrão">3:2</button>
+                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('4/1', this)" title="Super Banner / Leaderboard Longo">4:1</button>
+                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('6/1', this)" title="Mega Banner IAB">6:1</button>
+                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('8/1', this)" title="Ultra Wide Banner">8:1</button>
+                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('2/1', this)" title="Banner Paisagem Largo">2:1</button>
+                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('3/1', this)" title="Banner Triplo Horizontal">3:1</button>
+                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('1/2', this)" title="Skyscraper / Meia Página Vertical">1:2</button>
+                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('4/5', this)" title="Retrato Instagram / Facebook (4:5)">4:5</button>
+                    </div>
+                    <input type="hidden" id="formatoBannerEscolhido" value="16/9">
+
+                    <div class="preview-container" id="previewContainerBanner" style="aspect-ratio: 16/9;">
+                        <div class="preview-placeholder"><i class="fas fa-image" style="margin-right: 6px;"></i> Nenhum banner selecionado</div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 15px; margin-bottom: 0;">
+                        <label>Link de Direcionamento (URL ao clicar no anúncio/GIF)</label>
                         <input type="text" id="bannerLinkUrl" placeholder="https://wa.me/seu-anuncio ou link do site">
                     </div>
                 </div>
@@ -432,6 +455,9 @@
             
             <div class="preview-body-content" id="prevTexto"></div>
             
+            <!-- Prévia do Banner na Matéria -->
+            <div id="prevContainerBanner" style="width: 100%; margin-top: 20px;"></div>
+
             <div id="prevContainerMidiaInferior" style="width: 100%; margin-top: 20px; border-radius: 8px; overflow: hidden;"></div>
             <div id="prevGaleriaExtra" style="width: 100%; margin-top: 20px;"></div>
 
@@ -683,6 +709,8 @@
                     creditosVideo: document.getElementById('creditosVideo').value,
                     codigoAnuncio: document.getElementById('codigoAnuncio').value,
                     bannerLinkUrl: document.getElementById('bannerLinkUrl').value,
+                    bannerImgBase64: document.getElementById('bannerImgBase64').value,
+                    formatoBannerEscolhido: document.getElementById('formatoBannerEscolhido').value,
                     textoRico: quill.root.innerHTML,
                     categorias: categorias,
                     formatoEscolhido: document.getElementById('formatoEscolhido').value,
@@ -729,6 +757,7 @@
                     document.getElementById('creditosVideo').value = rascunho.creditosVideo || "";
                     document.getElementById('codigoAnuncio').value = rascunho.codigoAnuncio || "";
                     document.getElementById('bannerLinkUrl').value = rascunho.bannerLinkUrl || "";
+                    document.getElementById('bannerImgBase64').value = rascunho.bannerImgBase64 || "";
 
                     if(rascunho.textoRico && rascunho.textoRico !== '<p><br></p>') {
                         quill.root.innerHTML = rascunho.textoRico;
@@ -756,9 +785,18 @@
                         }
                     }
 
+                    if(rascunho.formatoBannerEscolhido) {
+                        const btnB = document.querySelector(`#ratiosBanner .btn-ratio[onclick*="'${rascunho.formatoBannerEscolhido}'"]`);
+                        if(btnB) mudarLayoutBanner(rascunho.formatoBannerEscolhido, btnB);
+                    }
+
                     if(rascunho.imagemBase64_1) document.getElementById('imagemBase64_1').value = rascunho.imagemBase64_1;
                     if(rascunho.imagemBase64_2) document.getElementById('imagemBase64_2').value = rascunho.imagemBase64_2;
                     atualizarPreviewImagens();
+
+                    if(rascunho.bannerImgBase64) {
+                        atualizarPreviewBanner(rascunho.bannerImgBase64);
+                    }
 
                     const videoSalvo = await obterVideoRascunhoDB();
                     if(videoSalvo) {
@@ -823,33 +861,22 @@
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(evt) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 1200;
-                    let width = img.width;
-                    let height = img.height;
-                    if (width > MAX_WIDTH) {
-                        height = height * (MAX_WIDTH / width);
-                        width = MAX_WIDTH;
-                    }
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    const base64 = canvas.toDataURL('image/jpeg', 0.85);
-                    document.getElementById(inputHiddenId).value = base64;
-                    if(callback) callback();
-                    window.salvarRascunho();
-                }
-                img.src = evt.target.result;
+                const base64 = evt.target.result;
+                document.getElementById(inputHiddenId).value = base64;
+                if(callback) callback(base64);
+                window.salvarRascunho();
             };
             reader.readAsDataURL(file);
         }
 
         document.getElementById('imagemInput1').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_1', atualizarPreviewImagens));
         document.getElementById('imagemInput2').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_2', atualizarPreviewImagens));
-        document.getElementById('bannerImgInput').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'bannerImgBase64'));
+        
+        document.getElementById('bannerImgInput').addEventListener('change', (e) => {
+            processarImagemParaBase64(e.target.files[0], 'bannerImgBase64', (base64) => {
+                atualizarPreviewBanner(base64);
+            });
+        });
 
         window.removerImagem = function(num) {
             document.getElementById(`imagemInput${num}`).value = "";
@@ -861,6 +888,8 @@
         window.removerBannerImg = function() {
             document.getElementById('bannerImgInput').value = "";
             document.getElementById('bannerImgBase64').value = "";
+            const container = document.getElementById('previewContainerBanner');
+            container.innerHTML = '<div class="preview-placeholder"><i class="fas fa-image" style="margin-right: 6px;"></i> Nenhum banner selecionado</div>';
             window.salvarRascunho();
         };
 
@@ -881,6 +910,23 @@
             videoPreview.style.aspectRatio = ratio;
             window.salvarRascunho();
         };
+
+        window.mudarLayoutBanner = function(ratio, btn) {
+            document.querySelectorAll('#ratiosBanner .btn-ratio').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('formatoBannerEscolhido').value = ratio;
+            document.getElementById('previewContainerBanner').style.aspectRatio = ratio.replace(':', '/');
+            window.salvarRascunho();
+        };
+
+        function atualizarPreviewBanner(base64) {
+            const container = document.getElementById('previewContainerBanner');
+            if(!base64) {
+                container.innerHTML = '<div class="preview-placeholder"><i class="fas fa-image" style="margin-right: 6px;"></i> Nenhum banner selecionado</div>';
+                return;
+            }
+            container.innerHTML = `<img src="${base64}" style="width: 100%; height: 100%; object-fit: contain; background: #111;">`;
+        }
 
         function atualizarPreviewImagens() {
             const img1 = document.getElementById('imagemBase64_1').value;
@@ -1124,10 +1170,12 @@
             const containerMidiaTopo = document.getElementById('prevContainerMidia');
             const containerMidiaInferior = document.getElementById('prevContainerMidiaInferior');
             const prevGaleriaExtra = document.getElementById('prevGaleriaExtra');
+            const prevContainerBanner = document.getElementById('prevContainerBanner');
             
             containerMidiaTopo.innerHTML = "";
             containerMidiaInferior.innerHTML = "";
             prevGaleriaExtra.innerHTML = "";
+            prevContainerBanner.innerHTML = "";
 
             const formatoImg = document.getElementById('formatoEscolhido').value.replace(':', '/');
             const formatoVid = document.getElementById('formatoVideoEscolhido').value.replace(':', '/');
@@ -1146,6 +1194,30 @@
                 containerMidiaTopo.innerHTML = htmlImgs;
             } else {
                 containerMidiaTopo.innerHTML = `<div style="padding: 20px; text-align: center; color: #777; background: #eee;">Sem imagem de capa principal</div>`;
+            }
+
+            // Exibir Banner Patrocinador na Prévia se houver imagem/GIF ou código HTML
+            const bannerImg = document.getElementById('bannerImgBase64').value;
+            const bannerHtmlCode = document.getElementById('codigoAnuncio').value;
+            const bannerUrl = document.getElementById('bannerLinkUrl').value;
+            const formatoBanner = document.getElementById('formatoBannerEscolhido').value.replace(':', '/');
+
+            if (bannerImg) {
+                let imgTag = `<img src="${bannerImg}" style="width: 100%; height: 100%; object-fit: contain; background: #000; display: block;">`;
+                if (bannerUrl) {
+                    imgTag = `<a href="${bannerUrl}" target="_blank" style="display: block; width: 100%; height: 100%;">${imgTag}</a>`;
+                }
+                prevContainerBanner.innerHTML = `
+                    <div style="width: 100%; aspect-ratio: ${formatoBanner}; border-radius: 8px; overflow: hidden; margin-top: 15px; background: #000; border: 1px solid #ddd;">
+                        ${imgTag}
+                    </div>
+                `;
+            } else if (bannerHtmlCode) {
+                prevContainerBanner.innerHTML = `
+                    <div style="width: 100%; margin-top: 15px; text-align: center; overflow: hidden;">
+                        ${bannerHtmlCode}
+                    </div>
+                `;
             }
 
             if (videoArquivo) {
@@ -1252,6 +1324,7 @@
                     imagensExtras: imagensExtrasArray,
                     formatoCapa: document.getElementById('formatoEscolhido').value,
                     formatoVideo: document.getElementById('formatoVideoEscolhido').value,
+                    formatoBanner: document.getElementById('formatoBannerEscolhido').value,
                     fonteImagem: document.getElementById('fonteImagem').value,
                     videoArquivo: document.getElementById('videoBase64').value,
                     creditosVideo: document.getElementById('creditosVideo').value,
@@ -1378,6 +1451,10 @@
             document.getElementById("imagemBase64_1").value = item.imagem1 || item.imagem || "";
             document.getElementById("imagemBase64_2").value = item.imagem2 || "";
             
+            if(item.bannerImgBase64) {
+                atualizarPreviewBanner(item.bannerImgBase64);
+            }
+
             if(item.videoArquivo) {
                 document.getElementById('videoBase64').value = item.videoArquivo;
                 const videoPreview = document.getElementById('videoPreview');
@@ -1398,6 +1475,11 @@
                     document.getElementById('formatoVideoEscolhido').value = item.formatoVideo;
                     document.getElementById('videoPreview').style.aspectRatio = item.formatoVideo;
                 }
+            }
+
+            if(item.formatoBanner) {
+                const btnB = document.querySelector(`#ratiosBanner .btn-ratio[onclick*="'${item.formatoBanner}'"]`);
+                if(btnB) window.mudarLayoutBanner(item.formatoBanner, btnB);
             }
 
             atualizarPreviewImagens();
@@ -1447,6 +1529,7 @@
             document.getElementById("linkRedeSocial").value = "";
             removerVideo();
             atualizarPreviewImagens();
+            removerBannerImg();
             limparRascunho();
 
             document.getElementById('container-imagens-extras').innerHTML = "";
