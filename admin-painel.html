@@ -6,9 +6,7 @@
     <title>Painel Editor - News Pro</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
@@ -127,18 +125,27 @@
         .btn-apagar { background: #fff; color: #d93025; border: 1px solid #d93025; }
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .modal-content { background: #fff; width: 100vw; height: 100vh; max-width: 100%; max-height: 100%; border-radius: 0; overflow-y: auto; padding: 20px; position: relative; display: flex; flex-direction: column; }
-        @media(min-width: 768px) { .modal-content { width: 90vw; height: 92vh; border-radius: 12px; padding: 35px; max-width: 900px; } }
-        .modal-header-top { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #eee; padding-bottom: 12px; margin-bottom: 15px; }
+        .modal-content { background: #fff; width: 100vw; height: 100vh; max-width: 100%; max-height: 100%; border-radius: 0; overflow-y: hidden; position: relative; display: flex; flex-direction: column; }
+        @media(min-width: 768px) { .modal-content { width: 90vw; height: 92vh; border-radius: 12px; max-width: 900px; } }
+        
+        .modal-header-top { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #eee; padding: 15px 20px; background: #fff; z-index: 2000; }
         .btn-voltar-edicao { background: #002a5c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
-        .preview-body-content { font-family: Georgia, serif; font-size: 18px; line-height: 1.8; color: #222; margin-top: 15px; flex: 1; }
+        
+        #prevConteudoWrapper { position: relative; flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px; background: #fff; }
+        .preview-body-content { font-family: Georgia, serif; font-size: 18px; line-height: 1.8; color: #222; margin-top: 15px; }
 
         .toast-save { position: fixed; bottom: 20px; right: 20px; background: #137333; color: white; padding: 10px 20px; border-radius: 6px; font-size: 12px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none; z-index: 99999; }
 
         .btn-add-painel { background: #f0f2f5; color: #002a5c; border: 2px dashed #002a5c; padding: 12px; width: 100%; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; text-transform: uppercase; margin-top: 15px; transition: 0.3s; }
         .btn-add-painel:hover { background: #002a5c; color: #fff; }
         .painel-extra { border-top: 2px dashed #d1d9e0; padding-top: 20px; margin-top: 20px; position: relative; }
-        .btn-remover-painel-extra { position: absolute; top: 10px; right: 0; background: #fff; color: #d93025; border: 1px solid #d93025; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
+        .btn-remover-painel-extra { position: absolute; top: 10px; right: 0; background: #fff; color: #d93025; border: 1px solid #d93025; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 10; }
+
+        /* Estilo para Banners na Prévia (Arrastar e Soltar) */
+        .draggable-banner { position: absolute; touch-action: none; cursor: grab; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: box-shadow 0.2s; }
+        .draggable-banner:active { cursor: grabbing; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        .draggable-banner-edit-mode { border: 2px dashed #0275d8 !important; background: rgba(255,255,255,0.9); }
+        .resize-handle { position: absolute; bottom: -12px; right: -12px; background: #0275d8; width: 28px; height: 28px; border-radius: 50%; cursor: nwse-resize; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; z-index: 1001; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
@@ -147,7 +154,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V10.1</span>
+                <span class="badge-pro">V10.2</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -299,57 +306,15 @@
             </div>
 
             <div class="section-box" style="border-left: 5px solid #f9ab00;">
-                <div class="section-title"><i class="fas fa-ad"></i> Banner Patrocinador / Anúncios / GIFs / Animados</div>
+                <div class="section-title"><i class="fas fa-ad"></i> 3. Banners Patrocinadores / Anúncios / GIFs</div>
                 
-                <div class="ad-tabs">
-                    <button type="button" class="ad-tab-btn active" onclick="mudarAbaAnuncio('codigo', this)">Código / Script HTML</button>
-                    <button type="button" class="ad-tab-btn" onclick="mudarAbaAnuncio('imagem', this)">Banner / GIF / Animado + Link</button>
-                </div>
+                <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Adicione quantos banners/anúncios quiser. Você poderá ajustar a posição e o tamanho exato de cada um dentro da aba "Ver Prévia".</p>
+                
+                <div id="container-banners-extras"></div>
 
-                <div id="conteudoAdCodigo" class="ad-tab-content active">
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label>Código do Banner / Anúncio</label>
-                        <textarea id="codigoAnuncio" rows="2" placeholder="Cole aqui o banner ou anúncio..."></textarea>
-                    </div>
-                </div>
-
-                <div id="conteudoAdImagem" class="ad-tab-content">
-                    <div class="form-group">
-                        <label>Arquivo de Imagem, GIF ou Animação do Patrocinador</label>
-                        <div class="file-input-wrapper">
-                            <input type="file" id="bannerImgInput" accept="image/*,video/mp4,image/gif">
-                            <button type="button" class="btn-remover-img" onclick="removerBannerImg()"><i class="fas fa-trash-alt"></i> Limpar</button>
-                        </div>
-                        <input type="hidden" id="bannerImgBase64">
-                    </div>
-
-                    <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">TODAS AS PROPORÇÕES DE MERCADO (BANNER / GIF / ANÚNCIO):</div>
-                    <div class="aspect-ratios" id="ratiosBanner">
-                        <button type="button" class="btn-ratio active" onclick="mudarLayoutBanner('16/9', this)" title="Widescreen / Full HD">16:9</button>
-                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('9/16', this)" title="Stories / Reels / TikTok">9:16</button>
-                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('1/1', this)" title="Quadrado / Instagram Feed">1:1</button>
-                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('4/3', this)" title="Padrão Clássico">4:3</button>
-                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('3/4', this)" title="Retrato Vertical">3:4</button>
-                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('3/2', this)" title="Fotografia padrão">3:2</button>
-                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('4/1', this)" title="Super Banner / Leaderboard Longo">4:1</button>
-                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('6/1', this)" title="Mega Banner IAB">6:1</button>
-                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('8/1', this)" title="Ultra Wide Banner">8:1</button>
-                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('2/1', this)" title="Banner Paisagem Largo">2:1</button>
-                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('3/1', this)" title="Banner Triplo Horizontal">3:1</button>
-                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('1/2', this)" title="Skyscraper / Meia Página Vertical">1:2</button>
-                        <button type="button" class="btn-ratio" onclick="mudarLayoutBanner('4/5', this)" title="Retrato Instagram / Facebook (4:5)">4:5</button>
-                    </div>
-                    <input type="hidden" id="formatoBannerEscolhido" value="16/9">
-
-                    <div class="preview-container" id="previewContainerBanner" style="aspect-ratio: 16/9;">
-                        <div class="preview-placeholder"><i class="fas fa-image" style="margin-right: 6px;"></i> Nenhum banner selecionado</div>
-                    </div>
-
-                    <div class="form-group" style="margin-top: 15px; margin-bottom: 0;">
-                        <label>Link de Direcionamento (URL ao clicar no anúncio/GIF)</label>
-                        <input type="text" id="bannerLinkUrl" placeholder="https://wa.me/seu-anuncio ou link do site">
-                    </div>
-                </div>
+                <button type="button" class="btn-add-painel" style="border-color: #f9ab00; color: #b07c00;" onclick="adicionarPainelBanner()">
+                    <i class="fas fa-plus-circle"></i> Adicionar Mais Banners, GIFs ou Imagens
+                </button>
             </div>
 
             <div class="section-box">
@@ -381,7 +346,7 @@
             </div>
 
             <div class="botoes-acao-container">
-                <button type="button" class="btn-preview" onclick="abrirPrevia()"><i class="fas fa-eye"></i> Ver Prévia (Tela Cheia)</button>
+                <button type="button" class="btn-preview" onclick="abrirPrevia()"><i class="fas fa-eye"></i> Ver Prévia & Organizar Banners</button>
                 <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> Publicar Matéria</button>
             </div>
             <button type="button" id="btnCancelar" class="btn-cancelar" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
@@ -443,25 +408,31 @@
         <div class="modal-content">
             <div class="modal-header-top">
                 <span style="font-size: 12px; font-weight: bold; color: #cc0000; text-transform: uppercase;" id="prevCategoria">CATEGORIA</span>
-                <button class="btn-voltar-edicao" onclick="fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar para Edição</button>
+                <div style="display: flex; gap: 10px;">
+                    <span style="font-size: 12px; background: #e2e8f0; padding: 5px 10px; border-radius: 4px; display: flex; align-items: center;"><i class="fas fa-arrows-alt" style="margin-right: 5px;"></i> Arraste os Banners / Use o botão azul para Redimensionar</span>
+                    <button class="btn-voltar-edicao" onclick="fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar para Edição</button>
+                </div>
             </div>
-            <h1 id="prevTitulo" style="color: #002a5c; font-size: 24px; font-weight: 900; margin-bottom: 12px; line-height: 1.3;">Título</h1>
-            <div style="font-size: 13px; color: #666; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                Por <span id="prevAutor">Redação</span>
-            </div>
             
-            <div id="prevContainerMidia" style="width: 100%; margin-bottom: 15px; border-radius: 8px; overflow: hidden; background: #000;"></div>
-            <div style="font-size: 11px; color: #777; margin-bottom: 15px;" id="prevCreditoImg"></div>
-            
-            <div class="preview-body-content" id="prevTexto"></div>
-            
-            <div id="prevContainerBanner" style="width: 100%; margin-top: 20px;"></div>
+            <div id="prevConteudoWrapper">
+                <h1 id="prevTitulo" style="color: #002a5c; font-size: 24px; font-weight: 900; margin-bottom: 12px; line-height: 1.3;">Título</h1>
+                <div style="font-size: 13px; color: #666; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                    Por <span id="prevAutor">Redação</span>
+                </div>
+                
+                <div id="prevContainerMidia" style="width: 100%; margin-bottom: 15px; border-radius: 8px; overflow: hidden; background: #000;"></div>
+                <div style="font-size: 11px; color: #777; margin-bottom: 15px;" id="prevCreditoImg"></div>
+                
+                <div class="preview-body-content" id="prevTexto"></div>
+                
+                <div id="prevContainerMidiaInferior" style="width: 100%; margin-top: 20px; border-radius: 8px; overflow: hidden;"></div>
+                <div id="prevGaleriaExtra" style="width: 100%; margin-top: 20px;"></div>
 
-            <div id="prevContainerMidiaInferior" style="width: 100%; margin-top: 20px; border-radius: 8px; overflow: hidden;"></div>
-            <div id="prevGaleriaExtra" style="width: 100%; margin-top: 20px;"></div>
-
-            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;" id="prevFonteArea">
-                <strong style="font-size: 13px; color: #444;" id="prevFonteNoticia">Fonte: </strong>
+                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;" id="prevFonteArea">
+                    <strong style="font-size: 13px; color: #444;" id="prevFonteNoticia">Fonte: </strong>
+                </div>
+                
+                <!-- Banners Injetados aqui dinamicamente -->
             </div>
         </div>
     </div>
@@ -507,6 +478,108 @@
 
         let contImagensExtras = 0;
         let contVideosExtras = 0;
+        let contBannersExtras = 0;
+        window.bannersData = {}; // Guarda posição (x,y, scale) de cada banner
+
+        window.mudarAbaBannerExtra = function(id, tipo, btn) {
+            document.querySelectorAll(`#painel-banner-extra-${id} .ad-tab-btn`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.getElementById(`tipoBannerExtra_${id}`).value = tipo;
+            document.querySelectorAll(`#painel-banner-extra-${id} .ad-tab-content`).forEach(c => c.classList.remove('active'));
+            
+            if (tipo === 'codigo') {
+                document.getElementById(`conteudoAdCodigo_${id}`).classList.add('active');
+            } else {
+                document.getElementById(`conteudoAdImagem_${id}`).classList.add('active');
+            }
+            window.salvarRascunho();
+        };
+
+        window.removerBannerImgExtra = function(id) {
+            document.getElementById(`bannerImgInputExtra_${id}`).value = "";
+            document.getElementById(`bannerImgBase64Extra_${id}`).value = "";
+            window.salvarRascunho();
+        };
+
+        window.removerPainelExtra = function(idPainel) {
+            const painel = document.getElementById(idPainel);
+            if (painel) painel.remove();
+            window.salvarRascunho();
+        };
+
+        // LÓGICA DE MÚLTIPLOS BANNERS
+        window.adicionarPainelBanner = function(salvo = null) {
+            contBannersExtras++;
+            const id = contBannersExtras;
+            const container = document.getElementById('container-banners-extras');
+
+            const obj = salvo || {
+                tipo: 'imagem', codigoAnuncio: '', bannerImgBase64: '', 
+                formatoBanner: '16/9', bannerLinkUrl: '', posX: 20, posY: 200 + (id * 50), scale: 1
+            };
+
+            window.bannersData[id] = { posX: obj.posX, posY: obj.posY, scale: obj.scale };
+
+            const painel = document.createElement('div');
+            painel.className = 'painel-extra';
+            painel.id = `painel-banner-extra-${id}`;
+            
+            painel.innerHTML = `
+                <button type="button" class="btn-remover-painel-extra" onclick="removerPainelExtra('painel-banner-extra-${id}')"><i class="fas fa-times"></i> Remover</button>
+                <div style="font-weight: 800; color: #b07c00; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-ad"></i> Configuração do Banner ${id}</div>
+                
+                <div class="ad-tabs">
+                    <button type="button" class="ad-tab-btn ${obj.tipo==='codigo'?'active':''}" onclick="mudarAbaBannerExtra(${id}, 'codigo', this)">Código / Script HTML</button>
+                    <button type="button" class="ad-tab-btn ${obj.tipo==='imagem'?'active':''}" onclick="mudarAbaBannerExtra(${id}, 'imagem', this)">Imagem / GIF</button>
+                </div>
+                <input type="hidden" id="tipoBannerExtra_${id}" value="${obj.tipo}">
+
+                <div id="conteudoAdCodigo_${id}" class="ad-tab-content ${obj.tipo==='codigo'?'active':''}">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Código do Banner / Anúncio</label>
+                        <textarea id="codigoAnuncioExtra_${id}" rows="2" placeholder="Cole aqui o banner ou anúncio...">${obj.codigoAnuncio}</textarea>
+                    </div>
+                </div>
+
+                <div id="conteudoAdImagem_${id}" class="ad-tab-content ${obj.tipo==='imagem'?'active':''}">
+                    <div class="form-group">
+                        <label>Arquivo de Imagem ou GIF</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="bannerImgInputExtra_${id}" accept="image/*,video/mp4,image/gif">
+                            <button type="button" class="btn-remover-img" onclick="removerBannerImgExtra(${id})"><i class="fas fa-trash-alt"></i> Limpar</button>
+                        </div>
+                        <input type="hidden" id="bannerImgBase64Extra_${id}" value="${obj.bannerImgBase64}">
+                    </div>
+
+                    <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">PROPORÇÃO BASE:</div>
+                    <div class="aspect-ratios" id="ratiosBannerExtra_${id}">
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='16/9'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '16/9', this)">16:9</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='9/16'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '9/16', this)">9:16</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='1/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '1/1', this)">1:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='4/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '4/1', this)">4:1</button>
+                    </div>
+                    <input type="hidden" id="formatoBannerExtraEscolhido_${id}" value="${obj.formatoBanner}">
+
+                    <div class="form-group" style="margin-top: 15px; margin-bottom: 0;">
+                        <label>Link de Direcionamento</label>
+                        <input type="text" id="bannerLinkUrlExtra_${id}" value="${obj.bannerLinkUrl}" placeholder="https://...">
+                    </div>
+                </div>
+            `;
+            container.appendChild(painel);
+
+            document.getElementById(`bannerImgInputExtra_${id}`).addEventListener('change', function(e) {
+                processarImagemParaBase64(e.target.files[0], `bannerImgBase64Extra_${id}`, window.salvarRascunho);
+            });
+        };
+
+        window.mudarLayoutBannerExtra = function(id, ratio, btn) {
+            document.querySelectorAll(`#ratiosBannerExtra_${id} .btn-ratio`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`formatoBannerExtraEscolhido_${id}`).value = ratio;
+            window.salvarRascunho();
+        };
 
         window.adicionarPainelImagem = function(ratioSalva = '16/9', base64Salva = '', creditoSalvo = '') {
             contImagensExtras++;
@@ -645,11 +718,6 @@
             vPrev.src = "";
         };
 
-        window.removerPainelExtra = function(idPainel) {
-            const painel = document.getElementById(idPainel);
-            if (painel) painel.remove();
-        };
-
         function abrirDBMedia() {
             return new Promise((resolve, reject) => {
                 const req = indexedDB.open("CGNewsDB", 1);
@@ -699,6 +767,26 @@
             clearTimeout(timerSave);
             timerSave = setTimeout(async () => {
                 const categorias = Array.from(document.querySelectorAll('input[name="categoria"]:checked')).map(cb => cb.value);
+                
+                // Mapear arrays de banners atualizados
+                const bannersArray = [];
+                for(let i=1; i<=contBannersExtras; i++) {
+                    const painel = document.getElementById(`painel-banner-extra-${i}`);
+                    if(painel) {
+                        bannersArray.push({
+                            idPainel: i,
+                            tipo: document.getElementById(`tipoBannerExtra_${i}`).value,
+                            codigoAnuncio: document.getElementById(`codigoAnuncioExtra_${i}`).value,
+                            bannerImgBase64: document.getElementById(`bannerImgBase64Extra_${i}`).value,
+                            formatoBanner: document.getElementById(`formatoBannerExtraEscolhido_${i}`).value,
+                            bannerLinkUrl: document.getElementById(`bannerLinkUrlExtra_${i}`).value,
+                            posX: window.bannersData[i]?.posX || 0,
+                            posY: window.bannersData[i]?.posY || 0,
+                            scale: window.bannersData[i]?.scale || 1
+                        });
+                    }
+                }
+
                 const rascunho = {
                     titulo: document.getElementById('titulo').value,
                     autor: document.getElementById('autor').value,
@@ -706,14 +794,11 @@
                     linkRedeSocial: document.getElementById('linkRedeSocial').value,
                     fonteImagem: document.getElementById('fonteImagem').value,
                     creditosVideo: document.getElementById('creditosVideo').value,
-                    codigoAnuncio: document.getElementById('codigoAnuncio').value,
-                    bannerLinkUrl: document.getElementById('bannerLinkUrl').value,
-                    bannerImgBase64: document.getElementById('bannerImgBase64').value,
-                    formatoBannerEscolhido: document.getElementById('formatoBannerEscolhido').value,
                     textoRico: quill.root.innerHTML,
                     categorias: categorias,
                     formatoEscolhido: document.getElementById('formatoEscolhido').value,
-                    formatoVideoEscolhido: document.getElementById('formatoVideoEscolhido').value
+                    formatoVideoEscolhido: document.getElementById('formatoVideoEscolhido').value,
+                    banners: bannersArray
                 };
 
                 try {
@@ -754,9 +839,6 @@
                     document.getElementById('linkRedeSocial').value = rascunho.linkRedeSocial || "";
                     document.getElementById('fonteImagem').value = rascunho.fonteImagem || "";
                     document.getElementById('creditosVideo').value = rascunho.creditosVideo || "";
-                    document.getElementById('codigoAnuncio').value = rascunho.codigoAnuncio || "";
-                    document.getElementById('bannerLinkUrl').value = rascunho.bannerLinkUrl || "";
-                    document.getElementById('bannerImgBase64').value = rascunho.bannerImgBase64 || "";
 
                     if(rascunho.textoRico && rascunho.textoRico !== '<p><br></p>') {
                         quill.root.innerHTML = rascunho.textoRico;
@@ -784,18 +866,13 @@
                         }
                     }
 
-                    if(rascunho.formatoBannerEscolhido) {
-                        const btnB = document.querySelector(`#ratiosBanner .btn-ratio[onclick*="'${rascunho.formatoBannerEscolhido}'"]`);
-                        if(btnB) mudarLayoutBanner(rascunho.formatoBannerEscolhido, btnB);
+                    if(rascunho.banners && rascunho.banners.length > 0) {
+                        rascunho.banners.forEach(b => adicionarPainelBanner(b));
                     }
 
                     if(rascunho.imagemBase64_1) document.getElementById('imagemBase64_1').value = rascunho.imagemBase64_1;
                     if(rascunho.imagemBase64_2) document.getElementById('imagemBase64_2').value = rascunho.imagemBase64_2;
                     atualizarPreviewImagens();
-
-                    if(rascunho.bannerImgBase64) {
-                        atualizarPreviewBanner(rascunho.bannerImgBase64);
-                    }
 
                     const videoSalvo = await obterVideoRascunhoDB();
                     if(videoSalvo) {
@@ -845,17 +922,6 @@
             document.getElementById('modalFullscreenAudiencia').style.display = 'none';
         };
 
-        window.mudarAbaAnuncio = function(tipo, btn) {
-            document.querySelectorAll('.ad-tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.ad-tab-content').forEach(c => c.classList.remove('active'));
-            btn.classList.add('active');
-            if (tipo === 'codigo') {
-                document.getElementById('conteudoAdCodigo').classList.add('active');
-            } else {
-                document.getElementById('conteudoAdImagem').classList.add('active');
-            }
-        };
-
         function processarImagemParaBase64(file, inputHiddenId, callback) {
             if (!file) return;
             const reader = new FileReader();
@@ -871,24 +937,10 @@
         document.getElementById('imagemInput1').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_1', atualizarPreviewImagens));
         document.getElementById('imagemInput2').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_2', atualizarPreviewImagens));
         
-        document.getElementById('bannerImgInput').addEventListener('change', (e) => {
-            processarImagemParaBase64(e.target.files[0], 'bannerImgBase64', (base64) => {
-                atualizarPreviewBanner(base64);
-            });
-        });
-
         window.removerImagem = function(num) {
             document.getElementById(`imagemInput${num}`).value = "";
             document.getElementById(`imagemBase64_${num}`).value = "";
             atualizarPreviewImagens();
-            window.salvarRascunho();
-        };
-
-        window.removerBannerImg = function() {
-            document.getElementById('bannerImgInput').value = "";
-            document.getElementById('bannerImgBase64').value = "";
-            const container = document.getElementById('previewContainerBanner');
-            container.innerHTML = '<div class="preview-placeholder"><i class="fas fa-image" style="margin-right: 6px;"></i> Nenhum banner selecionado</div>';
             window.salvarRascunho();
         };
 
@@ -909,23 +961,6 @@
             videoPreview.style.aspectRatio = ratio;
             window.salvarRascunho();
         };
-
-        window.mudarLayoutBanner = function(ratio, btn) {
-            document.querySelectorAll('#ratiosBanner .btn-ratio').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById('formatoBannerEscolhido').value = ratio;
-            document.getElementById('previewContainerBanner').style.aspectRatio = ratio.replace(':', '/');
-            window.salvarRascunho();
-        };
-
-        function atualizarPreviewBanner(base64) {
-            const container = document.getElementById('previewContainerBanner');
-            if(!base64) {
-                container.innerHTML = '<div class="preview-placeholder"><i class="fas fa-image" style="margin-right: 6px;"></i> Nenhum banner selecionado</div>';
-                return;
-            }
-            container.innerHTML = `<img src="${base64}" style="width: 100%; height: 100%; object-fit: contain; background: #111;">`;
-        }
 
         function atualizarPreviewImagens() {
             const img1 = document.getElementById('imagemBase64_1').value;
@@ -1098,10 +1133,7 @@
                     videoId = url.split("v=")[1].split("&")[0];
                 } else if (url.includes("youtu.be/")) {
                     videoId = url.split("youtu.be/")[1].split("?")[0];
-                } else if (url.includes("youtube.com/shorts/")) {
-                    videoId = url.split("youtube.com/shorts/")[1].split("?")[0];
                 }
-                
                 if (videoId) {
                     return `<div style="position:relative;width:100%;padding-bottom:56.25%;height:0;background:#000;border-radius:8px;overflow:hidden;margin-top:10px;">
                                 <iframe src="https://www.youtube.com/embed/${videoId}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
@@ -1127,21 +1159,6 @@
                         </div>`;
             }
 
-            if (url.includes("facebook.com") || url.includes("fb.watch")) {
-                let encodedUrl = encodeURIComponent(url);
-                return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;overflow:hidden;">
-                            <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=${encodedUrl}&show_text=false&width=476&t=0" 
-                                width="476" 
-                                height="476" 
-                                style="border:none;overflow:hidden;max-width:100%;border-radius:8px;background:#000;" 
-                                scrolling="no" 
-                                frameborder="0" 
-                                allowfullscreen="true" 
-                                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
-                            </iframe>
-                        </div>`;
-            }
-
             return `<div style="margin-top:10px;padding:12px;background:#f0f2f5;border-radius:8px;border-left:4px solid #002a5c;">
                         <a href="${url}" target="_blank" style="color:#002a5c;font-weight:bold;text-decoration:none;display:flex;align-items:center;gap:8px;">
                             <i class="fas fa-external-link-alt" style="font-size:18px;"></i> Acessar link externo
@@ -1157,9 +1174,7 @@
             const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
             document.getElementById('prevCategoria').innerText = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
             document.getElementById('prevCreditoImg').innerText = `Crédito: ${document.getElementById('fonteImagem').value || "N/A"}`;
-
-            const fonteNoticiaVal = document.getElementById('fonteNoticia').value;
-            document.getElementById('prevFonteNoticia').innerText = `Fonte: ${fonteNoticiaVal || "Não informada"}`;
+            document.getElementById('prevFonteNoticia').innerText = `Fonte: ${document.getElementById('fonteNoticia').value || "Não informada"}`;
 
             const img1 = document.getElementById('imagemBase64_1').value;
             const img2 = document.getElementById('imagemBase64_2').value;
@@ -1169,12 +1184,14 @@
             const containerMidiaTopo = document.getElementById('prevContainerMidia');
             const containerMidiaInferior = document.getElementById('prevContainerMidiaInferior');
             const prevGaleriaExtra = document.getElementById('prevGaleriaExtra');
-            const prevContainerBanner = document.getElementById('prevContainerBanner');
+            const wrapper = document.getElementById('prevConteudoWrapper');
             
             containerMidiaTopo.innerHTML = "";
             containerMidiaInferior.innerHTML = "";
             prevGaleriaExtra.innerHTML = "";
-            prevContainerBanner.innerHTML = "";
+
+            // Remover banners arrastáveis existentes na visualização anterior
+            wrapper.querySelectorAll('.draggable-banner').forEach(el => el.remove());
 
             const formatoImg = document.getElementById('formatoEscolhido').value.replace(':', '/');
             const formatoVid = document.getElementById('formatoVideoEscolhido').value.replace(':', '/');
@@ -1195,29 +1212,6 @@
                 containerMidiaTopo.innerHTML = `<div style="padding: 20px; text-align: center; color: #777; background: #eee;">Sem imagem de capa principal</div>`;
             }
 
-            const bannerImg = document.getElementById('bannerImgBase64').value;
-            const bannerHtmlCode = document.getElementById('codigoAnuncio').value;
-            const bannerUrl = document.getElementById('bannerLinkUrl').value;
-            const formatoBanner = document.getElementById('formatoBannerEscolhido').value.replace(':', '/');
-
-            if (bannerImg) {
-                let imgTag = `<img src="${bannerImg}" style="width: 100%; height: 100%; object-fit: contain; background: #000; display: block;">`;
-                if (bannerUrl) {
-                    imgTag = `<a href="${bannerUrl}" target="_blank" style="display: block; width: 100%; height: 100%;">${imgTag}</a>`;
-                }
-                prevContainerBanner.innerHTML = `
-                    <div style="width: 100%; aspect-ratio: ${formatoBanner}; border-radius: 8px; overflow: hidden; margin-top: 15px; background: #000; border: 1px solid #ddd;">
-                        ${imgTag}
-                    </div>
-                `;
-            } else if (bannerHtmlCode) {
-                prevContainerBanner.innerHTML = `
-                    <div style="width: 100%; margin-top: 15px; text-align: center; overflow: hidden;">
-                        ${bannerHtmlCode}
-                    </div>
-                `;
-            }
-
             if (videoArquivo) {
                 const creditoVidVal = document.getElementById('creditosVideo').value;
                 containerMidiaInferior.innerHTML = `
@@ -1226,17 +1220,9 @@
                 `;
             } else if (linkRede) {
                 containerMidiaInferior.innerHTML = gerarEmbedRedeSocial(linkRede);
-                setTimeout(() => {
-                    const scripts = containerMidiaInferior.getElementsByTagName('script');
-                    for (let i = 0; i < scripts.length; i++) {
-                        const s = document.createElement('script');
-                        s.src = scripts[i].src;
-                        s.async = true;
-                        document.body.appendChild(s);
-                    }
-                }, 300);
             }
 
+            // Rendereizar Imagens/Videos Extra
             let htmlGaleria = "";
             for(let i=1; i<=contImagensExtras; i++) {
                 const img = document.getElementById(`imagemBase64Extra_${i}`)?.value;
@@ -1264,8 +1250,151 @@
             }
             prevGaleriaExtra.innerHTML = htmlGaleria;
 
+            // GERAR E INJETAR BANNERS DRAGGABLES E RESIZABLES
+            for(let i=1; i<=contBannersExtras; i++) {
+                const painel = document.getElementById(`painel-banner-extra-${i}`);
+                if(!painel) continue;
+
+                const tipo = document.getElementById(`tipoBannerExtra_${i}`).value;
+                const base64 = document.getElementById(`bannerImgBase64Extra_${i}`).value;
+                const code = document.getElementById(`codigoAnuncioExtra_${i}`).value;
+                const link = document.getElementById(`bannerLinkUrlExtra_${i}`).value;
+                const ratio = document.getElementById(`formatoBannerExtraEscolhido_${i}`).value.replace(':', '/');
+                const bd = window.bannersData[i] || {posX: 0, posY: 0, scale: 1};
+
+                let contentHtml = '';
+                if(tipo === 'imagem' && base64) {
+                    contentHtml = `<img src="${base64}" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none;">`;
+                    if(link) contentHtml = `<a href="${link}" target="_blank" style="display:block;width:100%;height:100%;pointer-events:none;">${contentHtml}</a>`;
+                } else if(tipo === 'codigo' && code) {
+                    contentHtml = `<div style="pointer-events:none; width:100%; height:100%; overflow:hidden;">${code}</div>`;
+                }
+
+                if(contentHtml) {
+                    const el = document.createElement('div');
+                    el.className = 'draggable-banner';
+                    el.id = `prevBannerDrag_${i}`;
+                    // Definir proporção do banner inicial
+                    el.style.width = '300px'; 
+                    el.style.aspectRatio = ratio;
+                    el.style.left = `${bd.posX}px`;
+                    el.style.top = `${bd.posY}px`;
+                    el.style.transform = `scale(${bd.scale})`;
+                    el.style.transformOrigin = 'top left';
+
+                    el.innerHTML = `
+                        ${contentHtml}
+                        <div class="resize-handle"><i class="fas fa-expand-arrows-alt"></i></div>
+                    `;
+                    wrapper.appendChild(el);
+                    
+                    ativarInteracaoBanner(el, bd);
+                }
+            }
+
             document.getElementById('modalPrevia').style.display = 'flex';
         };
+
+        function ativarInteracaoBanner(el, dataObj) {
+            let isDragging = false;
+            let isResizing = false;
+            let initialDistance = 0;
+            let startScale = dataObj.scale;
+            let startYMouse = 0;
+            const handle = el.querySelector('.resize-handle');
+
+            el.addEventListener('mousedown', (e) => {
+                if(e.target === handle || handle.contains(e.target)) return;
+                isDragging = true;
+                el.classList.add('draggable-banner-edit-mode');
+            });
+            handle.addEventListener('mousedown', (e) => {
+                e.stopPropagation();
+                isResizing = true;
+                startYMouse = e.clientY;
+                startScale = dataObj.scale;
+                el.classList.add('draggable-banner-edit-mode');
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if(isDragging) {
+                    dataObj.posX += e.movementX;
+                    dataObj.posY += e.movementY;
+                    el.style.left = dataObj.posX + 'px';
+                    el.style.top = dataObj.posY + 'px';
+                }
+                if(isResizing) {
+                    let dy = e.clientY - startYMouse;
+                    dataObj.scale = Math.max(0.2, startScale + (dy * 0.005)); // ajusta velocidade
+                    el.style.transform = `scale(${dataObj.scale})`;
+                }
+            });
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+                isResizing = false;
+                el.classList.remove('draggable-banner-edit-mode');
+            });
+
+            // Suporte Touch Move / Movimento Pinça
+            let lastTouchX, lastTouchY;
+            el.addEventListener('touchstart', (e) => {
+                if(e.touches.length === 1) {
+                    if(e.target === handle || handle.contains(e.target)) {
+                        isResizing = true;
+                        startYMouse = e.touches[0].clientY;
+                        startScale = dataObj.scale;
+                    } else {
+                        isDragging = true;
+                        lastTouchX = e.touches[0].clientX;
+                        lastTouchY = e.touches[0].clientY;
+                    }
+                } else if(e.touches.length === 2) {
+                    isDragging = false;
+                    initialDistance = Math.hypot(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                    startScale = dataObj.scale;
+                }
+                el.classList.add('draggable-banner-edit-mode');
+            }, {passive: false});
+
+            el.addEventListener('touchmove', (e) => {
+                if(isDragging && e.touches.length === 1) {
+                    let deltaX = e.touches[0].clientX - lastTouchX;
+                    let deltaY = e.touches[0].clientY - lastTouchY;
+                    dataObj.posX += deltaX;
+                    dataObj.posY += deltaY;
+                    el.style.left = dataObj.posX + 'px';
+                    el.style.top = dataObj.posY + 'px';
+                    lastTouchX = e.touches[0].clientX;
+                    lastTouchY = e.touches[0].clientY;
+                    e.preventDefault();
+                }
+                if(isResizing && e.touches.length === 1) {
+                    let dy = e.touches[0].clientY - startYMouse;
+                    dataObj.scale = Math.max(0.2, startScale + (dy * 0.005));
+                    el.style.transform = `scale(${dataObj.scale})`;
+                    e.preventDefault();
+                }
+                if(e.touches.length === 2) { // Pinça / Pinch
+                    let currentDist = Math.hypot(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                    dataObj.scale = Math.max(0.2, startScale * (currentDist / initialDistance));
+                    el.style.transform = `scale(${dataObj.scale})`;
+                    e.preventDefault();
+                }
+            }, {passive: false});
+
+            el.addEventListener('touchend', () => {
+                isDragging = false;
+                isResizing = false;
+                el.classList.remove('draggable-banner-edit-mode');
+            });
+        }
 
         window.fecharPrevia = function() {
             document.getElementById('modalPrevia').style.display = 'none';
@@ -1278,20 +1407,17 @@
 
             document.getElementById('btnSalvar').innerHTML = "<i class='fas fa-spinner fa-spin'></i> SALVANDO...";
 
-            const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
-            const categoriasSelecionadas = Array.from(checkboxes).map(cb => cb.value);
+            const categoriasSelecionadas = Array.from(document.querySelectorAll('input[name="categoria"]:checked')).map(cb => cb.value);
             const agora = Date.now();
 
             const imagensExtrasArray = [];
             for (let i = 1; i <= contImagensExtras; i++) {
                 const imgVal = document.getElementById(`imagemBase64Extra_${i}`);
-                const credVal = document.getElementById(`fonteImagemExtra_${i}`);
-                const ratioVal = document.getElementById(`formatoImgExtraEscolhido_${i}`);
                 if (imgVal && imgVal.value) {
                     imagensExtrasArray.push({ 
                         base64: imgVal.value, 
-                        credito: credVal ? credVal.value : "",
-                        formato: ratioVal ? ratioVal.value : "16/9"
+                        credito: document.getElementById(`fonteImagemExtra_${i}`)?.value || "",
+                        formato: document.getElementById(`formatoImgExtraEscolhido_${i}`)?.value || "16/9"
                     });
                 }
             }
@@ -1299,37 +1425,46 @@
             const videosExtrasArray = [];
             for (let i = 1; i <= contVideosExtras; i++) {
                 const vidVal = document.getElementById(`videoBase64Extra_${i}`);
-                const credVal = document.getElementById(`creditosVideoExtra_${i}`);
-                const ratioVal = document.getElementById(`formatoVidExtraEscolhido_${i}`);
                 if (vidVal && vidVal.value) {
                     videosExtrasArray.push({ 
                         base64: vidVal.value, 
-                        credito: credVal ? credVal.value : "",
-                        formato: ratioVal ? ratioVal.value : "16/9"
+                        credito: document.getElementById(`creditosVideoExtra_${i}`)?.value || "",
+                        formato: document.getElementById(`formatoVidExtraEscolhido_${i}`)?.value || "16/9"
+                    });
+                }
+            }
+
+            const bannersArray = [];
+            for(let i = 1; i <= contBannersExtras; i++) {
+                const painel = document.getElementById(`painel-banner-extra-${i}`);
+                if(painel) {
+                    bannersArray.push({
+                        tipo: document.getElementById(`tipoBannerExtra_${i}`).value,
+                        codigoAnuncio: document.getElementById(`codigoAnuncioExtra_${i}`).value,
+                        bannerImgBase64: document.getElementById(`bannerImgBase64Extra_${i}`).value,
+                        formatoBanner: document.getElementById(`formatoBannerExtraEscolhido_${i}`).value,
+                        bannerLinkUrl: document.getElementById(`bannerLinkUrlExtra_${i}`).value,
+                        posX: window.bannersData[i]?.posX || 0,
+                        posY: window.bannersData[i]?.posY || 0,
+                        scale: window.bannersData[i]?.scale || 1
                     });
                 }
             }
 
             try {
-                const imgVal1 = document.getElementById('imagemBase64_1').value || "";
-                const imgVal2 = document.getElementById('imagemBase64_2').value || "";
-
                 const dadosMatéria = {
                     categorias: categoriasSelecionadas,
                     categoria: categoriasSelecionadas.length > 0 ? categoriasSelecionadas[0] : "Geral",
-                    imagem1: imgVal1,
-                    imagem2: imgVal2,
+                    imagem1: document.getElementById('imagemBase64_1').value || "",
+                    imagem2: document.getElementById('imagemBase64_2').value || "",
                     imagensExtras: imagensExtrasArray,
                     formatoCapa: document.getElementById('formatoEscolhido').value,
                     formatoVideo: document.getElementById('formatoVideoEscolhido').value,
-                    formatoBanner: document.getElementById('formatoBannerEscolhido').value,
                     fonteImagem: document.getElementById('fonteImagem').value,
                     videoArquivo: document.getElementById('videoBase64').value,
                     creditosVideo: document.getElementById('creditosVideo').value,
                     videosExtras: videosExtrasArray,
-                    codigoAnuncio: document.getElementById('codigoAnuncio').value,
-                    bannerImgBase64: document.getElementById('bannerImgBase64').value,
-                    bannerLinkUrl: document.getElementById('bannerLinkUrl').value,
+                    banners: bannersArray,
                     autor: document.getElementById('autor').value,
                     titulo: document.getElementById('titulo').value,
                     texto: textoRico,
@@ -1372,12 +1507,9 @@
                         window.listaCompletaNoticias.push(item);
                     });
                 }
-
                 atualizarEstatisticasView();
                 carregarConfigGoogle();
-            } catch (error) {
-                console.log("Erro ao carregar dados.");
-            }
+            } catch (error) { console.log("Erro ao carregar dados."); }
         };
 
         window.renderizarListasDeNoticias = function() {
@@ -1440,18 +1572,11 @@
             document.getElementById("autor").value = item.autor || "";
             document.getElementById("fonteImagem").value = item.fonteImagem || "";
             document.getElementById("creditosVideo").value = item.creditosVideo || "";
-            document.getElementById("codigoAnuncio").value = item.codigoAnuncio || "";
-            document.getElementById("bannerImgBase64").value = item.bannerImgBase64 || "";
-            document.getElementById("bannerLinkUrl").value = item.bannerLinkUrl || "";
             document.getElementById("fonteNoticia").value = item.fonteNoticia || "";
             document.getElementById("linkRedeSocial").value = item.linkRedeSocial || "";
             
             document.getElementById("imagemBase64_1").value = item.imagem1 || item.imagem || "";
             document.getElementById("imagemBase64_2").value = item.imagem2 || "";
-            
-            if(item.bannerImgBase64) {
-                atualizarPreviewBanner(item.bannerImgBase64);
-            }
 
             if(item.videoArquivo) {
                 document.getElementById('videoBase64').value = item.videoArquivo;
@@ -1475,17 +1600,16 @@
                 }
             }
 
-            if(item.formatoBanner) {
-                const btnB = document.querySelector(`#ratiosBanner .btn-ratio[onclick*="'${item.formatoBanner}'"]`);
-                if(btnB) window.mudarLayoutBanner(item.formatoBanner, btnB);
-            }
-
             atualizarPreviewImagens();
 
+            // Limpar extras anteriores
             document.getElementById('container-imagens-extras').innerHTML = "";
             document.getElementById('container-videos-extras').innerHTML = "";
+            document.getElementById('container-banners-extras').innerHTML = "";
             contImagensExtras = 0;
             contVideosExtras = 0;
+            contBannersExtras = 0;
+            window.bannersData = {};
 
             if (item.imagensExtras && item.imagensExtras.length > 0) {
                 item.imagensExtras.forEach((imgObj) => {
@@ -1496,6 +1620,22 @@
             if (item.videosExtras && item.videosExtras.length > 0) {
                 item.videosExtras.forEach((vidObj) => {
                     adicionarPainelVideo(vidObj.formato || '16/9', vidObj.base64, vidObj.credito || '');
+                });
+            }
+
+            // Restaurar múltiplos banners da versão nova
+            if (item.banners && item.banners.length > 0) {
+                item.banners.forEach((b) => adicionarPainelBanner(b));
+            } 
+            // Retrocompatibilidade (caso você queira editar uma notícia da versão antiga)
+            else if (item.bannerImgBase64 || item.codigoAnuncio) {
+                adicionarPainelBanner({
+                    tipo: item.codigoAnuncio ? 'codigo' : 'imagem',
+                    codigoAnuncio: item.codigoAnuncio || '',
+                    bannerImgBase64: item.bannerImgBase64 || '',
+                    formatoBanner: item.formatoBanner || '16/9',
+                    bannerLinkUrl: item.bannerLinkUrl || '',
+                    posX: 20, posY: 200, scale: 1
                 });
             }
 
@@ -1523,17 +1663,18 @@
             quill.setContents([]);
             document.getElementById("imagemBase64_1").value = "";
             document.getElementById("imagemBase64_2").value = "";
-            document.getElementById("bannerImgBase64").value = "";
             document.getElementById("linkRedeSocial").value = "";
             removerVideo();
             atualizarPreviewImagens();
-            removerBannerImg();
             limparRascunho();
 
             document.getElementById('container-imagens-extras').innerHTML = "";
             document.getElementById('container-videos-extras').innerHTML = "";
+            document.getElementById('container-banners-extras').innerHTML = "";
             contImagensExtras = 0;
             contVideosExtras = 0;
+            contBannersExtras = 0;
+            window.bannersData = {};
 
             document.getElementById("btnSalvar").innerHTML = "<i class='fas fa-paper-plane'></i> Publicar Matéria";
             document.getElementById("btnCancelar").style.display = "none";
