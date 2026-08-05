@@ -145,7 +145,7 @@
 
     <div class="container">
         <div class="header-admin">
-            <h1><i class="fas fa-newspaper"></i> NEWS <span style="font-size:11px; padding:3px 8px; background:#cc0000; color:#fff; border-radius:4px; margin-left:6px;">PRO</span></h1>
+            <h1>NEWS PRO</h1>
             <div class="header-actions-right">
                 <span class="badge-pro">V10.1</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
@@ -455,7 +455,6 @@
             
             <div class="preview-body-content" id="prevTexto"></div>
             
-            <!-- Prévia do Banner na Matéria -->
             <div id="prevContainerBanner" style="width: 100%; margin-top: 20px;"></div>
 
             <div id="prevContainerMidiaInferior" style="width: 100%; margin-top: 20px; border-radius: 8px; overflow: hidden;"></div>
@@ -1196,7 +1195,6 @@
                 containerMidiaTopo.innerHTML = `<div style="padding: 20px; text-align: center; color: #777; background: #eee;">Sem imagem de capa principal</div>`;
             }
 
-            // Exibir Banner Patrocinador na Prévia se houver imagem/GIF ou código HTML
             const bannerImg = document.getElementById('bannerImgBase64').value;
             const bannerHtmlCode = document.getElementById('codigoAnuncio').value;
             const bannerUrl = document.getElementById('bannerLinkUrl').value;
