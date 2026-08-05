@@ -70,7 +70,6 @@
         label { display: block; font-weight: 700; margin-bottom: 6px; color: #444; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
         input[type="text"], select, input[type="file"], textarea { width: 100%; padding: 14px; border: 1px solid #b0b8c1; border-radius: 6px; font-size: 16px; outline: none; background: #fafbfc; color: #111; }
         
-        /* CAMPO DO TÍTULO DA MATÉRIA AMPLIADO E DESTACADO */
         textarea.titulo-textarea { resize: vertical; min-height: 90px; font-size: 19px; font-weight: 900; color: #002a5c; line-height: 1.4; padding: 16px; background: #fff; border: 2px solid #002a5c; }
 
         input[type="file"] { background: #fff; padding: 10px; border: 1px dashed #b0b8c1; cursor: pointer; }
@@ -136,7 +135,6 @@
 
         .toast-save { position: fixed; bottom: 20px; right: 20px; background: #137333; color: white; padding: 10px 20px; border-radius: 6px; font-size: 12px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none; z-index: 99999; }
 
-        /* ESTILOS DOS PAINÉIS EXTRAS DINÂMICOS */
         .btn-add-painel { background: #f0f2f5; color: #002a5c; border: 2px dashed #002a5c; padding: 12px; width: 100%; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; text-transform: uppercase; margin-top: 15px; transition: 0.3s; }
         .btn-add-painel:hover { background: #002a5c; color: #fff; }
         .painel-extra { border-top: 2px dashed #d1d9e0; padding-top: 20px; margin-top: 20px; position: relative; }
@@ -149,7 +147,7 @@
         <div class="header-admin">
             <h1><i class="fas fa-newspaper"></i> NEWS <span style="font-size:11px; padding:3px 8px; background:#cc0000; color:#fff; border-radius:4px; margin-left:6px;">PRO</span></h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V9.9</span>
+                <span class="badge-pro">V10.0</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -258,7 +256,6 @@
                     <input type="text" id="fonteImagem" placeholder="Ex: Nome do Fotógrafo / Reprodução">
                 </div>
 
-                <!-- CONTÊINER PARA FOTOS EXTRAS -->
                 <div id="container-imagens-extras"></div>
                 <button type="button" class="btn-add-painel" onclick="adicionarPainelImagem()">
                     <i class="fas fa-plus-circle"></i> Adicionar outra foto à galeria
@@ -295,7 +292,6 @@
                     <input type="text" id="creditosVideo" placeholder="Ex: Câmera de Segurança">
                 </div>
 
-                <!-- CONTÊINER PARA VÍDEOS EXTRAS -->
                 <div id="container-videos-extras"></div>
                 <button type="button" class="btn-add-painel" onclick="adicionarPainelVideo()">
                     <i class="fas fa-plus-circle"></i> Adicionar outro vídeo
@@ -336,7 +332,6 @@
             <div class="section-box">
                 <div class="section-title"><i class="fas fa-pen-nib"></i> Redação da Matéria</div>
                 
-                <!-- CAMPO DA MANCHETE AMPLIADO -->
                 <div class="form-group">
                     <label style="color: #002a5c; font-size: 13px;">Título da Matéria (Manchete)</label>
                     <textarea id="titulo" class="titulo-textarea" placeholder="Digite uma manchete impactante e chamativa..." required></textarea>
@@ -421,7 +416,6 @@
         </div>
     </div>
 
-    <!-- MODAL DE PRÉVIA -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
