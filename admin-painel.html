@@ -1380,13 +1380,10 @@
             document.getElementById('modalPrevia').style.display = 'flex';
         };
 
-        window.fecharPrevia = function() {
-            document.getElementById('modalPrevia').style.display = 'none';
-        };
-
         function ativarInteracaoBanner(el, dataObj) {
             let isDragging = false;
             let isResizing = false;
+            let initialDistance = 0;
             let startScale = dataObj.scale;
             let startYMouse = 0;
             const handle = el.querySelector('.resize-handle');
@@ -1397,7 +1394,6 @@
                 isDragging = true;
                 el.classList.add('draggable-banner-edit-mode');
             });
-            
             handle.addEventListener('mousedown', (e) => {
                 e.stopPropagation();
                 isResizing = true;
@@ -1439,161 +1435,50 @@
                         lastTouchX = e.touches[0].clientX;
                         lastTouchY = e.touches[0].clientY;
                     }
-                    el.classList.add('draggable-banner-edit-mode');
+                } else if(e.touches.length === 2) {
+                    isDragging = false;
+                    initialDistance = Math.hypot(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                    startScale = dataObj.scale;
                 }
-            }, {passive: true});
+                el.classList.add('draggable-banner-edit-mode');
+            }, {passive: false});
 
-            window.addEventListener('touchmove', (e) => {
-                if(e.touches.length === 1) {
-                    if(isDragging) {
-                        let touch = e.touches[0];
-                        let movementX = touch.clientX - lastTouchX;
-                        let movementY = touch.clientY - lastTouchY;
-                        lastTouchX = touch.clientX;
-                        lastTouchY = touch.clientY;
-                        
-                        dataObj.posX += movementX;
-                        dataObj.posY += movementY;
-                        el.style.left = dataObj.posX + 'px';
-                        el.style.top = dataObj.posY + 'px';
-                    }
-                    if(isResizing) {
-                        let dy = e.touches[0].clientY - startYMouse;
-                        dataObj.scale = Math.max(0.2, startScale + (dy * 0.005));
-                        el.style.transform = `scale(${dataObj.scale})`;
-                    }
+            el.addEventListener('touchmove', (e) => {
+                if(isDragging && e.touches.length === 1) {
+                    let deltaX = e.touches[0].clientX - lastTouchX;
+                    let deltaY = e.touches[0].clientY - lastTouchY;
+                    dataObj.posX += deltaX;
+                    dataObj.posY += deltaY;
+                    el.style.left = dataObj.posX + 'px';
+                    el.style.top = dataObj.posY + 'px';
+                    lastTouchX = e.touches[0].clientX;
+                    lastTouchY = e.touches[0].clientY;
+                    e.preventDefault();
                 }
-            }, {passive: true});
-
-            window.addEventListener('touchend', () => {
-                isDragging = false;
-                isResizing = false;
-                el.classList.remove('draggable-banner-edit-mode');
-            });
+                if(isResizing && e.touches.length === 1) {
+                    let dy = e.touches[0].clientY - startYMouse;
+                    dataObj.scale = Math.max(0.2, startScale + (dy * 0.005));
+                    el.style.transform = `scale(${dataObj.scale})`;
+                    e.preventDefault();
+                }
+                if(e.touches.length === 2) {
+                    let currentDist = Math.hypot(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                    let scaleFactor = currentDist / initialDistance;
+                    dataObj.scale = Math.max(0.2, startScale * scaleFactor);
+                    el.style.transform = `scale(${dataObj.scale})`;
+                    e.preventDefault();
+                }
+            }, {passive: false});
         }
 
-        window.carregarListaNoticias = async function() {
-            try {
-                const q = query(collection(db, "noticias"), orderBy("dataCriacao", "desc"));
-                const querySnapshot = await getDocs(q);
-                window.listaCompletaNoticias = [];
-                window.noticiasAdmin = {};
-
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    data.id = doc.id;
-                    window.listaCompletaNoticias.push(data);
-                    window.noticiasAdmin[doc.id] = data;
-                });
-
-                atualizarEstatisticasView();
-            } catch(e) { console.error("Erro ao carregar notícias:", e); }
-        };
-
-        function renderizarListasDeNoticias() {
-            const container = document.getElementById('lista-noticias-fullscreen');
-            if (!container) return;
-
-            if (window.listaCompletaNoticias.length === 0) {
-                container.innerHTML = `<p style="color: #666; font-size: 14px;">Nenhuma matéria cadastrada.</p>`;
-                return;
-            }
-
-            container.innerHTML = window.listaCompletaNoticias.map(noticia => {
-                const dataFormatada = noticia.dataCriacao ? new Date(noticia.dataCriacao).toLocaleDateString('pt-BR') : '';
-                const cats = (noticia.categorias || []).join(', ');
-                const thumb = noticia.imagemBase64_1 || noticia.imagemBase64_2 || '';
-
-                return `
-                    <div class="noticia-item">
-                        <div class="noticia-miniatura">
-                            ${thumb ? `<img src="${thumb}">` : '<i class="fas fa-newspaper"></i>'}
-                        </div>
-                        <div class="noticia-conteudo-info">
-                            <strong>${noticia.titulo || 'Sem título'}</strong>
-                            <div class="noticia-meta-tags">
-                                <span><i class="fas fa-calendar-alt"></i> ${dataFormatada}</span>
-                                ${cats ? `<span><i class="fas fa-folder"></i> ${cats}</span>` : ''}
-                                <span><i class="fas fa-eye"></i> ${noticia.visualizacoes || 0} acessos</span>
-                            </div>
-                            <div class="acoes-btn">
-                                <button type="button" class="btn-editar" onclick="editarNoticia('${noticia.id}')"><i class="fas fa-edit"></i> Editar</button>
-                                <button type="button" class="btn-apagar" onclick="apagarNoticia('${noticia.id}')"><i class="fas fa-trash"></i> Apagar</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        window.editarNoticia = function(id) {
-            const data = window.noticiasAdmin[id];
-            if (!data) return;
-
-            idEditando = id;
-            fecharModalGerenciamento();
-
-            document.getElementById('titulo').value = data.titulo || '';
-            document.getElementById('autor').value = data.autor || '';
-            document.getElementById('fonteNoticia').value = data.fonteNoticia || '';
-            document.getElementById('linkRedeSocial').value = data.linkRedeSocial || '';
-            document.getElementById('fonteImagem').value = data.fonteImagem || '';
-            document.getElementById('creditosVideo').value = data.creditosVideo || '';
-            quill.root.innerHTML = data.textoRico || '';
-
-            document.querySelectorAll('input[name="categoria"]').forEach(cb => {
-                cb.checked = (data.categorias || []).includes(cb.value);
-            });
-
-            document.getElementById('imagemBase64_1').value = data.imagemBase64_1 || '';
-            document.getElementById('imagemBase64_2').value = data.imagemBase64_2 || '';
-            atualizarPreviewImagens();
-
-            if (data.formatoEscolhido) {
-                const btn = document.querySelector(`#ratiosImagem .btn-ratio[onclick*="'${data.formatoEscolhido}'"]`);
-                if(btn) mudarLayoutImagem(data.formatoEscolhido, btn);
-            }
-
-            document.getElementById('videoBase64').value = data.videoBase64 || '';
-            const videoPreview = document.getElementById('videoPreview');
-            if (data.videoBase64) {
-                videoPreview.src = data.videoBase64;
-                videoPreview.style.display = 'block';
-            } else {
-                videoPreview.style.display = 'none';
-                videoPreview.src = '';
-            }
-
-            if (data.formatoVideoEscolhido) {
-                const btnV = document.querySelector(`#ratiosVideo .btn-ratio[onclick*="'${data.formatoVideoEscolhido}'"]`);
-                if(btnV) mudarLayoutVideo(data.formatoVideoEscolhido, btnV);
-            }
-
-            document.getElementById('container-imagens-extras').innerHTML = '';
-            contImagensExtras = 0;
-            if (data.imagensExtras && data.imagensExtras.length > 0) {
-                data.imagensExtras.forEach(item => {
-                    adicionarPainelImagem(item.ratio, item.base64, item.credito);
-                });
-            }
-
-            document.getElementById('container-videos-extras').innerHTML = '';
-            contVideosExtras = 0;
-            if (data.videosExtras && data.videosExtras.length > 0) {
-                data.videosExtras.forEach(item => {
-                    adicionarPainelVideo(item.ratio, item.base64, item.credito);
-                });
-            }
-
-            document.getElementById('container-banners-extras').innerHTML = '';
-            contBannersExtras = 0;
-            if (data.banners && data.banners.length > 0) {
-                data.banners.forEach(b => adicionarPainelBanner(b));
-            }
-
-            document.getElementById('btnSalvar').innerHTML = '<i class="fas fa-save"></i> Atualizar Matéria';
-            document.getElementById('btnCancelar').style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.fecharPrevia = function() {
+            document.getElementById('modalPrevia').style.display = 'none';
         };
 
         window.cancelarEdicao = function() {
@@ -1603,61 +1488,206 @@
             document.getElementById('imagemBase64_1').value = '';
             document.getElementById('imagemBase64_2').value = '';
             document.getElementById('videoBase64').value = '';
+            document.getElementById('videoPreview').style.display = 'none';
             document.getElementById('container-imagens-extras').innerHTML = '';
             document.getElementById('container-videos-extras').innerHTML = '';
             document.getElementById('container-banners-extras').innerHTML = '';
             contImagensExtras = 0;
             contVideosExtras = 0;
             contBannersExtras = 0;
+            window.bannersData = {};
             atualizarPreviewImagens();
-            removerVideo();
-
-            document.getElementById('btnSalvar').innerHTML = '<i class="fas fa-paper-plane"></i> Publicar Matéria';
-            document.getElementById('btnCancelar').style.display = 'none';
             limparRascunho();
+            document.getElementById('btnSalvar').innerHTML = `<i class="fas fa-paper-plane"></i> Publicar Matéria`;
+            document.getElementById('btnCancelar').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        window.apagarNoticia = async function(id) {
-            if (!confirm("Tem certeza que deseja apagar esta matéria permanentemente?")) return;
+        async function carregarListaNoticias() {
             try {
-                await deleteDoc(doc(db, "noticias", id));
-                await carregarListaNoticias();
-                renderizarListasDeNoticias();
-                alert("Matéria apagada com sucesso!");
+                const q = query(collection(db, "noticias"), orderBy("dataCriacao", "desc"));
+                const querySnapshot = await getDocs(q);
+                window.listaCompletaNoticias = [];
+                querySnapshot.forEach((docSnap) => {
+                    window.listaCompletaNoticias.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                atualizarEstatisticasView();
+            } catch(e) { console.log(e); }
+        }
+
+        async function renderizarListasDeNoticias() {
+            const container = document.getElementById('lista-noticias-fullscreen');
+            container.innerHTML = '<p style="color: #666; font-size: 14px;">Carregando matérias...</p>';
+            
+            try {
+                // CORREÇÃO: Remover o orderBy() rígido que estava ocultando itens antigos.
+                const querySnapshot = await getDocs(collection(db, "noticias"));
+                
+                window.listaCompletaNoticias = [];
+                window.noticiasAdmin = {};
+                
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    data.id = docSnap.id;
+                    window.listaCompletaNoticias.push(data);
+                    window.noticiasAdmin[data.id] = data;
+                });
+                
+                // ORDENAÇÃO MANUAL para não perder as notícias sem o campo de data criado.
+                window.listaCompletaNoticias.sort((a, b) => {
+                    const timeA = a.dataAtualizacao || a.dataCriacao || 0;
+                    const timeB = b.dataAtualizacao || b.dataCriacao || 0;
+                    return timeB - timeA;
+                });
+
+                container.innerHTML = '';
+                
+                if(window.listaCompletaNoticias.length === 0) {
+                    container.innerHTML = '<p style="color: #666; font-size: 14px;">Nenhuma matéria cadastrada.</p>';
+                    return;
+                }
+
+                window.listaCompletaNoticias.forEach((item) => {
+                    const id = item.id;
+                    
+                    // CORREÇÃO DE MAPEAMENTO: Aceitando formato antigo ou novo das imagens salvas.
+                    const thumb = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || item.imagemBase64_2 || item.imagem2 || '';
+                    const cats = item.categorias ? item.categorias.join(', ') : (item.categoria || 'Geral');
+
+                    const div = document.createElement('div');
+                    div.className = 'noticia-item';
+                    div.innerHTML = `
+                        <div class="noticia-miniatura">
+                            ${thumb ? `<img src="${thumb}">` : '<i class="fas fa-image"></i>'}
+                        </div>
+                        <div class="noticia-conteudo-info">
+                            <strong>${item.titulo || 'Sem Título'}</strong>
+                            <div class="noticia-meta-tags">
+                                <span><i class="fas fa-folder"></i> ${cats}</span>
+                                <span><i class="fas fa-user"></i> ${item.autor || 'Redação'}</span>
+                            </div>
+                            <div class="acoes-btn">
+                                <button type="button" class="btn-editar" onclick="editarNoticia('${id}')"><i class="fas fa-edit"></i> Editar</button>
+                                <button type="button" class="btn-apagar" onclick="apagarNoticia('${id}')"><i class="fas fa-trash-alt"></i> Excluir</button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
             } catch(e) {
-                alert("Erro ao apagar matéria.");
+                container.innerHTML = '<p style="color: #d93025; font-size: 14px;">Erro ao carregar matérias do Firebase.</p>';
+                console.error(e);
+            }
+        }
+
+        window.editarNoticia = function(id) {
+            const item = window.noticiasAdmin[id];
+            if (!item) return;
+
+            idEditando = id;
+            document.getElementById('titulo').value = item.titulo || '';
+            document.getElementById('autor').value = item.autor || '';
+            document.getElementById('fonteNoticia').value = item.fonteNoticia || '';
+            document.getElementById('linkRedeSocial').value = item.linkRedeSocial || '';
+            document.getElementById('fonteImagem').value = item.fonteImagem || '';
+            document.getElementById('creditosVideo').value = item.creditosVideo || '';
+            
+            // CORREÇÃO: Recuperar textos antigos ou novos no editor.
+            quill.root.innerHTML = item.textoRico || item.texto || item.conteudo || '';
+
+            document.querySelectorAll('input[name="categoria"]').forEach(cb => cb.checked = false);
+            if(item.categorias && Array.isArray(item.categorias)) {
+                item.categorias.forEach(cat => {
+                    const cb = document.querySelector(`input[name="categoria"][value="${cat}"]`);
+                    if(cb) cb.checked = true;
+                });
+            } else if (item.categoria) {
+                const cb = document.querySelector(`input[name="categoria"][value="${item.categoria}"]`);
+                if(cb) cb.checked = true;
+            }
+
+            // CORREÇÃO: Recuperar Imagens antigas no editor.
+            document.getElementById('imagemBase64_1').value = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
+            document.getElementById('imagemBase64_2').value = item.imagemBase64_2 || item.imagem2 || '';
+            atualizarPreviewImagens();
+
+            // CORREÇÃO: Recuperar Vídeos antigos no editor.
+            document.getElementById('videoBase64').value = item.videoBase64 || item.video || item.linkVideo || '';
+            const vPrev = document.getElementById('videoPreview');
+            const currentVideo = document.getElementById('videoBase64').value;
+            if(currentVideo) {
+                vPrev.src = currentVideo;
+                vPrev.style.display = 'block';
+            } else {
+                vPrev.style.display = 'none';
+                vPrev.src = '';
+            }
+
+            document.getElementById('container-imagens-extras').innerHTML = '';
+            contImagensExtras = 0;
+            if(item.imagensExtras && Array.isArray(item.imagensExtras)) {
+                item.imagensExtras.forEach(ie => adicionarPainelImagem(ie.ratio, ie.base64, ie.credito));
+            }
+
+            document.getElementById('container-videos-extras').innerHTML = '';
+            contVideosExtras = 0;
+            if(item.videosExtras && Array.isArray(item.videosExtras)) {
+                item.videosExtras.forEach(ve => adicionarPainelVideo(ve.ratio, ve.base64, ve.credito));
+            }
+
+            document.getElementById('container-banners-extras').innerHTML = '';
+            contBannersExtras = 0;
+            window.bannersData = {};
+            if(item.banners && Array.isArray(item.banners)) {
+                item.banners.forEach(b => adicionarPainelBanner(b));
+            }
+
+            document.getElementById('btnSalvar').innerHTML = `<i class="fas fa-save"></i> Atualizar Matéria`;
+            document.getElementById('btnCancelar').style.display = 'block';
+
+            fecharModalGerenciamento();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.apagarNoticia = function(id) {
+            if(confirm("Tem certeza que deseja excluir permanentemente esta matéria?")) {
+                deleteDoc(doc(db, "noticias", id)).then(() => {
+                    alert("Matéria excluída com sucesso!");
+                    renderizarListasDeNoticias();
+                    carregarListaNoticias();
+                }).catch(e => alert("Erro ao excluir."));
             }
         };
 
         document.getElementById('formNoticia').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const btnSub = document.getElementById('btnSalvar');
-            btnSub.disabled = true;
-            btnSub.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
-
             const categorias = Array.from(document.querySelectorAll('input[name="categoria"]:checked')).map(cb => cb.value);
-            
-            const imagensExtras = [];
+            if (categorias.length === 0) {
+                alert("⚠️ Selecione pelo menos uma categoria / nicho.");
+                return;
+            }
+
+            const imagensExtrasArray = [];
             for(let i=1; i<=contImagensExtras; i++) {
                 const b64 = document.getElementById(`imagemBase64Extra_${i}`)?.value;
                 if(b64) {
-                    imagensExtras.push({
+                    imagensExtrasArray.push({
                         base64: b64,
-                        ratio: document.getElementById(`formatoImgExtraEscolhido_${i}`).value,
-                        credito: document.getElementById(`fonteImagemExtra_${i}`).value
+                        ratio: document.getElementById(`formatoImgExtraEscolhido_${i}`)?.value || '16/9',
+                        credito: document.getElementById(`fonteImagemExtra_${i}`)?.value || ''
                     });
                 }
             }
 
-            const videosExtras = [];
+            const videosExtrasArray = [];
             for(let i=1; i<=contVideosExtras; i++) {
                 const b64 = document.getElementById(`videoBase64Extra_${i}`)?.value;
                 if(b64) {
-                    videosExtras.push({
+                    videosExtrasArray.push({
                         base64: b64,
-                        ratio: document.getElementById(`formatoVidExtraEscolhido_${i}`).value,
-                        credito: document.getElementById(`creditosVideoExtra_${i}`).value
+                        ratio: document.getElementById(`formatoVidExtraEscolhido_${i}`)?.value || '16/9',
+                        credito: document.getElementById(`creditosVideoExtra_${i}`)?.value || ''
                     });
                 }
             }
@@ -1681,44 +1711,61 @@
                 }
             }
 
-            const payload = {
+            const btnSubmit = document.getElementById('btnSalvar');
+            btnSubmit.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Salvando no Firebase...";
+            btnSubmit.disabled = true;
+
+            const noticiaObj = {
                 titulo: document.getElementById('titulo').value,
                 autor: document.getElementById('autor').value,
                 fonteNoticia: document.getElementById('fonteNoticia').value,
                 linkRedeSocial: document.getElementById('linkRedeSocial').value,
                 fonteImagem: document.getElementById('fonteImagem').value,
                 creditosVideo: document.getElementById('creditosVideo').value,
+                
+                // CORREÇÃO: Salvando no formato Antigo e Novo simultaneamente para manter tudo rodando!
                 textoRico: quill.root.innerHTML,
+                texto: quill.root.innerHTML, 
+                
                 categorias: categorias,
-                imagemBase64_1: document.getElementById('imagemBase64_1').value,
-                imagemBase64_2: document.getElementById('imagemBase64_2').value,
+                categoria: categorias.length > 0 ? categorias[0] : "Geral", 
+
                 formatoEscolhido: document.getElementById('formatoEscolhido').value,
-                videoBase64: document.getElementById('videoBase64').value,
                 formatoVideoEscolhido: document.getElementById('formatoVideoEscolhido').value,
-                imagensExtras: imagensExtras,
-                videosExtras: videosExtras,
+                
+                imagemBase64_1: document.getElementById('imagemBase64_1').value,
+                imagem1: document.getElementById('imagemBase64_1').value, 
+                
+                imagemBase64_2: document.getElementById('imagemBase64_2').value,
+                imagem2: document.getElementById('imagemBase64_2').value,
+                
+                videoBase64: document.getElementById('videoBase64').value,
+                video: document.getElementById('videoBase64').value,
+                
+                imagensExtras: imagensExtrasArray,
+                videosExtras: videosExtrasArray,
                 banners: bannersArray,
                 dataAtualizacao: Date.now()
             };
 
             try {
                 if (idEditando) {
-                    await updateDoc(doc(db, "noticias", idEditando), payload);
+                    await updateDoc(doc(db, "noticias", idEditando), noticiaObj);
                     alert("✅ Matéria atualizada com sucesso!");
                 } else {
-                    payload.dataCriacao = Date.now();
-                    payload.visualizacoes = 0;
-                    await addDoc(collection(db, "noticias"), payload);
+                    noticiaObj.dataCriacao = Date.now();
+                    noticiaObj.visualizacoes = 0;
+                    await addDoc(collection(db, "noticias"), noticiaObj);
                     alert("✅ Matéria publicada com sucesso!");
                 }
-
+                limparRascunho();
                 cancelarEdicao();
-                await carregarListaNoticias();
-            } catch (error) {
-                console.error("Erro ao salvar:", error);
-                alert("Erro ao salvar a matéria. Verifique sua conexão ou o tamanho das imagens/vídeos.");
+                carregarListaNoticias();
+            } catch (err) {
+                alert("❌ Erro ao salvar a matéria. Verifique sua conexão.");
             } finally {
-                btnSub.disabled = false;
+                btnSubmit.innerHTML = `<i class="fas fa-paper-plane"></i> Publicar Matéria`;
+                btnSubmit.disabled = false;
             }
         });
     </script>
