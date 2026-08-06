@@ -53,7 +53,6 @@
         .btn-ativar-google { background: #1a73e8; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-transform: uppercase; width: 100%; }
         .btn-ativar-google.ativo { background: #137333; }
 
-        /* BOTÃO DE PAINEL DE ANÚNCIOS NO MENU LATERAL */
         .btn-painel-anuncios-menu { background: #f9ab00; color: #1a1a1a; border: none; padding: 14px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; width: 100%; box-shadow: 0 2px 6px rgba(249,171,0,0.3); transition: 0.2s; }
         .btn-painel-anuncios-menu:hover { background: #e09600; }
 
@@ -65,7 +64,6 @@
         input[type="text"], select, input[type="file"], textarea { width: 100%; padding: 14px; border: 1px solid #b0b8c1; border-radius: 6px; font-size: 16px; outline: none; background: #fafbfc; color: #111; }
         
         textarea.titulo-textarea { resize: vertical; min-height: 90px; font-size: 19px; font-weight: 900; color: #002a5c; line-height: 1.4; padding: 16px; background: #fff; border: 2px solid #002a5c; }
-
         input[type="file"] { background: #fff; padding: 10px; border: 1px dashed #b0b8c1; cursor: pointer; }
 
         .file-input-wrapper { display: flex; gap: 10px; align-items: center; }
@@ -97,7 +95,6 @@
 
         .preview-container { width: 100%; background: #000; border-radius: 8px; display: flex; overflow: hidden; margin-top: 10px; aspect-ratio: 16/9; border: 1px solid #000; }
         .preview-container img, .preview-container video { flex: 1; width: 100% !important; height: 100% !important; object-fit: cover !important; }
-        
         .video-preview { width: 100%; border-radius: 8px; display: none; margin-top: 10px; border: 1px solid #b0b8c1; background: #000; aspect-ratio: 16/9; object-fit: contain; }
 
         .botoes-acao-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
@@ -120,11 +117,16 @@
         .btn-editar { background: #f8f9fa; color: #002a5c; border: 1px solid #002a5c; }
         .btn-apagar { background: #fff; color: #d93025; border: 1px solid #d93025; }
 
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .modal-content { background: #fff; width: 100vw; height: 100vh; max-width: 100%; max-height: 100%; border-radius: 0; overflow-y: hidden; position: relative; display: flex; flex-direction: column; }
-        @media(min-width: 768px) { .modal-content { width: 90vw; height: 92vh; border-radius: 12px; max-width: 900px; } }
+        .modal-overlay, .modal-fullscreen-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-content, .modal-fullscreen-content { background: #fff; width: 100vw; height: 100vh; max-width: 100%; max-height: 100%; border-radius: 0; overflow-y: hidden; position: relative; display: flex; flex-direction: column; }
+        @media(min-width: 768px) { .modal-content, .modal-fullscreen-content { width: 90vw; height: 92vh; border-radius: 12px; max-width: 900px; } }
         
-        .modal-header-top { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #eee; padding: 15px 20px; background: #fff; z-index: 2000; }
+        .modal-header-top, .modal-fs-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #eee; padding: 15px 20px; background: #fff; z-index: 2000; }
+        .modal-fs-header { background: #002a5c; color: white; }
+        .modal-fs-header h2 { font-size: 18px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        .modal-fs-close { background: #fff; color: #002a5c; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .modal-fs-body { padding: 20px; overflow-y: auto; flex: 1; background: #f8f9fa; display: flex; flex-direction: column; gap: 15px; }
+
         .btn-voltar-edicao { background: #002a5c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         
         #prevConteudoWrapper { position: relative; flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px; background: #fff; }
@@ -134,10 +136,9 @@
 
         .btn-add-painel { background: #f0f2f5; color: #002a5c; border: 2px dashed #002a5c; padding: 12px; width: 100%; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; text-transform: uppercase; margin-top: 15px; transition: 0.3s; }
         .btn-add-painel:hover { background: #002a5c; color: #fff; }
-        .painel-extra { border-top: 2px dashed #d1d9e0; padding-top: 20px; margin-top: 20px; position: relative; }
-        .btn-remover-painel-extra { position: absolute; top: 10px; right: 0; background: #fff; color: #d93025; border: 1px solid #d93025; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 10; }
+        .painel-extra { border-top: 2px dashed #d1d9e0; padding-top: 20px; margin-top: 20px; position: relative; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #d1d9e0; }
+        .btn-remover-painel-extra { position: absolute; top: 10px; right: 10px; background: #fff; color: #d93025; border: 1px solid #d93025; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 10; }
 
-        /* Estilo para Banners na Prévia (Arrastar, Soltar, Botão Fechar e Botão Saiba Mais) */
         .draggable-banner { position: absolute; touch-action: none; cursor: grab; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: box-shadow 0.2s; }
         .draggable-banner:active { cursor: grabbing; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
         .draggable-banner-edit-mode { border: 2px dashed #0275d8 !important; background: rgba(255,255,255,0.9); }
@@ -145,7 +146,6 @@
         
         .banner-close-btn { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.7); color: #fff; border: none; width: 24px; height: 24px; border-radius: 50%; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1002; }
         .banner-close-btn:hover { background: #d93025; }
-
         .banner-video-saibamais { position: absolute; bottom: 15px; right: 15px; background: #1a73e8; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; text-decoration: none; z-index: 1002; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
     </style>
 </head>
@@ -204,7 +204,6 @@
                     </button>
                 </div>
 
-                <!-- Botão Alaranjado de Acesso ao Novo Painel de Anúncios Isolado -->
                 <button type="button" class="btn-painel-anuncios-menu" onclick="abrirPainelAnunciosConfig()">
                     <i class="fas fa-bullhorn"></i> Painel de Anúncios
                 </button>
@@ -329,8 +328,6 @@
                 </button>
             </div>
 
-            <!-- SEÇÃO DE ANÚNCIOS RETIRADA DA TELA PRINCIPAL DE EDIÇÃO E ISOLADA NO NOVO PAINEL DEDICADO -->
-
             <div class="section-box">
                 <div class="section-title"><i class="fas fa-pen-nib"></i> Redação da Matéria</div>
                 
@@ -369,7 +366,6 @@
 
     <div id="toastSave" class="toast-save"><i class="fas fa-cloud-upload-alt"></i> Rascunho salvo!</div>
 
-    <!-- NOVO PAINEL / ABA SEPARADA DE ANÚNCIOS (MODAL TELA CHEIA ISOLADO) -->
     <div class="modal-fullscreen-overlay" id="modalPainelAnunciosConfig">
         <div class="modal-fullscreen-content">
             <div class="modal-fs-header" style="background: #f9ab00; color: #1a1a1a;">
@@ -510,7 +506,6 @@
         let contBannersExtras = 0;
         window.bannersData = {};
 
-        // Funções para Controle do Novo Painel de Anúncios Isolado
         window.abrirPainelAnunciosConfig = function() {
             alternarSidebar();
             document.getElementById('modalPainelAnunciosConfig').style.display = 'flex';
@@ -960,6 +955,7 @@
                     }
                 } catch(e) {}
             }
+            carregarConfigGoogle();
             carregarListaNoticias();
         };
 
@@ -1526,121 +1522,111 @@
             try {
                 const q = query(collection(db, "noticias"), orderBy("dataCriacao", "desc"));
                 const querySnapshot = await getDocs(q);
+                container.innerHTML = '';
                 
-                if (querySnapshot.empty) {
+                if(querySnapshot.empty) {
                     container.innerHTML = '<p style="color: #666; font-size: 14px;">Nenhuma matéria cadastrada.</p>';
                     return;
                 }
 
-                container.innerHTML = '';
                 querySnapshot.forEach((docSnap) => {
-                    const data = docSnap.data();
+                    const item = docSnap.data();
                     const id = docSnap.id;
-                    const miniaturaImg = data.imagemBase64_1 || data.imagemBase64_2 || '';
-                    
-                    const item = document.createElement('div');
-                    item.className = 'noticia-item';
-                    item.innerHTML = `
+                    window.noticiasAdmin[id] = item;
+
+                    const div = document.createElement('div');
+                    div.className = 'noticia-item';
+                    div.innerHTML = `
                         <div class="noticia-miniatura">
-                            ${miniaturaImg ? `<img src="${miniaturaImg}">` : '<i class="fas fa-newspaper"></i>'}
+                            ${item.imagemBase64_1 ? `<img src="${item.imagemBase64_1}">` : '<i class="fas fa-image"></i>'}
                         </div>
                         <div class="noticia-conteudo-info">
-                            <strong>${data.titulo || 'Sem Título'}</strong>
+                            <strong>${item.titulo || 'Sem Título'}</strong>
                             <div class="noticia-meta-tags">
-                                <span><i class="fas fa-user"></i> ${data.autor || 'Redação'}</span>
-                                <span><i class="fas fa-tag"></i> ${data.categorias?.[0] || 'Geral'}</span>
-                                <span><i class="fas fa-eye"></i> ${data.visualizacoes || 0} views</span>
+                                <span><i class="fas fa-folder"></i> ${item.categorias ? item.categorias.join(', ') : 'Geral'}</span>
+                                <span><i class="fas fa-user"></i> ${item.autor || 'Redação'}</span>
                             </div>
                             <div class="acoes-btn">
-                                <button type="button" class="btn-editar" onclick="carregarNoticiaParaEdicao('${id}')"><i class="fas fa-edit"></i> Editar</button>
+                                <button type="button" class="btn-editar" onclick="editarNoticia('${id}')"><i class="fas fa-edit"></i> Editar</button>
                                 <button type="button" class="btn-apagar" onclick="apagarNoticia('${id}')"><i class="fas fa-trash-alt"></i> Excluir</button>
                             </div>
                         </div>
                     `;
-                    container.appendChild(item);
+                    container.appendChild(div);
                 });
             } catch(e) {
-                container.innerHTML = '<p style="color: #d93025; font-size: 14px;">Erro ao carregar matérias do banco de dados.</p>';
+                container.innerHTML = '<p style="color: #d93025; font-size: 14px;">Erro ao carregar matérias do Firebase.</p>';
             }
         }
 
-        window.carregarNoticiaParaEdicao = async function(id) {
-            try {
-                const docRef = doc(db, "noticias", id);
-                const docSnap = await getDoc(docRef);
-                if (!docSnap.exists()) return;
+        window.editarNoticia = function(id) {
+            const item = window.noticiasAdmin[id];
+            if (!item) return;
 
-                const data = docSnap.data();
-                idEditando = id;
-                fecharModalGerenciamento();
+            idEditando = id;
+            document.getElementById('titulo').value = item.titulo || '';
+            document.getElementById('autor').value = item.autor || '';
+            document.getElementById('fonteNoticia').value = item.fonteNoticia || '';
+            document.getElementById('linkRedeSocial').value = item.linkRedeSocial || '';
+            document.getElementById('fonteImagem').value = item.fonteImagem || '';
+            document.getElementById('creditosVideo').value = item.creditosVideo || '';
+            quill.root.innerHTML = item.textoRico || '';
 
-                document.getElementById('titulo').value = data.titulo || "";
-                document.getElementById('autor').value = data.autor || "";
-                document.getElementById('fonteNoticia').value = data.fonteNoticia || "";
-                document.getElementById('linkRedeSocial').value = data.linkRedeSocial || "";
-                document.getElementById('fonteImagem').value = data.fonteImagem || "";
-                document.getElementById('creditosVideo').value = data.creditosVideo || "";
-                quill.root.innerHTML = data.textoRico || "";
-
-                document.querySelectorAll('input[name="categoria"]').forEach(cb => cb.checked = false);
-                if(data.categorias) {
-                    data.categorias.forEach(cat => {
-                        const check = document.querySelector(`input[name="categoria"][value="${cat}"]`);
-                        if(check) check.checked = true;
-                    });
-                }
-
-                if(data.formatoEscolhido) {
-                    const btn = document.querySelector(`#ratiosImagem .btn-ratio[onclick*="'${data.formatoEscolhido}'"]`);
-                    if(btn) mudarLayoutImagem(data.formatoEscolhido, btn);
-                }
-
-                if(data.formatoVideoEscolhido) {
-                    const btnV = document.querySelector(`#ratiosVideo .btn-ratio[onclick*="'${data.formatoVideoEscolhido}'"]`);
-                    if(btnV) {
-                        mudarLayoutVideo(data.formatoVideoEscolhido, btnV);
-                    } else {
-                        document.getElementById('formatoVideoEscolhido').value = data.formatoVideoEscolhido;
-                        document.getElementById('videoPreview').style.aspectRatio = data.formatoVideoEscolhido === 'auto' ? '16/9' : data.formatoVideoEscolhido;
-                    }
-                }
-
-                document.getElementById('imagemBase64_1').value = data.imagemBase64_1 || "";
-                document.getElementById('imagemBase64_2').value = data.imagemBase64_2 || "";
-                atualizarPreviewImagens();
-
-                if(data.videoBase64) {
-                    document.getElementById('videoBase64').value = data.videoBase64;
-                    const videoPreview = document.getElementById('videoPreview');
-                    videoPreview.src = data.videoBase64;
-                    videoPreview.style.display = 'block';
-                }
-
-                document.getElementById('container-banners-extras').innerHTML = '';
-                contBannersExtras = 0;
-                window.bannersData = {};
-                if(data.banners && data.banners.length > 0) {
-                    data.banners.forEach(b => adicionarPainelBanner(b));
-                }
-
-                document.getElementById('btnSalvar').innerHTML = `<i class="fas fa-save"></i> Salvar Alterações`;
-                document.getElementById('btnCancelar').style.display = 'block';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } catch(e) {
-                alert("Erro ao carregar matéria para edição.");
+            document.querySelectorAll('input[name="categoria"]').forEach(cb => cb.checked = false);
+            if(item.categorias) {
+                item.categorias.forEach(cat => {
+                    const cb = document.querySelector(`input[name="categoria"][value="${cat}"]`);
+                    if(cb) cb.checked = true;
+                });
             }
+
+            document.getElementById('imagemBase64_1').value = item.imagemBase64_1 || '';
+            document.getElementById('imagemBase64_2').value = item.imagemBase64_2 || '';
+            atualizarPreviewImagens();
+
+            document.getElementById('videoBase64').value = item.videoBase64 || '';
+            const vPrev = document.getElementById('videoPreview');
+            if(item.videoBase64) {
+                vPrev.src = item.videoBase64;
+                vPrev.style.display = 'block';
+            } else {
+                vPrev.style.display = 'none';
+                vPrev.src = '';
+            }
+
+            document.getElementById('container-imagens-extras').innerHTML = '';
+            contImagensExtras = 0;
+            if(item.imagensExtras && Array.isArray(item.imagensExtras)) {
+                item.imagensExtras.forEach(ie => adicionarPainelImagem(ie.ratio, ie.base64, ie.credito));
+            }
+
+            document.getElementById('container-videos-extras').innerHTML = '';
+            contVideosExtras = 0;
+            if(item.videosExtras && Array.isArray(item.videosExtras)) {
+                item.videosExtras.forEach(ve => adicionarPainelVideo(ve.ratio, ve.base64, ve.credito));
+            }
+
+            document.getElementById('container-banners-extras').innerHTML = '';
+            contBannersExtras = 0;
+            window.bannersData = {};
+            if(item.banners && Array.isArray(item.banners)) {
+                item.banners.forEach(b => adicionarPainelBanner(b));
+            }
+
+            document.getElementById('btnSalvar').innerHTML = `<i class="fas fa-save"></i> Atualizar Matéria`;
+            document.getElementById('btnCancelar').style.display = 'block';
+
+            fecharModalGerenciamento();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        window.apagarNoticia = async function(id) {
-            if(confirm("Tem certeza que deseja excluir esta matéria permanentemente?")) {
-                try {
-                    await deleteDoc(doc(db, "noticias", id));
-                    alert("🗑️ Matéria excluída com sucesso!");
+        window.apagarNoticia = function(id) {
+            if(confirm("Tem certeza que deseja excluir permanentemente esta matéria?")) {
+                deleteDoc(doc(db, "noticias", id)).then(() => {
+                    alert("Matéria excluída com sucesso!");
                     renderizarListasDeNoticias();
                     carregarListaNoticias();
-                } catch(e) {
-                    alert("Erro ao excluir matéria.");
-                }
+                }).catch(e => alert("Erro ao excluir."));
             }
         };
 
@@ -1648,9 +1634,33 @@
             e.preventDefault();
 
             const categorias = Array.from(document.querySelectorAll('input[name="categoria"]:checked')).map(cb => cb.value);
-            if(categorias.length === 0) {
-                alert("⚠️ Selecione pelo menos um nicho/categoria para a matéria.");
+            if (categorias.length === 0) {
+                alert("⚠️ Selecione pelo menos uma categoria / nicho.");
                 return;
+            }
+
+            const imagensExtrasArray = [];
+            for(let i=1; i<=contImagensExtras; i++) {
+                const b64 = document.getElementById(`imagemBase64Extra_${i}`)?.value;
+                if(b64) {
+                    imagensExtrasArray.push({
+                        base64: b64,
+                        ratio: document.getElementById(`formatoImgExtraEscolhido_${i}`)?.value || '16/9',
+                        credito: document.getElementById(`fonteImagemExtra_${i}`)?.value || ''
+                    });
+                }
+            }
+
+            const videosExtrasArray = [];
+            for(let i=1; i<=contVideosExtras; i++) {
+                const b64 = document.getElementById(`videoBase64Extra_${i}`)?.value;
+                if(b64) {
+                    videosExtrasArray.push({
+                        base64: b64,
+                        ratio: document.getElementById(`formatoVidExtraEscolhido_${i}`)?.value || '16/9',
+                        credito: document.getElementById(`creditosVideoExtra_${i}`)?.value || ''
+                    });
+                }
             }
 
             const bannersArray = [];
@@ -1672,7 +1682,11 @@
                 }
             }
 
-            const payload = {
+            const btnSubmit = document.getElementById('btnSalvar');
+            btnSubmit.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Salvando no Firebase...";
+            btnSubmit.disabled = true;
+
+            const noticiaObj = {
                 titulo: document.getElementById('titulo').value,
                 autor: document.getElementById('autor').value,
                 fonteNoticia: document.getElementById('fonteNoticia').value,
@@ -1686,37 +1700,32 @@
                 imagemBase64_1: document.getElementById('imagemBase64_1').value,
                 imagemBase64_2: document.getElementById('imagemBase64_2').value,
                 videoBase64: document.getElementById('videoBase64').value,
+                imagensExtras: imagensExtrasArray,
+                videosExtras: videosExtrasArray,
                 banners: bannersArray,
                 dataAtualizacao: Date.now()
             };
 
-            const btnSubmit = document.getElementById('btnSalvar');
-            btnSubmit.innerHTML = "<i class='fas fa-spinner fa-spin'></i> SALVANDO...";
-            btnSubmit.disabled = true;
-
             try {
                 if (idEditando) {
-                    await updateDoc(doc(db, "noticias", idEditando), payload);
+                    await updateDoc(doc(db, "noticias", idEditando), noticiaObj);
                     alert("✅ Matéria atualizada com sucesso!");
                 } else {
-                    payload.dataCriacao = Date.now();
-                    payload.visualizacoes = 0;
-                    await addDoc(collection(db, "noticias"), payload);
-                    alert("🚀 Matéria publicada com sucesso!");
+                    noticiaObj.dataCriacao = Date.now();
+                    noticiaObj.visualizacoes = 0;
+                    await addDoc(collection(db, "noticias"), noticiaObj);
+                    alert("✅ Matéria publicada com sucesso!");
                 }
-
                 limparRascunho();
                 cancelarEdicao();
                 carregarListaNoticias();
-            } catch(e) {
-                alert("❌ Erro ao salvar no banco de dados. O arquivo de mídia pode ser muito grande.");
+            } catch (err) {
+                alert("❌ Erro ao salvar a matéria. Verifique sua conexão.");
             } finally {
-                btnSubmit.disabled = false;
                 btnSubmit.innerHTML = `<i class="fas fa-paper-plane"></i> Publicar Matéria`;
+                btnSubmit.disabled = false;
             }
         });
-
-        carregarConfigGoogle();
     </script>
 </body>
 </html>
