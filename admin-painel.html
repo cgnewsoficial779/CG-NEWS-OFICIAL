@@ -1558,15 +1558,31 @@
                 window.listaCompletaNoticias.forEach((item) => {
                     const id = item.id;
                     
-                    // CORREÇÃO DE MAPEAMENTO: Aceitando formato antigo ou novo das imagens salvas.
-                    const thumb = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || item.imagemBase64_2 || item.imagem2 || '';
+                    // CORREÇÃO DE MAPEAMENTO PARA PEGAR AS DUAS FOTOS
+                    const img1 = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
+                    const img2 = item.imagemBase64_2 || item.imagem2 || '';
+                    
+                    let thumbHtml = '';
+                    let classDuasImagens = '';
+
+                    if (img1 && img2) {
+                        thumbHtml = `<img src="${img1}"><img src="${img2}">`;
+                        classDuasImagens = 'duas-imagens';
+                    } else if (img1) {
+                        thumbHtml = `<img src="${img1}">`;
+                    } else if (img2) {
+                        thumbHtml = `<img src="${img2}">`;
+                    } else {
+                        thumbHtml = '<i class="fas fa-image"></i>';
+                    }
+
                     const cats = item.categorias ? item.categorias.join(', ') : (item.categoria || 'Geral');
 
                     const div = document.createElement('div');
                     div.className = 'noticia-item';
                     div.innerHTML = `
-                        <div class="noticia-miniatura">
-                            ${thumb ? `<img src="${thumb}">` : '<i class="fas fa-image"></i>'}
+                        <div class="noticia-miniatura ${classDuasImagens}">
+                            ${thumbHtml}
                         </div>
                         <div class="noticia-conteudo-info">
                             <strong>${item.titulo || 'Sem Título'}</strong>
