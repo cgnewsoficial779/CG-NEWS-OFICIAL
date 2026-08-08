@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V11.0</title>
+    <title>Painel Editor - News Pro V11.1</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -70,7 +70,6 @@
         .file-input-wrapper input[type="file"] { flex: 1; }
         .btn-remover-img { background: #fff; color: #d93025; border: 1px solid #d93025; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 13px; white-space: nowrap; }
 
-        /* Botoes de Local de Anuncio e Seletor Visual */
         .local-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
         .btn-local { flex: 1; padding: 10px; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; text-align: center; transition: 0.2s; min-width: 100px; }
         .btn-local.active { background: #002a5c; color: white; border-color: #002a5c; }
@@ -116,7 +115,6 @@
         .btn-preview { background-color: #0275d8; color: white; border: none; padding: 16px; flex: 1; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
         .btn-cancelar { background-color: #d93025; color: white; border: none; padding: 14px; width: 100%; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; display: none; text-transform: uppercase; }
 
-        /* Notícia Listagem (Externo) */
         .noticia-item { border: 1px solid #d1d9e0; padding: 14px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; gap: 15px; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
         .noticia-miniatura { width: 110px; height: 90px; border-radius: 8px; background: #ddd; flex-shrink: 0; display: flex; align-items: stretch; justify-content: center; color: #777; font-size: 14px; overflow: hidden; }
         @media(min-width: 600px) { .noticia-miniatura { width: 150px; height: 110px; } }
@@ -177,7 +175,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V11.0</span>
+                <span class="badge-pro">V11.1</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -460,14 +458,15 @@
         </div>
     </div>
 
+    <!-- MODAL DE PREVIA ATUALIZADO V11.1 -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
                 <div style="display: flex; align-items: center; gap: 15px; width: 100%;">
                     <span style="font-size: 12px; font-weight: bold; color: #cc0000; text-transform: uppercase;" id="prevCategoria">CATEGORIA</span>
-                    <select id="previewContextSelector" onchange="window.abrirPrevia()" style="padding: 6px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 13px; font-weight: 800; color: #002a5c; background: #f8f9fa; cursor: pointer; outline: none; flex: 1; max-width: 300px;">
-                        <!-- Gerado Dinamicamente -->
-                    </select>
+                    <!-- Removido o menu dropdown confuso -->
+                    <span id="previewContextLabel" style="font-size: 14px; font-weight: 800; color: #002a5c; background: #e2e8f0; padding: 6px 12px; border-radius: 6px;">Visão Atual</span>
+                    
                     <div style="display: flex; gap: 10px; margin-left: auto;">
                         <span style="font-size: 12px; background: #e2e8f0; padding: 5px 10px; border-radius: 4px; display: flex; align-items: center;"><i class="fas fa-arrows-alt" style="margin-right: 5px;"></i> Arraste os Banners</span>
                         <button class="btn-voltar-edicao" onclick="window.fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar</button>
@@ -475,14 +474,14 @@
                 </div>
             </div>
             
-            <div id="prevConteudoWrapper" style="padding: 0;">
+            <div id="prevConteudoWrapper" style="padding: 0; position: relative;">
                 
-                <!-- V11.0 - Iframe Real do Site -->
+                <!-- Fundo REAL para Inicio / Ultimas (IFRAME DO SITE OFICIAL) -->
                 <div id="mockupWireframe" style="display: none; width: 100%; min-height: 100vh;">
                     <!-- Preenchido dinamicamente com o IFRAME -->
                 </div>
 
-                <!-- Simulação idêntica para Rascunhos/Notícias -->
+                <!-- Simulação idêntica para Rascunhos/Notícias Específicas -->
                 <div id="mockupNoticia" style="width: 100%; min-height: 100vh; background: #f0f2f5;">
                     <!-- Preenchido dinamicamente com a NOTÍCIA REAL -->
                 </div>
@@ -534,25 +533,6 @@
         
         let idBannerAguardandoSelecao = null;
         window.veioDoPainelAnuncios = false;
-
-        window.atualizarSelectsMaterias = function() {
-            const selectorPrev = document.getElementById('previewContextSelector');
-            if(selectorPrev) {
-                const valPrev = selectorPrev.value;
-                let htmlPrev = `
-                    <option value="rascunho_atual">Visão: Matéria em Edição (Rascunho)</option>
-                    <option value="inicio">Visão: Tela Inicial (Site Oficial)</option>
-                    <option value="ultimas">Visão: Últimas Notícias (Site Oficial)</option>
-                    <optgroup label="Visão: Matérias Publicadas">
-                `;
-                window.listaCompletaNoticias.forEach(n => {
-                    htmlPrev += `<option value="${n.id}">Notícia: ${n.titulo.substring(0, 40)}...</option>`;
-                });
-                htmlPrev += `</optgroup>`;
-                selectorPrev.innerHTML = htmlPrev;
-                if([...selectorPrev.options].some(o => o.value === valPrev)) selectorPrev.value = valPrev;
-            }
-        };
 
         window.abrirPainelAnunciosConfig = function() {
             window.alternarSidebar();
@@ -1330,31 +1310,81 @@
             }
         };
 
-        // === NOVIDADE V11.0: SITE REAL (IFRAME) NA PRÉVIA ===
-        window.abrirPrevia = function(forcarContexto = null) {
-            const selector = document.getElementById('previewContextSelector');
-            if (forcarContexto) {
-                selector.value = forcarContexto;
-            }
-            const contexto = selector.value || 'rascunho_atual';
+        window.gerarEmbedRedeSocial = function(url) {
+            if (!url) return "";
+            url = url.trim();
 
+            if (url.includes("youtube.com") || url.includes("youtu.be")) {
+                let videoId = "";
+                if (url.includes("v=")) {
+                    videoId = url.split("v=")[1].split("&")[0];
+                } else if (url.includes("youtu.be/")) {
+                    videoId = url.split("youtu.be/")[1].split("?")[0];
+                }
+                if (videoId) {
+                    return `<div style="position:relative;width:100%;padding-bottom:56.25%;height:0;background:#000;border-radius:8px;overflow:hidden;margin-top:10px;">
+                                <iframe src="https://www.youtube.com/embed/${videoId}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+                            </div>`;
+                }
+            }
+
+            if (url.includes("x.com") || url.includes("twitter.com")) {
+                let cleanUrl = url.split("?")[0];
+                return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;">
+                            <blockquote class="twitter-tweet" data-theme="light">
+                                <a href="${cleanUrl}"></a>
+                            </blockquote>
+                            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"><\/script>
+                        </div>`;
+            }
+
+            if (url.includes("instagram.com")) {
+                let cleanUrl = url.split("?")[0];
+                if (!cleanUrl.endsWith("/")) cleanUrl += "/";
+                return `<div style="display:flex;justify-content:center;margin-top:10px;">
+                            <iframe src="${cleanUrl}embed/" width="100%" height="480" frameborder="0" scrolling="no" allowtransparency="true" style="max-width:540px;border-radius:8px;background:#fff;"></iframe>
+                        </div>`;
+            }
+
+            return `<div style="margin-top:10px;padding:12px;background:#f0f2f5;border-radius:8px;border-left:4px solid #002a5c;">
+                        <a href="${url}" target="_blank" style="color:#002a5c;font-weight:bold;text-decoration:none;display:flex;align-items:center;gap:8px;">
+                            <i class="fas fa-external-link-alt" style="font-size:18px;"></i> Acessar link externo
+                        </a>
+                    </div>`;
+        };
+
+        // === NOVIDADE V11.1: PRÉVIA TOTALMENTE DINAMICA COM IFRAME E SELO ===
+        window.abrirPrevia = function(contexto = 'rascunho_atual') {
             const mockupWireframe = document.getElementById('mockupWireframe');
             const mockupNoticia = document.getElementById('mockupNoticia');
+            const label = document.getElementById('previewContextLabel');
 
-            // 1. TELA INICIAL OU ULTIMAS NOTICIAS - USA O SITE ORIGINAL EM UM IFRAME!
+            // Atualiza o Selo Visual
+            if (contexto === 'inicio') {
+                label.innerHTML = '<i class="fas fa-home"></i> Visão: Tela Inicial';
+            } else if (contexto === 'ultimas') {
+                label.innerHTML = '<i class="fas fa-newspaper"></i> Visão: Últimas Notícias';
+            } else if (contexto === 'rascunho_atual') {
+                label.innerHTML = '<i class="fas fa-edit"></i> Visão: Rascunho Atual';
+            } else {
+                const item = window.noticiasAdmin[contexto];
+                label.innerHTML = `<i class="fas fa-thumbtack"></i> Visão: ${item ? item.titulo.substring(0, 30) + '...' : 'Notícia Específica'}`;
+            }
+
+            // 1. TELA INICIAL OU ULTIMAS NOTICIAS - USA O SITE ORIGINAL EM UM IFRAME SEM ERRO 404!
             if (contexto === 'inicio' || contexto === 'ultimas') {
                 mockupWireframe.style.display = 'block';
                 mockupNoticia.style.display = 'none';
 
-                // Usando a URL original do seu site
-                const urlReal = "https://unicorn-017ccc.netlify.app/";
+                // Usando a URL base de onde você está para evitar 404 do Netlify Deploy Preview
+                const urlReal = window.location.origin + "/";
 
                 mockupWireframe.innerHTML = `
                     <div style="background: #002a5c; color: white; padding: 12px; text-align: center; border-radius: 8px 8px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; z-index: 20;">
                         <div style="font-size: 16px; font-weight: 900; letter-spacing: 1px;"><i class="fas fa-satellite-dish" style="color: #25d366;"></i> SITE OFICIAL AO VIVO</div>
                         <div style="font-size: 12px; font-weight: normal; color: #cbd5e1; margin-top: 4px;">Navegue no seu site real abaixo e arraste o banner para a posição exata de exibição.</div>
                     </div>
-                    <!-- AQUI ENTRA O SEU SITE DE VERDADE -->
+                    <!-- AQUI ENTRA O SEU SITE DE VERDADE DINAMICAMENTE -->
                     <iframe id="iframeSiteReal" src="${urlReal}" style="width: 100%; height: calc(100vh - 160px); border: 2px solid #002a5c; border-top: none; border-radius: 0 0 8px 8px; background: #fff;"></iframe>
                 `;
                 mockupWireframe.style.background = 'transparent';
@@ -1363,7 +1393,7 @@
                 mockupWireframe.style.padding = '0';
                 mockupWireframe.style.margin = '0';
             } 
-            // 2. NOTÍCIA ESPECIFICA (DO BANCO OU RASCUNHO) - Layout sem bordas pretas, imagem cheia
+            // 2. NOTÍCIA ESPECIFICA (DO BANCO OU RASCUNHO)
             else {
                 mockupWireframe.style.display = 'none';
                 mockupNoticia.style.display = 'block';
@@ -1420,7 +1450,7 @@
                     }
                 }
 
-                // Layout Perfeito da Notícia (Baseado nas suas Imagens 5 e 6)
+                // Layout Perfeito da Notícia
                 let htmlArtigo = `
                 <div style="background: #fff; width: 100%; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; text-align: left; padding-bottom: 50px;">
                     <!-- Cabeçalho Idêntico ao do site -->
@@ -1482,7 +1512,7 @@
                 mockupNoticia.innerHTML = htmlArtigo;
             }
 
-            // Renderizar Banners por cima da tela
+            // Renderizar Banners por cima da tela escolhida
             const wrapper = document.getElementById('prevConteudoWrapper');
             wrapper.querySelectorAll('.draggable-banner').forEach(el => el.remove());
 
@@ -1551,7 +1581,6 @@
             document.getElementById('modalPrevia').style.display = 'flex';
         };
 
-        // LÓGICA ATUALIZADA PARA O ARRASTE FUNCIONAR MESMO COM O IFRAME DO SITE REAL!
         window.ativarInteracaoBanner = function(el, dataObj) {
             let isDragging = false;
             let isResizing = false;
@@ -1561,7 +1590,6 @@
             const handle = el.querySelector('.resize-handle');
             const closeBtn = el.querySelector('.banner-close-btn');
 
-            // Função super importante: desativa os cliques no iframe para o arraste não travar!
             const toggleIframePointer = (enabled) => {
                 const iframe = document.getElementById('iframeSiteReal');
                 if(iframe) iframe.style.pointerEvents = enabled ? 'auto' : 'none';
@@ -1710,7 +1738,6 @@
                     window.noticiasAdmin[data.id] = data;
                 });
                 
-                window.atualizarSelectsMaterias();
                 window.atualizarEstatisticasView();
             } catch(e) { console.log(e); }
         }
@@ -1738,8 +1765,6 @@
                     return timeB - timeA;
                 });
                 
-                window.atualizarSelectsMaterias();
-
                 container.innerHTML = '';
                 
                 if(window.listaCompletaNoticias.length === 0) {
