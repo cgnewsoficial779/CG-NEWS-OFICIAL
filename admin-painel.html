@@ -371,7 +371,7 @@
             </div>
 
             <div class="botoes-acao-container">
-                <button type="button" class="btn-preview" onclick="abrirPrevia()"><i class="fas fa-eye"></i> Ver Prévia & Organizar Banners</button>
+                <button type="button" class="btn-preview" onclick="abrirPrevia('especifica')"><i class="fas fa-eye"></i> Ver Prévia & Organizar Banners</button>
                 <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> Publicar Matéria</button>
             </div>
             <button type="button" id="btnCancelar" class="btn-cancelar" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
@@ -391,9 +391,14 @@
                 
                 <div id="container-banners-extras"></div>
 
-                <button type="button" class="btn-add-painel" style="border-color: #f9ab00; color: #b07c00;" onclick="adicionarPainelBanner()">
-                    <i class="fas fa-plus-circle"></i> Adicionar + Anúncio
-                </button>
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px; border-top: 2px dashed #e2e8f0; padding-top: 20px;">
+                    <button type="button" class="btn-preview" style="background: #002a5c; color: white;" onclick="fecharPainelAnunciosConfig(); abrirPrevia('inicio');">
+                        <i class="fas fa-eye"></i> Ver Prévia e Organizar Anúncios
+                    </button>
+                    <button type="button" class="btn-add-painel" style="border-color: #f9ab00; color: #b07c00; margin-top: 0;" onclick="adicionarPainelBanner()">
+                        <i class="fas fa-plus-circle"></i> Adicionar + Novo Anúncio
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -450,29 +455,45 @@
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
-                <span style="font-size: 12px; font-weight: bold; color: #cc0000; text-transform: uppercase;" id="prevCategoria">CATEGORIA</span>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span style="font-size: 12px; font-weight: bold; color: #cc0000; text-transform: uppercase;" id="prevCategoria">CATEGORIA</span>
+                    <select id="previewContextSelector" onchange="renderizarBannersPreview()" style="padding: 6px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 13px; font-weight: 800; color: #002a5c; background: #f8f9fa; cursor: pointer; outline: none;">
+                        <option value="especifica">Visão: Notícia Específica</option>
+                        <option value="inicio">Visão: Tela Inicial</option>
+                        <option value="ultimas">Visão: Últimas Notícias</option>
+                    </select>
+                </div>
                 <div style="display: flex; gap: 10px;">
-                    <span style="font-size: 12px; background: #e2e8f0; padding: 5px 10px; border-radius: 4px; display: flex; align-items: center;"><i class="fas fa-arrows-alt" style="margin-right: 5px;"></i> Arraste os Banners / Use o botão azul para Redimensionar</span>
-                    <button class="btn-voltar-edicao" onclick="fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar para Edição</button>
+                    <span style="font-size: 12px; background: #e2e8f0; padding: 5px 10px; border-radius: 4px; display: flex; align-items: center;"><i class="fas fa-arrows-alt" style="margin-right: 5px;"></i> Arraste os Banners</span>
+                    <button class="btn-voltar-edicao" onclick="fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar</button>
                 </div>
             </div>
             
             <div id="prevConteudoWrapper">
-                <h1 id="prevTitulo" style="color: #002a5c; font-size: 24px; font-weight: 900; margin-bottom: 12px; line-height: 1.3;">Título</h1>
-                <div style="font-size: 13px; color: #666; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                    Por <span id="prevAutor">Redação</span>
+                
+                <div id="mockupWireframe" style="display: none; width: 100%; min-height: 800px; background: #f8f9fa; border: 3px dashed #cbd5e1; border-radius: 8px; text-align: center; padding-top: 80px; margin-bottom: 20px;">
+                    <i class="fas fa-desktop" style="font-size: 40px; color: #94a3b8; margin-bottom: 15px;"></i>
+                    <h2 style="color: #475569; font-weight: 900;" id="mockupTitle">Simulação da Tela Inicial</h2>
+                    <p style="color: #64748b; font-size: 14px; margin-top: 10px;">Posicione seus banners arrastando-os nesta área livre.<br>Eles aparecerão exatamente nesta página do site oficial.</p>
                 </div>
-                
-                <div id="prevContainerMidia" style="width: 100%; margin-bottom: 15px; border-radius: 8px; overflow: hidden; background: #000;"></div>
-                <div style="font-size: 11px; color: #777; margin-bottom: 15px;" id="prevCreditoImg"></div>
-                
-                <div class="preview-body-content" id="prevTexto"></div>
-                
-                <div id="prevContainerMidiaInferior" style="width: 100%; margin-top: 20px; border-radius: 8px; overflow: hidden;"></div>
-                <div id="prevGaleriaExtra" style="width: 100%; margin-top: 20px;"></div>
 
-                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;" id="prevFonteArea">
-                    <strong style="font-size: 13px; color: #444;" id="prevFonteNoticia">Fonte: </strong>
+                <div id="mockupNoticia">
+                    <h1 id="prevTitulo" style="color: #002a5c; font-size: 24px; font-weight: 900; margin-bottom: 12px; line-height: 1.3;">Título</h1>
+                    <div style="font-size: 13px; color: #666; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                        Por <span id="prevAutor">Redação</span>
+                    </div>
+                    
+                    <div id="prevContainerMidia" style="width: 100%; margin-bottom: 15px; border-radius: 8px; overflow: hidden; background: #000;"></div>
+                    <div style="font-size: 11px; color: #777; margin-bottom: 15px;" id="prevCreditoImg"></div>
+                    
+                    <div class="preview-body-content" id="prevTexto"></div>
+                    
+                    <div id="prevContainerMidiaInferior" style="width: 100%; margin-top: 20px; border-radius: 8px; overflow: hidden;"></div>
+                    <div id="prevGaleriaExtra" style="width: 100%; margin-top: 20px;"></div>
+
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;" id="prevFonteArea">
+                        <strong style="font-size: 13px; color: #444;" id="prevFonteNoticia">Fonte: </strong>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1262,7 +1283,11 @@
                     </div>`;
         }
 
-        window.abrirPrevia = function() {
+        window.abrirPrevia = function(forcarContexto = null) {
+            if (forcarContexto) {
+                document.getElementById('previewContextSelector').value = forcarContexto;
+            }
+
             document.getElementById('prevTitulo').innerText = document.getElementById('titulo').value || "Título";
             document.getElementById('prevAutor').innerText = document.getElementById('autor').value || "Redação";
             document.getElementById('prevTexto').innerHTML = quill.root.innerHTML;
@@ -1280,13 +1305,10 @@
             const containerMidiaTopo = document.getElementById('prevContainerMidia');
             const containerMidiaInferior = document.getElementById('prevContainerMidiaInferior');
             const prevGaleriaExtra = document.getElementById('prevGaleriaExtra');
-            const wrapper = document.getElementById('prevConteudoWrapper');
             
             containerMidiaTopo.innerHTML = "";
             containerMidiaInferior.innerHTML = "";
             prevGaleriaExtra.innerHTML = "";
-
-            wrapper.querySelectorAll('.draggable-banner').forEach(el => el.remove());
 
             const rawFormatoImg = document.getElementById('formatoEscolhido').value;
             const formatoImg = rawFormatoImg === 'auto' ? '16/9' : rawFormatoImg.replace(':', '/');
@@ -1348,9 +1370,42 @@
             }
             prevGaleriaExtra.innerHTML = htmlGaleria;
 
+            // Injetar e filtrar os banners com base na selecao
+            window.renderizarBannersPreview();
+
+            document.getElementById('modalPrevia').style.display = 'flex';
+        };
+
+        window.renderizarBannersPreview = function() {
+            const contexto = document.getElementById('previewContextSelector').value;
+            const mockupWireframe = document.getElementById('mockupWireframe');
+            const mockupNoticia = document.getElementById('mockupNoticia');
+            const mockupTitle = document.getElementById('mockupTitle');
+            const wrapper = document.getElementById('prevConteudoWrapper');
+
+            // Limpa os banners antigos do wrapper para recriar
+            wrapper.querySelectorAll('.draggable-banner').forEach(el => el.remove());
+
+            // Alternar a interface de fundo de acordo com aVISÃO selecionada
+            if (contexto === 'especifica') {
+                mockupWireframe.style.display = 'none';
+                mockupNoticia.style.display = 'block';
+            } else {
+                mockupWireframe.style.display = 'block';
+                mockupNoticia.style.display = 'none';
+                mockupTitle.innerText = contexto === 'inicio' ? 'Simulação da Tela Inicial' : 'Simulação de Últimas Notícias';
+            }
+
+            // Renderizar apenas os banners do contexto atual
             for(let i=1; i<=contBannersExtras; i++) {
                 const painel = document.getElementById(`painel-banner-extra-${i}`);
                 if(!painel) continue;
+
+                const localInput = document.getElementById(`localExibicaoBanner_${i}`);
+                const localBanner = localInput ? localInput.value : 'inicio';
+
+                // SE NÃO BATER COM O CONTEXTO SELECIONADO NA PRÉVIA, ELE PULA E NÃO MOSTRA
+                if (localBanner !== contexto) continue;
 
                 const tipo = document.getElementById(`tipoBannerExtra_${i}`).value;
                 const base64 = document.getElementById(`bannerImgBase64Extra_${i}`).value;
@@ -1398,8 +1453,6 @@
                     ativarInteracaoBanner(el, bd);
                 }
             }
-
-            document.getElementById('modalPrevia').style.display = 'flex';
         };
 
         function ativarInteracaoBanner(el, dataObj) {
@@ -1685,16 +1738,6 @@
 
             fecharModalGerenciamento();
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-
-        window.apagarNoticia = function(id) {
-            if(confirm("Tem certeza que deseja excluir permanentemente esta matéria?")) {
-                deleteDoc(doc(db, "noticias", id)).then(() => {
-                    alert("Matéria excluída com sucesso!");
-                    renderizarListasDeNoticias();
-                    carregarListaNoticias();
-                }).catch(e => alert("Erro ao excluir."));
-            }
         };
 
         document.getElementById('formNoticia').addEventListener('submit', async function(e) {
