@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V11.5</title>
+    <title>Painel Editor - News Pro V11.6</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -179,7 +179,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V11.5</span>
+                <span class="badge-pro">V11.6</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -1378,7 +1378,6 @@
                     </div>`;
         };
 
-        // === CORREÇÃO DA PRÉVIA COM O LINK EXATO ===
         window.abrirPrevia = function(contexto = 'rascunho_atual') {
             const mockupWireframe = document.getElementById('mockupWireframe');
             const mockupNoticia = document.getElementById('mockupNoticia');
@@ -1399,11 +1398,8 @@
                 mockupWireframe.style.display = 'block';
                 mockupNoticia.style.display = 'none';
 
-                // --- URL DO SEU SITE OFICIAL ---
                 let urlReal = "https://fanciful-halva-1454f7.netlify.app/";
-                
                 if (contexto === 'ultimas') {
-                    // AQUI ESTÁ O LINK CORRETO QUE VOCÊ INFORMOU:
                     urlReal = "https://fanciful-halva-1454f7.netlify.app/?ultimas=true";
                 }
 
@@ -1823,8 +1819,14 @@
                     
                     let botoesHtml = '';
                     const lista = document.getElementById('lista-noticias-fullscreen');
+                    
                     if(lista.classList.contains('modo-selecao-anuncio')) {
-                        botoesHtml = `<button type="button" class="btn-selecionar-anuncio" style="display:inline-flex;" onclick="window.selecionarMateriaParaBanner('${id}', '${item.titulo ? item.titulo.replace(/'/g, "\\'") : 'Sem Título'}')"><i class="fas fa-bullseye"></i> Escolher esta matéria</button>`;
+                        // --- CORREÇÃO DE BUG (Versão 11.6): FILTRO DE ASPAS DUPLAS E SIMPLES NO TÍTULO ---
+                        const tituloLimpo = item.titulo 
+                            ? item.titulo.replace(/'/g, "\\'").replace(/"/g, "&quot;") 
+                            : 'Sem Título';
+                            
+                        botoesHtml = `<button type="button" class="btn-selecionar-anuncio" style="display:inline-flex;" onclick="window.selecionarMateriaParaBanner('${id}', '${tituloLimpo}')"><i class="fas fa-bullseye"></i> Escolher esta matéria</button>`;
                     } else {
                         botoesHtml = `
                             <button type="button" class="btn-editar" onclick="window.editarNoticia('${id}')"><i class="fas fa-edit"></i> Editar</button>
