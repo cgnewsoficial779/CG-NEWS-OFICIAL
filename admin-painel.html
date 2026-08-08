@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V10.6</title>
+    <title>Painel Editor - News Pro V10.7</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -70,7 +70,7 @@
         .file-input-wrapper input[type="file"] { flex: 1; }
         .btn-remover-img { background: #fff; color: #d93025; border: 1px solid #d93025; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 13px; white-space: nowrap; }
 
-        /* V10.5/V10.6 - Botoes de Local de Anuncio e Seletor Visual */
+        /* V10.5/V10.6/V10.7 - Botoes de Local de Anuncio e Seletor Visual */
         .local-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
         .btn-local { flex: 1; padding: 10px; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; text-align: center; transition: 0.2s; min-width: 100px; }
         .btn-local.active { background: #002a5c; color: white; border-color: #002a5c; }
@@ -177,7 +177,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V10.6</span>
+                <span class="badge-pro">V10.7</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -379,7 +379,7 @@
             </div>
 
             <div class="botoes-acao-container">
-                <button type="button" class="btn-preview" onclick="abrirPrevia('rascunho_atual')"><i class="fas fa-eye"></i> Ver Prévia & Organizar Banners</button>
+                <button type="button" class="btn-preview" onclick="window.veioDoPainelAnuncios=false; abrirPrevia('rascunho_atual')"><i class="fas fa-eye"></i> Ver Prévia & Organizar Banners</button>
                 <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> Publicar Matéria</button>
             </div>
             <button type="button" id="btnCancelar" class="btn-cancelar" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
@@ -547,6 +547,7 @@
         window.bannersData = {};
         
         let idBannerAguardandoSelecao = null;
+        window.veioDoPainelAnuncios = false; // Controle de memoria da aba anterior
 
         // Limpa e atualiza os seletores
         window.atualizarSelectsMaterias = function() {
@@ -726,8 +727,9 @@
             window.abrirModalGerenciamento(true); 
         };
 
-        // ABRE A PREVIA BASEADA NO BANNER QUE VOCE ESTA EDITANDO!
+        // ABRE A PREVIA BASEADA NO BANNER QUE VOCE ESTA EDITANDO E GUARDA MEMÓRIA!
         window.abrirPreviaDosBanners = function() {
+            window.veioDoPainelAnuncios = true;
             let alvo = 'inicio'; 
             for(let i=1; i<=contBannersExtras; i++) {
                 let painel = document.getElementById(`painel-banner-extra-${i}`);
@@ -1387,7 +1389,7 @@
                     </div>`;
         }
 
-        // === NOVIDADE V10.6: SISTEMA DE PRÉVIA DE NOTICIAS DO BANCO DE DADOS ===
+        // === NOVIDADE V10.7: CORREÇÃO DO BOTÃO VOLTAR E PREVIA ===
         window.abrirPrevia = function(forcarContexto = null) {
             const selector = document.getElementById('previewContextSelector');
             if (forcarContexto) {
@@ -1732,6 +1734,10 @@
 
         window.fecharPrevia = function() {
             document.getElementById('modalPrevia').style.display = 'none';
+            if (window.veioDoPainelAnuncios) {
+                document.getElementById('modalPainelAnunciosConfig').style.display = 'flex';
+                window.veioDoPainelAnuncios = false;
+            }
         };
 
         window.cancelarEdicao = function() {
