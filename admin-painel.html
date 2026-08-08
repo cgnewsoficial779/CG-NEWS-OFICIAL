@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V10.7</title>
+    <title>Painel Editor - News Pro V10.9</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -70,7 +70,6 @@
         .file-input-wrapper input[type="file"] { flex: 1; }
         .btn-remover-img { background: #fff; color: #d93025; border: 1px solid #d93025; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 13px; white-space: nowrap; }
 
-        /* V10.5/V10.6/V10.7 - Botoes de Local de Anuncio e Seletor Visual */
         .local-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
         .btn-local { flex: 1; padding: 10px; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; text-align: center; transition: 0.2s; min-width: 100px; }
         .btn-local.active { background: #002a5c; color: white; border-color: #002a5c; }
@@ -116,7 +115,6 @@
         .btn-preview { background-color: #0275d8; color: white; border: none; padding: 16px; flex: 1; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
         .btn-cancelar { background-color: #d93025; color: white; border: none; padding: 14px; width: 100%; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; display: none; text-transform: uppercase; }
 
-        /* Notícia Listagem (Externo) */
         .noticia-item { border: 1px solid #d1d9e0; padding: 14px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; gap: 15px; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
         .noticia-miniatura { width: 110px; height: 90px; border-radius: 8px; background: #ddd; flex-shrink: 0; display: flex; align-items: stretch; justify-content: center; color: #777; font-size: 14px; overflow: hidden; }
         @media(min-width: 600px) { .noticia-miniatura { width: 150px; height: 110px; } }
@@ -151,7 +149,7 @@
 
         .btn-voltar-edicao { background: #002a5c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         
-        #prevConteudoWrapper { position: relative; flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px; background: #fff; }
+        #prevConteudoWrapper { position: relative; flex: 1; overflow-y: auto; overflow-x: hidden; background: #f0f2f5; }
         .preview-body-content { font-family: Georgia, serif; font-size: 18px; line-height: 1.8; color: #222; margin-top: 15px; }
 
         .toast-save { position: fixed; bottom: 20px; right: 20px; background: #137333; color: white; padding: 10px 20px; border-radius: 6px; font-size: 12px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none; z-index: 99999; }
@@ -177,25 +175,25 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V10.7</span>
-                <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
+                <span class="badge-pro">V10.9</span>
+                <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
 
-        <div class="sidebar-overlay" id="sidebarOverlay" onclick="alternarSidebar()"></div>
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="window.alternarSidebar()"></div>
         <div class="sidebar-panel" id="sidebarPanel">
             <div class="sidebar-header">
                 <h3><i class="fas fa-sliders-h"></i> Painel Gerencial</h3>
-                <button class="sidebar-close" onclick="alternarSidebar()">&times;</button>
+                <button class="sidebar-close" onclick="window.alternarSidebar()">&times;</button>
             </div>
             <div class="sidebar-content">
-                <button type="button" class="btn-menu-gerenciar" onclick="abrirModalGerenciamento(false)">
+                <button type="button" class="btn-menu-gerenciar" onclick="window.abrirModalGerenciamento(false)">
                     <i class="fas fa-list-ul"></i> Gerenciar Matérias
                 </button>
 
-                <div class="stats-box" onclick="abrirModalAudiencia()">
+                <div class="stats-box" onclick="window.abrirModalAudiencia()">
                     <div class="stats-header">
                         <h4><i class="fas fa-chart-line"></i> Audiência de Leitores <i class="fas fa-expand" style="float: right;"></i></h4>
                     </div>
@@ -213,7 +211,7 @@
                 <div class="google-integration-card">
                     <label><i class="fab fa-google" style="color: #1a73e8;"></i> ID Google Analytics</label>
                     <input type="text" id="googleAnalyticsCode" placeholder="Ex: G-XXXXXXXXXX">
-                    <button type="button" class="btn-ativar-google" id="btnAtivarAnalytics" onclick="ativarGoogleServico('analytics')">
+                    <button type="button" class="btn-ativar-google" id="btnAtivarAnalytics" onclick="window.ativarGoogleServico('analytics')">
                         <i class="fas fa-power-off"></i> Ativar Rastreio
                     </button>
                 </div>
@@ -221,12 +219,12 @@
                 <div class="google-integration-card">
                     <label><i class="fas fa-dollar-sign" style="color: #137333;"></i> Google AdSense</label>
                     <textarea id="googleAdSenseCode" rows="2" placeholder="Cole o script do AdSense..."></textarea>
-                    <button type="button" class="btn-ativar-google" id="btnAtivarAds" onclick="ativarGoogleServico('adsense')">
+                    <button type="button" class="btn-ativar-google" id="btnAtivarAds" onclick="window.ativarGoogleServico('adsense')">
                         <i class="fas fa-power-off"></i> Ativar Receita
                     </button>
                 </div>
 
-                <button type="button" class="btn-painel-anuncios-menu" onclick="abrirPainelAnunciosConfig()">
+                <button type="button" class="btn-painel-anuncios-menu" onclick="window.abrirPainelAnunciosConfig()">
                     <i class="fas fa-bullhorn"></i> Painel de Anúncios
                 </button>
             </div>
@@ -255,7 +253,7 @@
                         <label>Foto 1 (Principal)</label>
                         <div class="file-input-wrapper">
                             <input type="file" id="imagemInput1" accept="image/*">
-                            <button type="button" class="btn-remover-img" onclick="removerImagem(1)"><i class="fas fa-trash-alt"></i> Limpar</button>
+                            <button type="button" class="btn-remover-img" onclick="window.removerImagem(1)"><i class="fas fa-trash-alt"></i> Limpar</button>
                         </div>
                         <input type="hidden" id="imagemBase64_1">
                     </div>
@@ -263,7 +261,7 @@
                         <label>Foto 2 (Opcional)</label>
                         <div class="file-input-wrapper">
                             <input type="file" id="imagemInput2" accept="image/*">
-                            <button type="button" class="btn-remover-img" onclick="removerImagem(2)"><i class="fas fa-trash-alt"></i> Limpar</button>
+                            <button type="button" class="btn-remover-img" onclick="window.removerImagem(2)"><i class="fas fa-trash-alt"></i> Limpar</button>
                         </div>
                         <input type="hidden" id="imagemBase64_2">
                     </div>
@@ -271,22 +269,22 @@
 
                 <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">FORMATO DA IMAGEM DE CAPA:</div>
                 <div class="aspect-ratios" id="ratiosImagem">
-                    <button type="button" class="btn-ratio active" onclick="mudarLayoutImagem('16/9', this)">16:9</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('9/16', this)">9:16</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('4/3', this)">4:3</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('3/4', this)">3:4</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('1/1', this)">1:1</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('3/2', this)">3:2</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('2/3', this)">2:3</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('18/9', this)">18:9</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('9/18', this)">9:18</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('2/1', this)">2:1</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('2.35/1', this)">2.35:1</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('1.85/1', this)">1.85:1</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('2.39/1', this)">2.39:1</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('128/27', this)">128:27</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('5.8/1', this)">5.8"</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutImagem('auto', this)">Original</button>
+                    <button type="button" class="btn-ratio active" onclick="window.mudarLayoutImagem('16/9', this)">16:9</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('9/16', this)">9:16</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('4/3', this)">4:3</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('3/4', this)">3:4</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('1/1', this)">1:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('2/3', this)">2:3</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('18/9', this)">18:9</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('9/18', this)">9:18</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('2/1', this)">2:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('2.35/1', this)">2.35:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('1.85/1', this)">1.85:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('2.39/1', this)">2.39:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('128/27', this)">128:27</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('5.8/1', this)">5.8"</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('auto', this)">Original</button>
                 </div>
                 <input type="hidden" id="formatoEscolhido" value="16/9">
 
@@ -300,7 +298,7 @@
                 </div>
 
                 <div id="container-imagens-extras"></div>
-                <button type="button" class="btn-add-painel" onclick="adicionarPainelImagem()">
+                <button type="button" class="btn-add-painel" onclick="window.adicionarPainelImagem()">
                     <i class="fas fa-plus-circle"></i> Adicionar outra foto à galeria
                 </button>
             </div>
@@ -311,29 +309,29 @@
                     <label>Arquivo de Vídeo do Celular</label>
                     <div class="file-input-wrapper">
                         <input type="file" id="videoInput" accept="video/*">
-                        <button type="button" class="btn-remover-img" onclick="removerVideo()"><i class="fas fa-trash-alt"></i> Limpar</button>
+                        <button type="button" class="btn-remover-img" onclick="window.removerVideo()"><i class="fas fa-trash-alt"></i> Limpar</button>
                     </div>
                     <input type="hidden" id="videoBase64">
                 </div>
 
                 <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">FORMATO / PROPORÇÃO DO VÍDEO:</div>
                 <div class="aspect-ratios" id="ratiosVideo">
-                    <button type="button" class="btn-ratio active" onclick="mudarLayoutVideo('16/9', this)">16:9</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('9/16', this)">9:16</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('4/3', this)">4:3</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('3/4', this)">3:4</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('1/1', this)">1:1</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('3/2', this)">3:2</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('2/3', this)">2:3</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('18/9', this)">18:9</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('9/18', this)">9:18</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('2/1', this)">2:1</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('2.35/1', this)">2.35:1</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('1.85/1', this)">1.85:1</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('2.39/1', this)">2.39:1</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('128/27', this)">128:27</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('5.8/1', this)">5.8"</button>
-                    <button type="button" class="btn-ratio" onclick="mudarLayoutVideo('auto', this)">Original</button>
+                    <button type="button" class="btn-ratio active" onclick="window.mudarLayoutVideo('16/9', this)">16:9</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('9/16', this)">9:16</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('4/3', this)">4:3</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('3/4', this)">3:4</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('1/1', this)">1:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('2/3', this)">2:3</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('18/9', this)">18:9</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('9/18', this)">9:18</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('2/1', this)">2:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('2.35/1', this)">2.35:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('1.85/1', this)">1.85:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('2.39/1', this)">2.39:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('128/27', this)">128:27</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('5.8/1', this)">5.8"</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('auto', this)">Original</button>
                 </div>
                 <input type="hidden" id="formatoVideoEscolhido" value="16/9">
 
@@ -345,7 +343,7 @@
                 </div>
 
                 <div id="container-videos-extras"></div>
-                <button type="button" class="btn-add-painel" onclick="adicionarPainelVideo()">
+                <button type="button" class="btn-add-painel" onclick="window.adicionarPainelVideo()">
                     <i class="fas fa-plus-circle"></i> Adicionar outro vídeo
                 </button>
             </div>
@@ -379,10 +377,10 @@
             </div>
 
             <div class="botoes-acao-container">
-                <button type="button" class="btn-preview" onclick="window.veioDoPainelAnuncios=false; abrirPrevia('rascunho_atual')"><i class="fas fa-eye"></i> Ver Prévia & Organizar Banners</button>
+                <button type="button" class="btn-preview" onclick="window.veioDoPainelAnuncios=false; window.abrirPrevia('rascunho_atual')"><i class="fas fa-eye"></i> Ver Prévia & Organizar Banners</button>
                 <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> Publicar Matéria</button>
             </div>
-            <button type="button" id="btnCancelar" class="btn-cancelar" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
+            <button type="button" id="btnCancelar" class="btn-cancelar" onclick="window.cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
         </form>
     </div>
 
@@ -392,7 +390,7 @@
         <div class="modal-fullscreen-content">
             <div class="modal-fs-header" style="background: #f9ab00; color: #1a1a1a;">
                 <h2><i class="fas fa-bullhorn"></i> Painel de Gestão de Anúncios e Banners</h2>
-                <button class="modal-fs-close" style="background: #1a1a1a; color: #fff;" onclick="fecharPainelAnunciosConfig()">&times;</button>
+                <button class="modal-fs-close" style="background: #1a1a1a; color: #fff;" onclick="window.fecharPainelAnunciosConfig()">&times;</button>
             </div>
             <div class="modal-fs-body" id="secaoPainelAnunciosMaster">
                 <p style="font-size: 13px; color: #444; margin-bottom: 15px; font-weight: 600;">Isolamento completo: configure aqui todos os banners, locais de exibição, scripts HTML, arquivos de imagem/GIF/vídeo, proporção de aspecto e links de destino.</p>
@@ -400,10 +398,10 @@
                 <div id="container-banners-extras"></div>
 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px; border-top: 2px dashed #e2e8f0; padding-top: 20px;">
-                    <button type="button" class="btn-preview" style="background: #002a5c; color: white;" onclick="abrirPreviaDosBanners()">
+                    <button type="button" class="btn-preview" style="background: #002a5c; color: white;" onclick="window.abrirPreviaDosBanners()">
                         <i class="fas fa-eye"></i> Ver Prévia e Organizar Anúncios
                     </button>
-                    <button type="button" class="btn-add-painel" style="border-color: #f9ab00; color: #b07c00; margin-top: 0;" onclick="adicionarPainelBanner()">
+                    <button type="button" class="btn-add-painel" style="border-color: #f9ab00; color: #b07c00; margin-top: 0;" onclick="window.adicionarPainelBanner()">
                         <i class="fas fa-plus-circle"></i> Adicionar + Novo Anúncio
                     </button>
                 </div>
@@ -415,7 +413,7 @@
         <div class="modal-fullscreen-content">
             <div class="modal-fs-header">
                 <h2 id="tituloModalGerenciamento"><i class="fas fa-list-ul"></i> Gerenciar Todas as Matérias</h2>
-                <button class="modal-fs-close" onclick="fecharModalGerenciamento()">&times;</button>
+                <button class="modal-fs-close" onclick="window.fecharModalGerenciamento()">&times;</button>
             </div>
             <div class="modal-fs-body" id="lista-noticias-fullscreen">
                 <p style="color: #666; font-size: 14px;">Carregando...</p>
@@ -427,13 +425,13 @@
         <div class="modal-fullscreen-content">
             <div class="modal-fs-header">
                 <h2><i class="fas fa-chart-bar"></i> Painel Avançado de Audiência</h2>
-                <button class="modal-fs-close" onclick="fecharModalAudiencia()">&times;</button>
+                <button class="modal-fs-close" onclick="window.fecharModalAudiencia()">&times;</button>
             </div>
             <div class="modal-fs-body">
                 <div class="stats-box" style="cursor: default;">
                     <div class="stats-header">
                         <h4><i class="fas fa-filter"></i> Selecionar Período de Análise</h4>
-                        <select id="filtroPeriodoModal" class="stats-select" onchange="atualizarEstatisticasView()">
+                        <select id="filtroPeriodoModal" class="stats-select" onchange="window.atualizarEstatisticasView()">
                             <option value="nenhum">Nenhum (Zerar contagem exibida)</option>
                             <option value="1dia">1 Dia Específico</option>
                             <option value="7dias">7 Dias</option>
@@ -465,40 +463,25 @@
             <div class="modal-header-top">
                 <div style="display: flex; align-items: center; gap: 15px; width: 100%;">
                     <span style="font-size: 12px; font-weight: bold; color: #cc0000; text-transform: uppercase;" id="prevCategoria">CATEGORIA</span>
-                    <select id="previewContextSelector" onchange="abrirPrevia()" style="padding: 6px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 13px; font-weight: 800; color: #002a5c; background: #f8f9fa; cursor: pointer; outline: none; flex: 1; max-width: 300px;">
+                    <select id="previewContextSelector" onchange="window.abrirPrevia()" style="padding: 6px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 13px; font-weight: 800; color: #002a5c; background: #f8f9fa; cursor: pointer; outline: none; flex: 1; max-width: 300px;">
                         <!-- Gerado Dinamicamente -->
                     </select>
                     <div style="display: flex; gap: 10px; margin-left: auto;">
                         <span style="font-size: 12px; background: #e2e8f0; padding: 5px 10px; border-radius: 4px; display: flex; align-items: center;"><i class="fas fa-arrows-alt" style="margin-right: 5px;"></i> Arraste os Banners</span>
-                        <button class="btn-voltar-edicao" onclick="fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar</button>
+                        <button class="btn-voltar-edicao" onclick="window.fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar</button>
                     </div>
                 </div>
             </div>
             
-            <div id="prevConteudoWrapper">
+            <div id="prevConteudoWrapper" style="padding: 0;">
                 
                 <!-- Fundo simulado para Inicio / Ultimas -->
-                <div id="mockupWireframe" style="display: none; width: 100%; min-height: 800px; background: #f8f9fa; border: 3px dashed #cbd5e1; border-radius: 8px; text-align: center; padding-top: 80px; margin-bottom: 20px;">
+                <div id="mockupWireframe" style="display: none; width: 100%; min-height: 100vh;">
                     <!-- Preenchido dinamicamente com o FEED REAL -->
                 </div>
 
-                <div id="mockupNoticia">
-                    <h1 id="prevTitulo" style="color: #002a5c; font-size: 24px; font-weight: 900; margin-bottom: 12px; line-height: 1.3;">Título</h1>
-                    <div style="font-size: 13px; color: #666; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                        Por <span id="prevAutor">Redação</span>
-                    </div>
-                    
-                    <div id="prevContainerMidia" style="width: 100%; margin-bottom: 15px; border-radius: 8px; overflow: hidden; background: #000;"></div>
-                    <div style="font-size: 11px; color: #777; margin-bottom: 15px;" id="prevCreditoImg"></div>
-                    
-                    <div class="preview-body-content" id="prevTexto"></div>
-                    
-                    <div id="prevContainerMidiaInferior" style="width: 100%; margin-top: 20px; border-radius: 8px; overflow: hidden;"></div>
-                    <div id="prevGaleriaExtra" style="width: 100%; margin-top: 20px;"></div>
-
-                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;" id="prevFonteArea">
-                        <strong style="font-size: 13px; color: #444;" id="prevFonteNoticia">Fonte: </strong>
-                    </div>
+                <div id="mockupNoticia" style="width: 100%; min-height: 100vh;">
+                    <!-- Preenchido dinamicamente com a NOTÍCIA REAL -->
                 </div>
             </div>
         </div>
@@ -547,7 +530,7 @@
         window.bannersData = {};
         
         let idBannerAguardandoSelecao = null;
-        window.veioDoPainelAnuncios = false; // Controle de memoria da aba anterior
+        window.veioDoPainelAnuncios = false;
 
         // Limpa e atualiza os seletores
         window.atualizarSelectsMaterias = function() {
@@ -570,7 +553,7 @@
         };
 
         window.abrirPainelAnunciosConfig = function() {
-            alternarSidebar();
+            window.alternarSidebar();
             document.getElementById('modalPainelAnunciosConfig').style.display = 'flex';
         };
 
@@ -627,21 +610,21 @@
             }
             
             painel.innerHTML = `
-                <button type="button" class="btn-remover-painel-extra" onclick="removerPainelExtra('painel-banner-extra-${id}')"><i class="fas fa-times"></i> Remover</button>
+                <button type="button" class="btn-remover-painel-extra" onclick="window.removerPainelExtra('painel-banner-extra-${id}')"><i class="fas fa-times"></i> Remover</button>
                 <div style="font-weight: 800; color: #b07c00; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-ad"></i> Configuração do Anúncio / Banner ${id}</div>
                 
                 <div class="form-group" style="margin-bottom: 12px;">
                     <label><i class="fas fa-map-marker-alt"></i> Local de Exibição do Anúncio</label>
                     <div class="local-tabs" id="botoesLocalBanner_${id}">
-                        <button type="button" class="btn-local ${obj.localExibicao==='inicio'?'active':''}" onclick="mudarLocalBanner(${id}, 'inicio', this)">Tela Inicial</button>
-                        <button type="button" class="btn-local ${obj.localExibicao==='ultimas'?'active':''}" onclick="mudarLocalBanner(${id}, 'ultimas', this)">Últimas Notícias</button>
-                        <button type="button" class="btn-local ${obj.localExibicao==='especifica'?'active':''}" onclick="mudarLocalBanner(${id}, 'especifica', this)">Notícia Específica</button>
+                        <button type="button" class="btn-local ${obj.localExibicao==='inicio'?'active':''}" onclick="window.mudarLocalBanner(${id}, 'inicio', this)">Tela Inicial</button>
+                        <button type="button" class="btn-local ${obj.localExibicao==='ultimas'?'active':''}" onclick="window.mudarLocalBanner(${id}, 'ultimas', this)">Últimas Notícias</button>
+                        <button type="button" class="btn-local ${obj.localExibicao==='especifica'?'active':''}" onclick="window.mudarLocalBanner(${id}, 'especifica', this)">Notícia Específica</button>
                     </div>
                     <input type="hidden" id="localExibicaoBanner_${id}" value="${obj.localExibicao}">
                     <input type="hidden" id="selectNoticiaEspecifica_${id}" value="${obj.noticiaAlvo}">
 
                     <div id="wrapperNoticiaEspecifica_${id}" class="select-materia-visual-wrapper ${obj.localExibicao==='especifica'?'active':''}">
-                        <button type="button" class="btn-abrir-seletor-visual" onclick="abrirSeletorMateriaParaBanner(${id})">
+                        <button type="button" class="btn-abrir-seletor-visual" onclick="window.abrirSeletorMateriaParaBanner(${id})">
                             <i class="fas fa-hand-pointer"></i> Escolher Matéria no Gerenciador
                         </button>
                         <div class="materia-selecionada-badge" id="badgeNoticiaSelecionada_${id}">
@@ -651,8 +634,8 @@
                 </div>
 
                 <div class="ad-tabs">
-                    <button type="button" class="ad-tab-btn ${obj.tipo==='codigo'?'active':''}" onclick="mudarAbaBannerExtra(${id}, 'codigo', this)">Código / Script HTML</button>
-                    <button type="button" class="ad-tab-btn ${obj.tipo==='imagem'?'active':''}" onclick="mudarAbaBannerExtra(${id}, 'imagem', this)">Imagem / GIF / Vídeo</button>
+                    <button type="button" class="ad-tab-btn ${obj.tipo==='codigo'?'active':''}" onclick="window.mudarAbaBannerExtra(${id}, 'codigo', this)">Código / Script HTML</button>
+                    <button type="button" class="ad-tab-btn ${obj.tipo==='imagem'?'active':''}" onclick="window.mudarAbaBannerExtra(${id}, 'imagem', this)">Imagem / GIF / Vídeo</button>
                 </div>
                 <input type="hidden" id="tipoBannerExtra_${id}" value="${obj.tipo}">
 
@@ -668,29 +651,29 @@
                         <label>Arquivo de Mídia (Imagem, GIF ou Vídeo)</label>
                         <div class="file-input-wrapper">
                             <input type="file" id="bannerImgInputExtra_${id}" accept="image/*,video/mp4,image/gif">
-                            <button type="button" class="btn-remover-img" onclick="removerBannerImgExtra(${id})"><i class="fas fa-trash-alt"></i> Limpar</button>
+                            <button type="button" class="btn-remover-img" onclick="window.removerBannerImgExtra(${id})"><i class="fas fa-trash-alt"></i> Limpar</button>
                         </div>
                         <input type="hidden" id="bannerImgBase64Extra_${id}" value="${obj.bannerImgBase64}">
                     </div>
 
                     <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">PROPORÇÃO DE ASPECTO DA MÍDIA:</div>
                     <div class="aspect-ratios" id="ratiosBannerExtra_${id}">
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='16/9'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '16/9', this)">16:9</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='9/16'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '9/16', this)">9:16</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='4/3'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '4/3', this)">4:3</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='3/4'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '3/4', this)">3:4</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='1/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '1/1', this)">1:1</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='3/2'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '3/2', this)">3:2</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2/3'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '2/3', this)">2:3</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='18/9'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '18/9', this)">18:9</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='9/18'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '9/18', this)">9:18</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '2/1', this)">2:1</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2.35/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '2.35/1', this)">2.35:1</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='1.85/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '1.85/1', this)">1.85:1</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2.39/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '2.39/1', this)">2.39:1</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='128/27'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '128/27', this)">128:27</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='5.8/1'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, '5.8/1', this)">5.8"</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='auto'?'active':''}" onclick="mudarLayoutBannerExtra(${id}, 'auto', this)">Original</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='16/9'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '16/9', this)">16:9</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='9/16'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '9/16', this)">9:16</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='4/3'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '4/3', this)">4:3</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='3/4'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '3/4', this)">3:4</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='1/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '1/1', this)">1:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='3/2'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '3/2', this)">3:2</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2/3'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '2/3', this)">2:3</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='18/9'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '18/9', this)">18:9</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='9/18'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '9/18', this)">9:18</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '2/1', this)">2:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2.35/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '2.35/1', this)">2.35:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='1.85/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '1.85/1', this)">1.85:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2.39/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '2.39/1', this)">2.39:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='128/27'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '128/27', this)">128:27</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='5.8/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '5.8/1', this)">5.8"</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='auto'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, 'auto', this)">Original</button>
                     </div>
                     <input type="hidden" id="formatoBannerExtraEscolhido_${id}" value="${obj.formatoBanner}">
 
@@ -727,7 +710,7 @@
             window.abrirModalGerenciamento(true); 
         };
 
-        // ABRE A PREVIA BASEADA NO BANNER QUE VOCE ESTA EDITANDO E GUARDA MEMÓRIA!
+        // ABRE A PREVIA E GUARDA A MEMORIA
         window.abrirPreviaDosBanners = function() {
             window.veioDoPainelAnuncios = true;
             let alvo = 'inicio'; 
@@ -743,8 +726,8 @@
                     break; 
                 }
             }
-            fecharPainelAnunciosConfig();
-            abrirPrevia(alvo);
+            window.fecharPainelAnunciosConfig();
+            window.abrirPrevia(alvo);
         };
 
         window.mudarLayoutBannerExtra = function(id, ratio, btn) {
@@ -764,34 +747,34 @@
             novoPainel.id = `painel-img-extra-${idAtual}`;
             
             novoPainel.innerHTML = `
-                <button type="button" class="btn-remover-painel-extra" onclick="removerPainelExtra('painel-img-extra-${idAtual}')"><i class="fas fa-times"></i> Remover</button>
+                <button type="button" class="btn-remover-painel-extra" onclick="window.removerPainelExtra('painel-img-extra-${idAtual}')"><i class="fas fa-times"></i> Remover</button>
                 <div class="form-group">
                     <label>Foto Extra ${idAtual}</label>
                     <div class="file-input-wrapper">
                         <input type="file" id="imagemInputExtra_${idAtual}" accept="image/*">
-                        <button type="button" class="btn-remover-img" onclick="removerImagemExtra(${idAtual})"><i class="fas fa-trash-alt"></i> Limpar</button>
+                        <button type="button" class="btn-remover-img" onclick="window.removerImagemExtra(${idAtual})"><i class="fas fa-trash-alt"></i> Limpar</button>
                     </div>
                     <input type="hidden" id="imagemBase64Extra_${idAtual}" value="${base64Salva}">
                 </div>
 
                 <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">PROPORÇÃO DA FOTO EXTRA ${idAtual}:</div>
                 <div class="aspect-ratios" id="ratiosImgExtra_${idAtual}">
-                    <button type="button" class="btn-ratio ${ratioSalva==='16/9'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '16/9', this)">16:9</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='9/16'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '9/16', this)">9:16</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='4/3'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '4/3', this)">4:3</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='3/4'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '3/4', this)">3:4</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='1/1'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '1/1', this)">1:1</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='3/2'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '3/2', this)">3:2</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='2/3'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '2/3', this)">2:3</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='18/9'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '18/9', this)">18:9</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='9/18'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '9/18', this)">9:18</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='2/1'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '2/1', this)">2:1</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='2.35/1'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '2.35/1', this)">2.35:1</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='1.85/1'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '1.85/1', this)">1.85:1</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='2.39/1'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '2.39/1', this)">2.39:1</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='128/27'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '128/27', this)">128:27</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='5.8/1'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, '5.8/1', this)">5.8"</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='auto'?'active':''}" onclick="mudarLayoutImgExtra(${idAtual}, 'auto', this)">Original</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='16/9'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '16/9', this)">16:9</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='9/16'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '9/16', this)">9:16</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='4/3'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '4/3', this)">4:3</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='3/4'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '3/4', this)">3:4</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='1/1'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '1/1', this)">1:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='3/2'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2/3'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '2/3', this)">2:3</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='18/9'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '18/9', this)">18:9</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='9/18'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '9/18', this)">9:18</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2/1'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '2/1', this)">2:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2.35/1'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '2.35/1', this)">2.35:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='1.85/1'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '1.85/1', this)">1.85:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2.39/1'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '2.39/1', this)">2.39:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='128/27'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '128/27', this)">128:27</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='5.8/1'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, '5.8/1', this)">5.8"</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='auto'?'active':''}" onclick="window.mudarLayoutImgExtra(${idAtual}, 'auto', this)">Original</button>
                 </div>
                 <input type="hidden" id="formatoImgExtraEscolhido_${idAtual}" value="${ratioSalva}">
 
@@ -838,34 +821,34 @@
             novoPainel.id = `painel-vid-extra-${idAtual}`;
             
             novoPainel.innerHTML = `
-                <button type="button" class="btn-remover-painel-extra" onclick="removerPainelExtra('painel-vid-extra-${idAtual}')"><i class="fas fa-times"></i> Remover</button>
+                <button type="button" class="btn-remover-painel-extra" onclick="window.removerPainelExtra('painel-vid-extra-${idAtual}')"><i class="fas fa-times"></i> Remover</button>
                 <div class="form-group">
                     <label>Vídeo Extra ${idAtual}</label>
                     <div class="file-input-wrapper">
                         <input type="file" id="videoInputExtra_${idAtual}" accept="video/*">
-                        <button type="button" class="btn-remover-img" onclick="removerVideoExtra(${idAtual})"><i class="fas fa-trash-alt"></i> Limpar</button>
+                        <button type="button" class="btn-remover-img" onclick="window.removerVideoExtra(${idAtual})"><i class="fas fa-trash-alt"></i> Limpar</button>
                     </div>
                     <input type="hidden" id="videoBase64Extra_${idAtual}" class="base64-vid-extra" value="${base64Salva}">
                 </div>
 
                 <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">PROPORÇÃO DO VÍDEO EXTRA ${idAtual}:</div>
                 <div class="aspect-ratios" id="ratiosVidExtra_${idAtual}">
-                    <button type="button" class="btn-ratio ${ratioSalva==='16/9'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '16/9', this)">16:9</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='9/16'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '9/16', this)">9:16</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='4/3'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '4/3', this)">4:3</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='3/4'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '3/4', this)">3:4</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='1/1'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '1/1', this)">1:1</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='3/2'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '3/2', this)">3:2</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='2/3'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '2/3', this)">2:3</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='18/9'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '18/9', this)">18:9</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='9/18'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '9/18', this)">9:18</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='2/1'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '2/1', this)">2:1</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='2.35/1'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '2.35/1', this)">2.35:1</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='1.85/1'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '1.85/1', this)">1.85:1</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='2.39/1'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '2.39/1', this)">2.39:1</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='128/27'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '128/27', this)">128:27</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='5.8/1'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, '5.8/1', this)">5.8"</button>
-                    <button type="button" class="btn-ratio ${ratioSalva==='auto'?'active':''}" onclick="mudarLayoutVidExtra(${idAtual}, 'auto', this)">Original</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='16/9'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '16/9', this)">16:9</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='9/16'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '9/16', this)">9:16</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='4/3'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '4/3', this)">4:3</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='3/4'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '3/4', this)">3:4</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='1/1'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '1/1', this)">1:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='3/2'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2/3'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '2/3', this)">2:3</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='18/9'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '18/9', this)">18:9</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='9/18'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '9/18', this)">9:18</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2/1'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '2/1', this)">2:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2.35/1'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '2.35/1', this)">2.35:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='1.85/1'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '1.85/1', this)">1.85:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='2.39/1'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '2.39/1', this)">2.39:1</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='128/27'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '128/27', this)">128:27</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='5.8/1'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, '5.8/1', this)">5.8"</button>
+                    <button type="button" class="btn-ratio ${ratioSalva==='auto'?'active':''}" onclick="window.mudarLayoutVidExtra(${idAtual}, 'auto', this)">Original</button>
                 </div>
                 <input type="hidden" id="formatoVidExtraEscolhido_${idAtual}" value="${ratioSalva}">
 
@@ -1018,7 +1001,7 @@
 
         function limparRascunho() {
             localStorage.removeItem('cgnews_rascunho');
-            limparVideoRascunhoDB();
+            window.limparVideoRascunhoDB();
         }
 
         window.onload = async function() {
@@ -1046,13 +1029,13 @@
 
                     if(rascunho.formatoEscolhido) {
                         const btn = document.querySelector(`#ratiosImagem .btn-ratio[onclick*="'${rascunho.formatoEscolhido}'"]`);
-                        if(btn) mudarLayoutImagem(rascunho.formatoEscolhido, btn);
+                        if(btn) window.mudarLayoutImagem(rascunho.formatoEscolhido, btn);
                     }
 
                     if(rascunho.formatoVideoEscolhido) {
                         const btnV = document.querySelector(`#ratiosVideo .btn-ratio[onclick*="'${rascunho.formatoVideoEscolhido}'"]`);
                         if(btnV) {
-                            mudarLayoutVideo(rascunho.formatoVideoEscolhido, btnV);
+                            window.mudarLayoutVideo(rascunho.formatoVideoEscolhido, btnV);
                         } else {
                             document.getElementById('formatoVideoEscolhido').value = rascunho.formatoVideoEscolhido;
                             document.getElementById('videoPreview').style.aspectRatio = rascunho.formatoVideoEscolhido === 'auto' ? '16/9' : rascunho.formatoVideoEscolhido;
@@ -1060,12 +1043,12 @@
                     }
 
                     if(rascunho.banners && rascunho.banners.length > 0) {
-                        rascunho.banners.forEach(b => adicionarPainelBanner(b));
+                        rascunho.banners.forEach(b => window.adicionarPainelBanner(b));
                     }
 
                     if(rascunho.imagemBase64_1) document.getElementById('imagemBase64_1').value = rascunho.imagemBase64_1;
                     if(rascunho.imagemBase64_2) document.getElementById('imagemBase64_2').value = rascunho.imagemBase64_2;
-                    atualizarPreviewImagens();
+                    window.atualizarPreviewImagens();
 
                     const videoSalvo = await obterVideoRascunhoDB();
                     if(videoSalvo) {
@@ -1076,8 +1059,8 @@
                     }
                 } catch(e) {}
             }
-            carregarConfigGoogle();
-            await carregarListaNoticias();
+            window.carregarConfigGoogle();
+            await window.carregarListaNoticias();
         };
 
         document.getElementById('formNoticia').addEventListener('input', window.salvarRascunho);
@@ -1098,7 +1081,7 @@
         };
 
         window.abrirModalGerenciamento = function(modoSelecao = false) {
-            alternarSidebar();
+            window.alternarSidebar();
             const modal = document.getElementById('modalFullscreenGerenciar');
             const lista = document.getElementById('lista-noticias-fullscreen');
             const titulo = document.getElementById('tituloModalGerenciamento');
@@ -1112,7 +1095,7 @@
             }
             
             modal.style.display = 'flex';
-            renderizarListasDeNoticias();
+            window.renderizarListasDeNoticias();
         };
 
         window.fecharModalGerenciamento = function() {
@@ -1136,9 +1119,9 @@
         };
 
         window.abrirModalAudiencia = function() {
-            alternarSidebar();
+            window.alternarSidebar();
             document.getElementById('modalFullscreenAudiencia').style.display = 'flex';
-            atualizarEstatisticasView();
+            window.atualizarEstatisticasView();
         };
 
         window.fecharModalAudiencia = function() {
@@ -1157,13 +1140,13 @@
             reader.readAsDataURL(file);
         }
 
-        document.getElementById('imagemInput1').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_1', atualizarPreviewImagens));
-        document.getElementById('imagemInput2').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_2', atualizarPreviewImagens));
+        document.getElementById('imagemInput1').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_1', window.atualizarPreviewImagens));
+        document.getElementById('imagemInput2').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_2', window.atualizarPreviewImagens));
         
         window.removerImagem = function(num) {
             document.getElementById(`imagemInput${num}`).value = "";
             document.getElementById(`imagemBase64_${num}`).value = "";
-            atualizarPreviewImagens();
+            window.atualizarPreviewImagens();
             window.salvarRascunho();
         };
 
@@ -1185,7 +1168,7 @@
             window.salvarRascunho();
         };
 
-        function atualizarPreviewImagens() {
+        window.atualizarPreviewImagens = function() {
             const img1 = document.getElementById('imagemBase64_1').value;
             const img2 = document.getElementById('imagemBase64_2').value;
             const container = document.getElementById('previewContainerImagens');
@@ -1204,7 +1187,7 @@
             } else if (img2) {
                 container.innerHTML += `<img src="${img2}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
             }
-        }
+        };
 
         document.getElementById('videoInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
@@ -1230,7 +1213,7 @@
             const videoPreview = document.getElementById('videoPreview');
             videoPreview.style.display = 'none';
             videoPreview.src = "";
-            limparVideoRascunhoDB();
+            window.limparVideoRascunhoDB();
             window.salvarRascunho();
         };
 
@@ -1262,10 +1245,10 @@
 
             document.getElementById('valorVisualizacoesSide').innerText = totalViews.toLocaleString('pt-BR');
             document.getElementById('valorVisualizacoesModal').innerText = totalViews.toLocaleString('pt-BR');
-            renderizarGrafico(totalViews);
+            window.renderizarGrafico(totalViews);
         };
 
-        function renderizarGrafico(totalViews) {
+        window.renderizarGrafico = function(totalViews) {
             const ctx = document.getElementById('graficoAudiencia').getContext('2d');
             if (chartInstance) chartInstance.destroy();
 
@@ -1287,7 +1270,7 @@
                     scales: { y: { beginAtZero: true } }
                 }
             });
-        }
+        };
 
         window.carregarConfigGoogle = async function() {
             try {
@@ -1297,11 +1280,11 @@
                     const data = docSnap.data();
                     if(data.analytics) {
                         document.getElementById('googleAnalyticsCode').value = data.analytics;
-                        if(data.analyticsAtivo) marcarBotonAtivo('analytics', true);
+                        if(data.analyticsAtivo) window.marcarBotonAtivo('analytics', true);
                     }
                     if(data.adsense) {
                         document.getElementById('googleAdSenseCode').value = data.adsense;
-                        if(data.adsenseAtivo) marcarBotonAtivo('adsense', true);
+                        if(data.adsenseAtivo) window.marcarBotonAtivo('adsense', true);
                     }
                 }
             } catch (e) { console.log(e); }
@@ -1330,7 +1313,7 @@
                 };
 
                 await setDoc(doc(db, "configuracoes", "google"), payload, { merge: true });
-                marcarBotonAtivo(tipo, true);
+                window.marcarBotonAtivo(tipo, true);
                 alert("✅ Ativado com sucesso!");
             } catch (e) {
                 alert("Erro ao ativar.");
@@ -1338,15 +1321,15 @@
             }
         };
 
-        function marcarBotonAtivo(tipo, ativo) {
+        window.marcarBotonAtivo = function(tipo, ativo) {
             const btn = document.getElementById(tipo === 'analytics' ? 'btnAtivarAnalytics' : 'btnAtivarAds');
             if (ativo) {
                 btn.classList.add('ativo');
                 btn.innerHTML = "<i class='fas fa-check-circle'></i> ATIVADO";
             }
-        }
+        };
 
-        function gerarEmbedRedeSocial(url) {
+        window.gerarEmbedRedeSocial = function(url) {
             if (!url) return "";
             url = url.trim();
 
@@ -1387,9 +1370,9 @@
                             <i class="fas fa-external-link-alt" style="font-size:18px;"></i> Acessar link externo
                         </a>
                     </div>`;
-        }
+        };
 
-        // === NOVIDADE V10.7: CORREÇÃO DO BOTÃO VOLTAR E PREVIA ===
+        // === NOVIDADE V10.9: PRÉVIA TOTALMENTE REALISTA DA TELA INICIAL E NOTÍCIAS ===
         window.abrirPrevia = function(forcarContexto = null) {
             const selector = document.getElementById('previewContextSelector');
             if (forcarContexto) {
@@ -1405,8 +1388,25 @@
                 mockupWireframe.style.display = 'block';
                 mockupNoticia.style.display = 'none';
 
-                let feedHtml = '<div style="max-width: 800px; margin: 0 auto; text-align: left; padding: 20px 0;">';
-                feedHtml += `<h2 style="color:#002a5c; margin-bottom: 20px; font-weight: 900; text-transform: uppercase; border-left: 4px solid #f9ab00; padding-left: 10px;">${contexto === 'inicio' ? 'Visão: Tela Inicial' : 'Visão: Últimas Notícias'}</h2>`;
+                let feedHtml = `
+                <div style="background: #f0f2f5; width: 100%; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; text-align: left; padding-bottom: 50px;">
+                    <!-- Header Fake -->
+                    <div style="background: #002a5c; color: white; display: flex; justify-content: space-between; align-items: center; padding: 15px; position: sticky; top: 0; z-index: 10;">
+                        <i class="fas fa-bars"></i>
+                        <strong style="font-size: 16px;">CG NEWS OFICIAL</strong>
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div style="background: #fff; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #666; border-bottom: 1px solid #ddd;">
+                        <span>Sexta, 07 De Agosto De 2026</span>
+                        <i class="fab fa-whatsapp" style="color: #25d366; font-size: 14px;"></i>
+                    </div>
+
+                    <!-- Conteudo -->
+                    <div style="max-width: 800px; margin: 0 auto; padding: 20px 15px; background: #fff;">
+                        <h2 style="color: #002a5c; font-size: 18px; font-weight: 900; text-transform: uppercase; border-left: 4px solid #002a5c; padding-left: 10px; margin-bottom: 20px;">
+                            ${contexto === 'inicio' ? 'TELA INICIAL (DESTAQUES)' : 'ÚLTIMAS NOTÍCIAS'}
+                        </h2>
+                `;
                 
                 if (window.listaCompletaNoticias && window.listaCompletaNoticias.length > 0) {
                     const itensParaMostrar = window.listaCompletaNoticias.slice(0, 5);
@@ -1414,40 +1414,68 @@
                         const thumb = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
                         const thumb2 = item.imagemBase64_2 || item.imagem2 || '';
                         
-                        let tHtml = thumb ? `<img src="${thumb}" style="width: 100%; height: 100%; object-fit: cover;">` : '<i class="fas fa-image" style="display:flex; justify-content:center; align-items:center; height:100%; color:#aaa; font-size: 24px;"></i>';
+                        let tHtml = thumb ? `<img src="${thumb}" style="width: 100%; height: 100%; object-fit: cover;">` : '<div style="background:#ddd; width:100%; height:100%; display:flex; align-items:center; justify-content:center;"><i class="fas fa-image" style="color:#aaa; font-size: 40px;"></i></div>';
                         if(thumb && thumb2) {
-                             tHtml = `<img src="${thumb}" style="width: 50%; height: 100%; object-fit: cover; border-right:2px solid #fff;"><img src="${thumb2}" style="width: 50%; height: 100%; object-fit: cover;">`;
+                             tHtml = `<div style="display:flex; width:100%; height:100%;"><img src="${thumb}" style="width: 50%; height: 100%; object-fit: cover; border-right:2px solid #fff;"><img src="${thumb2}" style="width: 50%; height: 100%; object-fit: cover;"></div>`;
                         }
 
+                        const cats = item.categorias ? item.categorias[0] : (item.categoria || 'Geral');
+
                         feedHtml += `
-                            <div style="background: #fff; border: 1px solid #e1e4e8; border-radius: 8px; margin-bottom: 15px; display: flex; gap: 15px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                                <div style="width: 120px; height: 90px; border-radius: 6px; background: #ddd; flex-shrink: 0; overflow: hidden; display:flex;">
+                            <div style="margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                                <div style="width: 100%; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; margin-bottom: 12px; background: #f0f0f0;">
                                     ${tHtml}
                                 </div>
-                                <div style="flex: 1;">
-                                    <h4 style="color: #002a5c; font-size: 16px; margin-bottom: 5px; line-height: 1.3;">${item.titulo || 'Sem Título'}</h4>
-                                    <span style="font-size: 11px; color: #666; background: #f0f2f5; padding: 3px 8px; border-radius: 4px; font-weight:bold;">${item.categoria || 'Geral'}</span>
-                                    <span style="font-size: 11px; color: #888; margin-left: 10px;"><i class="fas fa-user"></i> ${item.autor || 'Redação'}</span>
+                                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 8px;">
+                                    <span style="font-size: 10px; font-weight: 900; color: #d93025; text-transform: uppercase;">${cats}</span>
+                                    <span style="font-size: 10px; color: #777;"><i class="far fa-clock"></i> Atualizado há pouco</span>
+                                </div>
+                                <h3 style="color: #002a5c; font-size: 18px; font-weight: 800; margin-bottom: 10px; line-height: 1.3;">${item.titulo || 'Sem Título'}</h3>
+                                
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <span style="font-size: 11px; color: #555;"><i class="fas fa-user"></i> ${item.autor || 'Redação'}</span>
+                                    <div style="display: flex; gap: 5px;">
+                                        <span style="width: 24px; height: 24px; border-radius: 4px; background: #f0f2f5; color: #555; display: flex; align-items: center; justify-content: center; font-size: 12px;"><i class="fab fa-whatsapp"></i></span>
+                                        <span style="width: 24px; height: 24px; border-radius: 4px; background: #f0f2f5; color: #555; display: flex; align-items: center; justify-content: center; font-size: 12px;"><i class="fab fa-facebook-f"></i></span>
+                                        <span style="width: 24px; height: 24px; border-radius: 4px; background: #f0f2f5; color: #555; display: flex; align-items: center; justify-content: center; font-size: 12px;"><i class="fab fa-x-twitter"></i></span>
+                                    </div>
                                 </div>
                             </div>
                         `;
                     });
                 } else {
-                    feedHtml += `<p style="color: #666;">Nenhuma matéria cadastrada para simular o feed. Publique algo primeiro!</p>`;
+                    feedHtml += `<p style="color: #666; padding: 20px; text-align:center;">Nenhuma matéria cadastrada para simular o feed. Publique algo primeiro!</p>`;
                 }
-                feedHtml += '</div>';
+                
+                feedHtml += `
+                    </div>
+                    <!-- Footer Fake -->
+                    <div style="background: #001d40; color: white; padding: 30px 15px; text-align: center; margin-top: 20px;">
+                        <div style="font-size: 14px; font-weight: bold; margin-bottom: 15px;">NOSSAS REDES SOCIAIS</div>
+                        <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;">
+                            <i class="fab fa-whatsapp" style="background: rgba(255,255,255,0.1); padding: 8px; border-radius: 50%;"></i>
+                            <i class="fab fa-facebook-f" style="background: rgba(255,255,255,0.1); padding: 8px; border-radius: 50%;"></i>
+                            <i class="fab fa-instagram" style="background: rgba(255,255,255,0.1); padding: 8px; border-radius: 50%;"></i>
+                            <i class="fab fa-youtube" style="background: rgba(255,255,255,0.1); padding: 8px; border-radius: 50%;"></i>
+                        </div>
+                        <div style="font-size: 10px; color: #aaa;">© 2026 CG NEWS OFICIAL - Todos os direitos reservados.</div>
+                    </div>
+                </div>
+                `;
                 
                 mockupWireframe.innerHTML = feedHtml;
                 mockupWireframe.style.background = 'transparent';
                 mockupWireframe.style.border = 'none';
                 mockupWireframe.style.paddingTop = '0';
+                mockupWireframe.style.padding = '0';
+                mockupWireframe.style.margin = '0';
             } 
-            // 2. NOTÍCIA ESPECIFICA (DO BANCO OU RASCUNHO)
+            // 2. NOTÍCIA ESPECIFICA (DO BANCO OU RASCUNHO) - Layout exato do site
             else {
                 mockupWireframe.style.display = 'none';
                 mockupNoticia.style.display = 'block';
 
-                let tTxt, aTxt, txtH, cTxt, credTxt, fontTxt, i1, i2, vArq, lRede, formEsc, formVidEsc;
+                let tTxt, aTxt, txtH, cTxt, credTxt, i1, i2, vArq, lRede, formEsc, formVidEsc, dataCri;
                 let dataExtraImg = [];
                 let dataExtraVid = [];
 
@@ -1457,14 +1485,14 @@
                     txtH = quill.root.innerHTML;
                     const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
                     cTxt = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
-                    credTxt = `Crédito: ${document.getElementById('fonteImagem').value || "N/A"}`;
-                    fontTxt = `Fonte: ${document.getElementById('fonteNoticia').value || "Não informada"}`;
+                    credTxt = `Foto: ${document.getElementById('fonteImagem').value || "Não informada"}`;
                     i1 = document.getElementById('imagemBase64_1').value;
                     i2 = document.getElementById('imagemBase64_2').value;
                     vArq = document.getElementById('videoBase64').value;
                     lRede = document.getElementById('linkRedeSocial').value;
                     formEsc = document.getElementById('formatoEscolhido').value;
                     formVidEsc = document.getElementById('formatoVideoEscolhido').value;
+                    dataCri = Date.now();
 
                     for(let i=1; i<=contImagensExtras; i++) {
                         const img = document.getElementById(`imagemBase64Extra_${i}`)?.value;
@@ -1485,88 +1513,121 @@
                         aTxt = item.autor || "Redação";
                         txtH = item.textoRico || item.texto || item.conteudo || "<p>Sem conteúdo.</p>";
                         cTxt = item.categorias ? item.categorias.join(', ') : (item.categoria || "Geral");
-                        credTxt = `Crédito: ${item.fonteImagem || "N/A"}`;
-                        fontTxt = `Fonte: ${item.fonteNoticia || "Não informada"}`;
+                        credTxt = `Foto: ${item.fonteImagem || "Não informada"}`;
                         i1 = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
                         i2 = item.imagemBase64_2 || item.imagem2 || '';
                         vArq = item.videoBase64 || item.video || item.linkVideo || '';
                         lRede = item.linkRedeSocial || '';
-                        formEsc = item.formatoEscolhido || '16/9';
-                        formVidEsc = item.formatoVideoEscolhido || '16/9';
+                        formEsc = item.formatoEscolhido || 'auto';
+                        formVidEsc = item.formatoVideoEscolhido || 'auto';
+                        dataCri = item.dataCriacao || item.dataAtualizacao || Date.now();
 
                         if(item.imagensExtras) dataExtraImg = item.imagensExtras;
                         if(item.videosExtras) dataExtraVid = item.videosExtras;
                     }
                 }
 
-                document.getElementById('prevTitulo').innerText = tTxt || "Título";
-                document.getElementById('prevAutor').innerText = aTxt || "Redação";
-                document.getElementById('prevTexto').innerHTML = txtH || "";
-                document.getElementById('prevCategoria').innerText = cTxt || "Geral";
-                document.getElementById('prevCreditoImg').innerText = credTxt || "";
-                document.getElementById('prevFonteNoticia').innerText = fontTxt || "";
+                let d = new Date(dataCri);
+                let dataFormatada = d.toLocaleDateString('pt-BR') + ' às ' + d.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
 
-                const containerMidiaTopo = document.getElementById('prevContainerMidia');
-                const containerMidiaInferior = document.getElementById('prevContainerMidiaInferior');
-                const prevGaleriaExtra = document.getElementById('prevGaleriaExtra');
-                
-                containerMidiaTopo.innerHTML = "";
-                containerMidiaInferior.innerHTML = "";
-                prevGaleriaExtra.innerHTML = "";
+                let htmlArtigo = `
+                <div style="background: #f0f2f5; width: 100%; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; text-align: left; padding-bottom: 50px;">
+                    <!-- Header Fake -->
+                    <div style="background: #002a5c; color: white; display: flex; justify-content: space-between; align-items: center; padding: 15px; position: sticky; top: 0; z-index: 10;">
+                        <i class="fas fa-bars"></i>
+                        <strong style="font-size: 16px;">CG NEWS OFICIAL</strong>
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div style="background: #fff; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #666; border-bottom: 1px solid #ddd; margin-bottom: 20px;">
+                        <span>Sexta, 07 De Agosto De 2026</span>
+                        <i class="fab fa-whatsapp" style="color: #25d366; font-size: 14px;"></i>
+                    </div>
 
-                const formatoImg = (formEsc && formEsc !== 'auto') ? formEsc.replace(':', '/') : '16/9';
-                const formatoVid = (formVidEsc && formVidEsc !== 'auto') ? formVidEsc.replace(':', '/') : '16/9';
+                    <div style="max-width: 800px; margin: 0 auto; text-align: left; padding: 20px 20px 60px 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                        <div style="color: #002a5c; font-weight: bold; font-size: 13px; margin-bottom: 20px; cursor:pointer;"><i class="fas fa-arrow-left"></i> Voltar ao Início</div>
+                        
+                        <h1 style="color: #002a5c; font-size: 26px; font-weight: 900; margin-bottom: 12px; line-height: 1.3;">${tTxt}</h1>
+                        
+                        <div style="font-size: 12px; color: #666; margin-bottom: 20px; display: flex; flex-direction: column; gap: 5px;">
+                            <div><i class="far fa-clock"></i> Publicado em ${dataFormatada}</div>
+                            <div><i class="far fa-user"></i> Por ${aTxt} &nbsp;&nbsp; <i class="far fa-folder"></i> ${cTxt}</div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                            <span style="font-size: 12px; color: #666; margin-right: 5px;">Compartilhe:</span>
+                            <span style="background:#1877f2; color:#fff; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:4px;"><i class="fab fa-facebook-f"></i></span>
+                            <span style="background:#25d366; color:#fff; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:4px;"><i class="fab fa-whatsapp"></i></span>
+                            <span style="background:#000; color:#fff; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:4px;"><i class="fab fa-x-twitter"></i></span>
+                        </div>
+                        
+                        <div style="text-align:center; padding:15px; border:1px dashed #cbd5e1; margin-bottom:20px; color:#94a3b8; font-size:11px; background:#f8f9fa; border-radius:6px;">PUBLICIDADE / ESPAÇO PARA BANNER</div>`;
+
+                const formatoImgFinal = (formEsc && formEsc !== 'auto') ? formEsc.replace(':', '/') : 'auto';
 
                 if (i1 || i2) {
-                    let htmlImgs = `<div style="display: flex; width: 100%; aspect-ratio: ${formatoImg}; background: #000; overflow: hidden;">`;
+                    let styleImg = formatoImgFinal === 'auto' ? 'width: 100%; height: auto; object-fit: cover;' : `width: 100%; aspect-ratio: ${formatoImgFinal}; object-fit: cover;`;
+                    let imgHtml = '';
                     if (i1 && i2) {
-                        htmlImgs += `<img src="${i1}" style="flex: 1; width: 50%; height: 100%; object-fit: cover; border-right: 2px solid #fff;">`;
-                        htmlImgs += `<img src="${i2}" style="flex: 1; width: 50%; height: 100%; object-fit: cover;">`;
+                        imgHtml = `<div style="display: flex; width: 100%;">
+                                      <img src="${i1}" style="flex: 1; width: 50%; ${formatoImgFinal==='auto'?'height:auto;':`aspect-ratio: ${formatoImgFinal};`} object-fit: cover; border-right: 2px solid #fff;">
+                                      <img src="${i2}" style="flex: 1; width: 50%; ${formatoImgFinal==='auto'?'height:auto;':`aspect-ratio: ${formatoImgFinal};`} object-fit: cover;">
+                                   </div>`;
                     } else if (i1) {
-                        htmlImgs += `<img src="${i1}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
+                        imgHtml = `<img src="${i1}" style="${styleImg}">`;
                     } else if (i2) {
-                        htmlImgs += `<img src="${i2}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
+                        imgHtml = `<img src="${i2}" style="${styleImg}">`;
                     }
-                    htmlImgs += `</div>`;
-                    containerMidiaTopo.innerHTML = htmlImgs;
-                } else {
-                    containerMidiaTopo.innerHTML = `<div style="padding: 20px; text-align: center; color: #777; background: #eee;">Sem imagem de capa principal</div>`;
+                    htmlArtigo += `<div style="width: 100%; margin-bottom: 5px; border-radius: 6px; overflow: hidden; background: #000;">${imgHtml}</div>`;
+                    htmlArtigo += `<div style="font-size: 10px; color: #777; margin-bottom: 25px;">${credTxt}</div>`;
                 }
+
+                htmlArtigo += `<div class="preview-body-content" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 17px; line-height: 1.7; color: #222; margin-bottom:30px;">${txtH}</div>`;
 
                 if (vArq) {
                     let cVideoVal = '';
                     if (contexto === 'rascunho_atual') cVideoVal = document.getElementById('creditosVideo').value;
                     else if (window.noticiasAdmin[contexto]) cVideoVal = window.noticiasAdmin[contexto].creditosVideo || '';
+                    const formatoVidFinal = (formVidEsc && formVidEsc !== 'auto') ? formVidEsc.replace(':', '/') : '16/9';
                     
-                    containerMidiaInferior.innerHTML = `
-                        <video src="${vArq}" controls style="width: 100%; aspect-ratio: ${formatoVid}; background: #000; border-radius: 8px; display: block; object-fit: contain;"></video>
-                        ${cVideoVal ? `<div style="font-size: 11px; color: #777; margin-top: 5px;">Crédito do Vídeo: ${cVideoVal}</div>` : ''}
-                    `;
+                    htmlArtigo += `<video src="${vArq}" controls style="width: 100%; aspect-ratio: ${formatoVidFinal}; background: #000; border-radius: 8px; display: block; object-fit: contain; margin-bottom: 5px;"></video>
+                        ${cVideoVal ? `<div style="font-size: 10px; color: #777; margin-bottom: 25px;">Crédito do Vídeo: ${cVideoVal}</div>` : '<div style="margin-bottom: 25px;"></div>'}`;
                 } else if (lRede) {
-                    containerMidiaInferior.innerHTML = gerarEmbedRedeSocial(lRede);
+                    htmlArtigo += window.gerarEmbedRedeSocial(lRede) + `<div style="margin-bottom: 25px;"></div>`;
                 }
 
-                let htmlGaleria = "";
                 dataExtraImg.forEach(ie => {
                     const ratio = ie.ratio === 'auto' ? '16/9' : ie.ratio.replace(':', '/');
-                    htmlGaleria += `<div style="margin-top: 15px;">
-                        <div style="width: 100%; aspect-ratio: ${ratio}; background: #000; border-radius: 8px; overflow: hidden;">
+                    htmlArtigo += `
+                        <div style="width: 100%; aspect-ratio: ${ratio}; background: #000; border-radius: 8px; overflow: hidden; margin-bottom:5px;">
                             <img src="${ie.base64}" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
-                        ${ie.credito ? `<div style="font-size: 11px; color: #777; margin-top: 5px;">Crédito: ${ie.credito}</div>` : ''}
-                    </div>`;
+                        ${ie.credito ? `<div style="font-size: 10px; color: #777; margin-bottom: 25px;">Crédito: ${ie.credito}</div>` : '<div style="margin-bottom: 25px;"></div>'}`;
                 });
                 dataExtraVid.forEach(ve => {
                     const ratio = ve.ratio === 'auto' ? '16/9' : ve.ratio.replace(':', '/');
-                    htmlGaleria += `<div style="margin-top: 15px;">
-                        <video src="${ve.base64}" controls style="width: 100%; aspect-ratio: ${ratio}; border-radius: 8px; background: #000; object-fit: contain;"></video>
-                        ${ve.credito ? `<div style="font-size: 11px; color: #777; margin-top: 5px;">Crédito: ${ve.credito}</div>` : ''}
-                    </div>`;
+                    htmlArtigo += `
+                        <video src="${ve.base64}" controls style="width: 100%; aspect-ratio: ${ratio}; border-radius: 8px; background: #000; object-fit: contain; margin-bottom: 5px;"></video>
+                        ${ve.credito ? `<div style="font-size: 10px; color: #777; margin-bottom: 25px;">Crédito: ${ve.credito}</div>` : '<div style="margin-bottom: 25px;"></div>'}`;
                 });
-                prevGaleriaExtra.innerHTML = htmlGaleria;
+                
+                htmlArtigo += `
+                    </div>
+                    <!-- Footer Fake -->
+                    <div style="background: #001d40; color: white; padding: 30px 15px; text-align: center; margin-top: 20px;">
+                        <div style="font-size: 14px; font-weight: bold; margin-bottom: 15px;">NOSSAS REDES SOCIAIS</div>
+                        <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;">
+                            <i class="fab fa-whatsapp" style="background: rgba(255,255,255,0.1); padding: 8px; border-radius: 50%;"></i>
+                            <i class="fab fa-facebook-f" style="background: rgba(255,255,255,0.1); padding: 8px; border-radius: 50%;"></i>
+                            <i class="fab fa-instagram" style="background: rgba(255,255,255,0.1); padding: 8px; border-radius: 50%;"></i>
+                            <i class="fab fa-youtube" style="background: rgba(255,255,255,0.1); padding: 8px; border-radius: 50%;"></i>
+                        </div>
+                        <div style="font-size: 10px; color: #aaa;">© 2026 CG NEWS OFICIAL - Todos os direitos reservados.</div>
+                    </div>
+                </div>`;
+                mockupNoticia.innerHTML = htmlArtigo;
             }
 
-            // Renderizar apenas os banners que correspondem ao filtro!
+            // Renderizar Banners por cima da tela escolhida
             const wrapper = document.getElementById('prevConteudoWrapper');
             wrapper.querySelectorAll('.draggable-banner').forEach(el => el.remove());
 
@@ -1628,14 +1689,14 @@
                     `;
                     wrapper.appendChild(el);
                     
-                    ativarInteracaoBanner(el, bd);
+                    window.ativarInteracaoBanner(el, bd);
                 }
             }
 
             document.getElementById('modalPrevia').style.display = 'flex';
         };
 
-        function ativarInteracaoBanner(el, dataObj) {
+        window.ativarInteracaoBanner = function(el, dataObj) {
             let isDragging = false;
             let isResizing = false;
             let initialDistance = 0;
@@ -1755,8 +1816,8 @@
             contVideosExtras = 0;
             contBannersExtras = 0;
             window.bannersData = {};
-            atualizarPreviewImagens();
-            limparRascunho();
+            window.atualizarPreviewImagens();
+            window.limparRascunho();
             document.getElementById('btnSalvar').innerHTML = `<i class="fas fa-paper-plane"></i> Publicar Matéria`;
             document.getElementById('btnCancelar').style.display = 'none';
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1776,11 +1837,11 @@
                 });
                 
                 window.atualizarSelectsMaterias();
-                atualizarEstatisticasView();
+                window.atualizarEstatisticasView();
             } catch(e) { console.log(e); }
         }
 
-        async function renderizarListasDeNoticias() {
+        window.renderizarListasDeNoticias = async function() {
             const container = document.getElementById('lista-noticias-fullscreen');
             container.innerHTML = '<p style="color: #666; font-size: 14px;">Carregando matérias...</p>';
             
@@ -1839,11 +1900,11 @@
                     let botoesHtml = '';
                     const lista = document.getElementById('lista-noticias-fullscreen');
                     if(lista.classList.contains('modo-selecao-anuncio')) {
-                        botoesHtml = `<button type="button" class="btn-selecionar-anuncio" style="display:inline-flex;" onclick="selecionarMateriaParaBanner('${id}', '${item.titulo ? item.titulo.replace(/'/g, "\\'") : 'Sem Título'}')"><i class="fas fa-bullseye"></i> Escolher esta matéria</button>`;
+                        botoesHtml = `<button type="button" class="btn-selecionar-anuncio" style="display:inline-flex;" onclick="window.selecionarMateriaParaBanner('${id}', '${item.titulo ? item.titulo.replace(/'/g, "\\'") : 'Sem Título'}')"><i class="fas fa-bullseye"></i> Escolher esta matéria</button>`;
                     } else {
                         botoesHtml = `
-                            <button type="button" class="btn-editar" onclick="editarNoticia('${id}')"><i class="fas fa-edit"></i> Editar</button>
-                            <button type="button" class="btn-apagar" onclick="apagarNoticia('${id}')"><i class="fas fa-trash-alt"></i> Excluir</button>
+                            <button type="button" class="btn-editar" onclick="window.editarNoticia('${id}')"><i class="fas fa-edit"></i> Editar</button>
+                            <button type="button" class="btn-apagar" onclick="window.apagarNoticia('${id}')"><i class="fas fa-trash-alt"></i> Excluir</button>
                         `;
                     }
 
@@ -1868,7 +1929,7 @@
                 container.innerHTML = '<p style="color: #d93025; font-size: 14px;">Erro ao carregar matérias do Firebase.</p>';
                 console.error(e);
             }
-        }
+        };
 
         window.editarNoticia = function(id) {
             const item = window.noticiasAdmin[id];
@@ -1897,7 +1958,7 @@
 
             document.getElementById('imagemBase64_1').value = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
             document.getElementById('imagemBase64_2').value = item.imagemBase64_2 || item.imagem2 || '';
-            atualizarPreviewImagens();
+            window.atualizarPreviewImagens();
 
             document.getElementById('videoBase64').value = item.videoBase64 || item.video || item.linkVideo || '';
             const vPrev = document.getElementById('videoPreview');
@@ -1913,26 +1974,26 @@
             document.getElementById('container-imagens-extras').innerHTML = '';
             contImagensExtras = 0;
             if(item.imagensExtras && Array.isArray(item.imagensExtras)) {
-                item.imagensExtras.forEach(ie => adicionarPainelImagem(ie.ratio, ie.base64, ie.credito));
+                item.imagensExtras.forEach(ie => window.adicionarPainelImagem(ie.ratio, ie.base64, ie.credito));
             }
 
             document.getElementById('container-videos-extras').innerHTML = '';
             contVideosExtras = 0;
             if(item.videosExtras && Array.isArray(item.videosExtras)) {
-                item.videosExtras.forEach(ve => adicionarPainelVideo(ve.ratio, ve.base64, ve.credito));
+                item.videosExtras.forEach(ve => window.adicionarPainelVideo(ve.ratio, ve.base64, ve.credito));
             }
 
             document.getElementById('container-banners-extras').innerHTML = '';
             contBannersExtras = 0;
             window.bannersData = {};
             if(item.banners && Array.isArray(item.banners)) {
-                item.banners.forEach(b => adicionarPainelBanner(b));
+                item.banners.forEach(b => window.adicionarPainelBanner(b));
             }
 
             document.getElementById('btnSalvar').innerHTML = `<i class="fas fa-save"></i> Atualizar Matéria`;
             document.getElementById('btnCancelar').style.display = 'block';
 
-            fecharModalGerenciamento();
+            window.fecharModalGerenciamento();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
@@ -1940,7 +2001,7 @@
             if(confirm("Tem certeza que deseja excluir permanentemente esta matéria?")) {
                 deleteDoc(doc(db, "noticias", id)).then(() => {
                     alert("Matéria excluída com sucesso!");
-                    renderizarListasDeNoticias();
+                    window.renderizarListasDeNoticias();
                     carregarListaNoticias();
                 }).catch(e => alert("Erro ao excluir."));
             }
@@ -2039,8 +2100,8 @@
                     await addDoc(collection(db, "noticias"), noticiaObj);
                     alert("✅ Matéria publicada com sucesso!");
                 }
-                limparRascunho();
-                cancelarEdicao();
+                window.limparRascunho();
+                window.cancelarEdicao();
                 carregarListaNoticias();
             } catch (err) {
                 alert("❌ Erro ao salvar a matéria. Verifique sua conexão.");
