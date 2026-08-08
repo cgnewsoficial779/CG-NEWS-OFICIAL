@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V12.2</title>
+    <title>Painel Editor - News Pro V12.3</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -156,17 +156,10 @@
         #prevConteudoWrapper { position: relative; flex: 1; overflow-y: auto; overflow-x: hidden; background: #f0f2f5; }
         .preview-body-content { font-family: Georgia, serif; font-size: 18px; line-height: 1.8; color: #222; margin-top: 15px; }
 
-        /* NOVA GRADE DE ALINHAMENTO PARA OS BANNERS */
         .grid-overlay {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; right: 0; 
-            height: max(300vh, 4000px); 
-            pointer-events: none; 
-            z-index: 999;
-            background-image: 
-                linear-gradient(to bottom, rgba(2, 117, 216, 0.4) 1px, transparent 1px),
-                linear-gradient(to right, rgba(2, 117, 216, 0.4) 1px, transparent 1px);
+            display: none; position: absolute; top: 0; left: 0; right: 0; height: max(300vh, 4000px); 
+            pointer-events: none; z-index: 999;
+            background-image: linear-gradient(to bottom, rgba(2, 117, 216, 0.4) 1px, transparent 1px), linear-gradient(to right, rgba(2, 117, 216, 0.4) 1px, transparent 1px);
             background-size: 100px 50px; 
         }
         .grid-overlay.ativo { display: block; }
@@ -182,23 +175,10 @@
         .draggable-banner-edit-mode { border: 2px dashed #0275d8 !important; background: rgba(255,255,255,0.9); box-shadow: 0 8px 30px rgba(0,0,0,0.4); z-index: 1005 !important; }
         
         .banner-drag-header {
-            background: #0275d8;
-            color: white;
-            font-size: 11px;
-            font-weight: bold;
-            padding: 4px 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: grab;
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
-            position: absolute;
-            top: -26px; 
-            left: -2px; right: -2px;
-            height: 26px;
-            opacity: 0.8;
-            transition: 0.2s;
+            background: #0275d8; color: white; font-size: 11px; font-weight: bold; padding: 4px 10px;
+            display: flex; align-items: center; justify-content: space-between; cursor: grab;
+            border-top-left-radius: 4px; border-top-right-radius: 4px; position: absolute;
+            top: -26px; left: -2px; right: -2px; height: 26px; opacity: 0.8; transition: 0.2s;
         }
         .banner-drag-header:active { cursor: grabbing; opacity: 1; }
         .banner-drag-header i { margin-right: 5px; }
@@ -208,21 +188,12 @@
         .banner-close-btn { background: transparent; color: #fff; border: none; font-size: 18px; line-height: 1; cursor: pointer; }
         .banner-close-btn:hover { color: #ffcccc; }
         
-        .banner-video-saibamais { position: absolute; bottom: 15px; right: 15px; background: #1a73e8; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; text-decoration: none; z-index: 1002; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
-        
-        /* CAIXA DE AVISO PARA O USUÁRIO */
-        .aviso-painel-anuncios {
-            background-color: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            line-height: 1.5;
+        /* CAIXAS DE ESTILO NOVO PARA PAINEL */
+        .caixa-opcoes-comportamento {
+            background: #e6f4ea; padding: 15px; border-radius: 8px; border: 1px solid #ceead6; margin-bottom: 15px;
         }
-        .aviso-painel-anuncios strong { color: #533f03; font-size: 15px; }
-        .aviso-painel-anuncios i { color: #f9ab00; font-size: 18px; margin-right: 8px; }
+        .caixa-opcoes-comportamento label { color: #137333; font-size: 13px; font-weight: 800; }
+        .caixa-opcoes-comportamento select, .caixa-opcoes-comportamento input { border-color: #137333; margin-top: 5px;}
     </style>
 </head>
 <body>
@@ -231,7 +202,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V12.2</span>
+                <span class="badge-pro">V12.3</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -433,7 +404,7 @@
             </div>
 
             <div class="botoes-acao-container">
-                <button type="button" class="btn-preview" onclick="window.veioDoPainelAnuncios=false; window.abrirPrevia('rascunho_atual')"><i class="fas fa-eye"></i> Ver Prévia & Organizar Banners</button>
+                <button type="button" class="btn-preview" onclick="window.veioDoPainelAnuncios=false; window.abrirPrevia('rascunho_atual')"><i class="fas fa-eye"></i> Ver Prévia (Layout e Anúncios)</button>
                 <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> Publicar Matéria</button>
             </div>
             <button type="button" id="btnCancelar" class="btn-cancelar" onclick="window.cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
@@ -445,28 +416,18 @@
     <div class="modal-fullscreen-overlay" id="modalPainelAnunciosConfig">
         <div class="modal-fullscreen-content">
             <div class="modal-fs-header" style="background: #f9ab00; color: #1a1a1a;">
-                <h2><i class="fas fa-bullhorn"></i> Painel de Gestão de Anúncios e Banners</h2>
+                <h2><i class="fas fa-bullhorn"></i> Painel de Gestão de Anúncios</h2>
                 <button class="modal-fs-close" style="background: #1a1a1a; color: #fff;" onclick="window.fecharPainelAnunciosConfig()">&times;</button>
             </div>
             <div class="modal-fs-body" id="secaoPainelAnunciosMaster">
                 
-                <!-- AVISO IMPORTANTE PARA O USUÁRIO -->
-                <div class="aviso-painel-anuncios">
-                    <div style="display: flex; align-items: center; margin-bottom: 5px;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <strong>Como funcionam os anúncios:</strong>
-                    </div>
-                    <p style="margin-bottom: 8px;">Os banners que você cria <strong>nesta tela</strong> são <strong>ADESIVOS FLUTUANTES</strong>. Eles servem para ficar fixos no rodapé ou nas bordas da tela, por cima do texto. Eles não separam as linhas.</p>
-                    <p>Se você quer colocar uma publicidade <strong>no meio do texto</strong> para que as palavras abram espaço para a imagem, você deve inserir a foto/código diretamente dentro da caixa <strong>"Corpo do Texto"</strong> lá na tela principal, como se fosse parte da notícia.</p>
-                </div>
-
-                <p style="font-size: 13px; color: #444; margin-bottom: 15px; font-weight: 600;">Isolamento completo: configure aqui todos os banners, locais de exibição, scripts HTML, arquivos de imagem/GIF/vídeo, proporção de aspecto e links de destino.</p>
+                <p style="font-size: 13px; color: #444; margin-bottom: 15px; font-weight: 600;">Configure aqui todos os banners, locais de exibição, scripts HTML, arquivos de imagem/GIF/vídeo, proporção de aspecto e links de destino.</p>
                 
                 <div id="container-banners-extras"></div>
 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px; border-top: 2px dashed #e2e8f0; padding-top: 20px;">
                     <button type="button" class="btn-preview" style="background: #002a5c; color: white;" onclick="window.abrirPreviaDosBanners()">
-                        <i class="fas fa-eye"></i> Ver Prévia e Organizar Anúncios Flutuantes
+                        <i class="fas fa-eye"></i> Ver Prévia na Prática
                     </button>
                     <button type="button" class="btn-add-painel" style="border-color: #f9ab00; color: #b07c00; margin-top: 0;" onclick="window.adicionarPainelBanner()">
                         <i class="fas fa-plus-circle"></i> Adicionar + Novo Anúncio
@@ -525,7 +486,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE PREVIA ATUALIZADO V12.2 -->
+    <!-- MODAL DE PREVIA ATUALIZADO V12.3 -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -534,7 +495,6 @@
                     <span id="previewContextLabel" style="font-size: 14px; font-weight: 800; color: #002a5c; background: #e2e8f0; padding: 6px 12px; border-radius: 6px;">Visão Atual</span>
                     
                     <div style="display: flex; gap: 10px; margin-left: auto;">
-                        <span style="font-size: 12px; background: #e2e8f0; padding: 5px 10px; border-radius: 4px; display: flex; align-items: center;"><i class="fas fa-arrows-alt" style="margin-right: 5px;"></i> Arraste os Banners Flutuantes</span>
                         <button class="btn-voltar-edicao" onclick="window.fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar</button>
                     </div>
                 </div>
@@ -542,17 +502,12 @@
             
             <div id="prevConteudoWrapper" style="padding: 0; position: relative;">
                 
-                <!-- NOVA GRADE DE ALINHAMENTO -->
                 <div id="gridOverlay" class="grid-overlay"></div>
 
-                <!-- Fundo REAL para Inicio / Ultimas / Específicas (IFRAME DO SITE OFICIAL) -->
                 <div id="mockupWireframe" style="display: none; width: 100%; min-height: 100vh;">
-                    <!-- Preenchido dinamicamente com o IFRAME -->
                 </div>
 
-                <!-- Simulação idêntica SOMENTE para o Rascunho que está sendo escrito na hora -->
                 <div id="mockupNoticia" style="width: 100%; min-height: 100vh; background: #f0f2f5;">
-                    <!-- Preenchido dinamicamente com a NOTÍCIA REAL -->
                 </div>
             </div>
         </div>
@@ -577,7 +532,7 @@
 
         const quill = new Quill('#editor-container', {
             theme: 'snow',
-            placeholder: 'Para incluir um banner no MEIO DA NOTÍCIA empurrando o texto para baixo, cole a imagem ou link do vídeo diretamente aqui...',
+            placeholder: 'Para incluir anúncios, digite aqui sua matéria normalmente...',
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline', 'strike'],
@@ -612,6 +567,17 @@
         window.fecharPainelAnunciosConfig = function() {
             document.getElementById('modalPainelAnunciosConfig').style.display = 'none';
             sessionStorage.removeItem('currentModal'); 
+        };
+
+        window.mudarComportamentoBanner = function(id) {
+            const val = document.getElementById(`comportamentoBanner_${id}`).value;
+            const divEmbutido = document.getElementById(`opcoesEmbutido_${id}`);
+            if(val === 'embutido') {
+                divEmbutido.style.display = 'block';
+            } else {
+                divEmbutido.style.display = 'none';
+            }
+            window.salvarRascunho();
         };
 
         window.mudarAbaBannerExtra = function(id, tipo, btn) {
@@ -653,7 +619,8 @@
 
             const obj = salvo || {
                 tipo: 'imagem', codigoAnuncio: '', bannerImgBase64: '', 
-                formatoBanner: '16/9', bannerLinkUrl: '', localExibicao: 'inicio', noticiaAlvo: 'rascunho_atual', posX: 20, posY: 200 + (id * 50), scale: 1
+                formatoBanner: '16/9', bannerLinkUrl: '', localExibicao: 'inicio', noticiaAlvo: 'rascunho_atual', posX: 20, posY: 200 + (id * 50), scale: 1,
+                comportamento: 'embutido', paragrafo: 1
             };
 
             window.bannersData[id] = { posX: obj.posX, posY: obj.posY, scale: obj.scale };
@@ -669,10 +636,23 @@
             
             painel.innerHTML = `
                 <button type="button" class="btn-remover-painel-extra" onclick="window.removerPainelExtra('painel-banner-extra-${id}')"><i class="fas fa-times"></i> Remover</button>
-                <div style="font-weight: 800; color: #b07c00; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-ad"></i> Configuração do Anúncio Flutuante / Banner ${id}</div>
+                <div style="font-weight: 800; color: #b07c00; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-ad"></i> Configuração do Anúncio / Banner ${id}</div>
                 
+                <div class="form-group" style="margin-bottom: 12px; background: #e6f4ea; padding: 15px; border-radius: 8px; border: 1px solid #ceead6;">
+                    <label style="color: #137333;"><i class="fas fa-layer-group"></i> Comportamento do Anúncio</label>
+                    <select id="comportamentoBanner_${id}" onchange="window.mudarComportamentoBanner(${id})" style="margin-bottom: 10px; border-color: #137333;">
+                        <option value="embutido" ${obj.comportamento === 'embutido' ? 'selected' : ''}>DIVIDIR O TEXTO (Afastar linhas e embutir no texto)</option>
+                        <option value="flutuante" ${obj.comportamento === 'flutuante' ? 'selected' : ''}>FLUTUANTE (Arrastável / Fica por cima da tela livre)</option>
+                    </select>
+                    
+                    <div id="opcoesEmbutido_${id}" style="display: ${obj.comportamento === 'embutido' ? 'block' : 'none'};">
+                        <label>Inserir após qual parágrafo da notícia?</label>
+                        <input type="number" id="paragrafoBanner_${id}" value="${obj.paragrafo || 1}" min="1" oninput="window.salvarRascunho()" style="border-color: #137333;">
+                    </div>
+                </div>
+
                 <div class="form-group" style="margin-bottom: 12px;">
-                    <label><i class="fas fa-map-marker-alt"></i> Local de Exibição do Anúncio Flutuante</label>
+                    <label><i class="fas fa-map-marker-alt"></i> Local de Exibição</label>
                     <div class="local-tabs" id="botoesLocalBanner_${id}">
                         <button type="button" class="btn-local ${obj.localExibicao==='inicio'?'active':''}" onclick="window.mudarLocalBanner(${id}, 'inicio', this)">Tela Inicial</button>
                         <button type="button" class="btn-local ${obj.localExibicao==='ultimas'?'active':''}" onclick="window.mudarLocalBanner(${id}, 'ultimas', this)">Últimas Notícias</button>
@@ -1053,7 +1033,9 @@
                             noticiaAlvo: noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual',
                             posX: window.bannersData[i]?.posX || 0,
                             posY: window.bannersData[i]?.posY || 0,
-                            scale: window.bannersData[i]?.scale || 1
+                            scale: window.bannersData[i]?.scale || 1,
+                            comportamento: document.getElementById(`comportamentoBanner_${i}`).value,
+                            paragrafo: parseInt(document.getElementById(`paragrafoBanner_${i}`).value) || 1
                         });
                     }
                 }
@@ -1493,7 +1475,6 @@
                     </div>`;
         };
 
-        // === CORREÇÃO DA PRÉVIA COM O LINK EXATO ===
         window.abrirPrevia = function(contexto = 'rascunho_atual') {
             const mockupWireframe = document.getElementById('mockupWireframe');
             const mockupNoticia = document.getElementById('mockupNoticia');
@@ -1557,6 +1538,69 @@
                 let formEsc = document.getElementById('formatoEscolhido').value;
                 let formVidEsc = document.getElementById('formatoVideoEscolhido').value;
 
+                // ==========================================
+                // LÓGICA DE INJEÇÃO DO TEXTO "EMBUTIDO"
+                // ==========================================
+                let textoProcessado = "";
+                let paragrafos = txtH.split(/<\/p>/i);
+                let bannersEmbutidos = [];
+
+                for(let i=1; i<=contBannersExtras; i++) {
+                    const painel = document.getElementById(`painel-banner-extra-${i}`);
+                    if(!painel) continue;
+
+                    const local = document.getElementById(`localExibicaoBanner_${i}`).value;
+                    const comp = document.getElementById(`comportamentoBanner_${i}`).value;
+
+                    if ((local === 'especifica' || local === 'inicio' || local === 'ultimas') && comp === 'embutido') {
+                        bannersEmbutidos.push({
+                            paragrafo: parseInt(document.getElementById(`paragrafoBanner_${i}`).value) || 1,
+                            tipo: document.getElementById(`tipoBannerExtra_${i}`).value,
+                            codigo: document.getElementById(`codigoAnuncioExtra_${i}`).value,
+                            base64: document.getElementById(`bannerImgBase64Extra_${i}`).value,
+                            link: document.getElementById(`bannerLinkUrlExtra_${i}`).value,
+                            formato: document.getElementById(`formatoBannerExtraEscolhido_${i}`).value
+                        });
+                    }
+                }
+
+                for (let i = 0; i < paragrafos.length; i++) {
+                    let p = paragrafos[i].trim();
+                    if (p) textoProcessado += p + "</p>";
+
+                    let bannersAposEste = bannersEmbutidos.filter(b => b.paragrafo === (i + 1));
+                    bannersAposEste.forEach(b => {
+                        let conteudoAnuncio = '';
+                        if (b.tipo === 'codigo') {
+                            conteudoAnuncio = b.codigo;
+                        } else if (b.tipo === 'imagem') {
+                            if (b.base64.startsWith('data:video') || b.base64.includes('video/mp4')) {
+                                conteudoAnuncio = `<video src="${b.base64}" style="width: 100%; height: 100%; object-fit: contain; background:#000;" autoplay muted loop playsinline></video>`;
+                            } else {
+                                conteudoAnuncio = `<img src="${b.base64}" style="width: 100%; height: 100%; object-fit: contain;">`;
+                            }
+                            if (b.link) {
+                                conteudoAnuncio = `<a href="${b.link}" target="_blank" style="display:block; width:100%; height:100%;">${conteudoAnuncio}</a>`;
+                            }
+                        }
+
+                        let formatoCSS = b.formato && b.formato !== 'auto' ? b.formato.replace(':', '/') : 'auto';
+                        let cssAspect = formatoCSS !== 'auto' ? `aspect-ratio: ${formatoCSS};` : '';
+
+                        if (conteudoAnuncio) {
+                            textoProcessado += `
+                                <div style="margin: 30px 0; display: flex; flex-direction: column; align-items: center; width: 100%; clear: both;">
+                                    <div style="font-size: 10px; color: #a0aec0; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 5px; font-weight: bold;">- Publicidade -</div>
+                                    <div style="width: 100%; max-width: 100%; overflow: hidden; border-radius: 8px; background-color: #fafbfc; ${cssAspect}">
+                                        ${conteudoAnuncio}
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+                // ==========================================
+
                 let htmlArtigo = `
                 <div style="background: #fff; width: 100%; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; text-align: left; padding-bottom: 50px;">
                     <div style="background: #fff; padding: 15px; border-bottom: 1px solid #e1e4e8;">
@@ -1592,7 +1636,7 @@
                         </div>`;
                 }
 
-                htmlArtigo += `<div class="preview-body-content" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 17px; line-height: 1.8; color: #333; margin-top: 30px; margin-bottom: 40px;">${txtH}</div>`;
+                htmlArtigo += `<div class="preview-body-content" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 17px; line-height: 1.8; color: #333; margin-top: 30px; margin-bottom: 40px;">${textoProcessado}</div>`;
 
                 if (vArq) {
                     let cVideoVal = document.getElementById('creditosVideo').value;
@@ -1622,6 +1666,10 @@
                 const localExibicao = document.getElementById(`localExibicaoBanner_${i}`).value;
                 const noticiaAlvoInput = document.getElementById(`selectNoticiaEspecifica_${i}`);
                 const noticiaAlvo = noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual';
+                const comp = document.getElementById(`comportamentoBanner_${i}`).value;
+
+                // SE FOR EMBUTIDO NO TEXTO, NÃO PRECISA SER ARRASTÁVEL!
+                if (comp === 'embutido') continue;
 
                 let mostrarBanner = false;
                 if (contexto === 'inicio' && localExibicao === 'inicio') mostrarBanner = true;
@@ -2080,7 +2128,9 @@
                         noticiaAlvo: noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual',
                         posX: window.bannersData[i]?.posX || 0,
                         posY: window.bannersData[i]?.posY || 0,
-                        scale: window.bannersData[i]?.scale || 1
+                        scale: window.bannersData[i]?.scale || 1,
+                        comportamento: document.getElementById(`comportamentoBanner_${i}`).value,
+                        paragrafo: parseInt(document.getElementById(`paragrafoBanner_${i}`).value) || 1
                     });
                 }
             }
