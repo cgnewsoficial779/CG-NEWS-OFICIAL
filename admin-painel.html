@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V11.7</title>
+    <title>Painel Editor - News Pro V11.1</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* Bloqueia o "puxar para recarregar" dos navegadores de celular */
-        html, body { overscroll-behavior-y: none; }
-        
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
         body { background-color: #f0f2f5; padding: 10px; color: #1a1a1a; font-size: 16px; }
         
@@ -178,7 +175,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V11.7</span>
+                <span class="badge-pro">V11.1</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -461,20 +458,17 @@
         </div>
     </div>
 
-    <!-- MODAL DE PREVIA ATUALIZADO V11.5 -->
+    <!-- MODAL DE PREVIA ATUALIZADO V11.1 -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
                 <div style="display: flex; align-items: center; gap: 15px; width: 100%;">
                     <span style="font-size: 12px; font-weight: bold; color: #cc0000; text-transform: uppercase;" id="prevCategoria">CATEGORIA</span>
-                    
-                    <select id="previewContextSelector" onchange="window.abrirPrevia(this.value)" style="padding: 6px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 13px; font-weight: 800; color: #002a5c; background: #f8f9fa; cursor: pointer; outline: none; flex: 1; max-width: 300px;">
-                        <!-- Options são geradas dinamicamente agora de forma limpa -->
-                    </select>
+                    <!-- Removido o menu dropdown confuso -->
+                    <span id="previewContextLabel" style="font-size: 14px; font-weight: 800; color: #002a5c; background: #e2e8f0; padding: 6px 12px; border-radius: 6px;">Visão Atual</span>
                     
                     <div style="display: flex; gap: 10px; margin-left: auto;">
                         <span style="font-size: 12px; background: #e2e8f0; padding: 5px 10px; border-radius: 4px; display: flex; align-items: center;"><i class="fas fa-arrows-alt" style="margin-right: 5px;"></i> Arraste os Banners</span>
-                        
                         <button class="btn-voltar-edicao" onclick="window.fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar</button>
                     </div>
                 </div>
@@ -1316,43 +1310,81 @@
             }
         };
 
-        // === NOVIDADE V11.6: SELETOR LIMPO E IFRAME SEM ERRO 404 ===
-        window.abrirPrevia = function(forcarContexto = null) {
-            const selector = document.getElementById('previewContextSelector');
-            const contexto = forcarContexto || selector.value || 'inicio';
+        window.gerarEmbedRedeSocial = function(url) {
+            if (!url) return "";
+            url = url.trim();
 
-            let optionsHtml = `
-                <option value="inicio">Visão: Tela Inicial</option>
-                <option value="ultimas">Visão: Últimas Notícias</option>
-            `;
-            if (contexto !== 'inicio' && contexto !== 'ultimas') {
-                if (contexto === 'rascunho_atual') {
-                    optionsHtml += `<option value="rascunho_atual">Visão: Matéria em Edição</option>`;
-                } else if (window.noticiasAdmin[contexto]) {
-                    const t = window.noticiasAdmin[contexto].titulo.substring(0, 30) + '...';
-                    optionsHtml += `<option value="${contexto}">Visão: Notícia (${t})</option>`;
+            if (url.includes("youtube.com") || url.includes("youtu.be")) {
+                let videoId = "";
+                if (url.includes("v=")) {
+                    videoId = url.split("v=")[1].split("&")[0];
+                } else if (url.includes("youtu.be/")) {
+                    videoId = url.split("youtu.be/")[1].split("?")[0];
+                }
+                if (videoId) {
+                    return `<div style="position:relative;width:100%;padding-bottom:56.25%;height:0;background:#000;border-radius:8px;overflow:hidden;margin-top:10px;">
+                                <iframe src="https://www.youtube.com/embed/${videoId}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+                            </div>`;
                 }
             }
-            selector.innerHTML = optionsHtml;
-            selector.value = contexto;
 
+            if (url.includes("x.com") || url.includes("twitter.com")) {
+                let cleanUrl = url.split("?")[0];
+                return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;">
+                            <blockquote class="twitter-tweet" data-theme="light">
+                                <a href="${cleanUrl}"></a>
+                            </blockquote>
+                            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"><\/script>
+                        </div>`;
+            }
+
+            if (url.includes("instagram.com")) {
+                let cleanUrl = url.split("?")[0];
+                if (!cleanUrl.endsWith("/")) cleanUrl += "/";
+                return `<div style="display:flex;justify-content:center;margin-top:10px;">
+                            <iframe src="${cleanUrl}embed/" width="100%" height="480" frameborder="0" scrolling="no" allowtransparency="true" style="max-width:540px;border-radius:8px;background:#fff;"></iframe>
+                        </div>`;
+            }
+
+            return `<div style="margin-top:10px;padding:12px;background:#f0f2f5;border-radius:8px;border-left:4px solid #002a5c;">
+                        <a href="${url}" target="_blank" style="color:#002a5c;font-weight:bold;text-decoration:none;display:flex;align-items:center;gap:8px;">
+                            <i class="fas fa-external-link-alt" style="font-size:18px;"></i> Acessar link externo
+                        </a>
+                    </div>`;
+        };
+
+        // === NOVIDADE V11.1: PRÉVIA TOTALMENTE DINAMICA COM IFRAME E SELO ===
+        window.abrirPrevia = function(contexto = 'rascunho_atual') {
             const mockupWireframe = document.getElementById('mockupWireframe');
             const mockupNoticia = document.getElementById('mockupNoticia');
+            const label = document.getElementById('previewContextLabel');
 
-            // 1. TELA INICIAL OU ULTIMAS NOTICIAS - SEMPRE A RAIZ (IFRAME DO SITE OFICIAL)
+            // Atualiza o Selo Visual
+            if (contexto === 'inicio') {
+                label.innerHTML = '<i class="fas fa-home"></i> Visão: Tela Inicial';
+            } else if (contexto === 'ultimas') {
+                label.innerHTML = '<i class="fas fa-newspaper"></i> Visão: Últimas Notícias';
+            } else if (contexto === 'rascunho_atual') {
+                label.innerHTML = '<i class="fas fa-edit"></i> Visão: Rascunho Atual';
+            } else {
+                const item = window.noticiasAdmin[contexto];
+                label.innerHTML = `<i class="fas fa-thumbtack"></i> Visão: ${item ? item.titulo.substring(0, 30) + '...' : 'Notícia Específica'}`;
+            }
+
+            // 1. TELA INICIAL OU ULTIMAS NOTICIAS - USA O SITE ORIGINAL EM UM IFRAME SEM ERRO 404!
             if (contexto === 'inicio' || contexto === 'ultimas') {
                 mockupWireframe.style.display = 'block';
                 mockupNoticia.style.display = 'none';
 
-                let urlReal = window.location.origin + "/"; 
-                // Evitando erro 404: Independente se for Inicio ou Ultimas, ele abre a raiz. 
-                // Se a pessoa quiser, ela clica no menu do site real.
+                // Usando a URL base de onde você está para evitar 404 do Netlify Deploy Preview
+                const urlReal = window.location.origin + "/";
 
                 mockupWireframe.innerHTML = `
                     <div style="background: #002a5c; color: white; padding: 12px; text-align: center; border-radius: 8px 8px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; z-index: 20;">
                         <div style="font-size: 16px; font-weight: 900; letter-spacing: 1px;"><i class="fas fa-satellite-dish" style="color: #25d366;"></i> SITE OFICIAL AO VIVO</div>
-                        <div style="font-size: 12px; font-weight: normal; color: #cbd5e1; margin-top: 4px;">Navegue no site abaixo e arraste o banner para a posição exata.</div>
+                        <div style="font-size: 12px; font-weight: normal; color: #cbd5e1; margin-top: 4px;">Navegue no seu site real abaixo e arraste o banner para a posição exata de exibição.</div>
                     </div>
+                    <!-- AQUI ENTRA O SEU SITE DE VERDADE DINAMICAMENTE -->
                     <iframe id="iframeSiteReal" src="${urlReal}" style="width: 100%; height: calc(100vh - 160px); border: 2px solid #002a5c; border-top: none; border-radius: 0 0 8px 8px; background: #fff;"></iframe>
                 `;
                 mockupWireframe.style.background = 'transparent';
@@ -1421,6 +1453,7 @@
                 // Layout Perfeito da Notícia
                 let htmlArtigo = `
                 <div style="background: #fff; width: 100%; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; text-align: left; padding-bottom: 50px;">
+                    <!-- Cabeçalho Idêntico ao do site -->
                     <div style="background: #fff; padding: 15px; border-bottom: 1px solid #e1e4e8;">
                         <span style="color: #d93025; font-size: 11px; font-weight: 900; text-transform: uppercase; margin-right: 10px;">${cTxt}</span>
                         <span style="font-size: 11px; color: #555;">Notícia: ${tTxt.substring(0,35)}...</span>
@@ -1428,7 +1461,9 @@
 
                     <div style="max-width: 800px; margin: 0 auto; padding: 30px 20px;">
                         <h1 style="color: #002a5c; font-size: 32px; font-weight: 900; margin-bottom: 12px; line-height: 1.2;">${tTxt}</h1>
-                        <div style="font-size: 14px; color: #666; margin-bottom: 25px;">Por ${aTxt}</div>`;
+                        <div style="font-size: 14px; color: #666; margin-bottom: 25px;">Por ${aTxt}</div>
+                        
+                        <!-- Imagem Cheia e sem bordas pretas -->`;
 
                 const formatoImgFinal = (formEsc && formEsc !== 'auto') ? formEsc.replace(':', '/') : 'auto';
 
@@ -1477,6 +1512,7 @@
                 mockupNoticia.innerHTML = htmlArtigo;
             }
 
+            // Renderizar Banners por cima da tela escolhida
             const wrapper = document.getElementById('prevConteudoWrapper');
             wrapper.querySelectorAll('.draggable-banner').forEach(el => el.remove());
 
@@ -1658,6 +1694,321 @@
                 toggleIframePointer(true);
             });
         };
+
+        window.fecharPrevia = function() {
+            document.getElementById('modalPrevia').style.display = 'none';
+            if (window.veioDoPainelAnuncios) {
+                document.getElementById('modalPainelAnunciosConfig').style.display = 'flex';
+                window.veioDoPainelAnuncios = false;
+            }
+        };
+
+        window.cancelarEdicao = function() {
+            idEditando = null;
+            document.getElementById('formNoticia').reset();
+            quill.root.innerHTML = '';
+            document.getElementById('imagemBase64_1').value = '';
+            document.getElementById('imagemBase64_2').value = '';
+            document.getElementById('videoBase64').value = '';
+            document.getElementById('videoPreview').style.display = 'none';
+            document.getElementById('container-imagens-extras').innerHTML = '';
+            document.getElementById('container-videos-extras').innerHTML = '';
+            document.getElementById('container-banners-extras').innerHTML = '';
+            contImagensExtras = 0;
+            contVideosExtras = 0;
+            contBannersExtras = 0;
+            window.bannersData = {};
+            window.atualizarPreviewImagens();
+            window.limparRascunho();
+            document.getElementById('btnSalvar').innerHTML = `<i class="fas fa-paper-plane"></i> Publicar Matéria`;
+            document.getElementById('btnCancelar').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        async function carregarListaNoticias() {
+            try {
+                const q = query(collection(db, "noticias"), orderBy("dataCriacao", "desc"));
+                const querySnapshot = await getDocs(q);
+                window.listaCompletaNoticias = [];
+                window.noticiasAdmin = {};
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    data.id = docSnap.id;
+                    window.listaCompletaNoticias.push(data);
+                    window.noticiasAdmin[data.id] = data;
+                });
+                
+                window.atualizarEstatisticasView();
+            } catch(e) { console.log(e); }
+        }
+
+        window.renderizarListasDeNoticias = async function() {
+            const container = document.getElementById('lista-noticias-fullscreen');
+            container.innerHTML = '<p style="color: #666; font-size: 14px;">Carregando matérias...</p>';
+            
+            try {
+                const querySnapshot = await getDocs(collection(db, "noticias"));
+                
+                window.listaCompletaNoticias = [];
+                window.noticiasAdmin = {};
+                
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    data.id = docSnap.id;
+                    window.listaCompletaNoticias.push(data);
+                    window.noticiasAdmin[data.id] = data;
+                });
+                
+                window.listaCompletaNoticias.sort((a, b) => {
+                    const timeA = a.dataAtualizacao || a.dataCriacao || 0;
+                    const timeB = b.dataAtualizacao || b.dataCriacao || 0;
+                    return timeB - timeA;
+                });
+                
+                container.innerHTML = '';
+                
+                if(window.listaCompletaNoticias.length === 0) {
+                    container.innerHTML = '<p style="color: #666; font-size: 14px;">Nenhuma matéria cadastrada.</p>';
+                    return;
+                }
+
+                window.listaCompletaNoticias.forEach((item) => {
+                    const id = item.id;
+                    const img1 = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
+                    const img2 = item.imagemBase64_2 || item.imagem2 || '';
+                    
+                    let thumbHtml = '';
+                    let classDuasImagens = '';
+
+                    if (img1 && img2) {
+                        thumbHtml = `<img src="${img1}"><img src="${img2}">`;
+                        classDuasImagens = 'duas-imagens';
+                    } else if (img1) {
+                        thumbHtml = `<img src="${img1}">`;
+                    } else if (img2) {
+                        thumbHtml = `<img src="${img2}">`;
+                    } else {
+                        thumbHtml = '<i class="fas fa-image"></i>';
+                    }
+
+                    const cats = item.categorias ? item.categorias.join(', ') : (item.categoria || 'Geral');
+
+                    const div = document.createElement('div');
+                    div.className = 'noticia-item';
+                    
+                    let botoesHtml = '';
+                    const lista = document.getElementById('lista-noticias-fullscreen');
+                    if(lista.classList.contains('modo-selecao-anuncio')) {
+                        botoesHtml = `<button type="button" class="btn-selecionar-anuncio" style="display:inline-flex;" onclick="window.selecionarMateriaParaBanner('${id}', '${item.titulo ? item.titulo.replace(/'/g, "\\'") : 'Sem Título'}')"><i class="fas fa-bullseye"></i> Escolher esta matéria</button>`;
+                    } else {
+                        botoesHtml = `
+                            <button type="button" class="btn-editar" onclick="window.editarNoticia('${id}')"><i class="fas fa-edit"></i> Editar</button>
+                            <button type="button" class="btn-apagar" onclick="window.apagarNoticia('${id}')"><i class="fas fa-trash-alt"></i> Excluir</button>
+                        `;
+                    }
+
+                    div.innerHTML = `
+                        <div class="noticia-miniatura ${classDuasImagens}">
+                            ${thumbHtml}
+                        </div>
+                        <div class="noticia-conteudo-info">
+                            <strong>${item.titulo || 'Sem Título'}</strong>
+                            <div class="noticia-meta-tags">
+                                <span><i class="fas fa-folder"></i> ${cats}</span>
+                                <span><i class="fas fa-user"></i> ${item.autor || 'Redação'}</span>
+                            </div>
+                            <div class="acoes-btn">
+                                ${botoesHtml}
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            } catch(e) {
+                container.innerHTML = '<p style="color: #d93025; font-size: 14px;">Erro ao carregar matérias do Firebase.</p>';
+                console.error(e);
+            }
+        };
+
+        window.editarNoticia = function(id) {
+            const item = window.noticiasAdmin[id];
+            if (!item) return;
+
+            idEditando = id;
+            document.getElementById('titulo').value = item.titulo || '';
+            document.getElementById('autor').value = item.autor || '';
+            document.getElementById('fonteNoticia').value = item.fonteNoticia || '';
+            document.getElementById('linkRedeSocial').value = item.linkRedeSocial || '';
+            document.getElementById('fonteImagem').value = item.fonteImagem || '';
+            document.getElementById('creditosVideo').value = item.creditosVideo || '';
+            
+            quill.root.innerHTML = item.textoRico || item.texto || item.conteudo || '';
+
+            document.querySelectorAll('input[name="categoria"]').forEach(cb => cb.checked = false);
+            if(item.categorias && Array.isArray(item.categorias)) {
+                item.categorias.forEach(cat => {
+                    const cb = document.querySelector(`input[name="categoria"][value="${cat}"]`);
+                    if(cb) cb.checked = true;
+                });
+            } else if (item.categoria) {
+                const cb = document.querySelector(`input[name="categoria"][value="${item.categoria}"]`);
+                if(cb) cb.checked = true;
+            }
+
+            document.getElementById('imagemBase64_1').value = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
+            document.getElementById('imagemBase64_2').value = item.imagemBase64_2 || item.imagem2 || '';
+            window.atualizarPreviewImagens();
+
+            document.getElementById('videoBase64').value = item.videoBase64 || item.video || item.linkVideo || '';
+            const vPrev = document.getElementById('videoPreview');
+            const currentVideo = document.getElementById('videoBase64').value;
+            if(currentVideo) {
+                vPrev.src = currentVideo;
+                vPrev.style.display = 'block';
+            } else {
+                vPrev.style.display = 'none';
+                vPrev.src = '';
+            }
+
+            document.getElementById('container-imagens-extras').innerHTML = '';
+            contImagensExtras = 0;
+            if(item.imagensExtras && Array.isArray(item.imagensExtras)) {
+                item.imagensExtras.forEach(ie => window.adicionarPainelImagem(ie.ratio, ie.base64, ie.credito));
+            }
+
+            document.getElementById('container-videos-extras').innerHTML = '';
+            contVideosExtras = 0;
+            if(item.videosExtras && Array.isArray(item.videosExtras)) {
+                item.videosExtras.forEach(ve => window.adicionarPainelVideo(ve.ratio, ve.base64, ve.credito));
+            }
+
+            document.getElementById('container-banners-extras').innerHTML = '';
+            contBannersExtras = 0;
+            window.bannersData = {};
+            if(item.banners && Array.isArray(item.banners)) {
+                item.banners.forEach(b => window.adicionarPainelBanner(b));
+            }
+
+            document.getElementById('btnSalvar').innerHTML = `<i class="fas fa-save"></i> Atualizar Matéria`;
+            document.getElementById('btnCancelar').style.display = 'block';
+
+            window.fecharModalGerenciamento();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.apagarNoticia = function(id) {
+            if(confirm("Tem certeza que deseja excluir permanentemente esta matéria?")) {
+                deleteDoc(doc(db, "noticias", id)).then(() => {
+                    alert("Matéria excluída com sucesso!");
+                    window.renderizarListasDeNoticias();
+                    carregarListaNoticias();
+                }).catch(e => alert("Erro ao excluir."));
+            }
+        };
+
+        document.getElementById('formNoticia').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const categorias = Array.from(document.querySelectorAll('input[name="categoria"]:checked')).map(cb => cb.value);
+            if (categorias.length === 0) {
+                alert("⚠️ Selecione pelo menos uma categoria / nicho.");
+                return;
+            }
+
+            const imagensExtrasArray = [];
+            for(let i=1; i<=contImagensExtras; i++) {
+                const b64 = document.getElementById(`imagemBase64Extra_${i}`)?.value;
+                if(b64) {
+                    imagensExtrasArray.push({
+                        base64: b64,
+                        ratio: document.getElementById(`formatoImgExtraEscolhido_${i}`)?.value || '16/9',
+                        credito: document.getElementById(`fonteImagemExtra_${i}`)?.value || ''
+                    });
+                }
+            }
+
+            const videosExtrasArray = [];
+            for(let i=1; i<=contVideosExtras; i++) {
+                const b64 = document.getElementById(`videoBase64Extra_${i}`)?.value;
+                if(b64) {
+                    videosExtrasArray.push({
+                        base64: b64,
+                        ratio: document.getElementById(`formatoVidExtraEscolhido_${i}`)?.value || '16/9',
+                        credito: document.getElementById(`creditosVideoExtra_${i}`)?.value || ''
+                    });
+                }
+            }
+
+            const bannersArray = [];
+            for(let i=1; i<=contBannersExtras; i++) {
+                const painel = document.getElementById(`painel-banner-extra-${i}`);
+                if(painel) {
+                    const noticiaAlvoInput = document.getElementById(`selectNoticiaEspecifica_${i}`);
+                    bannersArray.push({
+                        idPainel: i,
+                        tipo: document.getElementById(`tipoBannerExtra_${i}`).value,
+                        codigoAnuncio: document.getElementById(`codigoAnuncioExtra_${i}`).value,
+                        bannerImgBase64: document.getElementById(`bannerImgBase64Extra_${i}`).value,
+                        formatoBanner: document.getElementById(`formatoBannerExtraEscolhido_${i}`).value,
+                        bannerLinkUrl: document.getElementById(`bannerLinkUrlExtra_${i}`).value,
+                        localExibicao: document.getElementById(`localExibicaoBanner_${i}`).value,
+                        noticiaAlvo: noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual',
+                        posX: window.bannersData[i]?.posX || 0,
+                        posY: window.bannersData[i]?.posY || 0,
+                        scale: window.bannersData[i]?.scale || 1
+                    });
+                }
+            }
+
+            const btnSubmit = document.getElementById('btnSalvar');
+            btnSubmit.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Salvando no Firebase...";
+            btnSubmit.disabled = true;
+
+            const noticiaObj = {
+                titulo: document.getElementById('titulo').value,
+                autor: document.getElementById('autor').value,
+                fonteNoticia: document.getElementById('fonteNoticia').value,
+                linkRedeSocial: document.getElementById('linkRedeSocial').value,
+                fonteImagem: document.getElementById('fonteImagem').value,
+                creditosVideo: document.getElementById('creditosVideo').value,
+                textoRico: quill.root.innerHTML,
+                texto: quill.root.innerHTML, 
+                categorias: categorias,
+                categoria: categorias.length > 0 ? categorias[0] : "Geral", 
+                formatoEscolhido: document.getElementById('formatoEscolhido').value,
+                formatoVideoEscolhido: document.getElementById('formatoVideoEscolhido').value,
+                imagemBase64_1: document.getElementById('imagemBase64_1').value,
+                imagem1: document.getElementById('imagemBase64_1').value, 
+                imagemBase64_2: document.getElementById('imagemBase64_2').value,
+                imagem2: document.getElementById('imagemBase64_2').value,
+                videoBase64: document.getElementById('videoBase64').value,
+                video: document.getElementById('videoBase64').value,
+                imagensExtras: imagensExtrasArray,
+                videosExtras: videosExtrasArray,
+                banners: bannersArray,
+                dataAtualizacao: Date.now()
+            };
+
+            try {
+                if (idEditando) {
+                    await updateDoc(doc(db, "noticias", idEditando), noticiaObj);
+                    alert("✅ Matéria atualizada com sucesso!");
+                } else {
+                    noticiaObj.dataCriacao = Date.now();
+                    noticiaObj.visualizacoes = 0;
+                    await addDoc(collection(db, "noticias"), noticiaObj);
+                    alert("✅ Matéria publicada com sucesso!");
+                }
+                window.limparRascunho();
+                window.cancelarEdicao();
+                carregarListaNoticias();
+            } catch (err) {
+                alert("❌ Erro ao salvar a matéria. Verifique sua conexão.");
+            } finally {
+                btnSubmit.innerHTML = `<i class="fas fa-paper-plane"></i> Publicar Matéria`;
+                btnSubmit.disabled = false;
+            }
+        });
     </script>
 </body>
 </html>
