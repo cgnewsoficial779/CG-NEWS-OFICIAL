@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V11.6</title>
+    <title>Painel Editor - News Pro V11.7</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -179,7 +179,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V11.6</span>
+                <span class="badge-pro">V11.7</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -478,10 +478,10 @@
             
             <div id="prevConteudoWrapper" style="padding: 0; position: relative;">
                 <div id="mockupWireframe" style="display: none; width: 100%; min-height: 100vh;">
-                    </div>
+                </div>
 
                 <div id="mockupNoticia" style="width: 100%; min-height: 100vh; background: #f0f2f5;">
-                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -560,6 +560,11 @@
         window.removerBannerImgExtra = function(id) {
             document.getElementById(`bannerImgInputExtra_${id}`).value = "";
             document.getElementById(`bannerImgBase64Extra_${id}`).value = "";
+            
+            const previewContainer = document.getElementById(`previewContainerBannerExtra_${id}`);
+            if (previewContainer) {
+                previewContainer.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#777;"><i class="fas fa-image" style="margin-right: 6px;"></i> Prévia do Anúncio</div>';
+            }
             window.salvarRascunho();
         };
 
@@ -658,6 +663,15 @@
                     </div>
                     <input type="hidden" id="formatoBannerExtraEscolhido_${id}" value="${obj.formatoBanner}">
 
+                    <div class="preview-container" id="previewContainerBannerExtra_${id}" style="aspect-ratio: ${obj.formatoBanner === 'auto' ? '16/9' : obj.formatoBanner.replace(':', '/')}; margin-top: 15px; border: 1px dashed #b0b8c1; background: #f8f9fa;">
+                        ${obj.bannerImgBase64 
+                            ? (obj.bannerImgBase64.startsWith('data:video') 
+                                ? `<video src="${obj.bannerImgBase64}" style="width: 100%; height: 100%; object-fit: cover;" autoplay muted loop playsinline></video>` 
+                                : `<img src="${obj.bannerImgBase64}" style="width: 100%; height: 100%; object-fit: cover;">`)
+                            : '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#777;"><i class="fas fa-image" style="margin-right: 6px;"></i> Prévia do Anúncio</div>'
+                        }
+                    </div>
+
                     <div class="form-group" style="margin-top: 15px; margin-bottom: 0;">
                         <label>Link de Destino (Site ou Rede Social)</label>
                         <input type="text" id="bannerLinkUrlExtra_${id}" value="${obj.bannerLinkUrl}" placeholder="https://...">
@@ -667,7 +681,24 @@
             container.appendChild(painel);
 
             document.getElementById(`bannerImgInputExtra_${id}`).addEventListener('change', function(e) {
-                processarImagemParaBase64(e.target.files[0], `bannerImgBase64Extra_${id}`, window.salvarRascunho);
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const previewContainer = document.getElementById(`previewContainerBannerExtra_${id}`);
+                const fileUrl = URL.createObjectURL(file);
+
+                if (file.type.startsWith('video/')) {
+                    previewContainer.innerHTML = `<video src="${fileUrl}" style="width: 100%; height: 100%; object-fit: cover;" autoplay muted loop playsinline></video>`;
+                } else {
+                    previewContainer.innerHTML = `<img src="${fileUrl}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    document.getElementById(`bannerImgBase64Extra_${id}`).value = evt.target.result;
+                    window.salvarRascunho();
+                };
+                reader.readAsDataURL(file);
             });
         };
 
@@ -714,6 +745,12 @@
             document.querySelectorAll(`#ratiosBannerExtra_${id} .btn-ratio`).forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             document.getElementById(`formatoBannerExtraEscolhido_${id}`).value = ratio;
+            
+            const previewContainer = document.getElementById(`previewContainerBannerExtra_${id}`);
+            if (previewContainer) {
+                previewContainer.style.aspectRatio = ratio === 'auto' ? '16/9' : ratio.replace(':', '/');
+            }
+            
             window.salvarRascunho();
         };
 
@@ -1821,7 +1858,6 @@
                     const lista = document.getElementById('lista-noticias-fullscreen');
                     
                     if(lista.classList.contains('modo-selecao-anuncio')) {
-                        // --- CORREÇÃO DE BUG (Versão 11.6): FILTRO DE ASPAS DUPLAS E SIMPLES NO TÍTULO ---
                         const tituloLimpo = item.titulo 
                             ? item.titulo.replace(/'/g, "\\'").replace(/"/g, "&quot;") 
                             : 'Sem Título';
