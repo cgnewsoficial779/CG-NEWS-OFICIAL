@@ -70,11 +70,13 @@
         .file-input-wrapper input[type="file"] { flex: 1; }
         .btn-remover-img { background: #fff; color: #d93025; border: 1px solid #d93025; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 13px; white-space: nowrap; }
 
-        /* V10.4 - Botoes de Local de Anuncio */
+        /* V10.4 - Botoes de Local de Anuncio e Seletor de Matéria */
         .local-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
         .btn-local { flex: 1; padding: 10px; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; text-align: center; transition: 0.2s; min-width: 100px; }
         .btn-local.active { background: #002a5c; color: white; border-color: #002a5c; }
         .btn-local:hover:not(.active) { background: #cbd5e1; }
+        .select-materia-wrapper { display: none; margin-top: 10px; background: #e2e8f0; padding: 12px; border-radius: 6px; border: 1px solid #cbd5e1; }
+        .select-materia-wrapper.active { display: block; }
 
         .ad-tabs { display: flex; gap: 10px; margin-bottom: 12px; }
         .ad-tab-btn { flex: 1; padding: 10px; background: #e2e8f0; border: none; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; }
@@ -117,7 +119,6 @@
         @media(min-width: 600px) { .noticia-miniatura { width: 150px; height: 110px; } }
         .noticia-miniatura img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* Nova classe V10.4 para 2 imagens no gerenciamento */
         .noticia-miniatura.duas-imagens { flex-direction: row; }
         .noticia-miniatura.duas-imagens img { width: 50%; height: 100%; object-fit: cover; }
         .noticia-miniatura.duas-imagens img:first-child { border-right: 2px solid #fff; }
@@ -371,7 +372,7 @@
             </div>
 
             <div class="botoes-acao-container">
-                <button type="button" class="btn-preview" onclick="abrirPrevia('especifica')"><i class="fas fa-eye"></i> Ver Prévia & Organizar Banners</button>
+                <button type="button" class="btn-preview" onclick="abrirPrevia('rascunho_atual')"><i class="fas fa-eye"></i> Ver Prévia & Organizar Banners</button>
                 <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> Publicar Matéria</button>
             </div>
             <button type="button" id="btnCancelar" class="btn-cancelar" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
@@ -455,24 +456,24 @@
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
-                <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 15px; width: 100%;">
                     <span style="font-size: 12px; font-weight: bold; color: #cc0000; text-transform: uppercase;" id="prevCategoria">CATEGORIA</span>
-                    <select id="previewContextSelector" onchange="renderizarBannersPreview()" style="padding: 6px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 13px; font-weight: 800; color: #002a5c; background: #f8f9fa; cursor: pointer; outline: none;">
-                        <option value="especifica">Visão: Notícia Específica</option>
-                        <option value="inicio">Visão: Tela Inicial</option>
-                        <option value="ultimas">Visão: Últimas Notícias</option>
+                    <select id="previewContextSelector" onchange="abrirPrevia()" style="padding: 6px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 13px; font-weight: 800; color: #002a5c; background: #f8f9fa; cursor: pointer; outline: none; flex: 1; max-width: 300px;">
+                        <!-- Gerado Dinamicamente -->
                     </select>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <span style="font-size: 12px; background: #e2e8f0; padding: 5px 10px; border-radius: 4px; display: flex; align-items: center;"><i class="fas fa-arrows-alt" style="margin-right: 5px;"></i> Arraste os Banners</span>
-                    <button class="btn-voltar-edicao" onclick="fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar</button>
+                    <div style="display: flex; gap: 10px; margin-left: auto;">
+                        <span style="font-size: 12px; background: #e2e8f0; padding: 5px 10px; border-radius: 4px; display: flex; align-items: center;"><i class="fas fa-arrows-alt" style="margin-right: 5px;"></i> Arraste os Banners</span>
+                        <button class="btn-voltar-edicao" onclick="fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar</button>
+                    </div>
                 </div>
             </div>
             
             <div id="prevConteudoWrapper">
                 
+                <!-- Fundo simulado para Inicio / Ultimas -->
                 <div id="mockupWireframe" style="display: none; width: 100%; min-height: 800px; background: #f8f9fa; border: 3px dashed #cbd5e1; border-radius: 8px; text-align: center; padding-top: 80px; margin-bottom: 20px;">
-                    </div>
+                    <!-- Preenchido dinamicamente com o FEED REAL -->
+                </div>
 
                 <div id="mockupNoticia">
                     <h1 id="prevTitulo" style="color: #002a5c; font-size: 24px; font-weight: 900; margin-bottom: 12px; line-height: 1.3;">Título</h1>
@@ -538,6 +539,39 @@
         let contBannersExtras = 0;
         window.bannersData = {};
 
+        // === NOVIDADE V10.4: ATUALIZAR SELECTS DE MATÉRIAS PUBLICADAS ===
+        window.atualizarSelectsMaterias = function() {
+            // Atualiza os dropdowns no Painel de Anúncios
+            const selects = document.querySelectorAll('.select-materia');
+            selects.forEach(select => {
+                const valorAtual = select.value;
+                let html = '<option value="rascunho_atual">📝 Rascunho Atual (Matéria em Edição)</option>';
+                window.listaCompletaNoticias.forEach(noticia => {
+                    html += `<option value="${noticia.id}">📌 ${noticia.titulo.substring(0, 50)}...</option>`;
+                });
+                select.innerHTML = html;
+                if([...select.options].some(o => o.value === valorAtual)) select.value = valorAtual;
+            });
+
+            // Atualiza o dropdown no TOPO da tela de Prévia
+            const selectorPrev = document.getElementById('previewContextSelector');
+            if(selectorPrev) {
+                const valPrev = selectorPrev.value;
+                let htmlPrev = `
+                    <option value="rascunho_atual">Visão: Matéria em Edição (Rascunho)</option>
+                    <option value="inicio">Visão: Tela Inicial</option>
+                    <option value="ultimas">Visão: Últimas Notícias</option>
+                    <optgroup label="Visão: Matérias Publicadas (Para Anúncios Específicos)">
+                `;
+                window.listaCompletaNoticias.forEach(n => {
+                    htmlPrev += `<option value="${n.id}">Notícia: ${n.titulo.substring(0, 40)}...</option>`;
+                });
+                htmlPrev += `</optgroup>`;
+                selectorPrev.innerHTML = htmlPrev;
+                if([...selectorPrev.options].some(o => o.value === valPrev)) selectorPrev.value = valPrev;
+            }
+        };
+
         window.abrirPainelAnunciosConfig = function() {
             alternarSidebar();
             document.getElementById('modalPainelAnunciosConfig').style.display = 'flex';
@@ -581,7 +615,7 @@
 
             const obj = salvo || {
                 tipo: 'imagem', codigoAnuncio: '', bannerImgBase64: '', 
-                formatoBanner: '16/9', bannerLinkUrl: '', localExibicao: 'inicio', posX: 20, posY: 200 + (id * 50), scale: 1
+                formatoBanner: '16/9', bannerLinkUrl: '', localExibicao: 'inicio', noticiaAlvo: 'rascunho_atual', posX: 20, posY: 200 + (id * 50), scale: 1
             };
 
             window.bannersData[id] = { posX: obj.posX, posY: obj.posY, scale: obj.scale };
@@ -602,6 +636,13 @@
                         <button type="button" class="btn-local ${obj.localExibicao==='especifica'?'active':''}" onclick="mudarLocalBanner(${id}, 'especifica', this)">Notícia Específica</button>
                     </div>
                     <input type="hidden" id="localExibicaoBanner_${id}" value="${obj.localExibicao}">
+
+                    <div id="wrapperNoticiaEspecifica_${id}" class="select-materia-wrapper ${obj.localExibicao==='especifica'?'active':''}">
+                        <label style="color: #002a5c; font-size: 11px;"><i class="fas fa-crosshairs"></i> Selecione em qual matéria este anúncio vai aparecer:</label>
+                        <select id="selectNoticiaEspecifica_${id}" class="select-materia" onchange="window.salvarRascunho()" style="width:100%; padding:8px; border-radius:6px; border:1px solid #b0b8c1; outline:none;">
+                            <option value="rascunho_atual" ${obj.noticiaAlvo==='rascunho_atual'?'selected':''}>📝 Rascunho Atual (Matéria em Edição)</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="ad-tabs">
@@ -655,6 +696,7 @@
                 </div>
             `;
             container.appendChild(painel);
+            setTimeout(() => window.atualizarSelectsMaterias(), 100);
 
             document.getElementById(`bannerImgInputExtra_${id}`).addEventListener('change', function(e) {
                 processarImagemParaBase64(e.target.files[0], `bannerImgBase64Extra_${id}`, window.salvarRascunho);
@@ -665,6 +707,13 @@
             document.querySelectorAll(`#botoesLocalBanner_${id} .btn-local`).forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             document.getElementById(`localExibicaoBanner_${id}`).value = local;
+
+            const wrapper = document.getElementById(`wrapperNoticiaEspecifica_${id}`);
+            if(local === 'especifica') {
+                wrapper.classList.add('active');
+            } else {
+                wrapper.classList.remove('active');
+            }
             window.salvarRascunho();
         };
 
@@ -884,6 +933,7 @@
                 for(let i=1; i<=contBannersExtras; i++) {
                     const painel = document.getElementById(`painel-banner-extra-${i}`);
                     if(painel) {
+                        const noticiaAlvoInput = document.getElementById(`selectNoticiaEspecifica_${i}`);
                         bannersArray.push({
                             idPainel: i,
                             tipo: document.getElementById(`tipoBannerExtra_${i}`).value,
@@ -892,6 +942,7 @@
                             formatoBanner: document.getElementById(`formatoBannerExtraEscolhido_${i}`).value,
                             bannerLinkUrl: document.getElementById(`bannerLinkUrlExtra_${i}`).value,
                             localExibicao: document.getElementById(`localExibicaoBanner_${i}`).value,
+                            noticiaAlvo: noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual',
                             posX: window.bannersData[i]?.posX || 0,
                             posY: window.bannersData[i]?.posY || 0,
                             scale: window.bannersData[i]?.scale || 1
@@ -996,7 +1047,7 @@
                 } catch(e) {}
             }
             carregarConfigGoogle();
-            carregarListaNoticias();
+            await carregarListaNoticias();
         };
 
         document.getElementById('formNoticia').addEventListener('input', window.salvarRascunho);
@@ -1280,128 +1331,40 @@
                     </div>`;
         }
 
+        // === NOVIDADE V10.4: SISTEMA DE PRÉVIA INTELIGENTE (CARREGA DADOS REAIS DO BANCO) ===
         window.abrirPrevia = function(forcarContexto = null) {
+            const selector = document.getElementById('previewContextSelector');
             if (forcarContexto) {
-                document.getElementById('previewContextSelector').value = forcarContexto;
+                selector.value = forcarContexto;
             }
+            const contexto = selector.value || 'rascunho_atual';
 
-            document.getElementById('prevTitulo').innerText = document.getElementById('titulo').value || "Título";
-            document.getElementById('prevAutor').innerText = document.getElementById('autor').value || "Redação";
-            document.getElementById('prevTexto').innerHTML = quill.root.innerHTML;
-            
-            const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
-            document.getElementById('prevCategoria').innerText = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
-            document.getElementById('prevCreditoImg').innerText = `Crédito: ${document.getElementById('fonteImagem').value || "N/A"}`;
-            document.getElementById('prevFonteNoticia').innerText = `Fonte: ${document.getElementById('fonteNoticia').value || "Não informada"}`;
-
-            const img1 = document.getElementById('imagemBase64_1').value;
-            const img2 = document.getElementById('imagemBase64_2').value;
-            const videoArquivo = document.getElementById('videoBase64').value;
-            const linkRede = document.getElementById('linkRedeSocial').value;
-            
-            const containerMidiaTopo = document.getElementById('prevContainerMidia');
-            const containerMidiaInferior = document.getElementById('prevContainerMidiaInferior');
-            const prevGaleriaExtra = document.getElementById('prevGaleriaExtra');
-            
-            containerMidiaTopo.innerHTML = "";
-            containerMidiaInferior.innerHTML = "";
-            prevGaleriaExtra.innerHTML = "";
-
-            const rawFormatoImg = document.getElementById('formatoEscolhido').value;
-            const formatoImg = rawFormatoImg === 'auto' ? '16/9' : rawFormatoImg.replace(':', '/');
-            const rawFormatoVid = document.getElementById('formatoVideoEscolhido').value;
-            const formatoVid = rawFormatoVid === 'auto' ? '16/9' : rawFormatoVid.replace(':', '/');
-
-            if (img1 || img2) {
-                let htmlImgs = `<div style="display: flex; width: 100%; aspect-ratio: ${formatoImg}; background: #000; overflow: hidden;">`;
-                if (img1 && img2) {
-                    htmlImgs += `<img src="${img1}" style="flex: 1; width: 50%; height: 100%; object-fit: cover; border-right: 2px solid #fff;">`;
-                    htmlImgs += `<img src="${img2}" style="flex: 1; width: 50%; height: 100%; object-fit: cover;">`;
-                } else if (img1) {
-                    htmlImgs += `<img src="${img1}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
-                } else if (img2) {
-                    htmlImgs += `<img src="${img2}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
-                }
-                htmlImgs += `</div>`;
-                containerMidiaTopo.innerHTML = htmlImgs;
-            } else {
-                containerMidiaTopo.innerHTML = `<div style="padding: 20px; text-align: center; color: #777; background: #eee;">Sem imagem de capa principal</div>`;
-            }
-
-            if (videoArquivo) {
-                const creditoVidVal = document.getElementById('creditosVideo').value;
-                containerMidiaInferior.innerHTML = `
-                    <video src="${videoArquivo}" controls style="width: 100%; aspect-ratio: ${formatoVid}; background: #000; border-radius: 8px; display: block; object-fit: contain;"></video>
-                    ${creditoVidVal ? `<div style="font-size: 11px; color: #777; margin-top: 5px;">Crédito do Vídeo: ${creditoVidVal}</div>` : ''}
-                `;
-            } else if (linkRede) {
-                containerMidiaInferior.innerHTML = gerarEmbedRedeSocial(linkRede);
-            }
-
-            let htmlGaleria = "";
-            for(let i=1; i<=contImagensExtras; i++) {
-                const img = document.getElementById(`imagemBase64Extra_${i}`)?.value;
-                const cred = document.getElementById(`fonteImagemExtra_${i}`)?.value;
-                const rawRatio = document.getElementById(`formatoImgExtraEscolhido_${i}`)?.value || '16/9';
-                const ratio = rawRatio === 'auto' ? '16/9' : rawRatio.replace(':', '/');
-                if(img) {
-                    htmlGaleria += `<div style="margin-top: 15px;">
-                        <div style="width: 100%; aspect-ratio: ${ratio}; background: #000; border-radius: 8px; overflow: hidden;">
-                            <img src="${img}" style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                        ${cred ? `<div style="font-size: 11px; color: #777; margin-top: 5px;">Crédito: ${cred}</div>` : ''}
-                    </div>`;
-                }
-            }
-            for(let i=1; i<=contVideosExtras; i++) {
-                const vid = document.getElementById(`videoBase64Extra_${i}`)?.value;
-                const cred = document.getElementById(`creditosVideoExtra_${i}`)?.value;
-                const rawRatio = document.getElementById(`formatoVidExtraEscolhido_${i}`)?.value || '16/9';
-                const ratio = rawRatio === 'auto' ? '16/9' : rawRatio.replace(':', '/');
-                if(vid) {
-                    htmlGaleria += `<div style="margin-top: 15px;">
-                        <video src="${vid}" controls style="width: 100%; aspect-ratio: ${ratio}; border-radius: 8px; background: #000; object-fit: contain;"></video>
-                        ${cred ? `<div style="font-size: 11px; color: #777; margin-top: 5px;">Crédito: ${cred}</div>` : ''}
-                    </div>`;
-                }
-            }
-            prevGaleriaExtra.innerHTML = htmlGaleria;
-
-            // Injetar e filtrar os banners com base na selecao
-            window.renderizarBannersPreview();
-
-            document.getElementById('modalPrevia').style.display = 'flex';
-        };
-
-        window.renderizarBannersPreview = function() {
-            const contexto = document.getElementById('previewContextSelector').value;
             const mockupWireframe = document.getElementById('mockupWireframe');
             const mockupNoticia = document.getElementById('mockupNoticia');
-            const wrapper = document.getElementById('prevConteudoWrapper');
 
-            // Limpa os banners antigos do wrapper para recriar
-            wrapper.querySelectorAll('.draggable-banner').forEach(el => el.remove());
-
-            // Alternar a interface de fundo de acordo com aVISÃO selecionada
-            if (contexto === 'especifica') {
-                mockupWireframe.style.display = 'none';
-                mockupNoticia.style.display = 'block';
-            } else {
+            // 1. SE A PRÉVIA FOR 'TELA INICIAL' OU 'ÚLTIMAS NOTÍCIAS' -> GERA UM FEED REAL!
+            if (contexto === 'inicio' || contexto === 'ultimas') {
                 mockupWireframe.style.display = 'block';
                 mockupNoticia.style.display = 'none';
-                
-                // SIMULAÇÃO REAL DA PÁGINA COM AS MATÉRIAS DO BANCO
+
                 let feedHtml = '<div style="max-width: 800px; margin: 0 auto; text-align: left; padding: 20px 0;">';
                 feedHtml += `<h2 style="color:#002a5c; margin-bottom: 20px; font-weight: 900; text-transform: uppercase; border-left: 4px solid #f9ab00; padding-left: 10px;">${contexto === 'inicio' ? 'Visão: Tela Inicial' : 'Visão: Últimas Notícias'}</h2>`;
                 
                 if (window.listaCompletaNoticias && window.listaCompletaNoticias.length > 0) {
-                    const itensParaMostrar = window.listaCompletaNoticias.slice(0, 5);
+                    const itensParaMostrar = window.listaCompletaNoticias.slice(0, 5); // Mostra as últimas 5 para simular
                     itensParaMostrar.forEach(item => {
                         const thumb = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
+                        const thumb2 = item.imagemBase64_2 || item.imagem2 || '';
+                        
+                        let tHtml = thumb ? `<img src="${thumb}" style="width: 100%; height: 100%; object-fit: cover;">` : '<i class="fas fa-image" style="display:flex; justify-content:center; align-items:center; height:100%; color:#aaa; font-size: 24px;"></i>';
+                        if(thumb && thumb2) {
+                             tHtml = `<img src="${thumb}" style="width: 50%; height: 100%; object-fit: cover; border-right:2px solid #fff;"><img src="${thumb2}" style="width: 50%; height: 100%; object-fit: cover;">`;
+                        }
+
                         feedHtml += `
                             <div style="background: #fff; border: 1px solid #e1e4e8; border-radius: 8px; margin-bottom: 15px; display: flex; gap: 15px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                                <div style="width: 120px; height: 90px; border-radius: 6px; background: #ddd; flex-shrink: 0; overflow: hidden;">
-                                    ${thumb ? `<img src="${thumb}" style="width: 100%; height: 100%; object-fit: cover;">` : '<i class="fas fa-image" style="display:flex; justify-content:center; align-items:center; height:100%; color:#aaa;"></i>'}
+                                <div style="width: 120px; height: 90px; border-radius: 6px; background: #ddd; flex-shrink: 0; overflow: hidden; display:flex;">
+                                    ${tHtml}
                                 </div>
                                 <div style="flex: 1;">
                                     <h4 style="color: #002a5c; font-size: 16px; margin-bottom: 5px; line-height: 1.3;">${item.titulo || 'Sem Título'}</h4>
@@ -1412,7 +1375,7 @@
                         `;
                     });
                 } else {
-                    feedHtml += `<p style="color: #666;">Nenhuma matéria cadastrada para simular o feed.</p>`;
+                    feedHtml += `<p style="color: #666;">Nenhuma matéria cadastrada para simular o feed. Publique algo primeiro!</p>`;
                 }
                 feedHtml += '</div>';
                 
@@ -1420,18 +1383,116 @@
                 mockupWireframe.style.background = 'transparent';
                 mockupWireframe.style.border = 'none';
                 mockupWireframe.style.paddingTop = '0';
+            } 
+            // 2. SE A PRÉVIA FOR UMA NOTÍCIA ESPECÍFICA -> PUXA OS DADOS REAIS DELA!
+            else {
+                mockupWireframe.style.display = 'none';
+                mockupNoticia.style.display = 'block';
+
+                let tTxt, aTxt, txtH, cTxt, credTxt, fontTxt, i1, i2, vArq, lRede, formEsc, formVidEsc;
+
+                // Carrega rascunho da tela principal
+                if (contexto === 'rascunho_atual') {
+                    tTxt = document.getElementById('titulo').value || "Título";
+                    aTxt = document.getElementById('autor').value || "Redação";
+                    txtH = quill.root.innerHTML;
+                    const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
+                    cTxt = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
+                    credTxt = `Crédito: ${document.getElementById('fonteImagem').value || "N/A"}`;
+                    fontTxt = `Fonte: ${document.getElementById('fonteNoticia').value || "Não informada"}`;
+                    i1 = document.getElementById('imagemBase64_1').value;
+                    i2 = document.getElementById('imagemBase64_2').value;
+                    vArq = document.getElementById('videoBase64').value;
+                    lRede = document.getElementById('linkRedeSocial').value;
+                    formEsc = document.getElementById('formatoEscolhido').value;
+                    formVidEsc = document.getElementById('formatoVideoEscolhido').value;
+                } 
+                // Carrega a notícia publicada escolhida no seletor!
+                else {
+                    const item = window.noticiasAdmin[contexto];
+                    if (item) {
+                        tTxt = item.titulo || "Sem Título";
+                        aTxt = item.autor || "Redação";
+                        txtH = item.textoRico || item.texto || item.conteudo || "<p>Sem conteúdo.</p>";
+                        cTxt = item.categorias ? item.categorias.join(', ') : (item.categoria || "Geral");
+                        credTxt = `Crédito: ${item.fonteImagem || "N/A"}`;
+                        fontTxt = `Fonte: ${item.fonteNoticia || "Não informada"}`;
+                        i1 = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
+                        i2 = item.imagemBase64_2 || item.imagem2 || '';
+                        vArq = item.videoBase64 || item.video || item.linkVideo || '';
+                        lRede = item.linkRedeSocial || '';
+                        formEsc = item.formatoEscolhido || '16/9';
+                        formVidEsc = item.formatoVideoEscolhido || '16/9';
+                    }
+                }
+
+                document.getElementById('prevTitulo').innerText = tTxt;
+                document.getElementById('prevAutor').innerText = aTxt;
+                document.getElementById('prevTexto').innerHTML = txtH;
+                document.getElementById('prevCategoria').innerText = cTxt;
+                document.getElementById('prevCreditoImg').innerText = credTxt;
+                document.getElementById('prevFonteNoticia').innerText = fontTxt;
+
+                const containerMidiaTopo = document.getElementById('prevContainerMidia');
+                const containerMidiaInferior = document.getElementById('prevContainerMidiaInferior');
+                const prevGaleriaExtra = document.getElementById('prevGaleriaExtra');
+                
+                containerMidiaTopo.innerHTML = "";
+                containerMidiaInferior.innerHTML = "";
+                prevGaleriaExtra.innerHTML = "";
+
+                const formatoImg = formEsc === 'auto' ? '16/9' : formEsc.replace(':', '/');
+                const formatoVid = formVidEsc === 'auto' ? '16/9' : formVidEsc.replace(':', '/');
+
+                if (i1 || i2) {
+                    let htmlImgs = `<div style="display: flex; width: 100%; aspect-ratio: ${formatoImg}; background: #000; overflow: hidden;">`;
+                    if (i1 && i2) {
+                        htmlImgs += `<img src="${i1}" style="flex: 1; width: 50%; height: 100%; object-fit: cover; border-right: 2px solid #fff;">`;
+                        htmlImgs += `<img src="${i2}" style="flex: 1; width: 50%; height: 100%; object-fit: cover;">`;
+                    } else if (i1) {
+                        htmlImgs += `<img src="${i1}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
+                    } else if (i2) {
+                        htmlImgs += `<img src="${i2}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
+                    }
+                    htmlImgs += `</div>`;
+                    containerMidiaTopo.innerHTML = htmlImgs;
+                } else {
+                    containerMidiaTopo.innerHTML = `<div style="padding: 20px; text-align: center; color: #777; background: #eee;">Sem imagem de capa principal</div>`;
+                }
+
+                if (vArq) {
+                    let cVideoVal = '';
+                    if (contexto === 'rascunho_atual') cVideoVal = document.getElementById('creditosVideo').value;
+                    else cVideoVal = window.noticiasAdmin[contexto].creditosVideo || '';
+                    
+                    containerMidiaInferior.innerHTML = `
+                        <video src="${vArq}" controls style="width: 100%; aspect-ratio: ${formatoVid}; background: #000; border-radius: 8px; display: block; object-fit: contain;"></video>
+                        ${cVideoVal ? `<div style="font-size: 11px; color: #777; margin-top: 5px;">Crédito do Vídeo: ${cVideoVal}</div>` : ''}
+                    `;
+                } else if (lRede) {
+                    containerMidiaInferior.innerHTML = gerarEmbedRedeSocial(lRede);
+                }
             }
 
-            // Renderizar apenas os banners do contexto atual
+            // === 3. FINALMENTE: MOSTRAR APENAS OS BANNERS DO CONTEXTO CORRETO ===
+            const wrapper = document.getElementById('prevConteudoWrapper');
+            wrapper.querySelectorAll('.draggable-banner').forEach(el => el.remove());
+
             for(let i=1; i<=contBannersExtras; i++) {
                 const painel = document.getElementById(`painel-banner-extra-${i}`);
                 if(!painel) continue;
 
-                const localInput = document.getElementById(`localExibicaoBanner_${i}`);
-                const localBanner = localInput ? localInput.value : 'inicio';
+                const localExibicao = document.getElementById(`localExibicaoBanner_${i}`).value;
+                const noticiaAlvoInput = document.getElementById(`selectNoticiaEspecifica_${i}`);
+                const noticiaAlvo = noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual';
 
-                // SE NÃO BATER COM O CONTEXTO SELECIONADO NA PRÉVIA, ELE PULA E NÃO MOSTRA
-                if (localBanner !== contexto) continue;
+                // Lógica de filtro do banner para ele não aparecer no lugar errado
+                let mostrarBanner = false;
+                if (contexto === 'inicio' && localExibicao === 'inicio') mostrarBanner = true;
+                else if (contexto === 'ultimas' && localExibicao === 'ultimas') mostrarBanner = true;
+                else if (localExibicao === 'especifica' && contexto === noticiaAlvo) mostrarBanner = true;
+
+                if (!mostrarBanner) continue;
 
                 const tipo = document.getElementById(`tipoBannerExtra_${i}`).value;
                 const base64 = document.getElementById(`bannerImgBase64Extra_${i}`).value;
@@ -1479,6 +1540,8 @@
                     ativarInteracaoBanner(el, bd);
                 }
             }
+
+            document.getElementById('modalPrevia').style.display = 'flex';
         };
 
         function ativarInteracaoBanner(el, dataObj) {
@@ -1609,9 +1672,16 @@
                 const q = query(collection(db, "noticias"), orderBy("dataCriacao", "desc"));
                 const querySnapshot = await getDocs(q);
                 window.listaCompletaNoticias = [];
+                window.noticiasAdmin = {};
                 querySnapshot.forEach((docSnap) => {
-                    window.listaCompletaNoticias.push({ id: docSnap.id, ...docSnap.data() });
+                    const data = docSnap.data();
+                    data.id = docSnap.id;
+                    window.listaCompletaNoticias.push(data);
+                    window.noticiasAdmin[data.id] = data;
                 });
+                
+                // IMPORTANTE: Atualiza os menus suspensos de banners logo ao carregar a página
+                window.atualizarSelectsMaterias();
                 atualizarEstatisticasView();
             } catch(e) { console.log(e); }
         }
@@ -1621,7 +1691,6 @@
             container.innerHTML = '<p style="color: #666; font-size: 14px;">Carregando matérias...</p>';
             
             try {
-                // CORREÇÃO: Remover o orderBy() rígido que estava ocultando itens antigos.
                 const querySnapshot = await getDocs(collection(db, "noticias"));
                 
                 window.listaCompletaNoticias = [];
@@ -1634,12 +1703,14 @@
                     window.noticiasAdmin[data.id] = data;
                 });
                 
-                // ORDENAÇÃO MANUAL para não perder as notícias sem o campo de data criado.
                 window.listaCompletaNoticias.sort((a, b) => {
                     const timeA = a.dataAtualizacao || a.dataCriacao || 0;
                     const timeB = b.dataAtualizacao || b.dataCriacao || 0;
                     return timeB - timeA;
                 });
+                
+                // Atualiza os seletores de anúncio dinamicamente
+                window.atualizarSelectsMaterias();
 
                 container.innerHTML = '';
                 
@@ -1650,8 +1721,6 @@
 
                 window.listaCompletaNoticias.forEach((item) => {
                     const id = item.id;
-                    
-                    // CORREÇÃO DE MAPEAMENTO PARA PEGAR AS DUAS FOTOS
                     const img1 = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
                     const img2 = item.imagemBase64_2 || item.imagem2 || '';
                     
@@ -1709,7 +1778,6 @@
             document.getElementById('fonteImagem').value = item.fonteImagem || '';
             document.getElementById('creditosVideo').value = item.creditosVideo || '';
             
-            // CORREÇÃO: Recuperar textos antigos ou novos no editor.
             quill.root.innerHTML = item.textoRico || item.texto || item.conteudo || '';
 
             document.querySelectorAll('input[name="categoria"]').forEach(cb => cb.checked = false);
@@ -1723,12 +1791,10 @@
                 if(cb) cb.checked = true;
             }
 
-            // CORREÇÃO: Recuperar Imagens antigas no editor.
             document.getElementById('imagemBase64_1').value = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
             document.getElementById('imagemBase64_2').value = item.imagemBase64_2 || item.imagem2 || '';
             atualizarPreviewImagens();
 
-            // CORREÇÃO: Recuperar Vídeos antigos no editor.
             document.getElementById('videoBase64').value = item.videoBase64 || item.video || item.linkVideo || '';
             const vPrev = document.getElementById('videoPreview');
             const currentVideo = document.getElementById('videoBase64').value;
@@ -1813,6 +1879,7 @@
             for(let i=1; i<=contBannersExtras; i++) {
                 const painel = document.getElementById(`painel-banner-extra-${i}`);
                 if(painel) {
+                    const noticiaAlvoInput = document.getElementById(`selectNoticiaEspecifica_${i}`);
                     bannersArray.push({
                         idPainel: i,
                         tipo: document.getElementById(`tipoBannerExtra_${i}`).value,
@@ -1821,6 +1888,7 @@
                         formatoBanner: document.getElementById(`formatoBannerExtraEscolhido_${i}`).value,
                         bannerLinkUrl: document.getElementById(`bannerLinkUrlExtra_${i}`).value,
                         localExibicao: document.getElementById(`localExibicaoBanner_${i}`).value,
+                        noticiaAlvo: noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual',
                         posX: window.bannersData[i]?.posX || 0,
                         posY: window.bannersData[i]?.posY || 0,
                         scale: window.bannersData[i]?.scale || 1
@@ -1839,26 +1907,18 @@
                 linkRedeSocial: document.getElementById('linkRedeSocial').value,
                 fonteImagem: document.getElementById('fonteImagem').value,
                 creditosVideo: document.getElementById('creditosVideo').value,
-                
-                // CORREÇÃO: Salvando no formato Antigo e Novo simultaneamente para manter tudo rodando!
                 textoRico: quill.root.innerHTML,
                 texto: quill.root.innerHTML, 
-                
                 categorias: categorias,
                 categoria: categorias.length > 0 ? categorias[0] : "Geral", 
-
                 formatoEscolhido: document.getElementById('formatoEscolhido').value,
                 formatoVideoEscolhido: document.getElementById('formatoVideoEscolhido').value,
-                
                 imagemBase64_1: document.getElementById('imagemBase64_1').value,
                 imagem1: document.getElementById('imagemBase64_1').value, 
-                
                 imagemBase64_2: document.getElementById('imagemBase64_2').value,
                 imagem2: document.getElementById('imagemBase64_2').value,
-                
                 videoBase64: document.getElementById('videoBase64').value,
                 video: document.getElementById('videoBase64').value,
-                
                 imagensExtras: imagensExtrasArray,
                 videosExtras: videosExtrasArray,
                 banners: bannersArray,
