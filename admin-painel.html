@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V11.2</title>
+    <title>Painel Editor - News Pro V11.4</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
+        /* V11.4: Bloqueia o "puxar para recarregar" dos navegadores de celular */
+        html, body { overscroll-behavior-y: none; }
+        
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
         body { background-color: #f0f2f5; padding: 10px; color: #1a1a1a; font-size: 16px; }
         
@@ -70,7 +73,6 @@
         .file-input-wrapper input[type="file"] { flex: 1; }
         .btn-remover-img { background: #fff; color: #d93025; border: 1px solid #d93025; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 13px; white-space: nowrap; }
 
-        /* Botoes de Local de Anuncio e Seletor Visual */
         .local-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
         .btn-local { flex: 1; padding: 10px; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; text-align: center; transition: 0.2s; min-width: 100px; }
         .btn-local.active { background: #002a5c; color: white; border-color: #002a5c; }
@@ -116,7 +118,6 @@
         .btn-preview { background-color: #0275d8; color: white; border: none; padding: 16px; flex: 1; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
         .btn-cancelar { background-color: #d93025; color: white; border: none; padding: 14px; width: 100%; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; display: none; text-transform: uppercase; }
 
-        /* Notícia Listagem (Externo) */
         .noticia-item { border: 1px solid #d1d9e0; padding: 14px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; gap: 15px; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
         .noticia-miniatura { width: 110px; height: 90px; border-radius: 8px; background: #ddd; flex-shrink: 0; display: flex; align-items: stretch; justify-content: center; color: #777; font-size: 14px; overflow: hidden; }
         @media(min-width: 600px) { .noticia-miniatura { width: 150px; height: 110px; } }
@@ -151,7 +152,7 @@
 
         .btn-voltar-edicao { background: #002a5c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         
-        #prevConteudoWrapper { position: relative; flex: 1; overflow-y: auto; overflow-x: hidden; background: #f0f2f5; }
+        #prevConteudoWrapper { position: relative; flex: 1; overflow-y: auto; overflow-x: hidden; background: #f0f2f5; overscroll-behavior-y: none; }
         .preview-body-content { font-family: Georgia, serif; font-size: 18px; line-height: 1.8; color: #222; margin-top: 15px; }
 
         .toast-save { position: fixed; bottom: 20px; right: 20px; background: #137333; color: white; padding: 10px 20px; border-radius: 6px; font-size: 12px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none; z-index: 99999; }
@@ -177,7 +178,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V11.2</span>
+                <span class="badge-pro">V11.4</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -460,7 +461,6 @@
         </div>
     </div>
 
-    <!-- MODAL DE PREVIA ATUALIZADO V11.2 -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -470,21 +470,17 @@
                     
                     <div style="display: flex; gap: 10px; margin-left: auto;">
                         <span style="font-size: 12px; background: #e2e8f0; padding: 5px 10px; border-radius: 4px; display: flex; align-items: center;"><i class="fas fa-arrows-alt" style="margin-right: 5px;"></i> Arraste os Banners</span>
+                        
                         <button class="btn-voltar-edicao" onclick="window.fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar</button>
                     </div>
                 </div>
             </div>
             
             <div id="prevConteudoWrapper" style="padding: 0; position: relative;">
-                
-                <!-- Fundo REAL para Inicio / Ultimas (IFRAME DO SITE OFICIAL) -->
                 <div id="mockupWireframe" style="display: none; width: 100%; min-height: 100vh;">
-                    <!-- Preenchido dinamicamente com o IFRAME -->
                 </div>
 
-                <!-- Simulação idêntica para Rascunhos/Notícias Específicas -->
                 <div id="mockupNoticia" style="width: 100%; min-height: 100vh; background: #f0f2f5;">
-                    <!-- Preenchido dinamicamente com a NOTÍCIA REAL -->
                 </div>
             </div>
         </div>
@@ -693,7 +689,6 @@
             window.abrirModalGerenciamento(true); 
         };
 
-        // ABRE A PREVIA E GUARDA A MEMORIA
         window.abrirPreviaDosBanners = function() {
             window.veioDoPainelAnuncios = true;
             let alvo = 'inicio'; 
@@ -1312,50 +1307,7 @@
             }
         };
 
-        window.gerarEmbedRedeSocial = function(url) {
-            if (!url) return "";
-            url = url.trim();
-
-            if (url.includes("youtube.com") || url.includes("youtu.be")) {
-                let videoId = "";
-                if (url.includes("v=")) {
-                    videoId = url.split("v=")[1].split("&")[0];
-                } else if (url.includes("youtu.be/")) {
-                    videoId = url.split("youtu.be/")[1].split("?")[0];
-                }
-                if (videoId) {
-                    return `<div style="position:relative;width:100%;padding-bottom:56.25%;height:0;background:#000;border-radius:8px;overflow:hidden;margin-top:10px;">
-                                <iframe src="https://www.youtube.com/embed/${videoId}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
-                            </div>`;
-                }
-            }
-
-            if (url.includes("x.com") || url.includes("twitter.com")) {
-                let cleanUrl = url.split("?")[0];
-                return `<div style="display:flex;justify-content:center;width:100%;margin-top:10px;">
-                            <blockquote class="twitter-tweet" data-theme="light">
-                                <a href="${cleanUrl}"></a>
-                            </blockquote>
-                            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"><\/script>
-                        </div>`;
-            }
-
-            if (url.includes("instagram.com")) {
-                let cleanUrl = url.split("?")[0];
-                if (!cleanUrl.endsWith("/")) cleanUrl += "/";
-                return `<div style="display:flex;justify-content:center;margin-top:10px;">
-                            <iframe src="${cleanUrl}embed/" width="100%" height="480" frameborder="0" scrolling="no" allowtransparency="true" style="max-width:540px;border-radius:8px;background:#fff;"></iframe>
-                        </div>`;
-            }
-
-            return `<div style="margin-top:10px;padding:12px;background:#f0f2f5;border-radius:8px;border-left:4px solid #002a5c;">
-                        <a href="${url}" target="_blank" style="color:#002a5c;font-weight:bold;text-decoration:none;display:flex;align-items:center;gap:8px;">
-                            <i class="fas fa-external-link-alt" style="font-size:18px;"></i> Acessar link externo
-                        </a>
-                    </div>`;
-        };
-
-        // === NOVIDADE V11.2: CORREÇÃO URL IFRAME (TELA INICIAL vs ULTIMAS NOTICIAS) ===
+        // === NOVIDADE V11.4: TELA INICIAL SEM ERRO 404 E SEM BOTÃO EXCEDENTE ===
         window.abrirPrevia = function(contexto = 'rascunho_atual') {
             const mockupWireframe = document.getElementById('mockupWireframe');
             const mockupNoticia = document.getElementById('mockupNoticia');
@@ -1372,25 +1324,19 @@
                 label.innerHTML = `<i class="fas fa-thumbtack"></i> Visão: ${item ? item.titulo.substring(0, 30) + '...' : 'Notícia Específica'}`;
             }
 
-            // 1. TELA INICIAL OU ULTIMAS NOTICIAS - USA O SITE ORIGINAL EM UM IFRAME
+            // 1. TELA INICIAL OU ULTIMAS NOTICIAS - USA A RAIZ DO SITE PARA NÃO DAR ERRO!
             if (contexto === 'inicio' || contexto === 'ultimas') {
                 mockupWireframe.style.display = 'block';
                 mockupNoticia.style.display = 'none';
 
-                // Lógica de URL Inteligente para Iframe:
+                // ABRIR SEMPRE A RAIZ! O cliente pode navegar dentro do iframe se quiser, evita o erro 404
                 let urlReal = window.location.origin + "/"; 
-                if (contexto === 'ultimas') {
-                    // Direciona especificamente para a página de últimas notícias
-                    // Se no seu site o arquivo se chamar diferente, mude a linha abaixo!
-                    urlReal = window.location.origin + "/ultimas.html"; 
-                }
 
                 mockupWireframe.innerHTML = `
                     <div style="background: #002a5c; color: white; padding: 12px; text-align: center; border-radius: 8px 8px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; z-index: 20;">
                         <div style="font-size: 16px; font-weight: 900; letter-spacing: 1px;"><i class="fas fa-satellite-dish" style="color: #25d366;"></i> SITE OFICIAL AO VIVO</div>
                         <div style="font-size: 12px; font-weight: normal; color: #cbd5e1; margin-top: 4px;">Navegue no seu site real abaixo e arraste o banner para a posição exata de exibição.</div>
                     </div>
-                    <!-- AQUI ENTRA O SEU SITE DE VERDADE DINAMICAMENTE -->
                     <iframe id="iframeSiteReal" src="${urlReal}" style="width: 100%; height: calc(100vh - 160px); border: 2px solid #002a5c; border-top: none; border-radius: 0 0 8px 8px; background: #fff;"></iframe>
                 `;
                 mockupWireframe.style.background = 'transparent';
@@ -1456,10 +1402,8 @@
                     }
                 }
 
-                // Layout Perfeito da Notícia
                 let htmlArtigo = `
                 <div style="background: #fff; width: 100%; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; text-align: left; padding-bottom: 50px;">
-                    <!-- Cabeçalho Idêntico ao do site -->
                     <div style="background: #fff; padding: 15px; border-bottom: 1px solid #e1e4e8;">
                         <span style="color: #d93025; font-size: 11px; font-weight: 900; text-transform: uppercase; margin-right: 10px;">${cTxt}</span>
                         <span style="font-size: 11px; color: #555;">Notícia: ${tTxt.substring(0,35)}...</span>
@@ -1467,9 +1411,7 @@
 
                     <div style="max-width: 800px; margin: 0 auto; padding: 30px 20px;">
                         <h1 style="color: #002a5c; font-size: 32px; font-weight: 900; margin-bottom: 12px; line-height: 1.2;">${tTxt}</h1>
-                        <div style="font-size: 14px; color: #666; margin-bottom: 25px;">Por ${aTxt}</div>
-                        
-                        <!-- Imagem Cheia e sem bordas pretas -->`;
+                        <div style="font-size: 14px; color: #666; margin-bottom: 25px;">Por ${aTxt}</div>`;
 
                 const formatoImgFinal = (formEsc && formEsc !== 'auto') ? formEsc.replace(':', '/') : 'auto';
 
@@ -1506,10 +1448,23 @@
                     
                     htmlArtigo += `<video src="${vArq}" controls style="width: 100%; aspect-ratio: ${formatoVidFinal}; background: #000; border-radius: 8px; display: block; object-fit: contain; margin-bottom: 8px;"></video>
                         ${cVideoVal ? `<div style="font-size: 11px; color: #777; margin-bottom: 25px;">Crédito: ${cVideoVal}</div>` : '<div style="margin-bottom: 25px;"></div>'}`;
-                } else if (lRede) {
-                    htmlArtigo += window.gerarEmbedRedeSocial(lRede) + `<div style="margin-bottom: 25px;"></div>`;
                 }
 
+                dataExtraImg.forEach(ie => {
+                    const ratio = ie.ratio === 'auto' ? '16/9' : ie.ratio.replace(':', '/');
+                    htmlArtigo += `
+                        <div style="width: 100%; aspect-ratio: ${ratio}; background: #000; border-radius: 8px; overflow: hidden; margin-bottom:5px;">
+                            <img src="${ie.base64}" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        ${ie.credito ? `<div style="font-size: 10px; color: #777; margin-bottom: 25px;">Crédito: ${ie.credito}</div>` : '<div style="margin-bottom: 25px;"></div>'}`;
+                });
+                dataExtraVid.forEach(ve => {
+                    const ratio = ve.ratio === 'auto' ? '16/9' : ve.ratio.replace(':', '/');
+                    htmlArtigo += `
+                        <video src="${ve.base64}" controls style="width: 100%; aspect-ratio: ${ratio}; border-radius: 8px; background: #000; object-fit: contain; margin-bottom: 5px;"></video>
+                        ${ve.credito ? `<div style="font-size: 10px; color: #777; margin-bottom: 25px;">Crédito: ${ve.credito}</div>` : '<div style="margin-bottom: 25px;"></div>'}`;
+                });
+                
                 if (fontTxt) {
                     htmlArtigo += `<div style="font-size: 13px; color: #555; border-top: 1px solid #eee; padding-top: 15px; margin-top: 30px;">${fontTxt}</div>`;
                 }
@@ -1518,7 +1473,6 @@
                 mockupNoticia.innerHTML = htmlArtigo;
             }
 
-            // Renderizar Banners por cima da tela escolhida
             const wrapper = document.getElementById('prevConteudoWrapper');
             wrapper.querySelectorAll('.draggable-banner').forEach(el => el.remove());
 
