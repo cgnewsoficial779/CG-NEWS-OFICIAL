@@ -169,7 +169,7 @@
 
         .empty-msg { font-size: 14px; color: #718096; font-style: italic; margin: 40px 0; text-align: center; }
 
-        /* CATEGORY HOME BLOCK (ESTILO 3x3) */
+        /* CATEGORY HOME BLOCK */
         .category-block {
             margin-bottom: 40px;
         }
@@ -195,7 +195,7 @@
         
         .grid-img-container {
             width: 100%;
-            aspect-ratio: 4/3; /* Fixado em 4:3 para todos os tamanhos de tela */
+            aspect-ratio: 4/3;
             background-color: #f7fafc;
             display: flex;
             align-items: center;
@@ -294,14 +294,13 @@
 
         @media (min-width: 768px) {
             .home-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; }
-            /* Removido o sobrescrito de aspect-ratio anterior para manter sempre 4/3 */
         }
 
         @media (min-width: 1024px) {
             .home-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
-        /* LISTA DE NOTÍCIAS (FILTROS) */
+        /* LISTA DE NOTÍCIAS */
         .news-list-item {
             display: flex;
             flex-direction: column;
@@ -319,7 +318,7 @@
         
         .news-list-image-container {
             width: 100%;
-            aspect-ratio: 4/3; /* Mantém 4:3 também nas listas em dispositivos móveis */
+            aspect-ratio: 4/3;
             background: #f7fafc;
             border-radius: 6px;
             overflow: hidden;
@@ -367,7 +366,7 @@
 
         @media (min-width: 640px) {
             .news-list-item { flex-direction: row; align-items: center; padding: 16px; gap: 20px; }
-            .news-list-image-container { width: 220px; height: 165px; flex-shrink: 0; aspect-ratio: 4/3; } /* Forçado para manter o 4:3 proporcional na listagem desktop */
+            .news-list-image-container { width: 220px; height: 165px; flex-shrink: 0; }
         }
 
         /* RANKING MAIS LIDAS */
@@ -479,21 +478,6 @@
             transform: translateY(-1px);
         }
 
-        .banner-anuncio-slot {
-            width: 100%;
-            background-color: #fafbfc;
-            border: 1px dashed #cbd5e0;
-            border-radius: 6px;
-            padding: 14px;
-            text-align: center;
-            color: #a0aec0;
-            font-size: 11px;
-            font-weight: 600;
-            margin: 20px 0;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
         /* RODAPÉ */
         footer { 
             background-color: #11136c; 
@@ -577,6 +561,35 @@
 
         @media (min-width: 768px) {
             .materia-container-box { margin: 40px auto; padding: 40px; }
+        }
+        
+        /* ESTILOS PARA OS BANNERS INJETADOS NO TEXTO */
+        .banner-injetado-container {
+            margin: 35px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            clear: both;
+        }
+        .banner-injetado-label {
+            font-size: 10px;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .banner-injetado-box {
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #fafbfc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
@@ -792,9 +805,8 @@
             return typeof url === 'string' ? url.trim() : "";
         }
 
-        // Função auxiliar ajustada para forçar o formato de capa sempre para 4/3 nos cards da home/listas
         function gerarHtmlMidiaCard(item) {
-            const aspectRatioCSS = '4/3'; // Forçado permanentemente para 4:3
+            const aspectRatioCSS = '4/3';
 
             const img1 = item.imagem1 ? item.imagem1.trim() : "";
             const img2 = item.imagem2 ? item.imagem2.trim() : "";
@@ -1027,6 +1039,59 @@
                 }
             }
 
+            // ====================================================================================
+            // SISTEMA INTELIGENTE DE INJEÇÃO DE BANNERS NO MEIO DO TEXTO DA MATÉRIA
+            // ====================================================================================
+            let htmlDoTexto = item.textoRico || item.texto || "<p></p>";
+            let textoProcessado = "";
+
+            if (item.banners && Array.isArray(item.banners) && item.banners.length > 0) {
+                // Separa o texto pelas quebras de parágrafo naturais geradas pelo editor Quill
+                let paragrafos = htmlDoTexto.split(/<\/p>/i);
+                let bannerAtivo = 0;
+
+                for (let i = 0; i < paragrafos.length; i++) {
+                    textoProcessado += paragrafos[i] + (paragrafos[i].trim() !== '' ? '</p>' : '');
+
+                    // Insere um banner a cada 2 parágrafos
+                    if ((i + 1) % 2 === 0 && bannerAtivo < item.banners.length) {
+                        let b = item.banners[bannerAtivo];
+                        let conteudoAnuncio = '';
+
+                        if (b.tipo === 'codigo' && b.codigoAnuncio) {
+                            conteudoAnuncio = b.codigoAnuncio;
+                        } else if (b.tipo === 'imagem' && b.bannerImgBase64) {
+                            if (b.bannerImgBase64.startsWith('data:video') || b.bannerImgBase64.includes('video/mp4')) {
+                                conteudoAnuncio = `<video src="${b.bannerImgBase64}" style="width: 100%; height: 100%; object-fit: cover; display: block;" autoplay muted loop playsinline></video>`;
+                            } else {
+                                conteudoAnuncio = `<img src="${b.bannerImgBase64}" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+                            }
+                            if (b.bannerLinkUrl) {
+                                conteudoAnuncio = `<a href="${b.bannerLinkUrl}" target="_blank" style="display:block; width:100%; height:100%;">${conteudoAnuncio}</a>`;
+                            }
+                        }
+
+                        if (conteudoAnuncio) {
+                            let formatoCSS = b.formatoBanner && b.formatoBanner !== 'auto' ? b.formatoBanner.replace(':', '/') : 'auto';
+                            let cssAspect = formatoCSS !== 'auto' ? `aspect-ratio: ${formatoCSS};` : '';
+
+                            textoProcessado += `
+                                <div class="banner-injetado-container">
+                                    <div class="banner-injetado-label">- Publicidade -</div>
+                                    <div class="banner-injetado-box" style="${cssAspect}">
+                                        ${conteudoAnuncio}
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        bannerAtivo++;
+                    }
+                }
+            } else {
+                textoProcessado = htmlDoTexto; // Renderiza normal caso não tenha banners configurados
+            }
+            // ====================================================================================
+
             let blocoVideoRedeSocial = "";
             const urlRede = item.linkRedeSocial ? item.linkRedeSocial.trim() : "";
 
@@ -1152,19 +1217,11 @@
                     </div>
                 </div>
 
-                <div class="banner-anuncio-slot">
-                    Publicidade / Espaço para Banner
-                </div>
-
                 ${blocoMidiaPrincipal}
                 
-                <div style="font-size: 16px; line-height: 1.75; color: #2d3748; white-space: pre-wrap; margin-top: 15px;">${item.texto}</div>
+                <div style="font-size: 16px; line-height: 1.75; color: #2d3748; margin-top: 15px;">${textoProcessado}</div>
 
                 ${blocoVideoRedeSocial}
-
-                <div class="banner-anuncio-slot">
-                    Publicidade / Espaço para Banner
-                </div>
                 
                 <div style="margin-top: 35px; padding-top: 15px; border-top: 1px solid #e2e8f0; display: flex; flex-wrap: wrap; gap: 10px;">
                     <div style="background: #1a202c; color: white; padding: 6px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; border-radius: 4px;">
