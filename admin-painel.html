@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V11.3</title>
+    <title>Painel Editor - News Pro V11.4</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -179,7 +179,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V11.3</span>
+                <span class="badge-pro">V11.4</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -462,7 +462,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE PREVIA ATUALIZADO V11.3 -->
+    <!-- MODAL DE PREVIA ATUALIZADO V11.4 -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -1408,8 +1408,8 @@
                 let urlReal = "https://fanciful-halva-1454f7.netlify.app/";
                 
                 if (contexto === 'ultimas') {
-                    // Se a aba de últimas notícias do seu site tiver outro final (ex: /noticias), você pode alterar aqui em baixo:
-                    urlReal = "https://fanciful-halva-1454f7.netlify.app/ultimas";
+                    // Se o seu site usa âncora ou página específica para últimas notícias:
+                    urlReal = "https://fanciful-halva-1454f7.netlify.app/#ultimas";
                 }
 
                 mockupWireframe.innerHTML = `
