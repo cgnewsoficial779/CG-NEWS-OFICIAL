@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V11.1</title>
+    <title>Painel Editor - News Pro V11.2</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -137,15 +137,14 @@
         .modo-selecao-anuncio .btn-editar, .modo-selecao-anuncio .btn-apagar { display: none !important; }
         .modo-selecao-anuncio .btn-selecionar-anuncio { display: inline-flex !important; }
 
-        /* AQUI FOI FEITA A CORREÇÃO PARA A TELA CHEIA TOTAL */
-        .modal-overlay, .modal-fullscreen-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); margin: 0; padding: 0; }
+        /* MODAIS COMUNS (Como o de Prévia que deve ter margem no PC) */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-content { background: #fff; width: 100vw; height: 100vh; height: 100dvh; max-width: 100%; max-height: 100%; border-radius: 0; overflow-y: hidden; position: relative; display: flex; flex-direction: column; }
-        
-        /* A classe modal-fullscreen-content agora é obrigada a ser 100% de largura e altura SEMPRE */
-        .modal-fullscreen-content { background: #fff; width: 100vw; height: 100vh; height: 100dvh; max-width: 100vw; max-height: 100vh; max-height: 100dvh; border-radius: 0 !important; margin: 0 !important; border: none !important; overflow-y: hidden; position: relative; display: flex; flex-direction: column; }
-        
-        /* Apenas modais comuns (.modal-content) como o de prévia encolhem no PC */
         @media(min-width: 768px) { .modal-content { width: 90vw; height: 92vh; border-radius: 12px; max-width: 900px; } }
+
+        /* MODAIS FULLSCREEN ABSOLUTOS (Painel de Banners, Gestão, Audiência) - Sem margens nunca */
+        .modal-fullscreen-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.85); z-index: 10000; margin: 0 !important; padding: 0 !important; }
+        .modal-fullscreen-content { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #fff; width: 100% !important; height: 100% !important; max-width: 100% !important; max-height: 100% !important; border-radius: 0 !important; margin: 0 !important; border: none !important; overflow-y: hidden; display: flex; flex-direction: column; }
 
         .modal-header-top, .modal-fs-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #eee; padding: 15px 20px; background: #fff; z-index: 2000; }
         .modal-fs-header { background: #002a5c; color: white; }
@@ -181,7 +180,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V11.1</span>
+                <span class="badge-pro">V11.2</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -464,7 +463,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE PREVIA ATUALIZADO V11.1 -->
+    <!-- MODAL DE PREVIA ATUALIZADO V11.2 -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -541,12 +540,14 @@
         window.veioDoPainelAnuncios = false;
 
         window.abrirPainelAnunciosConfig = function() {
-            window.alternarSidebar();
-            document.getElementById('modalPainelAnunciosConfig').style.display = 'flex';
+            window.alternarSidebar(true);
+            document.getElementById('modalPainelAnunciosConfig').style.display = 'block';
+            sessionStorage.setItem('currentModal', 'painelAnuncios'); // Salva o estado ao abrir
         };
 
         window.fecharPainelAnunciosConfig = function() {
             document.getElementById('modalPainelAnunciosConfig').style.display = 'none';
+            sessionStorage.removeItem('currentModal'); // Apaga o estado ao fechar
         };
 
         window.mudarAbaBannerExtra = function(id, tipo, btn) {
@@ -1048,27 +1049,44 @@
             }
             window.carregarConfigGoogle();
             await window.carregarListaNoticias();
+
+            // SISTEMA QUE RECUPERA O ESTADO AO ATUALIZAR A PÁGINA
+            setTimeout(() => {
+                const currentModal = sessionStorage.getItem('currentModal');
+                if (currentModal === 'painelAnuncios') {
+                    window.abrirPainelAnunciosConfig();
+                } else if (currentModal === 'gerenciamento') {
+                    const modo = sessionStorage.getItem('modoGerenciamento') === 'true';
+                    window.abrirModalGerenciamento(modo);
+                } else if (currentModal === 'audiencia') {
+                    window.abrirModalAudiencia();
+                } else if (currentModal === 'previa') {
+                    const contexto = sessionStorage.getItem('contextoPrevia') || 'rascunho_atual';
+                    window.abrirPrevia(contexto);
+                }
+            }, 600); // Aguarda a renderização do banco
         };
 
         document.getElementById('formNoticia').addEventListener('input', window.salvarRascunho);
         document.getElementById('formNoticia').addEventListener('change', window.salvarRascunho);
         quill.on('text-change', window.salvarRascunho);
 
-        window.alternarSidebar = function() {
+        window.alternarSidebar = function(forceClose = false) {
             const panel = document.getElementById('sidebarPanel');
             const overlay = document.getElementById('sidebarOverlay');
             const isOpen = panel.classList.contains('ativo');
-            if (isOpen) {
+            
+            if (isOpen || forceClose) {
                 panel.classList.remove('ativo');
                 overlay.style.display = 'none';
-            } else {
+            } else if (!forceClose) {
                 panel.classList.add('ativo');
                 overlay.style.display = 'block';
             }
         };
 
         window.abrirModalGerenciamento = function(modoSelecao = false) {
-            window.alternarSidebar();
+            window.alternarSidebar(true);
             const modal = document.getElementById('modalFullscreenGerenciar');
             const lista = document.getElementById('lista-noticias-fullscreen');
             const titulo = document.getElementById('tituloModalGerenciamento');
@@ -1081,7 +1099,10 @@
                 titulo.innerHTML = '<i class="fas fa-list-ul"></i> Gerenciar Todas as Matérias';
             }
             
-            modal.style.display = 'flex';
+            modal.style.display = 'block';
+            sessionStorage.setItem('currentModal', 'gerenciamento');
+            sessionStorage.setItem('modoGerenciamento', modoSelecao);
+            
             window.renderizarListasDeNoticias();
         };
 
@@ -1089,7 +1110,11 @@
             document.getElementById('modalFullscreenGerenciar').style.display = 'none';
             if(idBannerAguardandoSelecao) {
                 idBannerAguardandoSelecao = null;
-                document.getElementById('modalPainelAnunciosConfig').style.display = 'flex';
+                document.getElementById('modalPainelAnunciosConfig').style.display = 'block';
+                sessionStorage.setItem('currentModal', 'painelAnuncios');
+            } else {
+                sessionStorage.removeItem('currentModal');
+                sessionStorage.removeItem('modoGerenciamento');
             }
         };
 
@@ -1100,19 +1125,22 @@
                 idBannerAguardandoSelecao = null;
                 
                 document.getElementById('modalFullscreenGerenciar').style.display = 'none';
-                document.getElementById('modalPainelAnunciosConfig').style.display = 'flex';
+                document.getElementById('modalPainelAnunciosConfig').style.display = 'block';
+                sessionStorage.setItem('currentModal', 'painelAnuncios'); // Salva que voltou para painel
                 window.salvarRascunho();
             }
         };
 
         window.abrirModalAudiencia = function() {
-            window.alternarSidebar();
-            document.getElementById('modalFullscreenAudiencia').style.display = 'flex';
+            window.alternarSidebar(true);
+            document.getElementById('modalFullscreenAudiencia').style.display = 'block';
+            sessionStorage.setItem('currentModal', 'audiencia');
             window.atualizarEstatisticasView();
         };
 
         window.fecharModalAudiencia = function() {
             document.getElementById('modalFullscreenAudiencia').style.display = 'none';
+            sessionStorage.removeItem('currentModal');
         };
 
         function processarImagemParaBase64(file, inputHiddenId, callback) {
@@ -1359,13 +1387,11 @@
                     </div>`;
         };
 
-        // === NOVIDADE V11.1: PRÉVIA TOTALMENTE DINAMICA COM IFRAME E SELO ===
         window.abrirPrevia = function(contexto = 'rascunho_atual') {
             const mockupWireframe = document.getElementById('mockupWireframe');
             const mockupNoticia = document.getElementById('mockupNoticia');
             const label = document.getElementById('previewContextLabel');
 
-            // Atualiza o Selo Visual
             if (contexto === 'inicio') {
                 label.innerHTML = '<i class="fas fa-home"></i> Visão: Tela Inicial';
             } else if (contexto === 'ultimas') {
@@ -1377,12 +1403,10 @@
                 label.innerHTML = `<i class="fas fa-thumbtack"></i> Visão: ${item ? item.titulo.substring(0, 30) + '...' : 'Notícia Específica'}`;
             }
 
-            // 1. TELA INICIAL OU ULTIMAS NOTICIAS - USA O SITE ORIGINAL EM UM IFRAME SEM ERRO 404!
             if (contexto === 'inicio' || contexto === 'ultimas') {
                 mockupWireframe.style.display = 'block';
                 mockupNoticia.style.display = 'none';
 
-                // Usando a URL base de onde você está para evitar 404 do Netlify Deploy Preview
                 const urlReal = window.location.origin + "/";
 
                 mockupWireframe.innerHTML = `
@@ -1390,7 +1414,6 @@
                         <div style="font-size: 16px; font-weight: 900; letter-spacing: 1px;"><i class="fas fa-satellite-dish" style="color: #25d366;"></i> SITE OFICIAL AO VIVO</div>
                         <div style="font-size: 12px; font-weight: normal; color: #cbd5e1; margin-top: 4px;">Navegue no seu site real abaixo e arraste o banner para a posição exata de exibição.</div>
                     </div>
-                    <!-- AQUI ENTRA O SEU SITE DE VERDADE DINAMICAMENTE -->
                     <iframe id="iframeSiteReal" src="${urlReal}" style="width: 100%; height: calc(100vh - 160px); border: 2px solid #002a5c; border-top: none; border-radius: 0 0 8px 8px; background: #fff;"></iframe>
                 `;
                 mockupWireframe.style.background = 'transparent';
@@ -1398,9 +1421,7 @@
                 mockupWireframe.style.paddingTop = '0';
                 mockupWireframe.style.padding = '0';
                 mockupWireframe.style.margin = '0';
-            } 
-            // 2. NOTÍCIA ESPECIFICA (DO BANCO OU RASCUNHO)
-            else {
+            } else {
                 mockupWireframe.style.display = 'none';
                 mockupNoticia.style.display = 'block';
 
@@ -1456,20 +1477,15 @@
                     }
                 }
 
-                // Layout Perfeito da Notícia
                 let htmlArtigo = `
                 <div style="background: #fff; width: 100%; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; text-align: left; padding-bottom: 50px;">
-                    <!-- Cabeçalho Idêntico ao do site -->
                     <div style="background: #fff; padding: 15px; border-bottom: 1px solid #e1e4e8;">
                         <span style="color: #d93025; font-size: 11px; font-weight: 900; text-transform: uppercase; margin-right: 10px;">${cTxt}</span>
                         <span style="font-size: 11px; color: #555;">Notícia: ${tTxt.substring(0,35)}...</span>
                     </div>
-
                     <div style="max-width: 800px; margin: 0 auto; padding: 30px 20px;">
                         <h1 style="color: #002a5c; font-size: 32px; font-weight: 900; margin-bottom: 12px; line-height: 1.2;">${tTxt}</h1>
-                        <div style="font-size: 14px; color: #666; margin-bottom: 25px;">Por ${aTxt}</div>
-                        
-                        <!-- Imagem Cheia e sem bordas pretas -->`;
+                        <div style="font-size: 14px; color: #666; margin-bottom: 25px;">Por ${aTxt}</div>`;
 
                 const formatoImgFinal = (formEsc && formEsc !== 'auto') ? formEsc.replace(':', '/') : 'auto';
 
@@ -1518,7 +1534,6 @@
                 mockupNoticia.innerHTML = htmlArtigo;
             }
 
-            // Renderizar Banners por cima da tela escolhida
             const wrapper = document.getElementById('prevConteudoWrapper');
             wrapper.querySelectorAll('.draggable-banner').forEach(el => el.remove());
 
@@ -1585,6 +1600,8 @@
             }
 
             document.getElementById('modalPrevia').style.display = 'flex';
+            sessionStorage.setItem('currentModal', 'previa'); // Salva o estado ao abrir
+            sessionStorage.setItem('contextoPrevia', contexto);
         };
 
         window.ativarInteracaoBanner = function(el, dataObj) {
@@ -1704,8 +1721,12 @@
         window.fecharPrevia = function() {
             document.getElementById('modalPrevia').style.display = 'none';
             if (window.veioDoPainelAnuncios) {
-                document.getElementById('modalPainelAnunciosConfig').style.display = 'flex';
+                document.getElementById('modalPainelAnunciosConfig').style.display = 'block';
                 window.veioDoPainelAnuncios = false;
+                sessionStorage.setItem('currentModal', 'painelAnuncios'); // Salva que voltou
+            } else {
+                sessionStorage.removeItem('currentModal');
+                sessionStorage.removeItem('contextoPrevia');
             }
         };
 
