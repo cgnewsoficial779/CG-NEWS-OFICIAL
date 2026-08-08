@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V12.0</title>
+    <title>Painel Editor - News Pro V12.1</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -156,6 +156,21 @@
         #prevConteudoWrapper { position: relative; flex: 1; overflow-y: auto; overflow-x: hidden; background: #f0f2f5; }
         .preview-body-content { font-family: Georgia, serif; font-size: 18px; line-height: 1.8; color: #222; margin-top: 15px; }
 
+        /* NOVA GRADE DE ALINHAMENTO PARA OS BANNERS */
+        .grid-overlay {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; right: 0; 
+            height: max(300vh, 4000px); /* Garante que cubra páginas longas */
+            pointer-events: none; /* Deixa você clicar no banner por baixo */
+            z-index: 999;
+            background-image: 
+                linear-gradient(to bottom, rgba(2, 117, 216, 0.4) 1px, transparent 1px),
+                linear-gradient(to right, rgba(2, 117, 216, 0.4) 1px, transparent 1px);
+            background-size: 100px 50px; /* Quadrados de espaçamento */
+        }
+        .grid-overlay.ativo { display: block; }
+
         .toast-save { position: fixed; bottom: 20px; right: 20px; background: #137333; color: white; padding: 10px 20px; border-radius: 6px; font-size: 12px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none; z-index: 99999; }
 
         .btn-add-painel { background: #f0f2f5; color: #002a5c; border: 2px dashed #002a5c; padding: 12px; width: 100%; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; text-transform: uppercase; margin-top: 15px; transition: 0.3s; }
@@ -163,13 +178,37 @@
         .painel-extra { border-top: 2px dashed #d1d9e0; padding-top: 20px; margin-top: 20px; position: relative; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #d1d9e0; }
         .btn-remover-painel-extra { position: absolute; top: 10px; right: 10px; background: #fff; color: #d93025; border: 1px solid #d93025; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 10; }
 
-        .draggable-banner { position: absolute; touch-action: none; cursor: grab; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: box-shadow 0.2s; }
-        .draggable-banner:active { cursor: grabbing; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
-        .draggable-banner-edit-mode { border: 2px dashed #0275d8 !important; background: rgba(255,255,255,0.9); }
+        .draggable-banner { position: absolute; touch-action: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: box-shadow 0.2s; border-radius: 4px; border: 2px solid transparent; }
+        .draggable-banner-edit-mode { border: 2px dashed #0275d8 !important; background: rgba(255,255,255,0.9); box-shadow: 0 8px 30px rgba(0,0,0,0.4); z-index: 1005 !important; }
+        
+        /* NOVO PUXADOR DE ARRASTE SUPERIOR */
+        .banner-drag-header {
+            background: #0275d8;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 4px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: grab;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            position: absolute;
+            top: -26px; /* Fica pra fora do banner na parte de cima */
+            left: -2px; right: -2px;
+            height: 26px;
+            opacity: 0.8;
+            transition: 0.2s;
+        }
+        .banner-drag-header:active { cursor: grabbing; opacity: 1; }
+        .banner-drag-header i { margin-right: 5px; }
+        
         .resize-handle { position: absolute; bottom: -12px; right: -12px; background: #0275d8; width: 28px; height: 28px; border-radius: 50%; cursor: nwse-resize; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; z-index: 1001; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         
-        .banner-close-btn { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.7); color: #fff; border: none; width: 24px; height: 24px; border-radius: 50%; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1002; }
-        .banner-close-btn:hover { background: #d93025; }
+        .banner-close-btn { background: transparent; color: #fff; border: none; font-size: 18px; line-height: 1; cursor: pointer; }
+        .banner-close-btn:hover { color: #ffcccc; }
+        
         .banner-video-saibamais { position: absolute; bottom: 15px; right: 15px; background: #1a73e8; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; text-decoration: none; z-index: 1002; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
     </style>
 </head>
@@ -179,7 +218,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V12.0</span>
+                <span class="badge-pro">V12.1</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -462,7 +501,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE PREVIA ATUALIZADO V12.0 -->
+    <!-- MODAL DE PREVIA ATUALIZADO V12.1 -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -478,6 +517,10 @@
             </div>
             
             <div id="prevConteudoWrapper" style="padding: 0; position: relative;">
+                
+                <!-- NOVA GRADE DE ALINHAMENTO -->
+                <div id="gridOverlay" class="grid-overlay"></div>
+
                 <!-- Fundo REAL para Inicio / Ultimas / Específicas (IFRAME DO SITE OFICIAL) -->
                 <div id="mockupWireframe" style="display: none; width: 100%; min-height: 100vh;">
                     <!-- Preenchido dinamicamente com o IFRAME -->
@@ -843,7 +886,7 @@
             novoPainel.id = `painel-vid-extra-${idAtual}`;
             
             novoPainel.innerHTML = `
-                <button type="button" class="btn-remover-painel-extra" onclick="window.removerPainelExtra('painel-vid-extra-${idAtual}')"><i class="fas fa-times"></i> Remover</button>
+                <button type="button" class="btn-remover-painel-extra" onclick="window.removerPainelVideo('painel-vid-extra-${idAtual}')"><i class="fas fa-times"></i> Remover</button>
                 <div class="form-group">
                     <label>Vídeo Extra ${idAtual}</label>
                     <div class="file-input-wrapper">
@@ -912,6 +955,12 @@
             const vPrev = document.getElementById(`videoPreviewExtra_${id}`);
             vPrev.style.display = 'none';
             vPrev.src = "";
+        };
+
+        window.removerPainelVideo = function(idPainel) {
+            const painel = document.getElementById(idPainel);
+            if (painel) painel.remove();
+            window.salvarRascunho();
         };
 
         function abrirDBMedia() {
@@ -1420,7 +1469,6 @@
                     </div>`;
         };
 
-        // === CORREÇÃO DA PRÉVIA: PUXANDO O ÍNDICE CORRETO DA MATÉRIA ===
         window.abrirPrevia = function(contexto = 'rascunho_atual') {
             const mockupWireframe = document.getElementById('mockupWireframe');
             const mockupNoticia = document.getElementById('mockupNoticia');
@@ -1446,14 +1494,10 @@
                 if (contexto === 'ultimas') {
                     urlReal = "https://fanciful-halva-1454f7.netlify.app/?ultimas=true";
                 } else if (contexto !== 'inicio') {
-                    // AQUI ESTÁ A MÁGICA: O painel descobre exatamente qual o número (noticia_0, noticia_1)
-                    // dessa matéria na lista do seu site para gerar o link perfeito!
                     let indexMateria = window.listaCompletaNoticias.findIndex(n => n.id === contexto);
-                    
                     if (indexMateria !== -1) {
                         urlReal = `https://fanciful-halva-1454f7.netlify.app/?ultimas=true&materia=noticia_${indexMateria}`;
                     } else {
-                        // Apenas por segurança, caso a matéria não seja encontrada
                         urlReal = `https://fanciful-halva-1454f7.netlify.app/?ultimas=true&materia=${contexto}`;
                     }
                 }
@@ -1573,11 +1617,11 @@
                 if(tipo === 'imagem' && base64) {
                     if (base64.startsWith('data:video') || base64.includes('video/')) {
                         contentHtml = `
-                            <video src="${base64}" controls style="width: 100%; height: 100%; object-fit: contain; background:#000;"></video>
+                            <video src="${base64}" controls style="width: 100%; height: 100%; object-fit: cover; background:#000; pointer-events: none;"></video>
                             ${link ? `<a href="${link}" target="_blank" class="banner-video-saibamais">Saiba Mais</a>` : ''}
                         `;
                     } else {
-                        contentHtml = `<img src="${base64}" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none;">`;
+                        contentHtml = `<img src="${base64}" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">`;
                         if(link) {
                             contentHtml = `<a href="${link}" target="_blank" style="display:block;width:100%;height:100%;">${contentHtml}</a>`;
                         }
@@ -1598,7 +1642,7 @@
                     el.style.transformOrigin = 'top left';
 
                     el.innerHTML = `
-                        <button type="button" class="banner-close-btn" onclick="document.getElementById('prevBannerDrag_${i}').style.display='none'" title="Fechar Publicidade">&times;</button>
+                        <div class="banner-drag-header"><i class="fas fa-arrows-alt"></i> Arraste o Anúncio <button type="button" class="banner-close-btn" onclick="document.getElementById('prevBannerDrag_${i}').style.display='none'" title="Fechar Publicidade">&times;</button></div>
                         ${contentHtml}
                         <div class="resize-handle"><i class="fas fa-expand-arrows-alt"></i></div>
                     `;
@@ -1620,18 +1664,33 @@
             let startScale = dataObj.scale;
             let startYMouse = 0;
             const handle = el.querySelector('.resize-handle');
+            const dragHeader = el.querySelector('.banner-drag-header');
             const closeBtn = el.querySelector('.banner-close-btn');
+            const gridOverlay = document.getElementById('gridOverlay');
 
             const toggleIframePointer = (enabled) => {
                 const iframe = document.getElementById('iframeSiteReal');
                 if(iframe) iframe.style.pointerEvents = enabled ? 'auto' : 'none';
             };
 
-            el.addEventListener('mousedown', (e) => {
-                if(e.target === handle || handle.contains(e.target) || e.target === closeBtn || closeBtn.contains(e.target)) return;
+            const startDrag = () => {
                 isDragging = true;
                 el.classList.add('draggable-banner-edit-mode');
+                gridOverlay.classList.add('ativo'); // Mostra a grade magnética
                 toggleIframePointer(false);
+            };
+
+            const endDrag = () => {
+                isDragging = false;
+                isResizing = false;
+                el.classList.remove('draggable-banner-edit-mode');
+                gridOverlay.classList.remove('ativo'); // Oculta a grade magnética
+                toggleIframePointer(true);
+            };
+
+            el.addEventListener('mousedown', (e) => {
+                if(e.target === handle || handle.contains(e.target) || e.target === closeBtn || closeBtn.contains(e.target)) return;
+                startDrag();
             });
             
             handle.addEventListener('mousedown', (e) => {
@@ -1640,6 +1699,7 @@
                 startYMouse = e.clientY;
                 startScale = dataObj.scale;
                 el.classList.add('draggable-banner-edit-mode');
+                gridOverlay.classList.add('ativo');
                 toggleIframePointer(false);
             });
 
@@ -1657,25 +1717,29 @@
                 }
             });
 
-            window.addEventListener('mouseup', () => {
-                isDragging = false;
-                isResizing = false;
-                el.classList.remove('draggable-banner-edit-mode');
-                toggleIframePointer(true);
-            });
+            window.addEventListener('mouseup', endDrag);
 
             let lastTouchX, lastTouchY;
+            
             el.addEventListener('touchstart', (e) => {
                 if(e.target === closeBtn || closeBtn.contains(e.target)) return;
+                
                 if(e.touches.length === 1) {
                     if(e.target === handle || handle.contains(e.target)) {
                         isResizing = true;
                         startYMouse = e.touches[0].clientY;
                         startScale = dataObj.scale;
+                        el.classList.add('draggable-banner-edit-mode');
+                        gridOverlay.classList.add('ativo');
+                        toggleIframePointer(false);
                     } else {
+                        // Ativa o arraste no toque do elemento inteiro ou da barra
                         isDragging = true;
                         lastTouchX = e.touches[0].clientX;
                         lastTouchY = e.touches[0].clientY;
+                        el.classList.add('draggable-banner-edit-mode');
+                        gridOverlay.classList.add('ativo');
+                        toggleIframePointer(false);
                     }
                 } else if(e.touches.length === 2) {
                     isDragging = false;
@@ -1684,10 +1748,11 @@
                         e.touches[0].clientY - e.touches[1].clientY
                     );
                     startScale = dataObj.scale;
+                    el.classList.add('draggable-banner-edit-mode');
+                    gridOverlay.classList.add('ativo');
+                    toggleIframePointer(false);
                 }
-                el.classList.add('draggable-banner-edit-mode');
-                toggleIframePointer(false);
-            }, {passive: false});
+            }, {passive: false}); // passive false é importante para o preventDefault funcionar
 
             el.addEventListener('touchmove', (e) => {
                 if(isDragging && e.touches.length === 1) {
@@ -1699,7 +1764,7 @@
                     el.style.top = dataObj.posY + 'px';
                     lastTouchX = e.touches[0].clientX;
                     lastTouchY = e.touches[0].clientY;
-                    e.preventDefault();
+                    e.preventDefault(); // Trava a tela de fundo (evita scroll)
                 }
                 if(isResizing && e.touches.length === 1) {
                     let dy = e.touches[0].clientY - startYMouse;
@@ -1719,12 +1784,7 @@
                 }
             }, {passive: false});
 
-            window.addEventListener('touchend', () => {
-                isDragging = false;
-                isResizing = false;
-                el.classList.remove('draggable-banner-edit-mode');
-                toggleIframePointer(true);
-            });
+            window.addEventListener('touchend', endDrag);
         };
 
         window.fecharPrevia = function() {
