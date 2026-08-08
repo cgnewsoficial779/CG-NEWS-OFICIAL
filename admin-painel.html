@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V11.9</title>
+    <title>Painel Editor - News Pro V12.0</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -179,7 +179,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V11.9</span>
+                <span class="badge-pro">V12.0</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -462,7 +462,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE PREVIA ATUALIZADO V11.9 -->
+    <!-- MODAL DE PREVIA ATUALIZADO V12.0 -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -1420,6 +1420,7 @@
                     </div>`;
         };
 
+        // === CORREÇÃO DA PRÉVIA: PUXANDO O ÍNDICE CORRETO DA MATÉRIA ===
         window.abrirPrevia = function(contexto = 'rascunho_atual') {
             const mockupWireframe = document.getElementById('mockupWireframe');
             const mockupNoticia = document.getElementById('mockupNoticia');
@@ -1445,8 +1446,16 @@
                 if (contexto === 'ultimas') {
                     urlReal = "https://fanciful-halva-1454f7.netlify.app/?ultimas=true";
                 } else if (contexto !== 'inicio') {
-                    // LINK CORRIGIDO PARA NOTÍCIA ESPECÍFICA!
-                    urlReal = `https://fanciful-halva-1454f7.netlify.app/?ultimas=true&materia=${contexto}`;
+                    // AQUI ESTÁ A MÁGICA: O painel descobre exatamente qual o número (noticia_0, noticia_1)
+                    // dessa matéria na lista do seu site para gerar o link perfeito!
+                    let indexMateria = window.listaCompletaNoticias.findIndex(n => n.id === contexto);
+                    
+                    if (indexMateria !== -1) {
+                        urlReal = `https://fanciful-halva-1454f7.netlify.app/?ultimas=true&materia=noticia_${indexMateria}`;
+                    } else {
+                        // Apenas por segurança, caso a matéria não seja encontrada
+                        urlReal = `https://fanciful-halva-1454f7.netlify.app/?ultimas=true&materia=${contexto}`;
+                    }
                 }
 
                 mockupWireframe.innerHTML = `
