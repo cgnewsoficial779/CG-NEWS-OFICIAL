@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V10.4</title>
+    <title>Painel Editor - News Pro V10.5</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -70,13 +70,17 @@
         .file-input-wrapper input[type="file"] { flex: 1; }
         .btn-remover-img { background: #fff; color: #d93025; border: 1px solid #d93025; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 13px; white-space: nowrap; }
 
-        /* V10.4 - Botoes de Local de Anuncio e Seletor de Matéria */
+        /* V10.5 - Botoes de Local de Anuncio e Seletor Visual */
         .local-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
         .btn-local { flex: 1; padding: 10px; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; text-align: center; transition: 0.2s; min-width: 100px; }
         .btn-local.active { background: #002a5c; color: white; border-color: #002a5c; }
         .btn-local:hover:not(.active) { background: #cbd5e1; }
-        .select-materia-wrapper { display: none; margin-top: 10px; background: #e2e8f0; padding: 12px; border-radius: 6px; border: 1px solid #cbd5e1; }
-        .select-materia-wrapper.active { display: block; }
+        
+        .select-materia-visual-wrapper { display: none; margin-top: 10px; background: #e2e8f0; padding: 15px; border-radius: 6px; border: 1px dashed #002a5c; text-align: center; }
+        .select-materia-visual-wrapper.active { display: block; }
+        .btn-abrir-seletor-visual { background: #0275d8; color: white; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-abrir-seletor-visual:hover { background: #025aa5; }
+        .materia-selecionada-badge { display: block; margin-top: 10px; font-size: 12px; font-weight: bold; color: #137333; background: #e6f4ea; padding: 8px; border-radius: 4px; border: 1px solid #ceead6; word-break: break-word; }
 
         .ad-tabs { display: flex; gap: 10px; margin-bottom: 12px; }
         .ad-tab-btn { flex: 1; padding: 10px; background: #e2e8f0; border: none; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; }
@@ -101,7 +105,6 @@
         .btn-ratio { background: #fff; border: 1px solid #b0b8c1; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; color: #555; flex: 1; min-width: 50px; text-align: center; }
         .btn-ratio.active { background: #002a5c; color: white; border-color: #002a5c; }
 
-        /* V10.4 - Container de preview de capas (interno na edição) */
         .preview-container { width: 100%; background: #000; border-radius: 8px; display: flex; overflow: hidden; margin-top: 10px; border: 1px solid #000; align-items: stretch; justify-content: center; transition: aspect-ratio 0.3s; }
         .preview-container img, .preview-container video { object-fit: cover !important; }
         .video-preview { width: 100%; border-radius: 8px; display: none; margin-top: 10px; border: 1px solid #b0b8c1; background: #000; aspect-ratio: 16/9; object-fit: contain; }
@@ -113,7 +116,6 @@
         .btn-preview { background-color: #0275d8; color: white; border: none; padding: 16px; flex: 1; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
         .btn-cancelar { background-color: #d93025; color: white; border: none; padding: 14px; width: 100%; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; display: none; text-transform: uppercase; }
 
-        /* V10.4 - Notícia Listagem (Externo) */
         .noticia-item { border: 1px solid #d1d9e0; padding: 14px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; gap: 15px; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
         .noticia-miniatura { width: 110px; height: 90px; border-radius: 8px; background: #ddd; flex-shrink: 0; display: flex; align-items: stretch; justify-content: center; color: #777; font-size: 14px; overflow: hidden; }
         @media(min-width: 600px) { .noticia-miniatura { width: 150px; height: 110px; } }
@@ -127,10 +129,16 @@
         .noticia-conteudo-info strong { color: #002a5c; font-size: 15px; line-height: 1.35; font-weight: 800; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .noticia-meta-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
         .noticia-meta-tags span { font-size: 11px; color: #444; background: #f0f2f5; padding: 4px 8px; border-radius: 6px; font-weight: 700; border: 1px solid #d1d9e0; }
-        .acoes-btn { display: flex; gap: 8px; margin-top: 6px; }
-        .btn-editar, .btn-apagar { padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 5px; }
+        .acoes-btn { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+        .btn-editar, .btn-apagar, .btn-selecionar-anuncio { padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 5px; border: none; }
         .btn-editar { background: #f8f9fa; color: #002a5c; border: 1px solid #002a5c; }
         .btn-apagar { background: #fff; color: #d93025; border: 1px solid #d93025; }
+        
+        /* Botao de Selecao de Anuncio no Gerenciador */
+        .btn-selecionar-anuncio { background: #f9ab00; color: #1a1a1a; display: none; box-shadow: 0 2px 4px rgba(249,171,0,0.3); }
+        .btn-selecionar-anuncio:hover { background: #e09600; }
+        .modo-selecao-anuncio .btn-editar, .modo-selecao-anuncio .btn-apagar { display: none !important; }
+        .modo-selecao-anuncio .btn-selecionar-anuncio { display: inline-flex !important; }
 
         .modal-overlay, .modal-fullscreen-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-content, .modal-fullscreen-content { background: #fff; width: 100vw; height: 100vh; max-width: 100%; max-height: 100%; border-radius: 0; overflow-y: hidden; position: relative; display: flex; flex-direction: column; }
@@ -170,7 +178,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V10.4</span>
+                <span class="badge-pro">V10.5</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -184,7 +192,7 @@
                 <button class="sidebar-close" onclick="alternarSidebar()">&times;</button>
             </div>
             <div class="sidebar-content">
-                <button type="button" class="btn-menu-gerenciar" onclick="abrirModalGerenciamento()">
+                <button type="button" class="btn-menu-gerenciar" onclick="abrirModalGerenciamento(false)">
                     <i class="fas fa-list-ul"></i> Gerenciar Matérias
                 </button>
 
@@ -407,7 +415,7 @@
     <div class="modal-fullscreen-overlay" id="modalFullscreenGerenciar">
         <div class="modal-fullscreen-content">
             <div class="modal-fs-header">
-                <h2><i class="fas fa-list-ul"></i> Gerenciar Todas as Matérias</h2>
+                <h2 id="tituloModalGerenciamento"><i class="fas fa-list-ul"></i> Gerenciar Todas as Matérias</h2>
                 <button class="modal-fs-close" onclick="fecharModalGerenciamento()">&times;</button>
             </div>
             <div class="modal-fs-body" id="lista-noticias-fullscreen">
@@ -538,22 +546,11 @@
         let contVideosExtras = 0;
         let contBannersExtras = 0;
         window.bannersData = {};
+        
+        let idBannerAguardandoSelecao = null; // V10.5 Variável para saber qual banner pediu seleção
 
-        // === NOVIDADE V10.4: ATUALIZAR SELECTS DE MATÉRIAS PUBLICADAS ===
+        // === NOVIDADE V10.5: ATUALIZAR SELECTOR PREVIA ===
         window.atualizarSelectsMaterias = function() {
-            // Atualiza os dropdowns no Painel de Anúncios
-            const selects = document.querySelectorAll('.select-materia');
-            selects.forEach(select => {
-                const valorAtual = select.value;
-                let html = '<option value="rascunho_atual">📝 Rascunho Atual (Matéria em Edição)</option>';
-                window.listaCompletaNoticias.forEach(noticia => {
-                    html += `<option value="${noticia.id}">📌 ${noticia.titulo.substring(0, 50)}...</option>`;
-                });
-                select.innerHTML = html;
-                if([...select.options].some(o => o.value === valorAtual)) select.value = valorAtual;
-            });
-
-            // Atualiza o dropdown no TOPO da tela de Prévia
             const selectorPrev = document.getElementById('previewContextSelector');
             if(selectorPrev) {
                 const valPrev = selectorPrev.value;
@@ -561,7 +558,7 @@
                     <option value="rascunho_atual">Visão: Matéria em Edição (Rascunho)</option>
                     <option value="inicio">Visão: Tela Inicial</option>
                     <option value="ultimas">Visão: Últimas Notícias</option>
-                    <optgroup label="Visão: Matérias Publicadas (Para Anúncios Específicos)">
+                    <optgroup label="Visão: Matérias Publicadas">
                 `;
                 window.listaCompletaNoticias.forEach(n => {
                     htmlPrev += `<option value="${n.id}">Notícia: ${n.titulo.substring(0, 40)}...</option>`;
@@ -624,6 +621,11 @@
             painel.className = 'painel-extra';
             painel.id = `painel-banner-extra-${id}`;
             
+            let tituloAlvoVisual = "Nenhuma matéria selecionada (Usando Rascunho)";
+            if(obj.noticiaAlvo !== 'rascunho_atual' && window.noticiasAdmin[obj.noticiaAlvo]) {
+                tituloAlvoVisual = window.noticiasAdmin[obj.noticiaAlvo].titulo;
+            }
+            
             painel.innerHTML = `
                 <button type="button" class="btn-remover-painel-extra" onclick="removerPainelExtra('painel-banner-extra-${id}')"><i class="fas fa-times"></i> Remover</button>
                 <div style="font-weight: 800; color: #b07c00; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-ad"></i> Configuração do Anúncio / Banner ${id}</div>
@@ -636,12 +638,15 @@
                         <button type="button" class="btn-local ${obj.localExibicao==='especifica'?'active':''}" onclick="mudarLocalBanner(${id}, 'especifica', this)">Notícia Específica</button>
                     </div>
                     <input type="hidden" id="localExibicaoBanner_${id}" value="${obj.localExibicao}">
+                    <input type="hidden" id="selectNoticiaEspecifica_${id}" value="${obj.noticiaAlvo}">
 
-                    <div id="wrapperNoticiaEspecifica_${id}" class="select-materia-wrapper ${obj.localExibicao==='especifica'?'active':''}">
-                        <label style="color: #002a5c; font-size: 11px;"><i class="fas fa-crosshairs"></i> Selecione em qual matéria este anúncio vai aparecer:</label>
-                        <select id="selectNoticiaEspecifica_${id}" class="select-materia" onchange="window.salvarRascunho()" style="width:100%; padding:8px; border-radius:6px; border:1px solid #b0b8c1; outline:none;">
-                            <option value="rascunho_atual" ${obj.noticiaAlvo==='rascunho_atual'?'selected':''}>📝 Rascunho Atual (Matéria em Edição)</option>
-                        </select>
+                    <div id="wrapperNoticiaEspecifica_${id}" class="select-materia-visual-wrapper ${obj.localExibicao==='especifica'?'active':''}">
+                        <button type="button" class="btn-abrir-seletor-visual" onclick="abrirSeletorMateriaParaBanner(${id})">
+                            <i class="fas fa-hand-pointer"></i> Escolher Matéria no Gerenciador
+                        </button>
+                        <div class="materia-selecionada-badge" id="badgeNoticiaSelecionada_${id}">
+                            <i class="fas fa-thumbtack"></i> Alvo: <span>${tituloAlvoVisual}</span>
+                        </div>
                     </div>
                 </div>
 
@@ -696,7 +701,6 @@
                 </div>
             `;
             container.appendChild(painel);
-            setTimeout(() => window.atualizarSelectsMaterias(), 100);
 
             document.getElementById(`bannerImgInputExtra_${id}`).addEventListener('change', function(e) {
                 processarImagemParaBase64(e.target.files[0], `bannerImgBase64Extra_${id}`, window.salvarRascunho);
@@ -715,6 +719,12 @@
                 wrapper.classList.remove('active');
             }
             window.salvarRascunho();
+        };
+
+        window.abrirSeletorMateriaParaBanner = function(idBanner) {
+            idBannerAguardandoSelecao = idBanner;
+            document.getElementById('modalPainelAnunciosConfig').style.display = 'none';
+            window.abrirModalGerenciamento(true); // true = modo selecao
         };
 
         window.mudarLayoutBannerExtra = function(id, ratio, btn) {
@@ -1067,14 +1077,44 @@
             }
         };
 
-        window.abrirModalGerenciamento = function() {
+        // === NOVIDADE V10.5: MODO DE SELEÇÃO NO GERENCIADOR ===
+        window.abrirModalGerenciamento = function(modoSelecao = false) {
             alternarSidebar();
-            document.getElementById('modalFullscreenGerenciar').style.display = 'flex';
+            const modal = document.getElementById('modalFullscreenGerenciar');
+            const lista = document.getElementById('lista-noticias-fullscreen');
+            const titulo = document.getElementById('tituloModalGerenciamento');
+            
+            if(modoSelecao) {
+                lista.classList.add('modo-selecao-anuncio');
+                titulo.innerHTML = '<i class="fas fa-bullseye"></i> Escolha a Matéria para o Anúncio';
+            } else {
+                lista.classList.remove('modo-selecao-anuncio');
+                titulo.innerHTML = '<i class="fas fa-list-ul"></i> Gerenciar Todas as Matérias';
+            }
+            
+            modal.style.display = 'flex';
             renderizarListasDeNoticias();
         };
 
         window.fecharModalGerenciamento = function() {
             document.getElementById('modalFullscreenGerenciar').style.display = 'none';
+            // Se fechou sem selecionar e estava no fluxo de anuncio, reabre painel de anuncios
+            if(idBannerAguardandoSelecao) {
+                idBannerAguardandoSelecao = null;
+                document.getElementById('modalPainelAnunciosConfig').style.display = 'flex';
+            }
+        };
+
+        window.selecionarMateriaParaBanner = function(idMateria, tituloMateria) {
+            if(idBannerAguardandoSelecao) {
+                document.getElementById(`selectNoticiaEspecifica_${idBannerAguardandoSelecao}`).value = idMateria;
+                document.querySelector(`#badgeNoticiaSelecionada_${idBannerAguardandoSelecao} span`).innerText = tituloMateria;
+                idBannerAguardandoSelecao = null;
+                
+                document.getElementById('modalFullscreenGerenciar').style.display = 'none';
+                document.getElementById('modalPainelAnunciosConfig').style.display = 'flex';
+                window.salvarRascunho();
+            }
         };
 
         window.abrirModalAudiencia = function() {
@@ -1331,7 +1371,6 @@
                     </div>`;
         }
 
-        // === NOVIDADE V10.4: SISTEMA DE PRÉVIA INTELIGENTE (CARREGA DADOS REAIS DO BANCO) ===
         window.abrirPrevia = function(forcarContexto = null) {
             const selector = document.getElementById('previewContextSelector');
             if (forcarContexto) {
@@ -1342,7 +1381,6 @@
             const mockupWireframe = document.getElementById('mockupWireframe');
             const mockupNoticia = document.getElementById('mockupNoticia');
 
-            // 1. SE A PRÉVIA FOR 'TELA INICIAL' OU 'ÚLTIMAS NOTÍCIAS' -> GERA UM FEED REAL!
             if (contexto === 'inicio' || contexto === 'ultimas') {
                 mockupWireframe.style.display = 'block';
                 mockupNoticia.style.display = 'none';
@@ -1384,7 +1422,6 @@
                 mockupWireframe.style.border = 'none';
                 mockupWireframe.style.paddingTop = '0';
             } 
-            // 2. SE A PRÉVIA FOR UMA NOTÍCIA ESPECÍFICA -> PUXA OS DADOS REAIS DELA!
             else {
                 mockupWireframe.style.display = 'none';
                 mockupNoticia.style.display = 'block';
@@ -1474,7 +1511,6 @@
                 }
             }
 
-            // === 3. FINALMENTE: MOSTRAR APENAS OS BANNERS DO CONTEXTO CORRETO ===
             const wrapper = document.getElementById('prevConteudoWrapper');
             wrapper.querySelectorAll('.draggable-banner').forEach(el => el.remove());
 
@@ -1486,7 +1522,6 @@
                 const noticiaAlvoInput = document.getElementById(`selectNoticiaEspecifica_${i}`);
                 const noticiaAlvo = noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual';
 
-                // Lógica de filtro do banner para ele não aparecer no lugar errado
                 let mostrarBanner = false;
                 if (contexto === 'inicio' && localExibicao === 'inicio') mostrarBanner = true;
                 else if (contexto === 'ultimas' && localExibicao === 'ultimas') mostrarBanner = true;
@@ -1680,7 +1715,6 @@
                     window.noticiasAdmin[data.id] = data;
                 });
                 
-                // IMPORTANTE: Atualiza os menus suspensos de banners logo ao carregar a página
                 window.atualizarSelectsMaterias();
                 atualizarEstatisticasView();
             } catch(e) { console.log(e); }
@@ -1709,7 +1743,6 @@
                     return timeB - timeA;
                 });
                 
-                // Atualiza os seletores de anúncio dinamicamente
                 window.atualizarSelectsMaterias();
 
                 container.innerHTML = '';
@@ -1742,6 +1775,21 @@
 
                     const div = document.createElement('div');
                     div.className = 'noticia-item';
+                    
+                    // Condicional para botões com base no modo
+                    let botoesHtml = '';
+                    const lista = document.getElementById('lista-noticias-fullscreen');
+                    if(lista.classList.contains('modo-selecao-anuncio')) {
+                        // Se estiver no modo seleção, mostra o botão amarelo
+                        botoesHtml = `<button type="button" class="btn-selecionar-anuncio" style="display:inline-flex;" onclick="selecionarMateriaParaBanner('${id}', '${item.titulo ? item.titulo.replace(/'/g, "\\'") : 'Sem Título'}')"><i class="fas fa-bullseye"></i> Escolher esta matéria</button>`;
+                    } else {
+                        // Modo normal de edição
+                        botoesHtml = `
+                            <button type="button" class="btn-editar" onclick="editarNoticia('${id}')"><i class="fas fa-edit"></i> Editar</button>
+                            <button type="button" class="btn-apagar" onclick="apagarNoticia('${id}')"><i class="fas fa-trash-alt"></i> Excluir</button>
+                        `;
+                    }
+
                     div.innerHTML = `
                         <div class="noticia-miniatura ${classDuasImagens}">
                             ${thumbHtml}
@@ -1753,8 +1801,7 @@
                                 <span><i class="fas fa-user"></i> ${item.autor || 'Redação'}</span>
                             </div>
                             <div class="acoes-btn">
-                                <button type="button" class="btn-editar" onclick="editarNoticia('${id}')"><i class="fas fa-edit"></i> Editar</button>
-                                <button type="button" class="btn-apagar" onclick="apagarNoticia('${id}')"><i class="fas fa-trash-alt"></i> Excluir</button>
+                                ${botoesHtml}
                             </div>
                         </div>
                     `;
