@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V11.4</title>
+    <title>Painel Editor - News Pro V11.5</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -179,7 +179,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V11.4</span>
+                <span class="badge-pro">V11.5</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -462,7 +462,6 @@
         </div>
     </div>
 
-    <!-- MODAL DE PREVIA ATUALIZADO V11.4 -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -478,15 +477,11 @@
             </div>
             
             <div id="prevConteudoWrapper" style="padding: 0; position: relative;">
-                <!-- Fundo REAL para Inicio / Ultimas (IFRAME DO SITE OFICIAL) -->
                 <div id="mockupWireframe" style="display: none; width: 100%; min-height: 100vh;">
-                    <!-- Preenchido dinamicamente com o IFRAME -->
-                </div>
+                    </div>
 
-                <!-- Simulação idêntica para Rascunhos/Notícias Específicas -->
                 <div id="mockupNoticia" style="width: 100%; min-height: 100vh; background: #f0f2f5;">
-                    <!-- Preenchido dinamicamente com a NOTÍCIA REAL -->
-                </div>
+                    </div>
             </div>
         </div>
     </div>
@@ -1383,7 +1378,7 @@
                     </div>`;
         };
 
-        // === CORREÇÃO DA PRÉVIA (AGORA APONTA PARA SEU SITE REAL) ===
+        // === CORREÇÃO DA PRÉVIA COM O LINK EXATO ===
         window.abrirPrevia = function(contexto = 'rascunho_atual') {
             const mockupWireframe = document.getElementById('mockupWireframe');
             const mockupNoticia = document.getElementById('mockupNoticia');
@@ -1408,8 +1403,8 @@
                 let urlReal = "https://fanciful-halva-1454f7.netlify.app/";
                 
                 if (contexto === 'ultimas') {
-                    // Se o seu site usa âncora ou página específica para últimas notícias:
-                    urlReal = "https://fanciful-halva-1454f7.netlify.app/#ultimas";
+                    // AQUI ESTÁ O LINK CORRETO QUE VOCÊ INFORMOU:
+                    urlReal = "https://fanciful-halva-1454f7.netlify.app/?ultimas=true";
                 }
 
                 mockupWireframe.innerHTML = `
