@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V11.2</title>
+    <title>Painel Editor - News Pro V11.3</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -137,12 +137,11 @@
         .modo-selecao-anuncio .btn-editar, .modo-selecao-anuncio .btn-apagar { display: none !important; }
         .modo-selecao-anuncio .btn-selecionar-anuncio { display: inline-flex !important; }
 
-        /* MODAIS COMUNS (Como o de Prévia que deve ter margem no PC) */
+        /* MODAIS COMUNS E FULLSCREEN */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-content { background: #fff; width: 100vw; height: 100vh; height: 100dvh; max-width: 100%; max-height: 100%; border-radius: 0; overflow-y: hidden; position: relative; display: flex; flex-direction: column; }
         @media(min-width: 768px) { .modal-content { width: 90vw; height: 92vh; border-radius: 12px; max-width: 900px; } }
 
-        /* MODAIS FULLSCREEN ABSOLUTOS (Painel de Banners, Gestão, Audiência) - Sem margens nunca */
         .modal-fullscreen-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.85); z-index: 10000; margin: 0 !important; padding: 0 !important; }
         .modal-fullscreen-content { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #fff; width: 100% !important; height: 100% !important; max-width: 100% !important; max-height: 100% !important; border-radius: 0 !important; margin: 0 !important; border: none !important; overflow-y: hidden; display: flex; flex-direction: column; }
 
@@ -180,7 +179,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V11.2</span>
+                <span class="badge-pro">V11.3</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -463,13 +462,12 @@
         </div>
     </div>
 
-    <!-- MODAL DE PREVIA ATUALIZADO V11.2 -->
+    <!-- MODAL DE PREVIA ATUALIZADO V11.3 -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
                 <div style="display: flex; align-items: center; gap: 15px; width: 100%;">
                     <span style="font-size: 12px; font-weight: bold; color: #cc0000; text-transform: uppercase;" id="prevCategoria">CATEGORIA</span>
-                    <!-- Removido o menu dropdown confuso -->
                     <span id="previewContextLabel" style="font-size: 14px; font-weight: 800; color: #002a5c; background: #e2e8f0; padding: 6px 12px; border-radius: 6px;">Visão Atual</span>
                     
                     <div style="display: flex; gap: 10px; margin-left: auto;">
@@ -480,7 +478,6 @@
             </div>
             
             <div id="prevConteudoWrapper" style="padding: 0; position: relative;">
-                
                 <!-- Fundo REAL para Inicio / Ultimas (IFRAME DO SITE OFICIAL) -->
                 <div id="mockupWireframe" style="display: none; width: 100%; min-height: 100vh;">
                     <!-- Preenchido dinamicamente com o IFRAME -->
@@ -542,12 +539,12 @@
         window.abrirPainelAnunciosConfig = function() {
             window.alternarSidebar(true);
             document.getElementById('modalPainelAnunciosConfig').style.display = 'block';
-            sessionStorage.setItem('currentModal', 'painelAnuncios'); // Salva o estado ao abrir
+            sessionStorage.setItem('currentModal', 'painelAnuncios'); 
         };
 
         window.fecharPainelAnunciosConfig = function() {
             document.getElementById('modalPainelAnunciosConfig').style.display = 'none';
-            sessionStorage.removeItem('currentModal'); // Apaga o estado ao fechar
+            sessionStorage.removeItem('currentModal'); 
         };
 
         window.mudarAbaBannerExtra = function(id, tipo, btn) {
@@ -1050,7 +1047,6 @@
             window.carregarConfigGoogle();
             await window.carregarListaNoticias();
 
-            // SISTEMA QUE RECUPERA O ESTADO AO ATUALIZAR A PÁGINA
             setTimeout(() => {
                 const currentModal = sessionStorage.getItem('currentModal');
                 if (currentModal === 'painelAnuncios') {
@@ -1064,7 +1060,7 @@
                     const contexto = sessionStorage.getItem('contextoPrevia') || 'rascunho_atual';
                     window.abrirPrevia(contexto);
                 }
-            }, 600); // Aguarda a renderização do banco
+            }, 600); 
         };
 
         document.getElementById('formNoticia').addEventListener('input', window.salvarRascunho);
@@ -1126,7 +1122,7 @@
                 
                 document.getElementById('modalFullscreenGerenciar').style.display = 'none';
                 document.getElementById('modalPainelAnunciosConfig').style.display = 'block';
-                sessionStorage.setItem('currentModal', 'painelAnuncios'); // Salva que voltou para painel
+                sessionStorage.setItem('currentModal', 'painelAnuncios'); 
                 window.salvarRascunho();
             }
         };
@@ -1387,6 +1383,7 @@
                     </div>`;
         };
 
+        // === CORREÇÃO DA PRÉVIA (AGORA APONTA PARA SEU SITE REAL) ===
         window.abrirPrevia = function(contexto = 'rascunho_atual') {
             const mockupWireframe = document.getElementById('mockupWireframe');
             const mockupNoticia = document.getElementById('mockupNoticia');
@@ -1407,12 +1404,18 @@
                 mockupWireframe.style.display = 'block';
                 mockupNoticia.style.display = 'none';
 
-                const urlReal = window.location.origin + "/";
+                // --- URL DO SEU SITE OFICIAL ---
+                let urlReal = "https://fanciful-halva-1454f7.netlify.app/";
+                
+                if (contexto === 'ultimas') {
+                    // Se a aba de últimas notícias do seu site tiver outro final (ex: /noticias), você pode alterar aqui em baixo:
+                    urlReal = "https://fanciful-halva-1454f7.netlify.app/ultimas";
+                }
 
                 mockupWireframe.innerHTML = `
                     <div style="background: #002a5c; color: white; padding: 12px; text-align: center; border-radius: 8px 8px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; z-index: 20;">
                         <div style="font-size: 16px; font-weight: 900; letter-spacing: 1px;"><i class="fas fa-satellite-dish" style="color: #25d366;"></i> SITE OFICIAL AO VIVO</div>
-                        <div style="font-size: 12px; font-weight: normal; color: #cbd5e1; margin-top: 4px;">Navegue no seu site real abaixo e arraste o banner para a posição exata de exibição.</div>
+                        <div style="font-size: 12px; font-weight: normal; color: #cbd5e1; margin-top: 4px;">Exibindo: <a href="${urlReal}" target="_blank" style="color: #25d366;">${urlReal}</a></div>
                     </div>
                     <iframe id="iframeSiteReal" src="${urlReal}" style="width: 100%; height: calc(100vh - 160px); border: 2px solid #002a5c; border-top: none; border-radius: 0 0 8px 8px; background: #fff;"></iframe>
                 `;
@@ -1600,7 +1603,7 @@
             }
 
             document.getElementById('modalPrevia').style.display = 'flex';
-            sessionStorage.setItem('currentModal', 'previa'); // Salva o estado ao abrir
+            sessionStorage.setItem('currentModal', 'previa'); 
             sessionStorage.setItem('contextoPrevia', contexto);
         };
 
@@ -1723,7 +1726,7 @@
             if (window.veioDoPainelAnuncios) {
                 document.getElementById('modalPainelAnunciosConfig').style.display = 'block';
                 window.veioDoPainelAnuncios = false;
-                sessionStorage.setItem('currentModal', 'painelAnuncios'); // Salva que voltou
+                sessionStorage.setItem('currentModal', 'painelAnuncios'); 
             } else {
                 sessionStorage.removeItem('currentModal');
                 sessionStorage.removeItem('contextoPrevia');
