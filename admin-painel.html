@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V11.7</title>
+    <title>Painel Editor - News Pro V11.8</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -179,7 +179,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V11.7</span>
+                <span class="badge-pro">V11.8</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -462,6 +462,7 @@
         </div>
     </div>
 
+    <!-- MODAL DE PREVIA ATUALIZADO V11.8 -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -477,10 +478,14 @@
             </div>
             
             <div id="prevConteudoWrapper" style="padding: 0; position: relative;">
+                <!-- Fundo REAL para Inicio / Ultimas / Específicas (IFRAME DO SITE OFICIAL) -->
                 <div id="mockupWireframe" style="display: none; width: 100%; min-height: 100vh;">
+                    <!-- Preenchido dinamicamente com o IFRAME -->
                 </div>
 
+                <!-- Simulação idêntica SOMENTE para o Rascunho que está sendo escrito na hora -->
                 <div id="mockupNoticia" style="width: 100%; min-height: 100vh; background: #f0f2f5;">
+                    <!-- Preenchido dinamicamente com a NOTÍCIA REAL -->
                 </div>
             </div>
         </div>
@@ -1431,13 +1436,16 @@
                 label.innerHTML = `<i class="fas fa-thumbtack"></i> Visão: ${item ? item.titulo.substring(0, 30) + '...' : 'Notícia Específica'}`;
             }
 
-            if (contexto === 'inicio' || contexto === 'ultimas') {
+            if (contexto !== 'rascunho_atual') {
                 mockupWireframe.style.display = 'block';
                 mockupNoticia.style.display = 'none';
 
                 let urlReal = "https://fanciful-halva-1454f7.netlify.app/";
+                
                 if (contexto === 'ultimas') {
                     urlReal = "https://fanciful-halva-1454f7.netlify.app/?ultimas=true";
+                } else if (contexto !== 'inicio') {
+                    urlReal = `https://fanciful-halva-1454f7.netlify.app/?materia=${contexto}`;
                 }
 
                 mockupWireframe.innerHTML = `
@@ -1456,57 +1464,19 @@
                 mockupWireframe.style.display = 'none';
                 mockupNoticia.style.display = 'block';
 
-                let tTxt, aTxt, txtH, cTxt, credTxt, fontTxt, i1, i2, vArq, lRede, formEsc, formVidEsc;
-                let dataExtraImg = [];
-                let dataExtraVid = [];
-
-                if (contexto === 'rascunho_atual') {
-                    tTxt = document.getElementById('titulo').value || "Título";
-                    aTxt = document.getElementById('autor').value || "Redação";
-                    txtH = quill.root.innerHTML;
-                    const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
-                    cTxt = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
-                    credTxt = document.getElementById('fonteImagem').value ? `Crédito: ${document.getElementById('fonteImagem').value}` : "Crédito: Reprodução";
-                    fontTxt = document.getElementById('fonteNoticia').value ? `Fonte: ${document.getElementById('fonteNoticia').value}` : "";
-                    i1 = document.getElementById('imagemBase64_1').value;
-                    i2 = document.getElementById('imagemBase64_2').value;
-                    vArq = document.getElementById('videoBase64').value;
-                    lRede = document.getElementById('linkRedeSocial').value;
-                    formEsc = document.getElementById('formatoEscolhido').value;
-                    formVidEsc = document.getElementById('formatoVideoEscolhido').value;
-
-                    for(let i=1; i<=contImagensExtras; i++) {
-                        const img = document.getElementById(`imagemBase64Extra_${i}`)?.value;
-                        const cred = document.getElementById(`fonteImagemExtra_${i}`)?.value;
-                        const rat = document.getElementById(`formatoImgExtraEscolhido_${i}`)?.value || '16/9';
-                        if(img) dataExtraImg.push({base64: img, credito: cred, ratio: rat});
-                    }
-                    for(let i=1; i<=contVideosExtras; i++) {
-                        const vid = document.getElementById(`videoBase64Extra_${i}`)?.value;
-                        const cred = document.getElementById(`creditosVideoExtra_${i}`)?.value;
-                        const rat = document.getElementById(`formatoVidExtraEscolhido_${i}`)?.value || '16/9';
-                        if(vid) dataExtraVid.push({base64: vid, credito: cred, ratio: rat});
-                    }
-                } else {
-                    const item = window.noticiasAdmin[contexto];
-                    if (item) {
-                        tTxt = item.titulo || "Sem Título";
-                        aTxt = item.autor || "Redação";
-                        txtH = item.textoRico || item.texto || item.conteudo || "<p>Sem conteúdo.</p>";
-                        cTxt = item.categorias ? item.categorias.join(', ') : (item.categoria || "Geral");
-                        credTxt = item.fonteImagem ? `Crédito: ${item.fonteImagem}` : "Crédito: Reprodução";
-                        fontTxt = item.fonteNoticia ? `Fonte: ${item.fonteNoticia}` : "";
-                        i1 = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
-                        i2 = item.imagemBase64_2 || item.imagem2 || '';
-                        vArq = item.videoBase64 || item.video || item.linkVideo || '';
-                        lRede = item.linkRedeSocial || '';
-                        formEsc = item.formatoEscolhido || 'auto';
-                        formVidEsc = item.formatoVideoEscolhido || 'auto';
-
-                        if(item.imagensExtras) dataExtraImg = item.imagensExtras;
-                        if(item.videosExtras) dataExtraVid = item.videosExtras;
-                    }
-                }
+                let tTxt = document.getElementById('titulo').value || "Título";
+                let aTxt = document.getElementById('autor').value || "Redação";
+                let txtH = quill.root.innerHTML;
+                const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
+                let cTxt = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
+                let credTxt = document.getElementById('fonteImagem').value ? `Crédito: ${document.getElementById('fonteImagem').value}` : "Crédito: Reprodução";
+                let fontTxt = document.getElementById('fonteNoticia').value ? `Fonte: ${document.getElementById('fonteNoticia').value}` : "";
+                let i1 = document.getElementById('imagemBase64_1').value;
+                let i2 = document.getElementById('imagemBase64_2').value;
+                let vArq = document.getElementById('videoBase64').value;
+                let lRede = document.getElementById('linkRedeSocial').value;
+                let formEsc = document.getElementById('formatoEscolhido').value;
+                let formVidEsc = document.getElementById('formatoVideoEscolhido').value;
 
                 let htmlArtigo = `
                 <div style="background: #fff; width: 100%; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; text-align: left; padding-bottom: 50px;">
@@ -1546,9 +1516,7 @@
                 htmlArtigo += `<div class="preview-body-content" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 17px; line-height: 1.8; color: #333; margin-top: 30px; margin-bottom: 40px;">${txtH}</div>`;
 
                 if (vArq) {
-                    let cVideoVal = '';
-                    if (contexto === 'rascunho_atual') cVideoVal = document.getElementById('creditosVideo').value;
-                    else if (window.noticiasAdmin[contexto]) cVideoVal = window.noticiasAdmin[contexto].creditosVideo || '';
+                    let cVideoVal = document.getElementById('creditosVideo').value;
                     const formatoVidFinal = (formVidEsc && formVidEsc !== 'auto') ? formVidEsc.replace(':', '/') : '16/9';
                     
                     htmlArtigo += `<video src="${vArq}" controls style="width: 100%; aspect-ratio: ${formatoVidFinal}; background: #000; border-radius: 8px; display: block; object-fit: contain; margin-bottom: 8px;"></video>
