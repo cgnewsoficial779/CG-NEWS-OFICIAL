@@ -70,6 +70,12 @@
         .file-input-wrapper input[type="file"] { flex: 1; }
         .btn-remover-img { background: #fff; color: #d93025; border: 1px solid #d93025; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 13px; white-space: nowrap; }
 
+        /* V10.4 - Botoes de Local de Anuncio */
+        .local-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+        .btn-local { flex: 1; padding: 10px; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; text-align: center; transition: 0.2s; min-width: 100px; }
+        .btn-local.active { background: #002a5c; color: white; border-color: #002a5c; }
+        .btn-local:hover:not(.active) { background: #cbd5e1; }
+
         .ad-tabs { display: flex; gap: 10px; margin-bottom: 12px; }
         .ad-tab-btn { flex: 1; padding: 10px; background: #e2e8f0; border: none; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; }
         .ad-tab-btn.active { background: #002a5c; color: white; }
@@ -572,11 +578,12 @@
                 
                 <div class="form-group" style="margin-bottom: 12px;">
                     <label><i class="fas fa-map-marker-alt"></i> Local de Exibição do Anúncio</label>
-                    <select id="localExibicaoBanner_${id}" onchange="window.salvarRascunho()">
-                        <option value="inicio" ${obj.localExibicao==='inicio'?'selected':''}>Tela Inicial (Voltar ao Início)</option>
-                        <option value="ultimas" ${obj.localExibicao==='ultimas'?'selected':''}>Últimas Notícias</option>
-                        <option value="especifica" ${obj.localExibicao==='especifica'?'selected':''}>Notícia Específica (nesta matéria)</option>
-                    </select>
+                    <div class="local-tabs" id="botoesLocalBanner_${id}">
+                        <button type="button" class="btn-local ${obj.localExibicao==='inicio'?'active':''}" onclick="mudarLocalBanner(${id}, 'inicio', this)">Tela Inicial</button>
+                        <button type="button" class="btn-local ${obj.localExibicao==='ultimas'?'active':''}" onclick="mudarLocalBanner(${id}, 'ultimas', this)">Últimas Notícias</button>
+                        <button type="button" class="btn-local ${obj.localExibicao==='especifica'?'active':''}" onclick="mudarLocalBanner(${id}, 'especifica', this)">Notícia Específica</button>
+                    </div>
+                    <input type="hidden" id="localExibicaoBanner_${id}" value="${obj.localExibicao}">
                 </div>
 
                 <div class="ad-tabs">
@@ -634,6 +641,13 @@
             document.getElementById(`bannerImgInputExtra_${id}`).addEventListener('change', function(e) {
                 processarImagemParaBase64(e.target.files[0], `bannerImgBase64Extra_${id}`, window.salvarRascunho);
             });
+        };
+
+        window.mudarLocalBanner = function(id, local, btn) {
+            document.querySelectorAll(`#botoesLocalBanner_${id} .btn-local`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`localExibicaoBanner_${id}`).value = local;
+            window.salvarRascunho();
         };
 
         window.mudarLayoutBannerExtra = function(id, ratio, btn) {
