@@ -154,20 +154,19 @@
         .btn-voltar-edicao { background: #002a5c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         
         #prevConteudoWrapper { position: relative; flex: 1; overflow-y: auto; overflow-x: hidden; background: #f0f2f5; }
-        .preview-body-content { font-family: Georgia, serif; font-size: 18px; line-height: 1.8; color: #222; margin-top: 15px; }
-
+        
         /* NOVA GRADE DE ALINHAMENTO PARA OS BANNERS */
         .grid-overlay {
             display: none;
             position: absolute;
             top: 0; left: 0; right: 0; 
-            height: max(300vh, 4000px); /* Garante que cubra páginas longas */
-            pointer-events: none; /* Deixa você clicar no banner por baixo */
+            height: max(300vh, 4000px);
+            pointer-events: none;
             z-index: 999;
             background-image: 
                 linear-gradient(to bottom, rgba(2, 117, 216, 0.4) 1px, transparent 1px),
                 linear-gradient(to right, rgba(2, 117, 216, 0.4) 1px, transparent 1px);
-            background-size: 100px 50px; /* Quadrados de espaçamento */
+            background-size: 100px 50px;
         }
         .grid-overlay.ativo { display: block; }
 
@@ -181,7 +180,6 @@
         .draggable-banner { position: absolute; touch-action: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: box-shadow 0.2s; border-radius: 4px; border: 2px solid transparent; }
         .draggable-banner-edit-mode { border: 2px dashed #0275d8 !important; background: rgba(255,255,255,0.9); box-shadow: 0 8px 30px rgba(0,0,0,0.4); z-index: 1005 !important; }
         
-        /* NOVO PUXADOR DE ARRASTE SUPERIOR */
         .banner-drag-header {
             background: #0275d8;
             color: white;
@@ -195,7 +193,7 @@
             border-top-left-radius: 4px;
             border-top-right-radius: 4px;
             position: absolute;
-            top: -26px; /* Fica pra fora do banner na parte de cima */
+            top: -26px;
             left: -2px; right: -2px;
             height: 26px;
             opacity: 0.8;
@@ -208,10 +206,6 @@
         
         .banner-close-btn { background: transparent; color: #fff; border: none; font-size: 18px; line-height: 1; cursor: pointer; }
         .banner-close-btn:hover { color: #ffcccc; }
-        
-        .banner-video-saibamais { position: absolute; bottom: 15px; right: 15px; background: #1a73e8; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; text-decoration: none; z-index: 1002; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
-
-        .btn-salvar-global { background-color: #137333; color: white; border: none; padding: 16px; width: 100%; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(19,115,51,0.25); }
     </style>
 </head>
 <body>
@@ -534,7 +528,7 @@
                     <!-- Preenchido dinamicamente com o IFRAME -->
                 </div>
 
-                <!-- Simulação idêntica SOMENTE para o Rascunho que está sendo escrito na hora -->
+                <!-- Simulação idêntica SOMENTE para o Rascunho que está sendo escrito na hora ou Notícias Específicas com injecao -->
                 <div id="mockupNoticia" style="width: 100%; min-height: 100vh; background: #f0f2f5;">
                     <!-- Preenchido dinamicamente com a NOTÍCIA REAL -->
                 </div>
@@ -1524,7 +1518,6 @@
             let formatoCSS = b.formatoBanner && b.formatoBanner !== 'auto' ? b.formatoBanner.replace(':', '/') : 'auto';
             let cssAspect = formatoCSS !== 'auto' ? `aspect-ratio: ${formatoCSS};` : '';
             
-            // Geramos um ID único para cada banner para que o botão X saiba qual fechar
             const uniqueId = 'banner_prev_' + Math.random().toString(36).substr(2, 9);
 
             return `
@@ -1575,10 +1568,10 @@
                 mockupWireframe.style.display = 'block';
                 mockupNoticia.style.display = 'none';
 
-                let urlReal = "https://graceful-yeot-cc0978.netlify.app/";
+                let urlReal = window.location.origin + "/";
                 
                 if (contexto === 'ultimas') {
-                    urlReal = "https://graceful-yeot-cc0978.netlify.app/?ultimas=true";
+                    urlReal = window.location.origin + "/?ultimas=true";
                 }
 
                 mockupWireframe.innerHTML = `
@@ -1600,7 +1593,7 @@
                     txtH = quill.root.innerHTML;
                     const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
                     cTxt = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
-                    credTxt = document.getElementById('fonteImagem').value ? `Crédito: ${document.getElementById('fonteImagem').value}` : "Crédito: Reprodução";
+                    credTxt = document.getElementById('fonteImagem').value ? `Foto: ${document.getElementById('fonteImagem').value}` : "Foto: Reprodução";
                     fontTxt = document.getElementById('fonteNoticia').value ? `Fonte: ${document.getElementById('fonteNoticia').value}` : "";
                     i1 = document.getElementById('imagemBase64_1').value;
                     i2 = document.getElementById('imagemBase64_2').value;
@@ -1615,7 +1608,7 @@
                         aTxt = item.autor || "Redação";
                         txtH = item.textoRico || item.texto || item.conteudo || "<p>Sem conteúdo.</p>";
                         cTxt = item.categorias ? item.categorias.join(', ') : (item.categoria || "Geral");
-                        credTxt = item.fonteImagem ? `Crédito: ${item.fonteImagem}` : "Crédito: Reprodução";
+                        credTxt = item.fonteImagem ? `Foto: ${item.fonteImagem}` : "Foto: Reprodução";
                         fontTxt = item.fonteNoticia ? `Fonte: ${item.fonteNoticia}` : "";
                         i1 = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
                         i2 = item.imagemBase64_2 || item.imagem2 || '';
@@ -1683,24 +1676,38 @@
                     textoProcessado = txtH;
                 }
 
-                // ESTRUTURA ATUALIZADA SIMULANDO O LAYOUT ORIGINAL DO SEU SITE
                 let htmlArtigo = `
                 <div style="background: #f0f2f5; width: 100%; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; text-align: left; padding-bottom: 50px;">
                     
-                    <!-- HEADER ORIGINAL DO SITE MOCKUP -->
-                    <div style="background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #d1d9e0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                        <div style="display: flex; align-items: center; gap: 8px; overflow: hidden; flex: 1; padding-right: 10px;">
-                            <span style="color: #d93025; font-size: 11px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">${cTxt}</span>
-                            <span style="font-size: 13px; color: #444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500;">${tTxt}</span>
-                        </div>
-                        <button style="background: #002a5c; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,42,92,0.2);">&lt; VOLTAR</button>
+                    <!-- HEADER CG NEWS OFICIAL MOCKUP -->
+                    <div style="background: #002a5c; color: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <i class="fas fa-bars" style="font-size: 20px;"></i>
+                        <div style="font-weight: 900; font-size: 19px; letter-spacing: 0.5px;">CG NEWS OFICIAL</div>
+                        <i class="fab fa-whatsapp" style="font-size: 22px; color: #25d366;"></i>
                     </div>
 
-                    <div style="max-width: 800px; margin: 0 auto; background: #fff; padding: 25px 20px; box-shadow: 0 0 10px rgba(0,0,0,0.03);">
+                    <div style="background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #e1e4e8; color: #002a5c; font-weight: bold; font-size: 14px;">
+                        <i class="fas fa-arrow-left"></i> Voltar ao Início
+                    </div>
+
+                    <div style="max-width: 800px; margin: 0 auto; background: #fff; padding: 25px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); min-height: 80vh;">
                         ${bAcimaTitulo}
-                        <h1 style="color: #1a1a1a; font-size: 26px; font-weight: 900; margin-bottom: 15px; line-height: 1.25;">${tTxt}</h1>
+                        <h1 style="color: #1a1a1a; font-size: 28px; font-weight: 900; margin-bottom: 15px; line-height: 1.25;">${tTxt}</h1>
                         ${bAbaixoTitulo}
-                        <div style="font-size: 13px; color: #777; margin-bottom: 25px; font-weight: 600;">Por ${aTxt}</div>`;
+                        
+                        <div style="font-size: 13px; color: #666; margin-bottom: 15px; display: flex; flex-direction: column; gap: 6px;">
+                            <div><i class="far fa-clock" style="margin-right: 6px; color: #555;"></i> Publicado agora mesmo</div>
+                            <div><i class="far fa-user" style="margin-right: 6px; color: #555;"></i> Por ${aTxt}</div>
+                            <div><i class="far fa-folder" style="margin-right: 6px; color: #555;"></i> ${cTxt}</div>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 25px; border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 12px 0;">
+                            <span style="font-size: 13px; color: #666; font-weight: bold; margin-right: 5px;">Compartilhe:</span>
+                            <span style="background: #25d366; color: white; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 16px;"><i class="fab fa-whatsapp"></i></span>
+                            <span style="background: #3b5998; color: white; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 16px;"><i class="fab fa-facebook-f"></i></span>
+                            <span style="background: #000; color: white; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 16px;"><i class="fab fa-x-twitter"></i></span>
+                            <span style="background: #888; color: white; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 16px;"><i class="far fa-copy"></i></span>
+                        </div>`;
 
                 const formatoImgFinal = (formEsc && formEsc !== 'auto') ? formEsc.replace(':', '/') : 'auto';
 
@@ -1710,26 +1717,26 @@
                     
                     if (i1 && i2) {
                         imgHtml = `
-                        <div style="display: flex; width: 100%; ${wrapperStyle} border-radius: 8px;">
+                        <div style="display: flex; width: 100%; ${wrapperStyle}">
                             <img src="${i1}" style="flex: 1; width: 50%; height: 100%; object-fit: cover; border-right: 2px solid #fff;">
                             <img src="${i2}" style="flex: 1; width: 50%; height: 100%; object-fit: cover;">
                         </div>`;
                     } else if (i1) {
-                        imgHtml = `<img src="${i1}" style="width: 100%; ${formatoImgFinal === 'auto' ? 'height: auto;' : 'height: 100%;'} object-fit: cover; border-radius: 8px;">`;
+                        imgHtml = `<img src="${i1}" style="width: 100%; ${formatoImgFinal === 'auto' ? 'height: auto;' : 'height: 100%;'} object-fit: cover;">`;
                     } else if (i2) {
-                        imgHtml = `<img src="${i2}" style="width: 100%; ${formatoImgFinal === 'auto' ? 'height: auto;' : 'height: 100%;'} object-fit: cover; border-radius: 8px;">`;
+                        imgHtml = `<img src="${i2}" style="width: 100%; ${formatoImgFinal === 'auto' ? 'height: auto;' : 'height: 100%;'} object-fit: cover;">`;
                     }
                     
                     htmlArtigo += `
-                        <div style="width: 100%; margin-bottom: 8px; position: relative;">
+                        <div style="width: 100%; margin-bottom: 25px; position: relative;">
                             ${imgHtml}
-                            <div style="position: absolute; bottom: 10px; left: 10px; font-size: 10px; color: rgba(255,255,255,0.8); text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">${credTxt}</div>
+                            <div style="position: absolute; bottom: 0px; left: 0px; background: #f8f9fa; color: #444; border-top-right-radius: 6px; font-size: 11px; padding: 6px 10px; font-weight: 600;">${credTxt}</div>
                         </div>`;
                 }
 
                 htmlArtigo += `
                         ${bAbaixoMidia}
-                        <div class="preview-body-content" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 17px; line-height: 1.8; color: #333; margin-top: 30px; margin-bottom: 40px;">${textoProcessado}</div>
+                        <div class="preview-body-content" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 18px; line-height: 1.7; color: #222; margin-top: 10px; margin-bottom: 40px;">${textoProcessado}</div>
                         ${bFimMateria}
                     </div>
                 </div>`;
@@ -2261,4 +2268,4 @@
         });
     </script>
 </body>
-</html>
+</html> 
