@@ -509,7 +509,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE PREVIA ATUALIZADO V15.0 -->
+    <!-- MODAL DE PREVIA ATUALIZADO -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -1523,11 +1523,19 @@
 
             let formatoCSS = b.formatoBanner && b.formatoBanner !== 'auto' ? b.formatoBanner.replace(':', '/') : 'auto';
             let cssAspect = formatoCSS !== 'auto' ? `aspect-ratio: ${formatoCSS};` : '';
+            
+            // Geramos um ID único para cada banner para que o botão X saiba qual fechar
+            const uniqueId = 'banner_prev_' + Math.random().toString(36).substr(2, 9);
 
             return `
-                <div class="banner-injetado-container">
-                    <div class="banner-injetado-label">- Publicidade -</div>
-                    <div class="banner-injetado-box" style="${cssAspect}">
+                <div id="${uniqueId}" class="banner-injetado-container" style="position: relative; margin: 20px 0; width: 100%;">
+                    <!-- CABEÇALHO DO ANÚNCIO COM O BOTÃO X -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; padding: 4px 10px; border-radius: 6px 6px 0 0; border: 1px solid #d1d9e0; border-bottom: none;">
+                        <span style="font-size: 10px; color: #555; text-transform: uppercase; font-weight: bold;">- Publicidade -</span>
+                        <button type="button" onclick="document.getElementById('${uniqueId}').style.display='none'" style="background: none; border: none; color: #888; font-size: 18px; line-height: 1; cursor: pointer; padding: 0 5px; font-weight: bold;" title="Fechar Anúncio">&times;</button>
+                    </div>
+                    <!-- CONTEÚDO DO ANÚNCIO -->
+                    <div class="banner-injetado-box" style="${cssAspect} width: 100%; background: #fff; border: 1px solid #d1d9e0; border-radius: 0 0 6px 6px; overflow: hidden;">
                         ${conteudoAnuncio}
                     </div>
                 </div>
@@ -1567,10 +1575,10 @@
                 mockupWireframe.style.display = 'block';
                 mockupNoticia.style.display = 'none';
 
-                let urlReal = "https://fanciful-halva-1454f7.netlify.app/";
+                let urlReal = "https://ful-yeot-cc0978.netlify.app/";
                 
                 if (contexto === 'ultimas') {
-                    urlReal = "https://fanciful-halva-1454f7.netlify.app/?ultimas=true";
+                    urlReal = "https://ful-yeot-cc0978.netlify.app/?ultimas=true";
                 }
 
                 mockupWireframe.innerHTML = `
@@ -1675,17 +1683,24 @@
                     textoProcessado = txtH;
                 }
 
+                // ESTRUTURA ATUALIZADA SIMULANDO O LAYOUT ORIGINAL DO SEU SITE
                 let htmlArtigo = `
-                <div style="background: #fff; width: 100%; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; text-align: left; padding-bottom: 50px;">
-                    <div style="background: #fff; padding: 15px; border-bottom: 1px solid #e1e4e8;">
-                        <span style="color: #d93025; font-size: 11px; font-weight: 900; text-transform: uppercase; margin-right: 10px;">${cTxt}</span>
-                        <span style="font-size: 11px; color: #555;">Prévia da Matéria</span>
+                <div style="background: #f0f2f5; width: 100%; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; text-align: left; padding-bottom: 50px;">
+                    
+                    <!-- HEADER ORIGINAL DO SITE MOCKUP -->
+                    <div style="background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #d1d9e0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="display: flex; align-items: center; gap: 8px; overflow: hidden; flex: 1; padding-right: 10px;">
+                            <span style="color: #d93025; font-size: 11px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">${cTxt}</span>
+                            <span style="font-size: 13px; color: #444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500;">${tTxt}</span>
+                        </div>
+                        <button style="background: #002a5c; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,42,92,0.2);">&lt; VOLTAR</button>
                     </div>
-                    <div style="max-width: 800px; margin: 0 auto; padding: 30px 20px;">
+
+                    <div style="max-width: 800px; margin: 0 auto; background: #fff; padding: 25px 20px; box-shadow: 0 0 10px rgba(0,0,0,0.03);">
                         ${bAcimaTitulo}
-                        <h1 style="color: #002a5c; font-size: 32px; font-weight: 900; margin-bottom: 12px; line-height: 1.2;">${tTxt}</h1>
+                        <h1 style="color: #1a1a1a; font-size: 26px; font-weight: 900; margin-bottom: 15px; line-height: 1.25;">${tTxt}</h1>
                         ${bAbaixoTitulo}
-                        <div style="font-size: 14px; color: #666; margin-bottom: 25px;">Por ${aTxt}</div>`;
+                        <div style="font-size: 13px; color: #777; margin-bottom: 25px; font-weight: 600;">Por ${aTxt}</div>`;
 
                 const formatoImgFinal = (formEsc && formEsc !== 'auto') ? formEsc.replace(':', '/') : 'auto';
 
