@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Painel Editor - News Pro V13.2</title>
+    <title>Painel Editor - News Pro V15.0</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -62,7 +62,6 @@
         .form-group { margin-bottom: 18px; }
         label { display: block; font-weight: 700; margin-bottom: 6px; color: #444; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
         input[type="text"], select, input[type="file"], textarea { width: 100%; padding: 14px; border: 1px solid #b0b8c1; border-radius: 6px; font-size: 16px; outline: none; background: #fafbfc; color: #111; }
-        select { cursor: pointer; font-weight: bold; color: #002a5c; }
         
         textarea.titulo-textarea { resize: vertical; min-height: 90px; font-size: 19px; font-weight: 900; color: #002a5c; line-height: 1.4; padding: 16px; background: #fff; border: 2px solid #002a5c; }
         input[type="file"] { background: #fff; padding: 10px; border: 1px dashed #b0b8c1; cursor: pointer; }
@@ -109,11 +108,12 @@
         .preview-container img, .preview-container video { object-fit: cover !important; }
         .video-preview { width: 100%; border-radius: 8px; display: none; margin-top: 10px; border: 1px solid #b0b8c1; background: #000; aspect-ratio: 16/9; object-fit: contain; }
 
-        .botoes-acao-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; margin-top: 20px;}
+        .botoes-acao-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
         @media(min-width: 500px) { .botoes-acao-container { flex-direction: row; } }
         
-        .btn-submit { background-color: #002a5c; color: white; border: none; padding: 18px; width: 100%; font-size: 16px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(0,42,92,0.25); margin-bottom: 10px;}
-        .btn-cancelar { background-color: #d93025; color: white; border: none; padding: 14px; width: 100%; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; display: none; text-transform: uppercase; margin-bottom: 10px;}
+        .btn-submit { background-color: #002a5c; color: white; border: none; padding: 16px; flex: 2; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(0,42,92,0.25); }
+        .btn-preview { background-color: #0275d8; color: white; border: none; padding: 16px; flex: 1; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
+        .btn-cancelar { background-color: #d93025; color: white; border: none; padding: 14px; width: 100%; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; display: none; text-transform: uppercase; }
 
         .noticia-item { border: 1px solid #d1d9e0; padding: 14px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; gap: 15px; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
         .noticia-miniatura { width: 110px; height: 90px; border-radius: 8px; background: #ddd; flex-shrink: 0; display: flex; align-items: stretch; justify-content: center; color: #777; font-size: 14px; overflow: hidden; }
@@ -128,7 +128,7 @@
         .noticia-meta-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
         .noticia-meta-tags span { font-size: 11px; color: #444; background: #f0f2f5; padding: 4px 8px; border-radius: 6px; font-weight: 700; border: 1px solid #d1d9e0; }
         .acoes-btn { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
-        .btn-editar, .btn-apagar { padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 5px; border: none; }
+        .btn-editar, .btn-apagar, .btn-selecionar-anuncio { padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 5px; border: none; }
         .btn-editar { background: #f8f9fa; color: #002a5c; border: 1px solid #002a5c; }
         .btn-apagar { background: #fff; color: #d93025; border: 1px solid #d93025; }
         
@@ -153,10 +153,11 @@
         .painel-extra { border-top: 2px dashed #d1d9e0; padding-top: 20px; margin-top: 20px; position: relative; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #d1d9e0; }
         .btn-remover-painel-extra { position: absolute; top: 10px; right: 10px; background: #fff; color: #d93025; border: 1px solid #d93025; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 10; }
 
-        /* DESTAQUE POSIÇÃO DO BANNER */
+        /* DESTAQUES E BOTÕES GLOBAIS ADICIONADOS PARA A VERSÃO 14 E 15 */
         .posicao-destaque { background: #e6f4ea; padding: 15px; border-radius: 8px; border: 1px solid #137333; margin-bottom: 15px; }
         .posicao-destaque label { color: #137333; font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 8px;}
-        
+        .btn-salvar-global { background-color: #137333; color: white; border: none; padding: 16px; width: 100%; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(19,115,51,0.25); }
+
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-content { background: #fff; width: 100vw; height: 100vh; height: 100dvh; max-width: 100%; max-height: 100%; border-radius: 0; overflow-y: hidden; position: relative; display: flex; flex-direction: column; }
         @media(min-width: 768px) { .modal-content { width: 90vw; height: 92vh; border-radius: 12px; max-width: 900px; } }
@@ -164,15 +165,10 @@
         .btn-voltar-edicao { background: #002a5c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         #prevConteudoWrapper { position: relative; flex: 1; overflow-y: auto; overflow-x: hidden; background: #f0f2f5; }
         
+        /* BANNERS INJETADOS NO TEXTO E ARRASTAVEIS */
         .banner-injetado-container { margin: 35px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; clear: both; }
         .banner-injetado-label { font-size: 10px; color: #a0aec0; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; font-weight: bold; }
         .banner-injetado-box { width: 100%; max-width: 100%; overflow: hidden; border-radius: 8px; background-color: #fafbfc; display: flex; justify-content: center; align-items: center; }
-
-        .btn-salvar-global { background-color: #137333; color: white; border: none; padding: 16px; width: 100%; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(19,115,51,0.25); }
-
-        /* NOVA GRADE DE ALINHAMENTO PARA OS BANNERS */
-        .grid-overlay { display: none; position: absolute; top: 0; left: 0; right: 0; height: max(300vh, 4000px); pointer-events: none; z-index: 999; background-image: linear-gradient(to bottom, rgba(2, 117, 216, 0.4) 1px, transparent 1px), linear-gradient(to right, rgba(2, 117, 216, 0.4) 1px, transparent 1px); background-size: 100px 50px; }
-        .grid-overlay.ativo { display: block; }
         .draggable-banner { position: absolute; touch-action: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: box-shadow 0.2s; border-radius: 4px; border: 2px solid transparent; }
         .draggable-banner-edit-mode { border: 2px dashed #0275d8 !important; background: rgba(255,255,255,0.9); box-shadow: 0 8px 30px rgba(0,0,0,0.4); z-index: 1005 !important; }
         .banner-drag-header { background: #0275d8; color: white; font-size: 11px; font-weight: bold; padding: 4px 10px; display: flex; align-items: center; justify-content: space-between; cursor: grab; border-top-left-radius: 4px; border-top-right-radius: 4px; position: absolute; top: -26px; left: -2px; right: -2px; height: 26px; opacity: 0.8; transition: 0.2s; }
@@ -189,7 +185,7 @@
         <div class="header-admin">
             <h1>NEWS PRO</h1>
             <div class="header-actions-right">
-                <span class="badge-pro">V13.2</span>
+                <span class="badge-pro">V15.0</span>
                 <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -239,7 +235,7 @@
                 </div>
 
                 <button type="button" class="btn-painel-anuncios-menu" onclick="window.abrirPainelAnunciosConfig()">
-                    <i class="fas fa-bullhorn"></i> Anúncios Globais
+                    <i class="fas fa-bullhorn"></i> Painel de Anúncios
                 </button>
             </div>
         </div>
@@ -391,6 +387,7 @@
             </div>
 
             <div class="botoes-acao-container">
+                <button type="button" class="btn-preview" onclick="window.veioDoPainelAnuncios=false; window.abrirPrevia('rascunho_atual')"><i class="fas fa-eye"></i> Ver Prévia & Organizar Banners</button>
                 <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> Publicar Matéria</button>
             </div>
             <button type="button" id="btnCancelar" class="btn-cancelar" onclick="window.cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
@@ -402,18 +399,24 @@
     <div class="modal-fullscreen-overlay" id="modalPainelAnunciosConfig">
         <div class="modal-fullscreen-content">
             <div class="modal-fs-header" style="background: #f9ab00; color: #1a1a1a;">
-                <h2><i class="fas fa-bullhorn"></i> Painel de Anúncios Globais</h2>
+                <h2><i class="fas fa-bullhorn"></i> Painel de Gestão de Anúncios e Banners</h2>
                 <button class="modal-fs-close" style="background: #1a1a1a; color: #fff;" onclick="window.fecharPainelAnunciosConfig()">&times;</button>
             </div>
             <div class="modal-fs-body" id="secaoPainelAnunciosMaster">
+                <p style="font-size: 13px; color: #444; margin-bottom: 15px; font-weight: 600;">Isolamento completo: configure aqui todos os banners, locais de exibição, scripts HTML, arquivos de imagem/GIF/vídeo, proporção de aspecto e links de destino.</p>
                 
                 <div id="container-banners-extras"></div>
 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px; border-top: 2px dashed #e2e8f0; padding-top: 20px;">
-                    <button type="button" class="btn-salvar-global" onclick="window.salvarBannersGlobais()">
-                        <i class="fas fa-save"></i> Publicar e Salvar Anúncios Globais
-                    </button>
-                    <button type="button" class="btn-add-painel" style="border-color: #f9ab00; color: #b07c00; margin-top: 10px;" onclick="window.adicionarPainelBanner()">
+                    <div style="display: flex; gap: 10px; width: 100%;">
+                        <button type="button" class="btn-preview" style="background: #002a5c; color: white; width: 50%;" onclick="window.abrirPreviaDosBanners()">
+                            <i class="fas fa-eye"></i> Ver Prévia
+                        </button>
+                        <button type="button" class="btn-salvar-global" style="margin: 0; width: 50%;" onclick="window.salvarBannersGlobais()">
+                            <i class="fas fa-save"></i> Publicar Anúncios
+                        </button>
+                    </div>
+                    <button type="button" class="btn-add-painel" style="border-color: #f9ab00; color: #b07c00; margin-top: 0;" onclick="window.adicionarPainelBanner()">
                         <i class="fas fa-plus-circle"></i> Adicionar + Novo Anúncio
                     </button>
                 </div>
@@ -470,6 +473,7 @@
         </div>
     </div>
 
+    <!-- MODAL DE PREVIA ATUALIZADO V15.0 -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -484,15 +488,10 @@
                 </div>
             </div>
             
-            <div id="prevConteudoWrapper" style="padding: 0; position: relative;">
-                
+            <div id="prevConteudoWrapper" style="padding: 0; position: relative; overflow-y:auto; flex:1; background:#f0f2f5;">
                 <div id="gridOverlay" class="grid-overlay"></div>
-
-                <div id="mockupWireframe" style="display: none; width: 100%; min-height: 100vh;">
-                </div>
-
-                <div id="mockupNoticia" style="width: 100%; min-height: 100vh; background: #f0f2f5;">
-                </div>
+                <div id="mockupWireframe" style="display: none; width: 100%; min-height: 100vh;"></div>
+                <div id="mockupNoticia" style="width: 100%; min-height: 100vh; background: #fff;"></div>
             </div>
         </div>
     </div>
@@ -516,14 +515,14 @@
 
         const quill = new Quill('#editor-container', {
             theme: 'snow',
-            placeholder: 'Digite sua matéria normalmente aqui...',
+            placeholder: 'Escreva a matéria...',
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline', 'strike'],
                     [{ 'header': [1, 2, 3, false] }],
                     [{ 'color': [] }, { 'background': [] }],
                     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['link', 'blockquote', 'image', 'video'],
+                    ['link', 'blockquote'],
                     ['clean']
                 ]
             }
@@ -558,12 +557,12 @@
             btn.classList.add('active');
             
             document.getElementById(`tipoBannerExtra_${id}`).value = tipo;
-            document.querySelectorAll(`#painel-banner-extra-${id} .ad-tab-content`).forEach(c => c.classList.remove('active'));
+            document.querySelectorAll(`#painel-banner-extra-${id} .ad-tab-content`).forEach(c => c.style.display = 'none');
             
             if (tipo === 'codigo') {
-                document.getElementById(`conteudoAdCodigo_${id}`).classList.add('active');
+                document.getElementById(`conteudoAdCodigo_${id}`).style.display = 'block';
             } else {
-                document.getElementById(`conteudoAdImagem_${id}`).classList.add('active');
+                document.getElementById(`conteudoAdImagem_${id}`).style.display = 'block';
             }
             window.salvarRascunho();
         };
@@ -574,7 +573,7 @@
             
             const previewContainer = document.getElementById(`previewContainerBannerExtra_${id}`);
             if (previewContainer) {
-                previewContainer.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#777;"><i class="fas fa-image" style="margin-right: 6px;"></i> Prévia do Arquivo</div>';
+                previewContainer.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#777;"><i class="fas fa-image" style="margin-right: 6px;"></i> Prévia do Anúncio</div>';
             }
             window.salvarRascunho();
         };
@@ -592,7 +591,7 @@
 
             const obj = salvo || {
                 tipo: 'imagem', codigoAnuncio: '', bannerImgBase64: '', 
-                formatoBanner: '16/9', bannerLinkUrl: '', localExibicao: 'inicio', noticiaAlvo: 'rascunho_atual', posX: 20, posY: 200 + (id * 50), scale: 1,
+                formatoBanner: 'auto', bannerLinkUrl: '', localExibicao: 'inicio', noticiaAlvo: 'rascunho_atual', posX: 20, posY: 200 + (id * 50), scale: 1,
                 posicao: 'meio_texto'
             };
 
@@ -609,22 +608,22 @@
             
             painel.innerHTML = `
                 <button type="button" class="btn-remover-painel-extra" onclick="window.removerPainelExtra('painel-banner-extra-${id}')"><i class="fas fa-times"></i> Remover</button>
-                <div style="font-weight: 800; color: #b07c00; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-ad"></i> Configuração do Anúncio ${id}</div>
+                <div style="font-weight: 800; color: #b07c00; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-ad"></i> Configuração do Anúncio / Banner ${id}</div>
                 
                 <div class="posicao-destaque">
-                    <label><i class="fas fa-crosshairs"></i> Posição do Anúncio (Onde ele vai ficar?)</label>
-                    <select id="posicaoBanner_${id}" onchange="window.salvarRascunho()" style="width: 100%; padding: 12px; border-radius: 6px; font-size: 14px; background: #fff;">
-                        <option value="flutuante" ${obj.posicao === 'flutuante' ? 'selected' : ''}>Flutuante (Arrastar Livremente)</option>
-                        <option value="acima_titulo" ${obj.posicao === 'acima_titulo' ? 'selected' : ''}>Acima do Título da Matéria</option>
-                        <option value="abaixo_titulo" ${obj.posicao === 'abaixo_titulo' ? 'selected' : ''}>Abaixo do Título da Matéria</option>
-                        <option value="abaixo_imagem" ${obj.posicao === 'abaixo_imagem' ? 'selected' : ''}>Logo Abaixo da Foto de Capa</option>
-                        <option value="meio_texto" ${obj.posicao === 'meio_texto' ? 'selected' : ''}>Bem no Meio da Matéria (Texto)</option>
-                        <option value="fim_texto" ${obj.posicao === 'fim_texto' ? 'selected' : ''}>No Final da Matéria</option>
+                    <label><i class="fas fa-crosshairs"></i> POSIÇÃO DO ANÚNCIO (ONDE ELE VAI FICAR?)</label>
+                    <select id="posicaoBanner_${id}" onchange="window.salvarRascunho()" style="width: 100%; padding: 12px; border-radius: 6px; font-size: 14px; background: #fff; margin-top: 5px;">
+                        <option value="flutuante" ${obj.posicao==='flutuante'?'selected':''}>Flutuante (Arrastar Livremente)</option>
+                        <option value="acima_titulo" ${obj.posicao==='acima_titulo'?'selected':''}>Acima do Título da Matéria</option>
+                        <option value="abaixo_titulo" ${obj.posicao==='abaixo_titulo'?'selected':''}>Abaixo do Título da Matéria</option>
+                        <option value="abaixo_imagem" ${obj.posicao==='abaixo_imagem'?'selected':''}>Logo Abaixo da Foto de Capa</option>
+                        <option value="meio_texto" ${obj.posicao==='meio_texto'?'selected':''}>Bem no Meio da Matéria (Texto)</option>
+                        <option value="fim_texto" ${obj.posicao==='fim_texto'?'selected':''}>No Final da Matéria</option>
                     </select>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 12px;">
-                    <label><i class="fas fa-map-marker-alt"></i> Local de Exibição (Em qual página?)</label>
+                    <label><i class="fas fa-map-marker-alt"></i> Local de Exibição do Anúncio</label>
                     <div class="local-tabs" id="botoesLocalBanner_${id}">
                         <button type="button" class="btn-local ${obj.localExibicao==='inicio'?'active':''}" onclick="window.mudarLocalBanner(${id}, 'inicio', this)">Tela Inicial</button>
                         <button type="button" class="btn-local ${obj.localExibicao==='ultimas'?'active':''}" onclick="window.mudarLocalBanner(${id}, 'ultimas', this)">Últimas Notícias</button>
@@ -635,7 +634,7 @@
 
                     <div id="wrapperNoticiaEspecifica_${id}" class="select-materia-visual-wrapper ${obj.localExibicao==='especifica'?'active':''}">
                         <button type="button" class="btn-abrir-seletor-visual" onclick="window.abrirSeletorMateriaParaBanner(${id})">
-                            <i class="fas fa-hand-pointer"></i> Escolher Matéria
+                            <i class="fas fa-hand-pointer"></i> Escolher Matéria no Gerenciador
                         </button>
                         <div class="materia-selecionada-badge" id="badgeNoticiaSelecionada_${id}">
                             <i class="fas fa-thumbtack"></i> Alvo: <span>${tituloAlvoVisual}</span>
@@ -649,14 +648,14 @@
                 </div>
                 <input type="hidden" id="tipoBannerExtra_${id}" value="${obj.tipo}">
 
-                <div id="conteudoAdCodigo_${id}" class="ad-tab-content ${obj.tipo==='codigo'?'active':''}">
+                <div id="conteudoAdCodigo_${id}" style="display: ${obj.tipo==='codigo'?'block':'none'};">
                     <div class="form-group" style="margin-bottom: 0;">
                         <label>Código do Banner / Anúncio</label>
-                        <textarea id="codigoAnuncioExtra_${id}" rows="2" placeholder="Cole aqui o script do Google AdSense ou outro HTML...">${obj.codigoAnuncio}</textarea>
+                        <textarea id="codigoAnuncioExtra_${id}" rows="2" placeholder="Cole aqui o banner ou anúncio...">${obj.codigoAnuncio}</textarea>
                     </div>
                 </div>
 
-                <div id="conteudoAdImagem_${id}" class="ad-tab-content ${obj.tipo==='imagem'?'active':''}">
+                <div id="conteudoAdImagem_${id}" style="display: ${obj.tipo==='imagem'?'block':'none'};">
                     <div class="form-group">
                         <label>Arquivo de Mídia (Imagem, GIF ou Vídeo)</label>
                         <div class="file-input-wrapper">
@@ -666,7 +665,7 @@
                         <input type="hidden" id="bannerImgBase64Extra_${id}" value="${obj.bannerImgBase64}">
                     </div>
 
-                    <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">PROPORÇÃO DO ANÚNCIO:</div>
+                    <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">PROPORÇÃO DE ASPECTO DA MÍDIA:</div>
                     <div class="aspect-ratios" id="ratiosBannerExtra_${id}">
                         <button type="button" class="btn-ratio ${obj.formatoBanner==='16/9'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '16/9', this)">16:9</button>
                         <button type="button" class="btn-ratio ${obj.formatoBanner==='9/16'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '9/16', this)">9:16</button>
@@ -687,18 +686,18 @@
                     </div>
                     <input type="hidden" id="formatoBannerExtraEscolhido_${id}" value="${obj.formatoBanner}">
 
-                    <div class="preview-container" id="previewContainerBannerExtra_${id}" style="aspect-ratio: ${obj.formatoBanner === 'auto' ? '16/9' : obj.formatoBanner.replace(':', '/')}; margin-top: 15px; border: 1px dashed #b0b8c1; background: #f8f9fa;">
+                    <div class="preview-container" id="previewContainerBannerExtra_${id}" style="aspect-ratio: ${obj.formatoBanner && obj.formatoBanner !== 'auto' ? obj.formatoBanner.replace(':', '/') : '16/9'}; margin-top: 15px; border: 1px dashed #b0b8c1; background: #f8f9fa;">
                         ${obj.bannerImgBase64 
-                            ? (obj.bannerImgBase64.startsWith('data:video') 
+                            ? (obj.bannerImgBase64.startsWith('data:video') || obj.bannerImgBase64.includes('video/mp4') 
                                 ? `<video src="${obj.bannerImgBase64}" style="width: 100%; height: 100%; object-fit: cover;" autoplay muted loop playsinline></video>` 
                                 : `<img src="${obj.bannerImgBase64}" style="width: 100%; height: 100%; object-fit: cover;">`)
-                            : '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#777;"><i class="fas fa-image" style="margin-right: 6px;"></i> Prévia do Arquivo</div>'
+                            : '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#777;"><i class="fas fa-image" style="margin-right: 6px;"></i> Prévia do Anúncio</div>'
                         }
                     </div>
 
                     <div class="form-group" style="margin-top: 15px; margin-bottom: 0;">
-                        <label>Link de Destino (Para onde vai quando clicarem?)</label>
-                        <input type="text" id="bannerLinkUrlExtra_${id}" value="${obj.bannerLinkUrl}" placeholder="https://seulinkaqui.com">
+                        <label>Link de Destino (Site ou Rede Social)</label>
+                        <input type="text" id="bannerLinkUrlExtra_${id}" value="${obj.bannerLinkUrl}" placeholder="https://...">
                     </div>
                 </div>
             `;
@@ -735,46 +734,8 @@
             if (previewContainer) {
                 previewContainer.style.aspectRatio = ratio === 'auto' ? '16/9' : ratio.replace(':', '/');
             }
+            
             window.salvarRascunho();
-        };
-
-        window.mudarLocalBanner = function(id, local, btn) {
-            document.querySelectorAll(`#botoesLocalBanner_${id} .btn-local`).forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById(`localExibicaoBanner_${id}`).value = local;
-
-            const wrapper = document.getElementById(`wrapperNoticiaEspecifica_${id}`);
-            if(local === 'especifica') {
-                wrapper.classList.add('active');
-            } else {
-                wrapper.classList.remove('active');
-            }
-            window.salvarRascunho();
-        };
-
-        window.abrirSeletorMateriaParaBanner = function(idBanner) {
-            idBannerAguardandoSelecao = idBanner;
-            document.getElementById('modalPainelAnunciosConfig').style.display = 'none';
-            window.abrirModalGerenciamento(true); 
-        };
-
-        window.abrirPreviaDosBanners = function() {
-            window.veioDoPainelAnuncios = true;
-            let alvo = 'inicio'; 
-            for(let i=1; i<=contBannersExtras; i++) {
-                let painel = document.getElementById(`painel-banner-extra-${i}`);
-                if(painel) {
-                    let local = document.getElementById(`localExibicaoBanner_${i}`).value;
-                    if(local === 'especifica') {
-                        alvo = document.getElementById(`selectNoticiaEspecifica_${i}`).value;
-                    } else {
-                        alvo = local;
-                    }
-                    break; 
-                }
-            }
-            window.fecharPainelAnunciosConfig();
-            window.abrirPrevia(alvo);
         };
 
         window.adicionarPainelImagem = function(ratioSalva = '16/9', base64Salva = '', creditoSalvo = '') {
@@ -843,12 +804,7 @@
             btn.classList.add('active');
             document.getElementById(`formatoImgExtraEscolhido_${id}`).value = ratio;
             document.getElementById(`previewContainerImgExtra_${id}`).style.aspectRatio = ratio === 'auto' ? '16/9' : ratio.replace(':', '/');
-        };
-
-        window.removerImagemExtra = function(id) {
-            document.getElementById(`imagemInputExtra_${id}`).value = "";
-            document.getElementById(`imagemBase64Extra_${id}`).value = "";
-            document.getElementById(`previewContainerImgExtra_${id}`).innerHTML = `<div class="preview-placeholder"><i class="fas fa-camera" style="margin-right: 6px;"></i> Prévia</div>`;
+            window.salvarRascunho();
         };
 
         window.adicionarPainelVideo = function(ratioSalva = '16/9', base64Salva = '', creditoSalvo = '') {
@@ -912,6 +868,7 @@
                 const reader = new FileReader();
                 reader.onload = function(evt) {
                     document.getElementById(`videoBase64Extra_${idAtual}`).value = evt.target.result;
+                    window.salvarRascunho();
                 };
                 reader.readAsDataURL(file);
             });
@@ -922,6 +879,7 @@
             btn.classList.add('active');
             document.getElementById(`formatoVidExtraEscolhido_${id}`).value = ratio;
             document.getElementById(`videoPreviewExtra_${id}`).style.aspectRatio = ratio === 'auto' ? '16/9' : ratio.replace(':', '/');
+            window.salvarRascunho();
         };
 
         window.removerVideoExtra = function(id) {
@@ -930,530 +888,55 @@
             const vPrev = document.getElementById(`videoPreviewExtra_${id}`);
             vPrev.style.display = 'none';
             vPrev.src = "";
-        };
-
-        window.removerPainelVideo = function(idPainel) {
-            const painel = document.getElementById(idPainel);
-            if (painel) painel.remove();
             window.salvarRascunho();
         };
 
-        function abrirDBMedia() {
-            return new Promise((resolve, reject) => {
-                const req = indexedDB.open("CGNewsDB", 1);
-                req.onupgradeneeded = (e) => {
-                    const db = e.target.result;
-                    if (!db.objectStoreNames.contains("media")) {
-                        db.createObjectStore("media");
-                    }
-                };
-                req.onsuccess = (e) => resolve(e.target.result);
-                req.onerror = (e) => reject(e);
-            });
-        }
+        window.mudarLocalBanner = function(id, local, btn) {
+            document.querySelectorAll(`#botoesLocalBanner_${id} .btn-local`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`localExibicaoBanner_${id}`).value = local;
 
-        async function salvarVideoNoRascunhoDB(videoData) {
-            try {
-                const idb = await abrirDBMedia();
-                const tx = idb.transaction("media", "readwrite");
-                tx.objectStore("media").put(videoData, "rascunho_video");
-            } catch(e) { console.error(e); }
-        }
-
-        async function obterVideoRascunhoDB() {
-            try {
-                const idb = await abrirDBMedia();
-                return new Promise((resolve) => {
-                    const tx = idb.transaction("media", "readonly");
-                    const req = tx.objectStore("media").get("rascunho_video");
-                    req.onsuccess = () => resolve(req.result || "");
-                    req.onerror = () => resolve("");
-                });
-            } catch(e) { return ""; }
-        }
-
-        async function limparVideoRascunhoDB() {
-            try {
-                const idb = await abrirDBMedia();
-                const tx = idb.transaction("media", "readwrite");
-                tx.objectStore("media").delete("rascunho_video");
-            } catch(e) {}
-        }
-
-        let timerSave;
-        window.salvarRascunho = function() {
-            if (idEditando) return;
-
-            clearTimeout(timerSave);
-            timerSave = setTimeout(async () => {
-                const categorias = Array.from(document.querySelectorAll('input[name="categoria"]:checked')).map(cb => cb.value);
-                
-                const bannersArray = [];
-                for(let i=1; i<=contBannersExtras; i++) {
-                    const painel = document.getElementById(`painel-banner-extra-${i}`);
-                    if(painel) {
-                        const noticiaAlvoInput = document.getElementById(`selectNoticiaEspecifica_${i}`);
-                        bannersArray.push({
-                            idPainel: i,
-                            tipo: document.getElementById(`tipoBannerExtra_${i}`).value,
-                            codigoAnuncio: document.getElementById(`codigoAnuncioExtra_${i}`).value,
-                            bannerImgBase64: document.getElementById(`bannerImgBase64Extra_${i}`).value,
-                            formatoBanner: document.getElementById(`formatoBannerExtraEscolhido_${i}`).value,
-                            bannerLinkUrl: document.getElementById(`bannerLinkUrlExtra_${i}`).value,
-                            localExibicao: document.getElementById(`localExibicaoBanner_${i}`).value,
-                            noticiaAlvo: noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual',
-                            posX: window.bannersData[i]?.posX || 0,
-                            posY: window.bannersData[i]?.posY || 0,
-                            scale: window.bannersData[i]?.scale || 1,
-                            posicao: document.getElementById(`posicaoBanner_${i}`).value
-                        });
-                    }
-                }
-
-                const rascunho = {
-                    titulo: document.getElementById('titulo').value,
-                    autor: document.getElementById('autor').value,
-                    fonteNoticia: document.getElementById('fonteNoticia').value,
-                    linkRedeSocial: document.getElementById('linkRedeSocial').value,
-                    fonteImagem: document.getElementById('fonteImagem').value,
-                    creditosVideo: document.getElementById('creditosVideo').value,
-                    textoRico: quill.root.innerHTML,
-                    categorias: categorias,
-                    formatoEscolhido: document.getElementById('formatoEscolhido').value,
-                    formatoVideoEscolhido: document.getElementById('formatoVideoEscolhido').value,
-                    banners: bannersArray
-                };
-
-                try {
-                    rascunho.imagemBase64_1 = document.getElementById('imagemBase64_1').value;
-                    rascunho.imagemBase64_2 = document.getElementById('imagemBase64_2').value;
-                    localStorage.setItem('cgnews_rascunho', JSON.stringify(rascunho));
-                } catch(e) {
-                    rascunho.imagemBase64_1 = "";
-                    rascunho.imagemBase64_2 = "";
-                    localStorage.setItem('cgnews_rascunho', JSON.stringify(rascunho));
-                }
-
-                const vid = document.getElementById('videoBase64').value;
-                if(vid) {
-                    await salvarVideoNoRascunhoDB(vid);
-                }
-
-                const toast = document.getElementById('toastSave');
-                toast.style.display = 'block';
-                setTimeout(() => { toast.style.display = 'none'; }, 1500);
-
-            }, 1000);
+            const wrapper = document.getElementById(`wrapperNoticiaEspecifica_${id}`);
+            if(local === 'especifica') {
+                wrapper.classList.add('active');
+            } else {
+                wrapper.classList.remove('active');
+            }
+            window.salvarRascunho();
         };
 
-        window.salvarBannersGlobais = async function() {
-            const btn = document.querySelector('.btn-salvar-global');
-            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> SALVANDO ANÚNCIOS...";
-            btn.disabled = true;
+        window.abrirSeletorMateriaParaBanner = function(idBanner) {
+            idBannerAguardandoSelecao = idBanner;
+            document.getElementById('modalPainelAnunciosConfig').style.display = 'none';
+            window.abrirModalGerenciamento(true); 
+        };
 
-            const bannersArray = [];
+        window.abrirPreviaDosBanners = function() {
+            window.veioDoPainelAnuncios = true;
+            let alvo = 'rascunho_atual'; 
             for(let i=1; i<=contBannersExtras; i++) {
-                const painel = document.getElementById(`painel-banner-extra-${i}`);
+                let painel = document.getElementById(`painel-banner-extra-${i}`);
                 if(painel) {
-                    const noticiaAlvoInput = document.getElementById(`selectNoticiaEspecifica_${i}`);
-                    bannersArray.push({
-                        idPainel: i,
-                        tipo: document.getElementById(`tipoBannerExtra_${i}`).value,
-                        codigoAnuncio: document.getElementById(`codigoAnuncioExtra_${i}`).value,
-                        bannerImgBase64: document.getElementById(`bannerImgBase64Extra_${i}`).value,
-                        formatoBanner: document.getElementById(`formatoBannerExtraEscolhido_${i}`).value,
-                        bannerLinkUrl: document.getElementById(`bannerLinkUrlExtra_${i}`).value,
-                        localExibicao: document.getElementById(`localExibicaoBanner_${i}`).value,
-                        noticiaAlvo: noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual',
-                        posicao: document.getElementById(`posicaoBanner_${i}`).value
-                    });
+                    let local = document.getElementById(`localExibicaoBanner_${i}`).value;
+                    if(local === 'especifica') {
+                        alvo = document.getElementById(`selectNoticiaEspecifica_${i}`).value;
+                    } else if (local === 'inicio') {
+                        alvo = 'inicio';
+                    } else if (local === 'ultimas') {
+                        alvo = 'ultimas';
+                    }
+                    break; 
                 }
             }
-
-            try {
-                await setDoc(doc(db, "configuracoes", "bannersGlobais"), {
-                    banners: bannersArray,
-                    dataAtualizacao: Date.now()
-                });
-                alert("✅ Anúncios globais salvos com sucesso!");
-                window.fecharPainelAnunciosConfig();
-            } catch (error) {
-                console.error(error);
-                alert("❌ Erro ao salvar anúncios.");
-            } finally {
-                btn.innerHTML = `<i class="fas fa-save"></i> Publicar e Salvar Anúncios Globais`;
-                btn.disabled = false;
-            }
+            window.fecharPainelAnunciosConfig();
+            window.abrirPrevia(alvo);
         };
 
-        function limparRascunho() {
-            localStorage.removeItem('cgnews_rascunho');
-            window.limparVideoRascunhoDB();
-        }
-
-        window.onload = async function() {
-            const salvo = localStorage.getItem('cgnews_rascunho');
-            if(salvo && !idEditando) {
-                try {
-                    const rascunho = JSON.parse(salvo);
-                    document.getElementById('titulo').value = rascunho.titulo || "";
-                    document.getElementById('autor').value = rascunho.autor || "";
-                    document.getElementById('fonteNoticia').value = rascunho.fonteNoticia || "";
-                    document.getElementById('linkRedeSocial').value = rascunho.linkRedeSocial || "";
-                    document.getElementById('fonteImagem').value = rascunho.fonteImagem || "";
-                    document.getElementById('creditosVideo').value = rascunho.creditosVideo || "";
-
-                    if(rascunho.textoRico && rascunho.textoRico !== '<p><br></p>') {
-                        quill.root.innerHTML = rascunho.textoRico;
-                    }
-
-                    if(rascunho.categorias) {
-                        rascunho.categorias.forEach(cat => {
-                            const check = document.querySelector(`input[name="categoria"][value="${cat}"]`);
-                            if(check) check.checked = true;
-                        });
-                    }
-
-                    if(rascunho.formatoEscolhido) {
-                        const btn = document.querySelector(`#ratiosImagem .btn-ratio[onclick*="'${rascunho.formatoEscolhido}'"]`);
-                        if(btn) window.mudarLayoutImagem(rascunho.formatoEscolhido, btn);
-                    }
-
-                    if(rascunho.formatoVideoEscolhido) {
-                        const btnV = document.querySelector(`#ratiosVideo .btn-ratio[onclick*="'${rascunho.formatoVideoEscolhido}'"]`);
-                        if(btnV) {
-                            window.mudarLayoutVideo(rascunho.formatoVideoEscolhido, btnV);
-                        } else {
-                            document.getElementById('formatoVideoEscolhido').value = rascunho.formatoVideoEscolhido;
-                            document.getElementById('videoPreview').style.aspectRatio = rascunho.formatoVideoEscolhido === 'auto' ? '16/9' : rascunho.formatoVideoEscolhido;
-                        }
-                    }
-
-                    if(rascunho.imagemBase64_1) document.getElementById('imagemBase64_1').value = rascunho.imagemBase64_1;
-                    if(rascunho.imagemBase64_2) document.getElementById('imagemBase64_2').value = rascunho.imagemBase64_2;
-                    window.atualizarPreviewImagens();
-
-                    const videoSalvo = await obterVideoRascunhoDB();
-                    if(videoSalvo) {
-                        document.getElementById('videoBase64').value = videoSalvo;
-                        const videoPreview = document.getElementById('videoPreview');
-                        videoPreview.src = videoSalvo;
-                        videoPreview.style.display = 'block';
-                    }
-                } catch(e) {}
-            }
-            
-            window.carregarConfigGoogle();
-            await window.carregarListaNoticias();
-
-            try {
-                const docRef = doc(db, "configuracoes", "bannersGlobais");
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists() && docSnap.data().banners) {
-                    const bannersG = docSnap.data().banners;
-                    document.getElementById('container-banners-extras').innerHTML = '';
-                    contBannersExtras = 0;
-                    bannersG.forEach(b => window.adicionarPainelBanner(b));
-                }
-            } catch (e) { console.log("Sem banners globais"); }
-
-            setTimeout(() => {
-                const currentModal = sessionStorage.getItem('currentModal');
-                if (currentModal === 'painelAnuncios') {
-                    window.abrirPainelAnunciosConfig();
-                } else if (currentModal === 'gerenciamento') {
-                    const modo = sessionStorage.getItem('modoGerenciamento') === 'true';
-                    window.abrirModalGerenciamento(modo);
-                } else if (currentModal === 'audiencia') {
-                    window.abrirModalAudiencia();
-                } else if (currentModal === 'previa') {
-                    const contexto = sessionStorage.getItem('contextoPrevia') || 'rascunho_atual';
-                    window.abrirPrevia(contexto);
-                }
-            }, 600); 
-        };
-
-        document.getElementById('formNoticia').addEventListener('input', window.salvarRascunho);
-        document.getElementById('formNoticia').addEventListener('change', window.salvarRascunho);
-        quill.on('text-change', window.salvarRascunho);
-
-        window.alternarSidebar = function(forceClose = false) {
-            const panel = document.getElementById('sidebarPanel');
-            const overlay = document.getElementById('sidebarOverlay');
-            const isOpen = panel.classList.contains('ativo');
-            
-            if (isOpen || forceClose) {
-                panel.classList.remove('ativo');
-                overlay.style.display = 'none';
-            } else if (!forceClose) {
-                panel.classList.add('ativo');
-                overlay.style.display = 'block';
-            }
-        };
-
-        window.abrirModalGerenciamento = function(modoSelecao = false) {
-            window.alternarSidebar(true);
-            const modal = document.getElementById('modalFullscreenGerenciar');
-            const lista = document.getElementById('lista-noticias-fullscreen');
-            const titulo = document.getElementById('tituloModalGerenciamento');
-            
-            if(modoSelecao) {
-                lista.classList.add('modo-selecao-anuncio');
-                titulo.innerHTML = '<i class="fas fa-bullseye"></i> Escolha a Matéria para o Anúncio';
-            } else {
-                lista.classList.remove('modo-selecao-anuncio');
-                titulo.innerHTML = '<i class="fas fa-list-ul"></i> Gerenciar Todas as Matérias';
-            }
-            
-            modal.style.display = 'block';
-            sessionStorage.setItem('currentModal', 'gerenciamento');
-            sessionStorage.setItem('modoGerenciamento', modoSelecao);
-            
-            window.renderizarListasDeNoticias();
-        };
-
-        window.fecharModalGerenciamento = function() {
-            document.getElementById('modalFullscreenGerenciar').style.display = 'none';
-            if(idBannerAguardandoSelecao) {
-                idBannerAguardandoSelecao = null;
-                document.getElementById('modalPainelAnunciosConfig').style.display = 'block';
-                sessionStorage.setItem('currentModal', 'painelAnuncios');
-            } else {
-                sessionStorage.removeItem('currentModal');
-                sessionStorage.removeItem('modoGerenciamento');
-            }
-        };
-
-        window.selecionarMateriaParaBanner = function(idMateria, tituloMateria) {
-            if(idBannerAguardandoSelecao) {
-                document.getElementById(`selectNoticiaEspecifica_${idBannerAguardandoSelecao}`).value = idMateria;
-                document.querySelector(`#badgeNoticiaSelecionada_${idBannerAguardandoSelecao} span`).innerText = tituloMateria;
-                idBannerAguardandoSelecao = null;
-                
-                document.getElementById('modalFullscreenGerenciar').style.display = 'none';
-                document.getElementById('modalPainelAnunciosConfig').style.display = 'block';
-                sessionStorage.setItem('currentModal', 'painelAnuncios'); 
-                window.salvarRascunho();
-            }
-        };
-
-        window.abrirModalAudiencia = function() {
-            window.alternarSidebar(true);
-            document.getElementById('modalFullscreenAudiencia').style.display = 'block';
-            sessionStorage.setItem('currentModal', 'audiencia');
-            window.atualizarEstatisticasView();
-        };
-
-        window.fecharModalAudiencia = function() {
-            document.getElementById('modalFullscreenAudiencia').style.display = 'none';
-            sessionStorage.removeItem('currentModal');
-        };
-
-        function processarImagemParaBase64(file, inputHiddenId, callback) {
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                const base64 = evt.target.result;
-                document.getElementById(inputHiddenId).value = base64;
-                if(callback) callback(base64);
-                window.salvarRascunho();
-            };
-            reader.readAsDataURL(file);
-        }
-
-        document.getElementById('imagemInput1').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_1', window.atualizarPreviewImagens));
-        document.getElementById('imagemInput2').addEventListener('change', (e) => processarImagemParaBase64(e.target.files[0], 'imagemBase64_2', window.atualizarPreviewImagens));
-        
-        window.removerImagem = function(num) {
-            document.getElementById(`imagemInput${num}`).value = "";
-            document.getElementById(`imagemBase64_${num}`).value = "";
-            window.atualizarPreviewImagens();
-            window.salvarRascunho();
-        };
-
-        window.mudarLayoutImagem = function(ratio, btn) {
-            document.querySelectorAll('#ratiosImagem .btn-ratio').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById('formatoEscolhido').value = ratio;
-            document.getElementById('previewContainerImagens').style.aspectRatio = ratio === 'auto' ? '16/9' : ratio;
-            window.salvarRascunho();
-        };
-
-        window.mudarLayoutVideo = function(ratio, btn) {
-            document.querySelectorAll('#ratiosVideo .btn-ratio').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById('formatoVideoEscolhido').value = ratio;
-            
-            const videoPreview = document.getElementById('videoPreview');
-            videoPreview.style.aspectRatio = ratio === 'auto' ? '16/9' : ratio;
-            window.salvarRascunho();
-        };
-
-        window.atualizarPreviewImagens = function() {
-            const img1 = document.getElementById('imagemBase64_1').value;
-            const img2 = document.getElementById('imagemBase64_2').value;
-            const container = document.getElementById('previewContainerImagens');
-            
-            if (!img1 && !img2) {
-                container.innerHTML = '<div class="preview-placeholder"><i class="fas fa-camera" style="margin-right: 6px;"></i> Nenhuma imagem</div>';
-                return;
-            }
-
-            container.innerHTML = '';
-            if (img1 && img2) {
-                container.innerHTML += `<img src="${img1}" style="flex: 1; width: 50%; height: 100%; object-fit: cover; border-right: 2px solid #fff;">`;
-                container.innerHTML += `<img src="${img2}" style="flex: 1; width: 50%; height: 100%; object-fit: cover;">`;
-            } else if (img1) {
-                container.innerHTML += `<img src="${img1}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
-            } else if (img2) {
-                container.innerHTML += `<img src="${img2}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
-            }
-        };
-
-        document.getElementById('videoInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const videoPreview = document.getElementById('videoPreview');
-
-            const urlBlob = URL.createObjectURL(file);
-            videoPreview.src = urlBlob;
-            videoPreview.style.display = 'block';
-
-            const reader = new FileReader();
-            reader.onload = async function(evt) {
-                const base64Video = evt.target.result;
-                document.getElementById('videoBase64').value = base64Video;
-                await salvarVideoNoRascunhoDB(base64Video);
-            };
-            reader.readAsDataURL(file);
-        });
-
-        window.removerVideo = function() {
-            document.getElementById('videoInput').value = "";
-            document.getElementById('videoBase64').value = "";
-            const videoPreview = document.getElementById('videoPreview');
-            videoPreview.style.display = 'none';
-            videoPreview.src = "";
-            window.limparVideoRascunhoDB();
-            window.salvarRascunho();
-        };
-
-        window.atualizarEstatisticasView = function() {
-            const filtro = document.getElementById('filtroPeriodoModal').value;
-            let totalViews = 0;
-            const agora = Date.now();
-            const umDiaMs = 24 * 60 * 60 * 1000;
-            const umMesMs = 30 * umDiaMs;
-
-            if (filtro === 'nenhum') {
-                totalViews = 0;
-            } else {
-                window.listaCompletaNoticias.forEach(item => {
-                    const viewsMatéria = item.visualizacoes || 0;
-                    const dataCriacao = item.dataCriacao || item.dataAtualizacao || agora;
-                    const diferencaMs = agora - dataCriacao;
-
-                    if (filtro === '1dia' && diferencaMs <= umDiaMs) totalViews += viewsMatéria;
-                    else if (filtro === '7dias' && diferencaMs <= (7 * umDiaMs)) totalViews += viewsMatéria;
-                    else if (filtro === '15dias' && diferencaMs <= (15 * umDiaMs)) totalViews += viewsMatéria;
-                    else if (filtro === '1mes' && diferencaMs <= umMesMs) totalViews += viewsMatéria;
-                    else if (filtro === '3meses' && diferencaMs <= (3 * umMesMs)) totalViews += viewsMatéria;
-                    else if (filtro === '6meses' && diferencaMs <= (6 * umMesMs)) totalViews += viewsMatéria;
-                    else if (filtro === '12meses' && diferencaMs <= (12 * umMesMs)) totalViews += viewsMatéria;
-                    else if (filtro === 'total') totalViews += viewsMatéria;
-                });
-            }
-
-            document.getElementById('valorVisualizacoesSide').innerText = totalViews.toLocaleString('pt-BR');
-            document.getElementById('valorVisualizacoesModal').innerText = totalViews.toLocaleString('pt-BR');
-            window.renderizarGrafico(totalViews);
-        };
-
-        window.renderizarGrafico = function(totalViews) {
-            const ctx = document.getElementById('graficoAudiencia').getContext('2d');
-            if (chartInstance) chartInstance.destroy();
-
-            chartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Acessos Registrados'],
-                    datasets: [{
-                        label: 'Leitores',
-                        data: [totalViews],
-                        backgroundColor: '#002a5c',
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true } }
-                }
-            });
-        };
-
-        window.carregarConfigGoogle = async function() {
-            try {
-                const docRef = doc(db, "configuracoes", "google");
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    if(data.analytics) {
-                        document.getElementById('googleAnalyticsCode').value = data.analytics;
-                        if(data.analyticsAtivo) window.marcarBotonAtivo('analytics', true);
-                    }
-                    if(data.adsense) {
-                        document.getElementById('googleAdSenseCode').value = data.adsense;
-                        if(data.adsenseAtivo) window.marcarBotonAtivo('adsense', true);
-                    }
-                }
-            } catch (e) { console.log(e); }
-        };
-
-        window.ativarGoogleServico = async function(tipo) {
-            const isAnalytics = tipo === 'analytics';
-            const inputId = isAnalytics ? 'googleAnalyticsCode' : 'googleAdSenseCode';
-            const btnId = isAnalytics ? 'btnAtivarAnalytics' : 'btnAtivarAds';
-            const valor = document.getElementById(inputId).value.trim();
-
-            if (!valor) {
-                alert("⚠️ Insira o código do Google.");
-                return;
-            }
-
-            const btn = document.getElementById(btnId);
-            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> ATIVANDO...";
-
-            try {
-                const payload = {
-                    analytics: document.getElementById('googleAnalyticsCode').value,
-                    analyticsAtivo: isAnalytics ? true : document.getElementById('btnAtivarAnalytics').classList.contains('ativo'),
-                    adsense: document.getElementById('googleAdSenseCode').value,
-                    adsenseAtivo: !isAnalytics ? true : document.getElementById('btnAtivarAds').classList.contains('ativo')
-                };
-
-                await setDoc(doc(db, "configuracoes", "google"), payload, { merge: true });
-                window.marcarBotonAtivo(tipo, true);
-                alert("✅ Ativado com sucesso!");
-            } catch (e) {
-                alert("Erro ao ativar.");
-                btn.innerHTML = "<i class='fas fa-power-off'></i> Tentar Novamente";
-            }
-        };
-
-        window.marcarBotonAtivo = function(tipo, ativo) {
-            const btn = document.getElementById(tipo === 'analytics' ? 'btnAtivarAnalytics' : 'btnAtivarAds');
-            if (ativo) {
-                btn.classList.add('ativo');
-                btn.innerHTML = "<i class='fas fa-check-circle'></i> ATIVADO";
-            }
-        };
-
-        // Função auxiliar para injetar HTML de anúncios nos parágrafos
+        // FUNÇÃO DE RENDERIZAR BANNER INJETADO NA PRÉVIA (AFASTANDO O TEXTO)
         function renderizarBannerHtml(b) {
             if (!b) return "";
             let conteudoAnuncio = '';
+
             if (b.tipo === 'codigo' && b.codigoAnuncio) {
                 conteudoAnuncio = b.codigoAnuncio;
             } else if (b.tipo === 'imagem' && b.bannerImgBase64) {
@@ -1466,9 +949,12 @@
                     conteudoAnuncio = `<a href="${b.bannerLinkUrl}" target="_blank" style="display:block; width:100%; height:100%;">${conteudoAnuncio}</a>`;
                 }
             }
+
             if (!conteudoAnuncio) return "";
+
             let formatoCSS = b.formatoBanner && b.formatoBanner !== 'auto' ? b.formatoBanner.replace(':', '/') : 'auto';
             let cssAspect = formatoCSS !== 'auto' ? `aspect-ratio: ${formatoCSS};` : '';
+
             return `
                 <div class="banner-injetado-container">
                     <div class="banner-injetado-label">- Publicidade -</div>
@@ -1508,7 +994,7 @@
                 dragLabel.style.display = 'none';
             }
 
-            if (contexto !== 'rascunho_atual') {
+            if (contexto === 'inicio' || contexto === 'ultimas') {
                 mockupWireframe.style.display = 'block';
                 mockupNoticia.style.display = 'none';
 
@@ -1516,13 +1002,6 @@
                 
                 if (contexto === 'ultimas') {
                     urlReal = "https://fanciful-halva-1454f7.netlify.app/?ultimas=true";
-                } else if (contexto !== 'inicio') {
-                    let indexMateria = window.listaCompletaNoticias.findIndex(n => n.id === contexto);
-                    if (indexMateria !== -1) {
-                        urlReal = `https://fanciful-halva-1454f7.netlify.app/?ultimas=true&materia=noticia_${indexMateria}`;
-                    } else {
-                        urlReal = `https://fanciful-halva-1454f7.netlify.app/?ultimas=true&materia=${contexto}`;
-                    }
                 }
 
                 mockupWireframe.innerHTML = `
@@ -1536,15 +1015,39 @@
                 mockupWireframe.style.display = 'none';
                 mockupNoticia.style.display = 'block';
 
-                let tTxt = document.getElementById('titulo').value || "Título";
-                let aTxt = document.getElementById('autor').value || "Redação";
-                let txtH = quill.root.innerHTML;
-                const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
-                let cTxt = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
-                let credTxt = document.getElementById('fonteImagem').value ? `Crédito: ${document.getElementById('fonteImagem').value}` : "Crédito: Reprodução";
-                let i1 = document.getElementById('imagemBase64_1').value;
-                let i2 = document.getElementById('imagemBase64_2').value;
-                let formEsc = document.getElementById('formatoEscolhido').value;
+                let tTxt, aTxt, txtH, cTxt, credTxt, fontTxt, i1, i2, vArq, lRede, formEsc, formVidEsc;
+
+                if (contexto === 'rascunho_atual') {
+                    tTxt = document.getElementById('titulo').value || "Título";
+                    aTxt = document.getElementById('autor').value || "Redação";
+                    txtH = quill.root.innerHTML;
+                    const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
+                    cTxt = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
+                    credTxt = document.getElementById('fonteImagem').value ? `Crédito: ${document.getElementById('fonteImagem').value}` : "Crédito: Reprodução";
+                    fontTxt = document.getElementById('fonteNoticia').value ? `Fonte: ${document.getElementById('fonteNoticia').value}` : "";
+                    i1 = document.getElementById('imagemBase64_1').value;
+                    i2 = document.getElementById('imagemBase64_2').value;
+                    vArq = document.getElementById('videoBase64').value;
+                    lRede = document.getElementById('linkRedeSocial').value;
+                    formEsc = document.getElementById('formatoEscolhido').value;
+                    formVidEsc = document.getElementById('formatoVideoEscolhido').value;
+                } else {
+                    const item = window.noticiasAdmin[contexto];
+                    if (item) {
+                        tTxt = item.titulo || "Sem Título";
+                        aTxt = item.autor || "Redação";
+                        txtH = item.textoRico || item.texto || item.conteudo || "<p>Sem conteúdo.</p>";
+                        cTxt = item.categorias ? item.categorias.join(', ') : (item.categoria || "Geral");
+                        credTxt = item.fonteImagem ? `Crédito: ${item.fonteImagem}` : "Crédito: Reprodução";
+                        fontTxt = item.fonteNoticia ? `Fonte: ${item.fonteNoticia}` : "";
+                        i1 = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
+                        i2 = item.imagemBase64_2 || item.imagem2 || '';
+                        vArq = item.videoBase64 || item.video || item.linkVideo || '';
+                        lRede = item.linkRedeSocial || '';
+                        formEsc = item.formatoEscolhido || 'auto';
+                        formVidEsc = item.formatoVideoEscolhido || 'auto';
+                    }
+                }
 
                 let bAcimaTitulo = "";
                 let bAbaixoTitulo = "";
@@ -1559,7 +1062,11 @@
                         const noticiaAlvoInput = document.getElementById(`selectNoticiaEspecifica_${i}`);
                         const noticiaAlvo = noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual';
 
-                        if (localExibicao === 'especifica' && noticiaAlvo === 'rascunho_atual') {
+                        let mostrarBanner = false;
+                        if (contexto === 'rascunho_atual' && localExibicao === 'especifica' && noticiaAlvo === 'rascunho_atual') mostrarBanner = true;
+                        else if (contexto !== 'rascunho_atual' && localExibicao === 'especifica' && noticiaAlvo === contexto) mostrarBanner = true;
+
+                        if (mostrarBanner) {
                             let b = {
                                 tipo: document.getElementById(`tipoBannerExtra_${i}`).value,
                                 codigoAnuncio: document.getElementById(`codigoAnuncioExtra_${i}`).value,
@@ -1599,8 +1106,20 @@
                     textoProcessado = txtH;
                 }
 
-                let blocoMidiaPrincipal = "";
+                let htmlArtigo = `
+                <div style="background: #fff; width: 100%; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; text-align: left; padding-bottom: 50px;">
+                    <div style="background: #fff; padding: 15px; border-bottom: 1px solid #e1e4e8;">
+                        <span style="color: #d93025; font-size: 11px; font-weight: 900; text-transform: uppercase; margin-right: 10px;">${cTxt}</span>
+                        <span style="font-size: 11px; color: #555;">Prévia da Matéria</span>
+                    </div>
+                    <div style="max-width: 800px; margin: 0 auto; padding: 30px 20px;">
+                        ${bAcimaTitulo}
+                        <h1 style="color: #002a5c; font-size: 32px; font-weight: 900; margin-bottom: 12px; line-height: 1.2;">${tTxt}</h1>
+                        ${bAbaixoTitulo}
+                        <div style="font-size: 14px; color: #666; margin-bottom: 25px;">Por ${aTxt}</div>`;
+
                 const formatoImgFinal = (formEsc && formEsc !== 'auto') ? formEsc.replace(':', '/') : 'auto';
+
                 if (i1 || i2) {
                     let imgHtml = '';
                     let wrapperStyle = formatoImgFinal === 'auto' ? '' : `aspect-ratio: ${formatoImgFinal}; overflow: hidden;`;
@@ -1613,27 +1132,18 @@
                         </div>`;
                     } else if (i1) {
                         imgHtml = `<img src="${i1}" style="width: 100%; ${formatoImgFinal === 'auto' ? 'height: auto;' : 'height: 100%;'} object-fit: cover; border-radius: 8px;">`;
+                    } else if (i2) {
+                        imgHtml = `<img src="${i2}" style="width: 100%; ${formatoImgFinal === 'auto' ? 'height: auto;' : 'height: 100%;'} object-fit: cover; border-radius: 8px;">`;
                     }
                     
-                    blocoMidiaPrincipal += `
+                    htmlArtigo += `
                         <div style="width: 100%; margin-bottom: 8px; position: relative;">
                             ${imgHtml}
                             <div style="position: absolute; bottom: 10px; left: 10px; font-size: 10px; color: rgba(255,255,255,0.8); text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">${credTxt}</div>
                         </div>`;
                 }
 
-                let htmlArtigo = `
-                <div style="background: #fff; width: 100%; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; text-align: left; padding-bottom: 50px;">
-                    <div style="background: #fff; padding: 15px; border-bottom: 1px solid #e1e4e8;">
-                        <span style="color: #d93025; font-size: 11px; font-weight: 900; text-transform: uppercase; margin-right: 10px;">${cTxt}</span>
-                        <span style="font-size: 11px; color: #555;">Prévia do Rascunho</span>
-                    </div>
-                    <div style="max-width: 800px; margin: 0 auto; padding: 30px 20px;">
-                        ${bAcimaTitulo}
-                        <h1 style="color: #002a5c; font-size: 32px; font-weight: 900; margin-bottom: 12px; line-height: 1.2;">${tTxt}</h1>
-                        ${bAbaixoTitulo}
-                        <div style="font-size: 14px; color: #666; margin-bottom: 25px;">Por ${aTxt}</div>
-                        ${blocoMidiaPrincipal}
+                htmlArtigo += `
                         ${bAbaixoMidia}
                         <div class="preview-body-content" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 17px; line-height: 1.8; color: #333; margin-top: 30px; margin-bottom: 40px;">${textoProcessado}</div>
                         ${bFimMateria}
@@ -1660,7 +1170,7 @@
                 let mostrarBanner = false;
                 if (contexto === 'inicio' && localExibicao === 'inicio') mostrarBanner = true;
                 else if (contexto === 'ultimas' && localExibicao === 'ultimas') mostrarBanner = true;
-                else if (localExibicao === 'especifica' && contexto === noticiaAlvo) mostrarBanner = true;
+                else if (localExibicao === 'especifica' && (contexto === noticiaAlvo || (contexto === 'rascunho_atual' && noticiaAlvo === 'rascunho_atual'))) mostrarBanner = true;
 
                 if (!mostrarBanner) continue;
 
@@ -1677,13 +1187,9 @@
                     if (base64.startsWith('data:video') || base64.includes('video/mp4')) {
                         contentHtml = `
                             <video src="${base64}" controls style="width: 100%; height: 100%; object-fit: contain; background:#000; pointer-events: none;"></video>
-                            ${link ? `<a href="${link}" target="_blank" class="banner-video-saibamais">Saiba Mais</a>` : ''}
                         `;
                     } else {
                         contentHtml = `<img src="${base64}" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none;">`;
-                        if(link) {
-                            contentHtml = `<a href="${link}" target="_blank" style="display:block;width:100%;height:100%;">${contentHtml}</a>`;
-                        }
                     }
                 } else if(tipo === 'codigo' && code) {
                     contentHtml = `<div style="width:100%; height:100%; overflow:hidden;">${code}</div>`;
@@ -1701,7 +1207,7 @@
                     el.style.transformOrigin = 'top left';
 
                     el.innerHTML = `
-                        <div class="banner-drag-header"><i class="fas fa-arrows-alt"></i> Arraste Flutuante <button type="button" class="banner-close-btn" onclick="document.getElementById('prevBannerDrag_${i}').style.display='none'" title="Fechar Publicidade">&times;</button></div>
+                        <div class="banner-drag-header"><i class="fas fa-arrows-alt"></i> Arraste o Anúncio <button type="button" class="banner-close-btn" onclick="document.getElementById('prevBannerDrag_${i}').style.display='none'" title="Fechar Publicidade">&times;</button></div>
                         ${contentHtml}
                         <div class="resize-handle"><i class="fas fa-expand-arrows-alt"></i></div>
                     `;
@@ -1961,7 +1467,7 @@
                         botoesHtml = `<button type="button" class="btn-selecionar-anuncio" style="display:inline-flex;" onclick="window.selecionarMateriaParaBanner('${id}', '${tituloLimpo}')"><i class="fas fa-bullseye"></i> Escolher esta matéria</button>`;
                     } else {
                         botoesHtml = `
-                            <button type="button" class="btn-editar" onclick="window.editarNoticia('${id}')"><i class="fas fa-edit"></i> Editar Notícia</button>
+                            <button type="button" class="btn-editar" onclick="window.editarNoticia('${id}')"><i class="fas fa-edit"></i> Editar</button>
                             <button type="button" class="btn-apagar" onclick="window.apagarNoticia('${id}')"><i class="fas fa-trash-alt"></i> Excluir</button>
                         `;
                     }
@@ -2169,6 +1675,143 @@
                 btnSubmit.disabled = false;
             }
         });
+
+        window.salvarBannersGlobais = async function() {
+            const btn = document.querySelector('.btn-salvar-global');
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> SALVANDO ANÚNCIOS...";
+            btn.disabled = true;
+
+            const bannersArray = [];
+            for(let i=1; i<=contBannersExtras; i++) {
+                const painel = document.getElementById(`painel-banner-extra-${i}`);
+                if(painel) {
+                    const noticiaAlvoInput = document.getElementById(`selectNoticiaEspecifica_${i}`);
+                    bannersArray.push({
+                        idPainel: i,
+                        tipo: document.getElementById(`tipoBannerExtra_${i}`).value,
+                        codigoAnuncio: document.getElementById(`codigoAnuncioExtra_${i}`).value,
+                        bannerImgBase64: document.getElementById(`bannerImgBase64Extra_${i}`).value,
+                        formatoBanner: document.getElementById(`formatoBannerExtraEscolhido_${i}`).value,
+                        bannerLinkUrl: document.getElementById(`bannerLinkUrlExtra_${i}`).value,
+                        localExibicao: document.getElementById(`localExibicaoBanner_${i}`).value,
+                        noticiaAlvo: noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual',
+                        posX: window.bannersData[i]?.posX || 0,
+                        posY: window.bannersData[i]?.posY || 0,
+                        scale: window.bannersData[i]?.scale || 1,
+                        posicao: document.getElementById(`posicaoBanner_${i}`).value
+                    });
+                }
+            }
+
+            try {
+                await setDoc(doc(db, "configuracoes", "bannersGlobais"), {
+                    banners: bannersArray,
+                    dataAtualizacao: Date.now()
+                });
+                alert("✅ Anúncios globais salvos com sucesso!");
+                window.fecharPainelAnunciosConfig();
+            } catch (error) {
+                console.error(error);
+                alert("❌ Erro ao salvar anúncios.");
+            } finally {
+                btn.innerHTML = `<i class="fas fa-save"></i> Publicar e Salvar Anúncios Globais`;
+                btn.disabled = false;
+            }
+        };
+
+        function limparRascunho() {
+            localStorage.removeItem('cgnews_rascunho');
+            window.limparVideoRascunhoDB();
+        }
+
+        window.onload = async function() {
+            const salvo = localStorage.getItem('cgnews_rascunho');
+            if(salvo && !idEditando) {
+                try {
+                    const rascunho = JSON.parse(salvo);
+                    document.getElementById('titulo').value = rascunho.titulo || "";
+                    document.getElementById('autor').value = rascunho.autor || "";
+                    document.getElementById('fonteNoticia').value = rascunho.fonteNoticia || "";
+                    document.getElementById('linkRedeSocial').value = rascunho.linkRedeSocial || "";
+                    document.getElementById('fonteImagem').value = rascunho.fonteImagem || "";
+                    document.getElementById('creditosVideo').value = rascunho.creditosVideo || "";
+
+                    if(rascunho.textoRico && rascunho.textoRico !== '<p><br></p>') {
+                        quill.root.innerHTML = rascunho.textoRico;
+                    }
+
+                    if(rascunho.categorias) {
+                        rascunho.categorias.forEach(cat => {
+                            const check = document.querySelector(`input[name="categoria"][value="${cat}"]`);
+                            if(check) check.checked = true;
+                        });
+                    }
+
+                    if(rascunho.formatoEscolhido) {
+                        const btn = document.querySelector(`#ratiosImagem .btn-ratio[onclick*="'${rascunho.formatoEscolhido}'"]`);
+                        if(btn) window.mudarLayoutImagem(rascunho.formatoEscolhido, btn);
+                    }
+
+                    if(rascunho.formatoVideoEscolhido) {
+                        const btnV = document.querySelector(`#ratiosVideo .btn-ratio[onclick*="'${rascunho.formatoVideoEscolhido}'"]`);
+                        if(btnV) {
+                            window.mudarLayoutVideo(rascunho.formatoVideoEscolhido, btnV);
+                        } else {
+                            document.getElementById('formatoVideoEscolhido').value = rascunho.formatoVideoEscolhido;
+                            document.getElementById('videoPreview').style.aspectRatio = rascunho.formatoVideoEscolhido === 'auto' ? '16/9' : rascunho.formatoVideoEscolhido;
+                        }
+                    }
+
+                    if(rascunho.banners && rascunho.banners.length > 0) {
+                        rascunho.banners.forEach(b => window.adicionarPainelBanner(b));
+                    }
+
+                    if(rascunho.imagemBase64_1) document.getElementById('imagemBase64_1').value = rascunho.imagemBase64_1;
+                    if(rascunho.imagemBase64_2) document.getElementById('imagemBase64_2').value = rascunho.imagemBase64_2;
+                    window.atualizarPreviewImagens();
+
+                    const videoSalvo = await obterVideoRascunhoDB();
+                    if(videoSalvo) {
+                        document.getElementById('videoBase64').value = videoSalvo;
+                        const videoPreview = document.getElementById('videoPreview');
+                        videoPreview.src = videoSalvo;
+                        videoPreview.style.display = 'block';
+                    }
+                } catch(e) {}
+            }
+            window.carregarConfigGoogle();
+            await window.carregarListaNoticias();
+
+            try {
+                const docRef = doc(db, "configuracoes", "bannersGlobais");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists() && docSnap.data().banners) {
+                    const bannersG = docSnap.data().banners;
+                    document.getElementById('container-banners-extras').innerHTML = '';
+                    contBannersExtras = 0;
+                    bannersG.forEach(b => window.adicionarPainelBanner(b));
+                }
+            } catch (e) { console.log("Sem banners globais"); }
+
+            setTimeout(() => {
+                const currentModal = sessionStorage.getItem('currentModal');
+                if (currentModal === 'painelAnuncios') {
+                    window.abrirPainelAnunciosConfig();
+                } else if (currentModal === 'gerenciamento') {
+                    const modo = sessionStorage.getItem('modoGerenciamento') === 'true';
+                    window.abrirModalGerenciamento(modo);
+                } else if (currentModal === 'audiencia') {
+                    window.abrirModalAudiencia();
+                } else if (currentModal === 'previa') {
+                    const contexto = sessionStorage.getItem('contextoPrevia') || 'rascunho_atual';
+                    window.abrirPrevia(contexto);
+                }
+            }, 600); 
+        };
+
+        document.getElementById('formNoticia').addEventListener('input', window.salvarRascunho);
+        document.getElementById('formNoticia').addEventListener('change', window.salvarRascunho);
+        quill.on('text-change', window.salvarRascunho);
     </script>
 </body>
 </html>
