@@ -444,17 +444,15 @@
 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px; border-top: 2px dashed #e2e8f0; padding-top: 20px;">
                     
-                    <!-- BOTOES DE PREVIA E SALVAR LADO A LADO AQUI -->
-                    <div style="display: flex; gap: 10px; width: 100%;">
-                        <button type="button" class="btn-preview" style="background: #002a5c; color: white; margin: 0; width: 50%; font-size: 13px;" onclick="window.abrirPreviaDosBanners()">
-                            <i class="fas fa-eye"></i> Ver Prévia
-                        </button>
-                        <button type="button" class="btn-salvar-global" style="margin: 0; width: 50%; font-size: 13px;" onclick="window.salvarBannersGlobais()">
-                            <i class="fas fa-save"></i> Publicar Anúncios
-                        </button>
-                    </div>
+                    <button type="button" class="btn-preview" style="background: #002a5c; color: white; width: 100%; font-size: 15px; padding: 16px; justify-content: center; text-transform: uppercase;" onclick="window.abrirPreviaDosBanners()">
+                        <i class="fas fa-eye"></i> Ver Prévia e Organizar Anúncios
+                    </button>
 
-                    <button type="button" class="btn-add-painel" style="border-color: #f9ab00; color: #b07c00; margin-top: 0;" onclick="window.adicionarPainelBanner()">
+                    <button type="button" class="btn-salvar-global" style="background-color: #137333; color: white; width: 100%; font-size: 15px; padding: 16px; justify-content: center; text-transform: uppercase;" onclick="window.salvarBannersGlobais()">
+                        <i class="fas fa-save"></i> Publicar e Salvar Anúncios Globais
+                    </button>
+
+                    <button type="button" class="btn-add-painel" style="border-color: #f9ab00; color: #b07c00; margin-top: 0; width: 100%; font-size: 15px; padding: 16px; justify-content: center;" onclick="window.adicionarPainelBanner()">
                         <i class="fas fa-plus-circle"></i> Adicionar + Novo Anúncio
                     </button>
                 </div>
@@ -2248,4 +2246,4 @@
         });
     </script>
 </body>
-</html>
+</html> 
