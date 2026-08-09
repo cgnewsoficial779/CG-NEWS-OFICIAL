@@ -71,6 +71,17 @@
         .file-input-wrapper input[type="file"] { flex: 1; }
         .btn-remover-img { background: #fff; color: #d93025; border: 1px solid #d93025; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 13px; white-space: nowrap; }
 
+        .local-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+        .btn-local { flex: 1; padding: 10px; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; text-align: center; transition: 0.2s; min-width: 100px; }
+        .btn-local.active { background: #002a5c; color: white; border-color: #002a5c; }
+        .btn-local:hover:not(.active) { background: #cbd5e1; }
+        
+        .select-materia-visual-wrapper { display: none; margin-top: 10px; background: #e2e8f0; padding: 15px; border-radius: 6px; border: 1px dashed #002a5c; text-align: center; }
+        .select-materia-visual-wrapper.active { display: block; }
+        .btn-abrir-seletor-visual { background: #0275d8; color: white; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-abrir-seletor-visual:hover { background: #025aa5; }
+        .materia-selecionada-badge { display: block; margin-top: 10px; font-size: 12px; font-weight: bold; color: #137333; background: #e6f4ea; padding: 8px; border-radius: 4px; border: 1px solid #ceead6; word-break: break-word; }
+
         .ad-tabs { display: flex; gap: 10px; margin-bottom: 12px; }
         .ad-tab-btn { flex: 1; padding: 10px; background: #e2e8f0; border: none; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; }
         .ad-tab-btn.active { background: #002a5c; color: white; }
@@ -142,11 +153,9 @@
         .painel-extra { border-top: 2px dashed #d1d9e0; padding-top: 20px; margin-top: 20px; position: relative; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #d1d9e0; }
         .btn-remover-painel-extra { position: absolute; top: 10px; right: 10px; background: #fff; color: #d93025; border: 1px solid #d93025; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 10; }
 
+        /* DESTAQUE POSIÇÃO DO BANNER */
         .posicao-destaque { background: #e6f4ea; padding: 15px; border-radius: 8px; border: 1px solid #137333; margin-bottom: 15px; }
         .posicao-destaque label { color: #137333; font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 8px;}
-        
-        .aviso-painel-anuncios { background-color: #e2e8f0; color: #2d3748; border: 1px solid #cbd5e0; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; line-height: 1.5; }
-        .aviso-painel-anuncios strong { color: #1a202c; font-weight: 900;}
         
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-content { background: #fff; width: 100vw; height: 100vh; height: 100dvh; max-width: 100%; max-height: 100%; border-radius: 0; overflow-y: hidden; position: relative; display: flex; flex-direction: column; }
@@ -161,17 +170,9 @@
 
         .btn-salvar-global { background-color: #137333; color: white; border: none; padding: 16px; width: 100%; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(19,115,51,0.25); }
 
-        .local-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-        .btn-local { flex: 1; padding: 10px; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; text-align: center; transition: 0.2s; min-width: 100px; }
-        .btn-local.active { background: #002a5c; color: white; border-color: #002a5c; }
-        .btn-local:hover:not(.active) { background: #cbd5e1; }
-        
-        .select-materia-visual-wrapper { display: none; margin-top: 10px; background: #e2e8f0; padding: 15px; border-radius: 6px; border: 1px dashed #002a5c; text-align: center; }
-        .select-materia-visual-wrapper.active { display: block; }
-        .btn-abrir-seletor-visual { background: #0275d8; color: white; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; }
-        .btn-abrir-seletor-visual:hover { background: #025aa5; }
-        .materia-selecionada-badge { display: block; margin-top: 10px; font-size: 12px; font-weight: bold; color: #137333; background: #e6f4ea; padding: 8px; border-radius: 4px; border: 1px solid #ceead6; word-break: break-word; }
-
+        /* NOVA GRADE DE ALINHAMENTO PARA OS BANNERS */
+        .grid-overlay { display: none; position: absolute; top: 0; left: 0; right: 0; height: max(300vh, 4000px); pointer-events: none; z-index: 999; background-image: linear-gradient(to bottom, rgba(2, 117, 216, 0.4) 1px, transparent 1px), linear-gradient(to right, rgba(2, 117, 216, 0.4) 1px, transparent 1px); background-size: 100px 50px; }
+        .grid-overlay.ativo { display: block; }
         .draggable-banner { position: absolute; touch-action: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: box-shadow 0.2s; border-radius: 4px; border: 2px solid transparent; }
         .draggable-banner-edit-mode { border: 2px dashed #0275d8 !important; background: rgba(255,255,255,0.9); box-shadow: 0 8px 30px rgba(0,0,0,0.4); z-index: 1005 !important; }
         .banner-drag-header { background: #0275d8; color: white; font-size: 11px; font-weight: bold; padding: 4px 10px; display: flex; align-items: center; justify-content: space-between; cursor: grab; border-top-left-radius: 4px; border-top-right-radius: 4px; position: absolute; top: -26px; left: -2px; right: -2px; height: 26px; opacity: 0.8; transition: 0.2s; }
@@ -238,7 +239,7 @@
                 </div>
 
                 <button type="button" class="btn-painel-anuncios-menu" onclick="window.abrirPainelAnunciosConfig()">
-                    <i class="fas fa-bullhorn"></i> Anúncios da Matéria
+                    <i class="fas fa-bullhorn"></i> Anúncios Globais
                 </button>
             </div>
         </div>
@@ -390,7 +391,7 @@
             </div>
 
             <div class="botoes-acao-container">
-                <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> Publicar Matéria e Anúncios</button>
+                <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> Publicar Matéria</button>
             </div>
             <button type="button" id="btnCancelar" class="btn-cancelar" onclick="window.cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
         </form>
@@ -401,30 +402,17 @@
     <div class="modal-fullscreen-overlay" id="modalPainelAnunciosConfig">
         <div class="modal-fullscreen-content">
             <div class="modal-fs-header" style="background: #f9ab00; color: #1a1a1a;">
-                <h2><i class="fas fa-bullhorn"></i> Painel de Gestão de Anúncios e Banners</h2>
+                <h2><i class="fas fa-bullhorn"></i> Painel de Anúncios Globais</h2>
                 <button class="modal-fs-close" style="background: #1a1a1a; color: #fff;" onclick="window.fecharPainelAnunciosConfig()">&times;</button>
             </div>
             <div class="modal-fs-body" id="secaoPainelAnunciosMaster">
                 
-                <div class="aviso-painel-anuncios">
-                    <strong><i class="fas fa-info-circle" style="color:#002a5c;"></i> Novo Sistema de Espaços (Slots)</strong><br><br>
-                    O sistema de "arrastar" foi substituído pela <strong>Injeção Automática</strong>, igual aos grandes portais (G1, UOL, AdSense). Agora, você escolhe exatamente onde o banner deve entrar, e o seu site oficial abrirá o espaço empurrando as letras para baixo automaticamente.
-                </div>
-                
                 <div id="container-banners-extras"></div>
 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px; border-top: 2px dashed #e2e8f0; padding-top: 20px;">
-                    <div style="text-align: center; color: #555; font-size: 13px; font-weight: bold; margin-bottom: 10px;">Para testar como ficará no site, clique em "Ver Prévia".</div>
-                    
-                    <div style="display: flex; gap: 10px; width: 100%;">
-                        <button type="button" class="btn-preview" style="background: #002a5c; color: white; width: 50%;" onclick="window.abrirPreviaDosBanners()">
-                            <i class="fas fa-eye"></i> Ver Prévia
-                        </button>
-                        <button type="button" class="btn-salvar-global" style="width: 50%;" onclick="window.salvarBannersGlobais()">
-                            <i class="fas fa-save"></i> Publicar e Salvar Anúncios Globais
-                        </button>
-                    </div>
-
+                    <button type="button" class="btn-salvar-global" onclick="window.salvarBannersGlobais()">
+                        <i class="fas fa-save"></i> Publicar e Salvar Anúncios Globais
+                    </button>
                     <button type="button" class="btn-add-painel" style="border-color: #f9ab00; color: #b07c00; margin-top: 10px;" onclick="window.adicionarPainelBanner()">
                         <i class="fas fa-plus-circle"></i> Adicionar + Novo Anúncio
                     </button>
@@ -498,6 +486,8 @@
             
             <div id="prevConteudoWrapper" style="padding: 0; position: relative;">
                 
+                <div id="gridOverlay" class="grid-overlay"></div>
+
                 <div id="mockupWireframe" style="display: none; width: 100%; min-height: 100vh;">
                 </div>
 
@@ -550,6 +540,7 @@
         window.bannersData = {};
         
         let idBannerAguardandoSelecao = null;
+        window.veioDoPainelAnuncios = false;
 
         window.abrirPainelAnunciosConfig = function() {
             window.alternarSidebar(true);
@@ -583,7 +574,7 @@
             
             const previewContainer = document.getElementById(`previewContainerBannerExtra_${id}`);
             if (previewContainer) {
-                previewContainer.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#777;"><i class="fas fa-image" style="margin-right: 6px;"></i> Prévia do Anúncio</div>';
+                previewContainer.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#777;"><i class="fas fa-image" style="margin-right: 6px;"></i> Prévia do Arquivo</div>';
             }
             window.salvarRascunho();
         };
@@ -618,7 +609,7 @@
             
             painel.innerHTML = `
                 <button type="button" class="btn-remover-painel-extra" onclick="window.removerPainelExtra('painel-banner-extra-${id}')"><i class="fas fa-times"></i> Remover</button>
-                <div style="font-weight: 800; color: #b07c00; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-ad"></i> Configuração do Anúncio / Banner ${id}</div>
+                <div style="font-weight: 800; color: #b07c00; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-ad"></i> Configuração do Anúncio ${id}</div>
                 
                 <div class="posicao-destaque">
                     <label><i class="fas fa-crosshairs"></i> Posição do Anúncio (Onde ele vai ficar?)</label>
@@ -633,7 +624,7 @@
                 </div>
 
                 <div class="form-group" style="margin-bottom: 12px;">
-                    <label><i class="fas fa-map-marker-alt"></i> Local de Exibição</label>
+                    <label><i class="fas fa-map-marker-alt"></i> Local de Exibição (Em qual página?)</label>
                     <div class="local-tabs" id="botoesLocalBanner_${id}">
                         <button type="button" class="btn-local ${obj.localExibicao==='inicio'?'active':''}" onclick="window.mudarLocalBanner(${id}, 'inicio', this)">Tela Inicial</button>
                         <button type="button" class="btn-local ${obj.localExibicao==='ultimas'?'active':''}" onclick="window.mudarLocalBanner(${id}, 'ultimas', this)">Últimas Notícias</button>
@@ -644,7 +635,7 @@
 
                     <div id="wrapperNoticiaEspecifica_${id}" class="select-materia-visual-wrapper ${obj.localExibicao==='especifica'?'active':''}">
                         <button type="button" class="btn-abrir-seletor-visual" onclick="window.abrirSeletorMateriaParaBanner(${id})">
-                            <i class="fas fa-hand-pointer"></i> Escolher Matéria no Gerenciador
+                            <i class="fas fa-hand-pointer"></i> Escolher Matéria
                         </button>
                         <div class="materia-selecionada-badge" id="badgeNoticiaSelecionada_${id}">
                             <i class="fas fa-thumbtack"></i> Alvo: <span>${tituloAlvoVisual}</span>
@@ -675,11 +666,23 @@
                         <input type="hidden" id="bannerImgBase64Extra_${id}" value="${obj.bannerImgBase64}">
                     </div>
 
-                    <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">PROPORÇÃO DE ASPECTO DA MÍDIA:</div>
+                    <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">PROPORÇÃO DO ANÚNCIO:</div>
                     <div class="aspect-ratios" id="ratiosBannerExtra_${id}">
                         <button type="button" class="btn-ratio ${obj.formatoBanner==='16/9'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '16/9', this)">16:9</button>
                         <button type="button" class="btn-ratio ${obj.formatoBanner==='9/16'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '9/16', this)">9:16</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='4/3'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '4/3', this)">4:3</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='3/4'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '3/4', this)">3:4</button>
                         <button type="button" class="btn-ratio ${obj.formatoBanner==='1/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '1/1', this)">1:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='3/2'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '3/2', this)">3:2</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2/3'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '2/3', this)">2:3</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='18/9'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '18/9', this)">18:9</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='9/18'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '9/18', this)">9:18</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '2/1', this)">2:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2.35/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '2.35/1', this)">2.35:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='1.85/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '1.85/1', this)">1.85:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2.39/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '2.39/1', this)">2.39:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='128/27'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '128/27', this)">128:27</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='5.8/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '5.8/1', this)">5.8"</button>
                         <button type="button" class="btn-ratio ${obj.formatoBanner==='auto'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, 'auto', this)">Original Livre</button>
                     </div>
                     <input type="hidden" id="formatoBannerExtraEscolhido_${id}" value="${obj.formatoBanner}">
@@ -689,13 +692,13 @@
                             ? (obj.bannerImgBase64.startsWith('data:video') 
                                 ? `<video src="${obj.bannerImgBase64}" style="width: 100%; height: 100%; object-fit: cover;" autoplay muted loop playsinline></video>` 
                                 : `<img src="${obj.bannerImgBase64}" style="width: 100%; height: 100%; object-fit: cover;">`)
-                            : '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#777;"><i class="fas fa-image" style="margin-right: 6px;"></i> Prévia do Anúncio</div>'
+                            : '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#777;"><i class="fas fa-image" style="margin-right: 6px;"></i> Prévia do Arquivo</div>'
                         }
                     </div>
 
                     <div class="form-group" style="margin-top: 15px; margin-bottom: 0;">
-                        <label>Link de Destino (Site ou Rede Social)</label>
-                        <input type="text" id="bannerLinkUrlExtra_${id}" value="${obj.bannerLinkUrl}" placeholder="https://...">
+                        <label>Link de Destino (Para onde vai quando clicarem?)</label>
+                        <input type="text" id="bannerLinkUrlExtra_${id}" value="${obj.bannerLinkUrl}" placeholder="https://seulinkaqui.com">
                     </div>
                 </div>
             `;
@@ -732,7 +735,6 @@
             if (previewContainer) {
                 previewContainer.style.aspectRatio = ratio === 'auto' ? '16/9' : ratio.replace(':', '/');
             }
-            
             window.salvarRascunho();
         };
 
@@ -1000,6 +1002,9 @@
                             bannerLinkUrl: document.getElementById(`bannerLinkUrlExtra_${i}`).value,
                             localExibicao: document.getElementById(`localExibicaoBanner_${i}`).value,
                             noticiaAlvo: noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual',
+                            posX: window.bannersData[i]?.posX || 0,
+                            posY: window.bannersData[i]?.posY || 0,
+                            scale: window.bannersData[i]?.scale || 1,
                             posicao: document.getElementById(`posicaoBanner_${i}`).value
                         });
                     }
@@ -1070,7 +1075,7 @@
                     banners: bannersArray,
                     dataAtualizacao: Date.now()
                 });
-                alert("✅ Anúncios publicados com sucesso!");
+                alert("✅ Anúncios globais salvos com sucesso!");
                 window.fecharPainelAnunciosConfig();
             } catch (error) {
                 console.error(error);
@@ -1445,6 +1450,7 @@
             }
         };
 
+        // Função auxiliar para injetar HTML de anúncios nos parágrafos
         function renderizarBannerHtml(b) {
             if (!b) return "";
             let conteudoAnuncio = '';
@@ -1717,18 +1723,33 @@
             let startScale = dataObj.scale;
             let startYMouse = 0;
             const handle = el.querySelector('.resize-handle');
+            const dragHeader = el.querySelector('.banner-drag-header');
             const closeBtn = el.querySelector('.banner-close-btn');
+            const gridOverlay = document.getElementById('gridOverlay');
 
             const toggleIframePointer = (enabled) => {
                 const iframe = document.getElementById('iframeSiteReal');
                 if(iframe) iframe.style.pointerEvents = enabled ? 'auto' : 'none';
             };
 
-            el.addEventListener('mousedown', (e) => {
-                if(e.target === handle || handle.contains(e.target) || e.target === closeBtn || closeBtn.contains(e.target)) return;
+            const startDrag = () => {
                 isDragging = true;
                 el.classList.add('draggable-banner-edit-mode');
+                gridOverlay.classList.add('ativo'); 
                 toggleIframePointer(false);
+            };
+
+            const endDrag = () => {
+                isDragging = false;
+                isResizing = false;
+                el.classList.remove('draggable-banner-edit-mode');
+                gridOverlay.classList.remove('ativo'); 
+                toggleIframePointer(true);
+            };
+
+            el.addEventListener('mousedown', (e) => {
+                if(e.target === handle || handle.contains(e.target) || e.target === closeBtn || closeBtn.contains(e.target)) return;
+                startDrag();
             });
             
             handle.addEventListener('mousedown', (e) => {
@@ -1737,6 +1758,7 @@
                 startYMouse = e.clientY;
                 startScale = dataObj.scale;
                 el.classList.add('draggable-banner-edit-mode');
+                gridOverlay.classList.add('ativo');
                 toggleIframePointer(false);
             });
 
@@ -1754,25 +1776,28 @@
                 }
             });
 
-            window.addEventListener('mouseup', () => {
-                isDragging = false;
-                isResizing = false;
-                el.classList.remove('draggable-banner-edit-mode');
-                toggleIframePointer(true);
-            });
+            window.addEventListener('mouseup', endDrag);
 
             let lastTouchX, lastTouchY;
+            
             el.addEventListener('touchstart', (e) => {
                 if(e.target === closeBtn || closeBtn.contains(e.target)) return;
+                
                 if(e.touches.length === 1) {
                     if(e.target === handle || handle.contains(e.target)) {
                         isResizing = true;
                         startYMouse = e.touches[0].clientY;
                         startScale = dataObj.scale;
+                        el.classList.add('draggable-banner-edit-mode');
+                        gridOverlay.classList.add('ativo');
+                        toggleIframePointer(false);
                     } else {
                         isDragging = true;
                         lastTouchX = e.touches[0].clientX;
                         lastTouchY = e.touches[0].clientY;
+                        el.classList.add('draggable-banner-edit-mode');
+                        gridOverlay.classList.add('ativo');
+                        toggleIframePointer(false);
                     }
                 } else if(e.touches.length === 2) {
                     isDragging = false;
@@ -1781,9 +1806,10 @@
                         e.touches[0].clientY - e.touches[1].clientY
                     );
                     startScale = dataObj.scale;
+                    el.classList.add('draggable-banner-edit-mode');
+                    gridOverlay.classList.add('ativo');
+                    toggleIframePointer(false);
                 }
-                el.classList.add('draggable-banner-edit-mode');
-                toggleIframePointer(false);
             }, {passive: false});
 
             el.addEventListener('touchmove', (e) => {
@@ -1796,7 +1822,7 @@
                     el.style.top = dataObj.posY + 'px';
                     lastTouchX = e.touches[0].clientX;
                     lastTouchY = e.touches[0].clientY;
-                    e.preventDefault();
+                    e.preventDefault(); 
                 }
                 if(isResizing && e.touches.length === 1) {
                     let dy = e.touches[0].clientY - startYMouse;
@@ -1804,14 +1830,19 @@
                     el.style.transform = `scale(${dataObj.scale})`;
                     e.preventDefault();
                 }
+                if(e.touches.length === 2) {
+                    let currentDist = Math.hypot(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                    let scaleFactor = currentDist / initialDistance;
+                    dataObj.scale = Math.max(0.2, startScale * scaleFactor);
+                    el.style.transform = `scale(${dataObj.scale})`;
+                    e.preventDefault();
+                }
             }, {passive: false});
 
-            window.addEventListener('touchend', () => {
-                isDragging = false;
-                isResizing = false;
-                el.classList.remove('draggable-banner-edit-mode');
-                toggleIframePointer(true);
-            });
+            window.addEventListener('touchend', endDrag);
         };
 
         window.fecharPrevia = function() {
@@ -1833,6 +1864,7 @@
             document.getElementById('imagemBase64_1').value = '';
             document.getElementById('imagemBase64_2').value = '';
             document.getElementById('videoBase64').value = '';
+            document.getElementById('videoPreview').style.display = 'none';
             document.getElementById('container-imagens-extras').innerHTML = '';
             document.getElementById('container-videos-extras').innerHTML = '';
             document.getElementById('container-banners-extras').innerHTML = '';
@@ -1918,10 +1950,21 @@
                     const div = document.createElement('div');
                     div.className = 'noticia-item';
                     
-                    let botoesHtml = `
-                        <button type="button" class="btn-editar" onclick="window.editarNoticia('${id}')"><i class="fas fa-edit"></i> Editar Notícia</button>
-                        <button type="button" class="btn-apagar" onclick="window.apagarNoticia('${id}')"><i class="fas fa-trash-alt"></i> Excluir</button>
-                    `;
+                    let botoesHtml = '';
+                    const lista = document.getElementById('lista-noticias-fullscreen');
+                    
+                    if(lista.classList.contains('modo-selecao-anuncio')) {
+                        const tituloLimpo = item.titulo 
+                            ? item.titulo.replace(/'/g, "\\'").replace(/"/g, "&quot;") 
+                            : 'Sem Título';
+                            
+                        botoesHtml = `<button type="button" class="btn-selecionar-anuncio" style="display:inline-flex;" onclick="window.selecionarMateriaParaBanner('${id}', '${tituloLimpo}')"><i class="fas fa-bullseye"></i> Escolher esta matéria</button>`;
+                    } else {
+                        botoesHtml = `
+                            <button type="button" class="btn-editar" onclick="window.editarNoticia('${id}')"><i class="fas fa-edit"></i> Editar Notícia</button>
+                            <button type="button" class="btn-apagar" onclick="window.apagarNoticia('${id}')"><i class="fas fa-trash-alt"></i> Excluir</button>
+                        `;
+                    }
 
                     div.innerHTML = `
                         <div class="noticia-miniatura ${classDuasImagens}">
