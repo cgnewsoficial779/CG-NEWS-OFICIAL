@@ -210,7 +210,7 @@
         .banner-close-btn:hover { color: #ffcccc; }
         
         .banner-video-saibamais { position: absolute; bottom: 15px; right: 15px; background: #1a73e8; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; text-decoration: none; z-index: 1002; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
-        
+
         .btn-salvar-global { background-color: #137333; color: white; border: none; padding: 16px; width: 100%; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(19,115,51,0.25); }
     </style>
 </head>
@@ -446,10 +446,10 @@
                     
                     <!-- BOTOES DE PREVIA E SALVAR LADO A LADO AQUI -->
                     <div style="display: flex; gap: 10px; width: 100%;">
-                        <button type="button" class="btn-preview" style="background: #002a5c; color: white; margin: 0; width: 50%;" onclick="window.abrirPreviaDosBanners()">
+                        <button type="button" class="btn-preview" style="background: #002a5c; color: white; margin: 0; width: 50%; font-size: 13px;" onclick="window.abrirPreviaDosBanners()">
                             <i class="fas fa-eye"></i> Ver Prévia
                         </button>
-                        <button type="button" class="btn-salvar-global" style="margin: 0; width: 50%;" onclick="window.salvarBannersGlobais()">
+                        <button type="button" class="btn-salvar-global" style="margin: 0; width: 50%; font-size: 13px;" onclick="window.salvarBannersGlobais()">
                             <i class="fas fa-save"></i> Publicar Anúncios
                         </button>
                     </div>
@@ -520,7 +520,7 @@
                     <span id="previewContextLabel" style="font-size: 14px; font-weight: 800; color: #002a5c; background: #e2e8f0; padding: 6px 12px; border-radius: 6px;">Visão Atual</span>
                     
                     <div style="display: flex; gap: 10px; margin-left: auto;">
-                        <span id="dragInstructionLabel" style="font-size: 12px; background: #e2e8f0; padding: 5px 10px; border-radius: 4px; display: none; align-items: center;"><i class="fas fa-arrows-alt" style="margin-right: 5px;"></i> Arraste os Banners</span>
+                        <span id="dragInstructionLabel" style="font-size: 12px; background: #e2e8f0; padding: 5px 10px; border-radius: 4px; display: none; align-items: center;"><i class="fas fa-arrows-alt" style="margin-right: 5px;"></i> Arraste os Banners Flutuantes</span>
                         <button class="btn-voltar-edicao" onclick="window.fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar</button>
                     </div>
                 </div>
@@ -730,7 +730,7 @@
                         <button type="button" class="btn-ratio ${obj.formatoBanner==='2.39/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '2.39/1', this)">2.39:1</button>
                         <button type="button" class="btn-ratio ${obj.formatoBanner==='128/27'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '128/27', this)">128:27</button>
                         <button type="button" class="btn-ratio ${obj.formatoBanner==='5.8/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '5.8/1', this)">5.8"</button>
-                        <button type="button" class="btn-ratio ${obj.formatoBanner==='auto'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, 'auto', this)">Original</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='auto'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, 'auto', this)">Original Livre</button>
                     </div>
                     <input type="hidden" id="formatoBannerExtraEscolhido_${id}" value="${obj.formatoBanner}">
 
@@ -795,17 +795,15 @@
 
         window.abrirPreviaDosBanners = function() {
             window.veioDoPainelAnuncios = true;
-            let alvo = 'rascunho_atual'; 
+            let alvo = 'inicio'; 
             for(let i=1; i<=contBannersExtras; i++) {
                 let painel = document.getElementById(`painel-banner-extra-${i}`);
                 if(painel) {
                     let local = document.getElementById(`localExibicaoBanner_${i}`).value;
                     if(local === 'especifica') {
                         alvo = document.getElementById(`selectNoticiaEspecifica_${i}`).value;
-                    } else if (local === 'inicio') {
-                        alvo = 'inicio';
-                    } else if (local === 'ultimas') {
-                        alvo = 'ultimas';
+                    } else {
+                        alvo = local;
                     }
                     break; 
                 }
@@ -1134,7 +1132,7 @@
                 console.error(error);
                 alert("❌ Erro ao salvar anúncios.");
             } finally {
-                btn.innerHTML = `<i class="fas fa-save"></i> Publicar e Salvar Anúncios Globais`;
+                btn.innerHTML = `<i class="fas fa-save"></i> Publicar Anúncios`;
                 btn.disabled = false;
             }
         };
