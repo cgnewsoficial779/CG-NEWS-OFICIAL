@@ -154,19 +154,20 @@
         .btn-voltar-edicao { background: #002a5c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         
         #prevConteudoWrapper { position: relative; flex: 1; overflow-y: auto; overflow-x: hidden; background: #f0f2f5; }
-        
+        .preview-body-content { font-family: Georgia, serif; font-size: 18px; line-height: 1.8; color: #222; margin-top: 15px; }
+
         /* NOVA GRADE DE ALINHAMENTO PARA OS BANNERS */
         .grid-overlay {
             display: none;
             position: absolute;
             top: 0; left: 0; right: 0; 
-            height: max(300vh, 4000px);
-            pointer-events: none;
+            height: max(300vh, 4000px); /* Garante que cubra páginas longas */
+            pointer-events: none; /* Deixa você clicar no banner por baixo */
             z-index: 999;
             background-image: 
                 linear-gradient(to bottom, rgba(2, 117, 216, 0.4) 1px, transparent 1px),
                 linear-gradient(to right, rgba(2, 117, 216, 0.4) 1px, transparent 1px);
-            background-size: 100px 50px;
+            background-size: 100px 50px; /* Quadrados de espaçamento */
         }
         .grid-overlay.ativo { display: block; }
 
@@ -180,6 +181,7 @@
         .draggable-banner { position: absolute; touch-action: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: box-shadow 0.2s; border-radius: 4px; border: 2px solid transparent; }
         .draggable-banner-edit-mode { border: 2px dashed #0275d8 !important; background: rgba(255,255,255,0.9); box-shadow: 0 8px 30px rgba(0,0,0,0.4); z-index: 1005 !important; }
         
+        /* NOVO PUXADOR DE ARRASTE SUPERIOR */
         .banner-drag-header {
             background: #0275d8;
             color: white;
@@ -193,7 +195,7 @@
             border-top-left-radius: 4px;
             border-top-right-radius: 4px;
             position: absolute;
-            top: -26px;
+            top: -26px; /* Fica pra fora do banner na parte de cima */
             left: -2px; right: -2px;
             height: 26px;
             opacity: 0.8;
@@ -206,6 +208,10 @@
         
         .banner-close-btn { background: transparent; color: #fff; border: none; font-size: 18px; line-height: 1; cursor: pointer; }
         .banner-close-btn:hover { color: #ffcccc; }
+        
+        .banner-video-saibamais { position: absolute; bottom: 15px; right: 15px; background: #1a73e8; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; text-decoration: none; z-index: 1002; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
+
+        .btn-salvar-global { background-color: #137333; color: white; border: none; padding: 16px; width: 100%; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(19,115,51,0.25); }
     </style>
 </head>
 <body>
@@ -503,7 +509,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE PREVIA ATUALIZADO -->
+    <!-- MODAL DE PREVIA ATUALIZADO V16.0 (IFRAME TOTAL) -->
     <div class="modal-overlay" id="modalPrevia">
         <div class="modal-content">
             <div class="modal-header-top">
@@ -512,7 +518,7 @@
                     <span id="previewContextLabel" style="font-size: 14px; font-weight: 800; color: #002a5c; background: #e2e8f0; padding: 6px 12px; border-radius: 6px;">Visão Atual</span>
                     
                     <div style="display: flex; gap: 10px; margin-left: auto;">
-                        <span id="dragInstructionLabel" style="font-size: 12px; background: #e2e8f0; padding: 5px 10px; border-radius: 4px; display: none; align-items: center;"><i class="fas fa-arrows-alt" style="margin-right: 5px;"></i> Arraste os Banners Flutuantes</span>
+                        <span id="dragInstructionLabel" style="font-size: 12px; background: #e2e8f0; padding: 5px 10px; border-radius: 4px; display: none; align-items: center;"><i class="fas fa-arrows-alt" style="margin-right: 5px;"></i> Arraste e Faça Pinça nos Banners</span>
                         <button class="btn-voltar-edicao" onclick="window.fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar</button>
                     </div>
                 </div>
@@ -523,14 +529,14 @@
                 <!-- NOVA GRADE DE ALINHAMENTO -->
                 <div id="gridOverlay" class="grid-overlay"></div>
 
-                <!-- Fundo REAL para Inicio / Ultimas / Específicas (IFRAME DO SITE OFICIAL) -->
-                <div id="mockupWireframe" style="display: none; width: 100%; min-height: 100vh;">
+                <!-- MOCKUP TOTAL USANDO IFRAME DA URL REAL DO SEU SITE -->
+                <div id="mockupWireframe" style="width: 100%; min-height: 100vh;">
                     <!-- Preenchido dinamicamente com o IFRAME -->
                 </div>
 
-                <!-- Simulação idêntica SOMENTE para o Rascunho que está sendo escrito na hora ou Notícias Específicas com injecao -->
-                <div id="mockupNoticia" style="width: 100%; min-height: 100vh; background: #f0f2f5;">
-                    <!-- Preenchido dinamicamente com a NOTÍCIA REAL -->
+                <!-- Rascunho local (quando ainda não foi publicado) -->
+                <div id="mockupNoticia" style="display: none; width: 100%; min-height: 100vh; background: #f0f2f5;">
+                    <!-- Preenchido dinamicamente APENAS se for o rascunho_atual -->
                 </div>
             </div>
         </div>
@@ -1496,6 +1502,7 @@
             }
         };
 
+        // Renderiza os banners estáticos (acima título, abaixo título, etc)
         function renderizarBannerHtml(b) {
             if (!b) return "";
             let conteudoAnuncio = '';
@@ -1541,15 +1548,19 @@
             const label = document.getElementById('previewContextLabel');
             const dragLabel = document.getElementById('dragInstructionLabel');
 
+            let urlReal = window.location.origin + "/";
+
             if (contexto === 'inicio') {
                 label.innerHTML = '<i class="fas fa-home"></i> Visão: Tela Inicial';
             } else if (contexto === 'ultimas') {
                 label.innerHTML = '<i class="fas fa-newspaper"></i> Visão: Últimas Notícias';
+                urlReal = window.location.origin + "/?ultimas=true";
             } else if (contexto === 'rascunho_atual') {
                 label.innerHTML = '<i class="fas fa-edit"></i> Visão: Rascunho Atual';
             } else {
                 const item = window.noticiasAdmin[contexto];
                 label.innerHTML = `<i class="fas fa-thumbtack"></i> Visão: ${item ? item.titulo.substring(0, 30) + '...' : 'Notícia Específica'}`;
+                urlReal = window.location.origin + `/?materia=${contexto}`;
             }
 
             let temBannerFlutuante = false;
@@ -1564,60 +1575,37 @@
                 dragLabel.style.display = 'none';
             }
 
-            if (contexto === 'inicio' || contexto === 'ultimas') {
+            // SE FOR TELA INICIAL, ULTIMAS NOTICIAS, OU UMA NOTICIA ESPECÍFICA (JÁ SALVA)
+            // Usa o iframe com o site real
+            if (contexto !== 'rascunho_atual') {
                 mockupWireframe.style.display = 'block';
                 mockupNoticia.style.display = 'none';
-
-                let urlReal = window.location.origin + "/";
-                
-                if (contexto === 'ultimas') {
-                    urlReal = window.location.origin + "/?ultimas=true";
-                }
 
                 mockupWireframe.innerHTML = `
                     <div style="background: #002a5c; color: white; padding: 12px; text-align: center; border-radius: 8px 8px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; z-index: 20;">
                         <div style="font-size: 16px; font-weight: 900; letter-spacing: 1px;"><i class="fas fa-satellite-dish" style="color: #25d366;"></i> SITE OFICIAL AO VIVO</div>
                         <div style="font-size: 12px; font-weight: normal; color: #cbd5e1; margin-top: 4px;">Exibindo: <a href="${urlReal}" target="_blank" style="color: #25d366;">${urlReal}</a></div>
                     </div>
+                    <!-- O iframe carrega a URL completa da materia ou home, e os banners flutuantes ficarão por cima -->
                     <iframe id="iframeSiteReal" src="${urlReal}" style="width: 100%; height: calc(100vh - 160px); border: 2px solid #002a5c; border-top: none; border-radius: 0 0 8px 8px; background: #fff;"></iframe>
                 `;
-            } else {
+            } 
+            // SE FOR O RASCUNHO ATUAL (Ainda não salvo/publicado)
+            // Reconstrói a notícia localmente imitando o site real
+            else {
                 mockupWireframe.style.display = 'none';
                 mockupNoticia.style.display = 'block';
 
-                let tTxt, aTxt, txtH, cTxt, credTxt, fontTxt, i1, i2, vArq, lRede, formEsc, formVidEsc;
-
-                if (contexto === 'rascunho_atual') {
-                    tTxt = document.getElementById('titulo').value || "Título";
-                    aTxt = document.getElementById('autor').value || "Redação";
-                    txtH = quill.root.innerHTML;
-                    const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
-                    cTxt = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
-                    credTxt = document.getElementById('fonteImagem').value ? `Foto: ${document.getElementById('fonteImagem').value}` : "Foto: Reprodução";
-                    fontTxt = document.getElementById('fonteNoticia').value ? `Fonte: ${document.getElementById('fonteNoticia').value}` : "";
-                    i1 = document.getElementById('imagemBase64_1').value;
-                    i2 = document.getElementById('imagemBase64_2').value;
-                    vArq = document.getElementById('videoBase64').value;
-                    lRede = document.getElementById('linkRedeSocial').value;
-                    formEsc = document.getElementById('formatoEscolhido').value;
-                    formVidEsc = document.getElementById('formatoVideoEscolhido').value;
-                } else {
-                    const item = window.noticiasAdmin[contexto];
-                    if (item) {
-                        tTxt = item.titulo || "Sem Título";
-                        aTxt = item.autor || "Redação";
-                        txtH = item.textoRico || item.texto || item.conteudo || "<p>Sem conteúdo.</p>";
-                        cTxt = item.categorias ? item.categorias.join(', ') : (item.categoria || "Geral");
-                        credTxt = item.fonteImagem ? `Foto: ${item.fonteImagem}` : "Foto: Reprodução";
-                        fontTxt = item.fonteNoticia ? `Fonte: ${item.fonteNoticia}` : "";
-                        i1 = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
-                        i2 = item.imagemBase64_2 || item.imagem2 || '';
-                        vArq = item.videoBase64 || item.video || item.linkVideo || '';
-                        lRede = item.linkRedeSocial || '';
-                        formEsc = item.formatoEscolhido || 'auto';
-                        formVidEsc = item.formatoVideoEscolhido || 'auto';
-                    }
-                }
+                let tTxt = document.getElementById('titulo').value || "Título da sua nova matéria";
+                let aTxt = document.getElementById('autor').value || "Redação";
+                let txtH = quill.root.innerHTML;
+                const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
+                let cTxt = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
+                let credTxt = document.getElementById('fonteImagem').value ? `Foto: ${document.getElementById('fonteImagem').value}` : "Foto: Reprodução";
+                let fontTxt = document.getElementById('fonteNoticia').value ? `Fonte: ${document.getElementById('fonteNoticia').value}` : "";
+                let i1 = document.getElementById('imagemBase64_1').value;
+                let i2 = document.getElementById('imagemBase64_2').value;
+                let formEsc = document.getElementById('formatoEscolhido').value;
 
                 let bAcimaTitulo = "";
                 let bAbaixoTitulo = "";
@@ -1632,11 +1620,7 @@
                         const noticiaAlvoInput = document.getElementById(`selectNoticiaEspecifica_${i}`);
                         const noticiaAlvo = noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual';
 
-                        let mostrarBanner = false;
-                        if (contexto === 'rascunho_atual' && localExibicao === 'especifica' && noticiaAlvo === 'rascunho_atual') mostrarBanner = true;
-                        else if (contexto !== 'rascunho_atual' && localExibicao === 'especifica' && noticiaAlvo === contexto) mostrarBanner = true;
-
-                        if (mostrarBanner) {
+                        if (localExibicao === 'especifica' && noticiaAlvo === 'rascunho_atual') {
                             let b = {
                                 tipo: document.getElementById(`tipoBannerExtra_${i}`).value,
                                 codigoAnuncio: document.getElementById(`codigoAnuncioExtra_${i}`).value,
@@ -1745,8 +1729,10 @@
             }
 
             const wrapper = document.getElementById('prevConteudoWrapper');
+            // Remove banners flutuantes anteriores da previa
             wrapper.querySelectorAll('.draggable-banner').forEach(el => el.remove());
 
+            // Adiciona os banners FLUTUANTES por cima de tudo
             for(let i=1; i<=contBannersExtras; i++) {
                 const painel = document.getElementById(`painel-banner-extra-${i}`);
                 if(!painel) continue;
@@ -1768,7 +1754,6 @@
                 const tipo = document.getElementById(`tipoBannerExtra_${i}`).value;
                 const base64 = document.getElementById(`bannerImgBase64Extra_${i}`).value;
                 const code = document.getElementById(`codigoAnuncioExtra_${i}`).value;
-                const link = document.getElementById(`bannerLinkUrlExtra_${i}`).value;
                 const rawRatio = document.getElementById(`formatoBannerExtraEscolhido_${i}`).value;
                 const ratio = rawRatio === 'auto' ? '16/9' : rawRatio.replace(':', '/');
                 const bd = window.bannersData[i] || {posX: 0, posY: 0, scale: 1};
@@ -1776,9 +1761,7 @@
                 let contentHtml = '';
                 if(tipo === 'imagem' && base64) {
                     if (base64.startsWith('data:video') || base64.includes('video/mp4')) {
-                        contentHtml = `
-                            <video src="${base64}" controls style="width: 100%; height: 100%; object-fit: contain; background:#000; pointer-events: none;"></video>
-                        `;
+                        contentHtml = `<video src="${base64}" controls style="width: 100%; height: 100%; object-fit: contain; background:#000; pointer-events: none;"></video>`;
                     } else {
                         contentHtml = `<img src="${base64}" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none;">`;
                     }
@@ -1798,7 +1781,7 @@
                     el.style.transformOrigin = 'top left';
 
                     el.innerHTML = `
-                        <div class="banner-drag-header"><i class="fas fa-arrows-alt"></i> Arraste o Anúncio <button type="button" class="banner-close-btn" onclick="document.getElementById('prevBannerDrag_${i}').style.display='none'" title="Fechar Publicidade">&times;</button></div>
+                        <div class="banner-drag-header"><i class="fas fa-arrows-alt"></i> Arraste ou Pinça <button type="button" class="banner-close-btn" onclick="document.getElementById('prevBannerDrag_${i}').style.display='none'" title="Fechar Publicidade">&times;</button></div>
                         ${contentHtml}
                         <div class="resize-handle"><i class="fas fa-expand-arrows-alt"></i></div>
                     `;
@@ -1844,6 +1827,7 @@
                 toggleIframePointer(true);
             };
 
+            // INTERAÇÕES DE MOUSE (COMPUTADOR)
             el.addEventListener('mousedown', (e) => {
                 if(e.target === handle || handle.contains(e.target) || e.target === closeBtn || closeBtn.contains(e.target)) return;
                 startDrag();
@@ -1875,6 +1859,7 @@
 
             window.addEventListener('mouseup', endDrag);
 
+            // INTERAÇÕES DE TOQUE (CELULAR) E PINÇA (ZOOM)
             let lastTouchX, lastTouchY;
             
             el.addEventListener('touchstart', (e) => {
@@ -1897,7 +1882,9 @@
                         toggleIframePointer(false);
                     }
                 } else if(e.touches.length === 2) {
+                    // Dois dedos: Gesto de pinça para zoom
                     isDragging = false;
+                    isResizing = false; // Desativa resize de canto
                     initialDistance = Math.hypot(
                         e.touches[0].clientX - e.touches[1].clientX,
                         e.touches[0].clientY - e.touches[1].clientY
@@ -1928,6 +1915,7 @@
                     e.preventDefault();
                 }
                 if(e.touches.length === 2) {
+                    // Calculando o zoom pela distância dos dois dedos (pinça)
                     let currentDist = Math.hypot(
                         e.touches[0].clientX - e.touches[1].clientX,
                         e.touches[0].clientY - e.touches[1].clientY
@@ -1935,7 +1923,7 @@
                     let scaleFactor = currentDist / initialDistance;
                     dataObj.scale = Math.max(0.2, startScale * scaleFactor);
                     el.style.transform = `scale(${dataObj.scale})`;
-                    e.preventDefault();
+                    e.preventDefault(); // Evita dar zoom na página inteira do celular
                 }
             }, {passive: false});
 
@@ -2268,4 +2256,4 @@
         });
     </script>
 </body>
-</html> 
+</html>
