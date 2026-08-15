@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Painel Editor - News Pro V12.1</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: #f0f2f5; padding: 10px; color: #1a1a1a; font-size: 16px; }
+        
+        .container { width: 100%; max-width: 100%; margin: 0 auto; background: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); position: relative; }
+        @media(min-width: 1024px) { .container { padding: 30px; } }
+        
+        .header-admin { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #002a5c; padding-bottom: 15px; margin-bottom: 20px; }
+        .header-admin h1 { color: #002a5c; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
+        
+        .header-actions-right { display: flex; align-items: center; gap: 10px; }
+        .header-admin span.badge-pro { background: #002a5c; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
+
+        .btn-menu-hamburguer { background: #002a5c; color: white; border: none; width: 45px; height: 45px; border-radius: 8px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; box-shadow: 0 2px 6px rgba(0,42,92,0.25); }
+        .btn-menu-hamburguer:hover { background: #001d40; }
+
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9998; backdrop-filter: blur(3px); }
+        .sidebar-panel { position: fixed; top: 0; right: -420px; width: 100%; max-width: 380px; height: 100%; background: #fff; z-index: 9999; box-shadow: -5px 0 30px rgba(0,0,0,0.15); transition: right 0.35s ease; display: flex; flex-direction: column; }
+        .sidebar-panel.ativo { right: 0; }
+        
+        .sidebar-header { background: #002a5c; color: white; padding: 18px; display: flex; align-items: center; justify-content: space-between; }
+        .sidebar-header h3 { font-size: 16px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        .sidebar-close { background: none; border: none; color: white; font-size: 26px; cursor: pointer; }
+        
+        .sidebar-content { padding: 15px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 15px; }
+
+        .btn-menu-gerenciar { background: #0275d8; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; width: 100%; box-shadow: 0 2px 6px rgba(2,117,216,0.3); }
+        .btn-menu-gerenciar:hover { background: #025aa5; }
+
+        .stats-box { background: linear-gradient(135deg, #f8f9fa 0%, #eef2f7 100%); border: 1px solid #d1d9e0; border-radius: 10px; padding: 15px; border-left: 5px solid #002a5c; cursor: pointer; transition: 0.2s; }
+        .stats-box:hover { background: #e2e8f0; }
+        .stats-header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+        .stats-header h4 { font-size: 13px; text-transform: uppercase; color: #002a5c; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+        .stats-display { text-align: left; padding: 14px; background: #fff; border-radius: 8px; border: 1px solid #e1e4e8; display: flex; flex-direction: column; gap: 8px; }
+        .stats-display .info-left .number { font-size: 30px; font-weight: 900; color: #002a5c; line-height: 1.1; }
+        .stats-display .info-left .label-periodo { font-size: 12px; color: #555; text-transform: uppercase; font-weight: 700; }
+        .stats-badge-live { background: #e6f4ea; color: #137333; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; border: 1px solid #ceead6; width: fit-content; }
+
+        .google-integration-card { background: #f8f9fa; border: 1px solid #e1e4e8; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+        .google-integration-card label { font-size: 12px; font-weight: 800; color: #444; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
+        .google-integration-card input, .google-integration-card textarea { width: 100%; padding: 10px; border: 1px solid #b0b8c1; border-radius: 6px; font-size: 14px; background: #fff; }
+        .btn-ativar-google { background: #1a73e8; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-transform: uppercase; width: 100%; }
+        .btn-ativar-google.ativo { background: #137333; }
+
+        .btn-painel-anuncios-menu { background: #f9ab00; color: #1a1a1a; border: none; padding: 14px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; width: 100%; box-shadow: 0 2px 6px rgba(249,171,0,0.3); transition: 0.2s; }
+        .btn-painel-anuncios-menu:hover { background: #e09600; }
+
+        .section-box { background: #fff; border: 1px solid #d1d9e0; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+        .section-title { font-size: 14px; font-weight: 800; color: #002a5c; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; text-transform: uppercase; }
+
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-weight: 700; margin-bottom: 6px; color: #444; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        input[type="text"], select, input[type="file"], textarea { width: 100%; padding: 14px; border: 1px solid #b0b8c1; border-radius: 6px; font-size: 16px; outline: none; background: #fafbfc; color: #111; }
+        
+        textarea.titulo-textarea { resize: vertical; min-height: 90px; font-size: 19px; font-weight: 900; color: #002a5c; line-height: 1.4; padding: 16px; background: #fff; border: 2px solid #002a5c; }
+        input[type="file"] { background: #fff; padding: 10px; border: 1px dashed #b0b8c1; cursor: pointer; }
+
+        .file-input-wrapper { display: flex; gap: 10px; align-items: center; }
+        .file-input-wrapper input[type="file"] { flex: 1; }
+        .btn-remover-img { background: #fff; color: #d93025; border: 1px solid #d93025; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 13px; white-space: nowrap; }
+
+        .local-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+        .btn-local { flex: 1; padding: 10px; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; text-align: center; transition: 0.2s; min-width: 100px; }
+        .btn-local.active { background: #002a5c; color: white; border-color: #002a5c; }
+        .btn-local:hover:not(.active) { background: #cbd5e1; }
+        
+        .select-materia-visual-wrapper { display: none; margin-top: 10px; background: #e2e8f0; padding: 15px; border-radius: 6px; border: 1px dashed #002a5c; text-align: center; }
+        .select-materia-visual-wrapper.active { display: block; }
+        .btn-abrir-seletor-visual { background: #0275d8; color: white; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-abrir-seletor-visual:hover { background: #025aa5; }
+        .materia-selecionada-badge { display: block; margin-top: 10px; font-size: 12px; font-weight: bold; color: #137333; background: #e6f4ea; padding: 8px; border-radius: 4px; border: 1px solid #ceead6; word-break: break-word; }
+
+        .ad-tabs { display: flex; gap: 10px; margin-bottom: 12px; }
+        .ad-tab-btn { flex: 1; padding: 10px; background: #e2e8f0; border: none; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; color: #444; text-transform: uppercase; }
+        .ad-tab-btn.active { background: #002a5c; color: white; }
+        .ad-tab-content { display: none; }
+        .ad-tab-content.active { display: block; }
+
+        .ql-container { height: 320px; font-size: 16px; background: #fff; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; font-family: Georgia, serif; }
+        .ql-toolbar { background: #f8f9fa; border-top-left-radius: 6px; border-top-right-radius: 6px; border-color: #b0b8c1; }
+
+        .checkbox-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        @media(min-width: 600px) { .checkbox-group { grid-template-columns: repeat(3, 1fr); } }
+        @media(min-width: 900px) { .checkbox-group { grid-template-columns: repeat(4, 1fr); } }
+        .checkbox-item { display: flex; align-items: center; gap: 10px; background: #f8f9fa; border: 1px solid #e1e4e8; padding: 12px; border-radius: 6px; cursor: pointer; }
+        .checkbox-item input { width: 20px; height: 20px; accent-color: #002a5c; }
+        .checkbox-item span { font-size: 13px; font-weight: 700; color: #333; }
+
+        .image-upload-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 12px; }
+        @media(min-width: 600px) { .image-upload-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .aspect-ratios { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; background: #f8f9fa; padding: 12px; border-radius: 8px; border: 1px solid #e1e4e8; justify-content: center; }
+        .btn-ratio { background: #fff; border: 1px solid #b0b8c1; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; color: #555; flex: 1; min-width: 50px; text-align: center; }
+        .btn-ratio.active { background: #002a5c; color: white; border-color: #002a5c; }
+
+        .preview-container { width: 100%; background: #000; border-radius: 8px; display: flex; overflow: hidden; margin-top: 10px; border: 1px solid #000; align-items: stretch; justify-content: center; transition: aspect-ratio 0.3s; }
+        .preview-container img, .preview-container video { object-fit: cover !important; }
+        .video-preview { width: 100%; border-radius: 8px; display: none; margin-top: 10px; border: 1px solid #b0b8c1; background: #000; aspect-ratio: 16/9; object-fit: contain; }
+
+        .botoes-acao-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
+        @media(min-width: 500px) { .botoes-acao-container { flex-direction: row; } }
+        
+        .btn-submit { background-color: #002a5c; color: white; border: none; padding: 16px; flex: 2; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(0,42,92,0.25); }
+        .btn-preview { background-color: #0275d8; color: white; border: none; padding: 16px; flex: 1; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
+        .btn-cancelar { background-color: #d93025; color: white; border: none; padding: 14px; width: 100%; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; display: none; text-transform: uppercase; }
+
+        .noticia-item { border: 1px solid #d1d9e0; padding: 14px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; gap: 15px; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .noticia-miniatura { width: 110px; height: 90px; border-radius: 8px; background: #ddd; flex-shrink: 0; display: flex; align-items: stretch; justify-content: center; color: #777; font-size: 14px; overflow: hidden; }
+        @media(min-width: 600px) { .noticia-miniatura { width: 150px; height: 110px; } }
+        .noticia-miniatura img { width: 100%; height: 100%; object-fit: cover; }
+        .noticia-miniatura.duas-imagens { flex-direction: row; }
+        .noticia-miniatura.duas-imagens img { width: 50%; height: 100%; object-fit: cover; }
+        .noticia-miniatura.duas-imagens img:first-child { border-right: 2px solid #fff; }
+
+        .noticia-conteudo-info { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+        .noticia-conteudo-info strong { color: #002a5c; font-size: 15px; line-height: 1.35; font-weight: 800; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .noticia-meta-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+        .noticia-meta-tags span { font-size: 11px; color: #444; background: #f0f2f5; padding: 4px 8px; border-radius: 6px; font-weight: 700; border: 1px solid #d1d9e0; }
+        .acoes-btn { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+        .btn-editar, .btn-apagar, .btn-selecionar-anuncio { padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 5px; border: none; }
+        .btn-editar { background: #f8f9fa; color: #002a5c; border: 1px solid #002a5c; }
+        .btn-apagar { background: #fff; color: #d93025; border: 1px solid #d93025; }
+        
+        .btn-selecionar-anuncio { background: #f9ab00; color: #1a1a1a; display: none; box-shadow: 0 2px 4px rgba(249,171,0,0.3); }
+        .btn-selecionar-anuncio:hover { background: #e09600; }
+        .modo-selecao-anuncio .btn-editar, .modo-selecao-anuncio .btn-apagar { display: none !important; }
+        .modo-selecao-anuncio .btn-selecionar-anuncio { display: inline-flex !important; }
+
+        /* MODAIS COMUNS E FULLSCREEN */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-content { background: #fff; width: 100vw; height: 100vh; height: 100dvh; max-width: 100%; max-height: 100%; border-radius: 0; overflow-y: hidden; position: relative; display: flex; flex-direction: column; }
+        @media(min-width: 768px) { .modal-content { width: 90vw; height: 92vh; border-radius: 12px; max-width: 900px; } }
+
+        .modal-fullscreen-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.85); z-index: 10000; margin: 0 !important; padding: 0 !important; }
+        .modal-fullscreen-content { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #fff; width: 100% !important; height: 100% !important; max-width: 100% !important; max-height: 100% !important; border-radius: 0 !important; margin: 0 !important; border: none !important; overflow-y: hidden; display: flex; flex-direction: column; }
+
+        .modal-header-top, .modal-fs-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #eee; padding: 15px 20px; background: #fff; z-index: 2000; }
+        .modal-fs-header { background: #002a5c; color: white; }
+        .modal-fs-header h2 { font-size: 18px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        .modal-fs-close { background: transparent; color: #fff; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 26px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .modal-fs-body { padding: 20px; overflow-y: auto; flex: 1; background: #f8f9fa; display: flex; flex-direction: column; gap: 15px; }
+
+        .btn-voltar-edicao { background: #002a5c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+        
+        #prevConteudoWrapper { position: relative; flex: 1; overflow-y: auto; overflow-x: hidden; background: #f0f2f5; padding-bottom: 100px; }
+        
+        /* NOVA GRADE DE ALINHAMENTO PARA OS BANNERS */
+        .grid-overlay {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; right: 0; 
+            height: max(300vh, 4000px);
+            pointer-events: none;
+            z-index: 999;
+            background-image: 
+                linear-gradient(to bottom, rgba(2, 117, 216, 0.4) 1px, transparent 1px),
+                linear-gradient(to right, rgba(2, 117, 216, 0.4) 1px, transparent 1px);
+            background-size: 100px 50px;
+        }
+        .grid-overlay.ativo { display: block; }
+
+        /* CSS ZONA DE DROP PARA ABRIR ESPAÇO ENTRE AS MATÉRIAS */
+        .zona-drop {
+            height: 25px; 
+            margin: -5px 15px 10px 15px;
+            transition: all 0.3s ease;
+            border: 2px dashed #b0b8c1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: rgba(255,255,255,0.5);
+        }
+        .zona-drop::after {
+            content: "Arraste o anúncio aqui";
+            font-size: 11px;
+            color: #888;
+            font-weight: bold;
+        }
+        .zona-drop.arrastando-sobre {
+            height: 120px;
+            background: rgba(249, 171, 0, 0.15);
+            border-color: #f9ab00;
+            margin-bottom: 15px;
+        }
+        .zona-drop.arrastando-sobre::after {
+            content: "Solte para Encaixar o Anúncio!";
+            color: #f9ab00;
+            font-size: 14px;
+        }
+        .zona-drop.tem-anuncio {
+            height: auto;
+            border: none;
+            background: transparent;
+            margin-bottom: 15px;
+        }
+        .zona-drop.tem-anuncio::after { display: none; }
+
+        .toast-save { position: fixed; bottom: 20px; right: 20px; background: #137333; color: white; padding: 10px 20px; border-radius: 6px; font-size: 12px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none; z-index: 99999; }
+
+        .btn-add-painel { background: #f0f2f5; color: #002a5c; border: 2px dashed #002a5c; padding: 12px; width: 100%; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; text-transform: uppercase; margin-top: 15px; transition: 0.3s; }
+        .btn-add-painel:hover { background: #002a5c; color: #fff; }
+        .painel-extra { border-top: 2px dashed #d1d9e0; padding-top: 20px; margin-top: 20px; position: relative; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #d1d9e0; }
+        .btn-remover-painel-extra { position: absolute; top: 10px; right: 10px; background: #fff; color: #d93025; border: 1px solid #d93025; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 10; }
+
+        .draggable-banner { position: absolute; touch-action: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: box-shadow 0.2s; border-radius: 4px; border: 2px solid transparent; }
+        .draggable-banner-edit-mode { border: 2px dashed #0275d8 !important; background: rgba(255,255,255,0.9); box-shadow: 0 8px 30px rgba(0,0,0,0.4); z-index: 1005 !important; }
+        
+        .banner-drag-header {
+            background: #0275d8;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 4px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: grab;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            position: absolute;
+            top: -26px;
+            left: -2px; right: -2px;
+            height: 26px;
+            opacity: 0.8;
+            transition: 0.2s;
+        }
+        .banner-drag-header:active { cursor: grabbing; opacity: 1; }
+        .banner-drag-header i { margin-right: 5px; }
+        
+        .resize-handle { position: absolute; bottom: -12px; right: -12px; background: #0275d8; width: 28px; height: 28px; border-radius: 50%; cursor: nwse-resize; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; z-index: 1001; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        
+        .banner-close-btn { background: transparent; color: #fff; border: none; font-size: 18px; line-height: 1; cursor: pointer; }
+        .banner-close-btn:hover { color: #ffcccc; }
+
+        /* ESTILOS DO MENU DE 3 BARRAS DO PAINEL DE ANÚNCIOS */
+        .subsidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10001; backdrop-filter: blur(2px); }
+        .subsidebar-panel { position: fixed; top: 0; left: -320px; width: 80%; max-width: 300px; height: 100%; background: #002a5c; color: white; z-index: 10002; transition: left 0.3s ease; padding: 20px; display: flex; flex-direction: column; gap: 15px; box-shadow: 5px 0 25px rgba(0,0,0,0.3); }
+        .subsidebar-panel.ativo { left: 0; }
+        .subsidebar-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #f9ab00; padding-bottom: 12px; margin-bottom: 10px; }
+        .subsidebar-header h3 { color: #f9ab00; font-size: 15px; font-weight: 800; text-transform: uppercase; }
+        .btn-subnav-item { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 14px; border-radius: 8px; font-weight: 700; font-size: 13px; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.2s; text-transform: uppercase; }
+        .btn-subnav-item:hover, .btn-subnav-item.active { background: #f9ab00; color: #1a1a1a; border-color: #f9ab00; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header-admin">
+            <h1>NEWS PRO</h1>
+            <div class="header-actions-right">
+                <span class="badge-pro">V12.1</span>
+                <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()" title="Painel de Opções">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="window.alternarSidebar()"></div>
+        <div class="sidebar-panel" id="sidebarPanel">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-sliders-h"></i> Painel Gerencial</h3>
+                <button class="sidebar-close" onclick="window.alternarSidebar()">&times;</button>
+            </div>
+            <div class="sidebar-content">
+                <button type="button" class="btn-menu-gerenciar" onclick="window.abrirModalGerenciamento(false)">
+                    <i class="fas fa-list-ul"></i> Gerenciar Matérias
+                </button>
+
+                <div class="stats-box" onclick="window.abrirModalAudiencia()">
+                    <div class="stats-header">
+                        <h4><i class="fas fa-chart-line"></i> Audiência de Leitores <i class="fas fa-expand" style="float: right;"></i></h4>
+                    </div>
+                    <div class="stats-display">
+                        <div class="info-left">
+                            <div class="number" id="valorVisualizacoesSide">0</div>
+                            <div class="label-periodo">Toque para ver gráficos detalhados</div>
+                        </div>
+                        <div class="stats-badge-live">
+                            <i class="fas fa-circle" style="font-size: 7px;"></i> Rastreio Ativo
+                        </div>
+                    </div>
+                </div>
+
+                <div class="google-integration-card">
+                    <label><i class="fab fa-google" style="color: #1a73e8;"></i> ID Google Analytics</label>
+                    <input type="text" id="googleAnalyticsCode" placeholder="Ex: G-XXXXXXXXXX">
+                    <button type="button" class="btn-ativar-google" id="btnAtivarAnalytics" onclick="window.ativarGoogleServico('analytics')">
+                        <i class="fas fa-power-off"></i> Ativar Rastreio
+                    </button>
+                </div>
+
+                <div class="google-integration-card">
+                    <label><i class="fas fa-dollar-sign" style="color: #137333;"></i> Google AdSense</label>
+                    <textarea id="googleAdSenseCode" rows="2" placeholder="Cole o script do AdSense..."></textarea>
+                    <button type="button" class="btn-ativar-google" id="btnAtivarAds" onclick="window.ativarGoogleServico('adsense')">
+                        <i class="fas fa-power-off"></i> Ativar Receita
+                    </button>
+                </div>
+
+                <button type="button" class="btn-painel-anuncios-menu" onclick="window.abrirPainelAnunciosConfig()">
+                    <i class="fas fa-bullhorn"></i> Painel de Anúncios
+                </button>
+            </div>
+        </div>
+
+        <form id="formNoticia">
+            <div class="section-box">
+                <div class="section-title"><i class="fas fa-tags"></i> Nicho / Categoria</div>
+                <div class="checkbox-group" id="categoriasGroup">
+                    <label class="checkbox-item"><input type="checkbox" name="categoria" value="Polícia"><span>Polícia</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="categoria" value="Trânsito"><span>Trânsito</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="categoria" value="Política"><span>Política</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="categoria" value="Esporte"><span>Esporte</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="categoria" value="In Memoriam"><span>In Memoriam</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="categoria" value="Campo Grande"><span>Campo Grande</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="categoria" value="Mato Grosso do Sul"><span>Mato Grosso do Sul</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="categoria" value="Brasil"><span>Brasil</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="categoria" value="Mundo"><span>Mundo</span></label>
+                </div>
+            </div>
+
+            <div class="section-box" style="border-left: 5px solid #002a5c;">
+                <div class="section-title"><i class="fas fa-images"></i> 1. Imagem de Capa</div>
+                <div class="image-upload-grid">
+                    <div class="form-group">
+                        <label>Foto 1 (Principal)</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="imagemInput1" accept="image/*">
+                            <button type="button" class="btn-remover-img" onclick="window.removerImagem(1)"><i class="fas fa-trash-alt"></i> Limpar</button>
+                        </div>
+                        <input type="hidden" id="imagemBase64_1">
+                    </div>
+                    <div class="form-group">
+                        <label>Foto 2 (Opcional)</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="imagemInput2" accept="image/*">
+                            <button type="button" class="btn-remover-img" onclick="window.removerImagem(2)"><i class="fas fa-trash-alt"></i> Limpar</button>
+                        </div>
+                        <input type="hidden" id="imagemBase64_2">
+                    </div>
+                </div>
+
+                <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">FORMATO DA IMAGEM DE CAPA:</div>
+                <div class="aspect-ratios" id="ratiosImagem">
+                    <button type="button" class="btn-ratio active" onclick="window.mudarLayoutImagem('16/9', this)">16:9</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('9/16', this)">9:16</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('4/3', this)">4:3</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('3/4', this)">3:4</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('1/1', this)">1:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('2/3', this)">2:3</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('18/9', this)">18:9</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('9/18', this)">9:18</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('2/1', this)">2:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('2.35/1', this)">2.35:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('1.85/1', this)">1.85:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('2.39/1', this)">2.39:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('128/27', this)">128:27</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('5.8/1', this)">5.8"</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutImagem('auto', this)">Original</button>
+                </div>
+                <input type="hidden" id="formatoEscolhido" value="16/9">
+
+                <div class="preview-container" id="previewContainerImagens" style="aspect-ratio: 16/9;">
+                    <div class="preview-placeholder"><i class="fas fa-camera" style="margin-right: 6px;"></i> Nenhuma imagem</div>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Crédito da Imagem</label>
+                    <input type="text" id="fonteImagem" placeholder="Ex: Nome do Fotógrafo / Reprodução">
+                </div>
+
+                <div id="container-imagens-extras"></div>
+                <button type="button" class="btn-add-painel" onclick="window.adicionarPainelImagem()">
+                    <i class="fas fa-plus-circle"></i> Adicionar outra foto à galeria
+                </button>
+            </div>
+
+            <div class="section-box" style="border-left: 5px solid #d93025;">
+                <div class="section-title"><i class="fas fa-video"></i> 2. Vídeo Galeria (Opcional)</div>
+                <div class="form-group">
+                    <label>Arquivo de Vídeo do Celular</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="videoInput" accept="video/*">
+                        <button type="button" class="btn-remover-img" onclick="window.removerVideo()"><i class="fas fa-trash-alt"></i> Limpar</button>
+                    </div>
+                    <input type="hidden" id="videoBase64">
+                </div>
+
+                <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">FORMATO / PROPORÇÃO DO VÍDEO:</div>
+                <div class="aspect-ratios" id="ratiosVideo">
+                    <button type="button" class="btn-ratio active" onclick="window.mudarLayoutVideo('16/9', this)">16:9</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('9/16', this)">9:16</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('4/3', this)">4:3</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('3/4', this)">3:4</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('1/1', this)">1:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('3/2', this)">3:2</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('2/3', this)">2:3</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('18/9', this)">18:9</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('9/18', this)">9:18</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('2/1', this)">2:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('2.35/1', this)">2.35:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('1.85/1', this)">1.85:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('2.39/1', this)">2.39:1</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('128/27', this)">128:27</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('5.8/1', this)">5.8"</button>
+                    <button type="button" class="btn-ratio" onclick="window.mudarLayoutVideo('auto', this)">Original</button>
+                </div>
+                <input type="hidden" id="formatoVideoEscolhido" value="16/9">
+
+                <video id="videoPreview" class="video-preview" controls></video>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Crédito do Vídeo</label>
+                    <input type="text" id="creditosVideo" placeholder="Ex: Câmera de Segurança">
+                </div>
+
+                <div id="container-videos-extras"></div>
+                <button type="button" class="btn-add-painel" onclick="window.adicionarPainelVideo()">
+                    <i class="fas fa-plus-circle"></i> Adicionar outro vídeo
+                </button>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title"><i class="fas fa-pen-nib"></i> Redação da Matéria</div>
+                
+                <div class="form-group">
+                    <label style="color: #002a5c; font-size: 13px;">Título da Matéria (Manchete)</label>
+                    <textarea id="titulo" class="titulo-textarea" placeholder="Digite uma manchete impactante e chamativa..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Autor / Repórter</label>
+                    <input type="text" id="autor" placeholder="Nome do jornalista">
+                </div>
+                <div class="form-group">
+                    <label>Corpo do Texto</label>
+                    <div id="editor-container"></div>
+                </div>
+                <div class="form-group">
+                    <label>Fonte da Informação</label>
+                    <input type="text" id="fonteNoticia" placeholder="Ex: Polícia Civil / Bombeiros">
+                </div>
+
+                <div class="form-group" style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px dashed #002a5c; margin-top: 15px;">
+                    <label style="color: #002a5c;"><i class="fas fa-share-alt"></i> Link de Rede Social (X, Facebook, Instagram, YouTube)</label>
+                    <input type="text" id="linkRedeSocial" placeholder="Cole o link da publicação, reel ou vídeo...">
+                    <small style="display: block; margin-top: 5px; color: #555; font-size: 11px;">O player ou card oficial será gerado automaticamente para visualização e clique.</small>
+                </div>
+            </div>
+
+            <div class="botoes-acao-container">
+                <button type="button" class="btn-preview" onclick="window.veioDoPainelAnuncios=false; window.abrirPrevia('rascunho_atual')"><i class="fas fa-eye"></i> Ver Prévia & Organizar Banners</button>
+                <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> Publicar Matéria</button>
+            </div>
+            <button type="button" id="btnCancelar" class="btn-cancelar" onclick="window.cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
+        </form>
+    </div>
+
+    <div id="toastSave" class="toast-save"><i class="fas fa-cloud-upload-alt"></i> Rascunho salvo!</div>
+
+    <div class="modal-fullscreen-overlay" id="modalPainelAnunciosConfig">
+        <div class="modal-fullscreen-content">
+            <div class="modal-fs-header" style="background: #f9ab00; color: #1a1a1a;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <button type="button" class="btn-menu-hamburguer" style="background: #1a1a1a; color: #f9ab00; width: 38px; height: 38px;" onclick="window.alternarSubSidebarAnuncios()" title="Menu de Seções">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 id="tituloAbaAnuncios"><i class="fas fa-bullhorn"></i> Painel de Anúncios</h2>
+                </div>
+                <button class="modal-fs-close" style="background: transparent; color: #1a1a1a; border: none; font-size: 26px; cursor: pointer;" onclick="window.fecharPainelAnunciosConfig()">&times;</button>
+            </div>
+
+            <div class="subsidebar-overlay" id="subSidebarOverlayAnuncios" onclick="window.alternarSubSidebarAnuncios(true)"></div>
+            
+            <div class="subsidebar-panel" id="subSidebarPanelAnuncios" style="background: #001d40; padding: 0;">
+                <div class="subsidebar-header" style="border-bottom: 1px solid rgba(255,255,255,0.1); padding: 15px 20px; margin-bottom: 0;">
+                    <h3 style="color: #f9ab00; font-size: 13px; letter-spacing: 0.5px;"><i class="fas fa-list"></i> MENU DE ANÚNCIOS</h3>
+                    <button class="sidebar-close" style="color: #fff; font-size: 22px; padding: 0;" onclick="window.alternarSubSidebarAnuncios(true)">&times;</button>
+                </div>
+                
+                <div style="padding: 20px; display: flex; flex-direction: column; gap: 20px;">
+                    <div>
+                        <div style="font-size: 10px; color: #cbd5e1; font-weight: bold; margin-bottom: 10px; letter-spacing: 0.5px; text-transform: uppercase;">Listar Anúncios Ativos</div>
+                        
+                        <button type="button" class="btn-subnav-item" onclick="window.abrirListaTodasPublicidades()" style="border-radius: 6px; padding: 12px; font-size: 11px; width: 100%; background: #f9ab00; color: #1a1a1a; border: none;">
+                            <i class="fas fa-layer-group"></i> TODAS AS PUBLICIDADES (GIFS, VÍDEOS, IMAGENS)
+                        </button>
+                    </div>
+
+                    <div>
+                        <div style="font-size: 10px; color: #cbd5e1; font-weight: bold; margin-bottom: 10px; letter-spacing: 0.5px; text-transform: uppercase;">Criar / Filtrar por Área</div>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <button type="button" class="btn-subnav-item" onclick="window.filtrarPainelAnuncios('inicio', this)" style="border-radius: 6px; padding: 12px; font-size: 11px; width: 100%;">
+                                <i class="fas fa-home"></i> VOLTA AO INÍCIO
+                            </button>
+                            
+                            <button type="button" class="btn-subnav-item" onclick="window.filtrarPainelAnuncios('ultimas', this)" style="border-radius: 6px; padding: 12px; font-size: 11px; width: 100%;">
+                                <i class="fas fa-newspaper"></i> ÚLTIMAS NOTÍCIAS
+                            </button>
+                            
+                            <button type="button" class="btn-subnav-item" onclick="window.filtrarPainelAnuncios('especifica', this)" style="border-radius: 6px; padding: 12px; font-size: 11px; width: 100%;">
+                                <i class="fas fa-file-alt"></i> NOTÍCIA ESPECÍFICA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-fs-body" id="secaoPainelAnunciosMaster" style="background: #fff; border-radius: 0;">
+                
+                <div id="painelVazioAviso" style="text-align: center; padding: 60px 20px; color: #1a1a1a; display: block;">
+                    <i class="fas fa-hand-pointer" style="font-size: 35px; margin-bottom: 15px; color: #f9ab00;"></i>
+                    <h3 style="font-size: 16px; font-weight: 800;">Painel Inicial em Branco</h3>
+                    <p style="font-size: 13px; color: #666; margin-top: 8px;">Clique nas 3 barras no topo esquerdo para visualizar, editar, excluir ou adicionar novas publicidades na área desejada.</p>
+                </div>
+
+                <div id="conteudoPainelAnuncios" style="display: none;">
+                    <p id="descricaoAbaAnuncios" style="font-size: 13px; color: #444; margin-bottom: 15px; font-weight: 600;"></p>
+                    
+                    <div id="container-banners-extras"></div>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px; border-top: 2px dashed #e2e8f0; padding-top: 20px;">
+                        <button type="button" class="btn-preview" style="background: #002a5c; color: white; width: 100%; font-size: 15px; padding: 16px; justify-content: center; text-transform: uppercase;" onclick="window.abrirPreviaDosBanners()">
+                            <i class="fas fa-eye"></i> Ver Site Real e Organizar Anúncios
+                        </button>
+
+                        <button type="button" class="btn-salvar-global" style="background-color: #137333; color: white; width: 100%; font-size: 15px; padding: 16px; justify-content: center; text-transform: uppercase;" onclick="window.salvarBannersGlobais()">
+                            <i class="fas fa-save"></i> Publicar e Salvar Anúncios Globais
+                        </button>
+
+                        <button type="button" class="btn-add-painel" style="border-color: #f9ab00; color: #b07c00; margin-top: 0; width: 100%; font-size: 15px; padding: 16px; justify-content: center;" onclick="window.adicionarPainelBanner()">
+                            <i class="fas fa-plus-circle"></i> Adicionar + Novo Anúncio
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-fullscreen-overlay" id="modalFullscreenGerenciarAnuncios">
+        <div class="modal-fullscreen-content">
+            <div class="modal-fs-header" style="background: #001d40; color: #f9ab00;">
+                <h2 style="font-size: 16px;"><i class="fas fa-layer-group"></i> Galeria de Publicidades Ativas</h2>
+                <button class="modal-fs-close" style="background: transparent; color: #fff; border: none; font-size: 26px; cursor: pointer;" onclick="window.fecharListaAnuncios()">&times;</button>
+            </div>
+            <div class="modal-fs-body" id="lista-anuncios-fullscreen" style="background: #eef2f7;">
+                <p style="color: #666; font-size: 14px;">Buscando as publicidades publicadas...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-fullscreen-overlay" id="modalFullscreenGerenciar">
+        <div class="modal-fullscreen-content">
+            <div class="modal-fs-header">
+                <h2 id="tituloModalGerenciamento"><i class="fas fa-list-ul"></i> Gerenciar Todas as Matérias</h2>
+                <button class="modal-fs-close" onclick="window.fecharModalGerenciamento()">&times;</button>
+            </div>
+            <div class="modal-fs-body" id="lista-noticias-fullscreen">
+                <p style="color: #666; font-size: 14px;">Carregando...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-fullscreen-overlay" id="modalFullscreenAudiencia">
+        <div class="modal-fullscreen-content">
+            <div class="modal-fs-header">
+                <h2><i class="fas fa-chart-bar"></i> Painel Avançado de Audiência</h2>
+                <button class="modal-fs-close" onclick="window.fecharModalAudiencia()">&times;</button>
+            </div>
+            <div class="modal-fs-body">
+                <div class="stats-box" style="cursor: default;">
+                    <div class="stats-header">
+                        <h4><i class="fas fa-filter"></i> Selecionar Período de Análise</h4>
+                        <select id="filtroPeriodoModal" class="stats-select" onchange="window.atualizarEstatisticasView()">
+                            <option value="nenhum">Nenhum (Zerar contagem exibida)</option>
+                            <option value="1dia">1 Dia Específico</option>
+                            <option value="7dias">7 Dias</option>
+                            <option value="15dias">15 Dias</option>
+                            <option value="1mes">1 Mês</option>
+                            <option value="3meses">3 Meses</option>
+                            <option value="6meses">6 Meses</option>
+                            <option value="12meses" selected>1 Ano (12 Meses)</option>
+                            <option value="total">Total Geral</option>
+                        </select>
+                    </div>
+                    <div class="stats-display" style="margin-top: 10px;">
+                        <div class="info-left">
+                            <div class="number" id="valorVisualizacoesModal">0</div>
+                            <div class="label-periodo">Total de Visualizações no Período Selecionado</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #fff; padding: 20px; border-radius: 10px; border: 1px solid #d1d9e0; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 300px;">
+                    <canvas id="graficoAudiencia" style="max-height: 320px; width: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalPrevia">
+        <div class="modal-content">
+            <div class="modal-header-top">
+                <div style="display: flex; align-items: center; gap: 15px; width: 100%;">
+                    <span style="font-size: 12px; font-weight: bold; color: #cc0000; text-transform: uppercase;" id="prevCategoria">CATEGORIA</span>
+                    <span id="previewContextLabel" style="font-size: 14px; font-weight: 800; color: #002a5c; background: #e2e8f0; padding: 6px 12px; border-radius: 6px;">Visão Atual</span>
+                    
+                    <div style="display: flex; gap: 10px; margin-left: auto;">
+                        <button class="btn-voltar-edicao" onclick="window.fecharPrevia()"><i class="fas fa-arrow-left"></i> Voltar</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="prevConteudoWrapper" style="padding: 0; position: relative;">
+                <div id="gridOverlay" class="grid-overlay"></div>
+                <div id="mockupWireframe" style="display: none; width: 100%; min-height: 100vh;"></div>
+                <div id="mockupNoticia" style="width: 100%; min-height: 100vh; background: #f0f2f5;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDjl4R4h2An2POmuZgMhAFsLbdhuzauxyY",
+            authDomain: "cgnewsoficial7799.firebaseapp.com",
+            projectId: "cgnewsoficial7799",
+            storageBucket: "cgnewsoficial7799.firebasestorage.app",
+            measurementId: "G-MCQJ63SYP1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const quill = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Escreva a matéria...',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'header': [1, 2, 3, false] }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'blockquote'],
+                    ['clean']
+                ]
+            }
+        });
+
+        let idEditando = null;
+        window.noticiasAdmin = {};
+        window.listaCompletaNoticias = [];
+        let chartInstance = null;
+
+        let contImagensExtras = 0;
+        let contVideosExtras = 0;
+        let contBannersExtras = 0;
+        window.bannersData = {};
+        
+        let idBannerAguardandoSelecao = null;
+        window.veioDoPainelAnuncios = false;
+        window.filtroAtivoPainel = 'vazio';
+
+        window.abrirPainelAnunciosConfig = function() {
+            window.alternarSidebar(true);
+            document.getElementById('modalPainelAnunciosConfig').style.display = 'block';
+            sessionStorage.setItem('currentModal', 'painelAnuncios'); 
+            
+            const abaSalva = sessionStorage.getItem('abaPainelAnuncios') || 'vazio';
+            window.filtrarPainelAnuncios(abaSalva, null); 
+        };
+
+        window.fecharPainelAnunciosConfig = function() {
+            document.getElementById('modalPainelAnunciosConfig').style.display = 'none';
+            sessionStorage.removeItem('currentModal'); 
+            sessionStorage.removeItem('abaPainelAnuncios'); 
+        };
+
+        window.alternarSubSidebarAnuncios = function(forceClose = false) {
+            const panel = document.getElementById('subSidebarPanelAnuncios');
+            const overlay = document.getElementById('subSidebarOverlayAnuncios');
+            const isOpen = panel.classList.contains('ativo');
+
+            if (isOpen || forceClose) {
+                panel.classList.remove('ativo');
+                overlay.style.display = 'none';
+            } else {
+                panel.classList.add('ativo');
+                overlay.style.display = 'block';
+            }
+        };
+
+        window.filtrarPainelAnuncios = function(filtroLocal, btn) {
+            window.filtroAtivoPainel = filtroLocal;
+            sessionStorage.setItem('abaPainelAnuncios', filtroLocal);
+
+            document.querySelectorAll('.btn-subnav-item').forEach(b => b.classList.remove('active'));
+            if(btn) {
+                btn.classList.add('active');
+            } else {
+                document.querySelectorAll('.btn-subnav-item').forEach(b => {
+                    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${filtroLocal}'`)) {
+                        b.classList.add('active');
+                    }
+                });
+            }
+
+            const titulo = document.getElementById('tituloAbaAnuncios');
+            const descricao = document.getElementById('descricaoAbaAnuncios');
+            const containerMaster = document.getElementById('secaoPainelAnunciosMaster');
+            const avisoVazio = document.getElementById('painelVazioAviso');
+            const conteudoPainel = document.getElementById('conteudoPainelAnuncios');
+
+            if (filtroLocal === 'vazio') {
+                titulo.innerHTML = '<i class="fas fa-bullhorn"></i> PAINEL DE ANÚNCIOS';
+                avisoVazio.style.display = 'block';
+                conteudoPainel.style.display = 'none';
+                containerMaster.style.background = '#fff';
+                window.alternarSubSidebarAnuncios(true);
+                return;
+            } else {
+                avisoVazio.style.display = 'none';
+                conteudoPainel.style.display = 'block';
+                containerMaster.style.background = '#f8f9fa';
+            }
+
+            if(filtroLocal === 'inicio') {
+                titulo.innerHTML = '<i class="fas fa-home"></i> Anúncios: Tela Inicial';
+                descricao.innerText = "Criando e editando as publicidades da Tela Inicial / Volta ao Início.";
+            } else if(filtroLocal === 'ultimas') {
+                titulo.innerHTML = '<i class="fas fa-newspaper"></i> Anúncios: Últimas Notícias';
+                descricao.innerText = "Criando e editando as publicidades do feed de Últimas Notícias.";
+            } else if(filtroLocal === 'especifica') {
+                titulo.innerHTML = '<i class="fas fa-file-alt"></i> Anúncios: Notícias Específicas';
+                descricao.innerText = "Criando e editando as publicidades atreladas a matérias específicas.";
+            }
+
+            for(let i=1; i<=contBannersExtras; i++) {
+                const painel = document.getElementById(`painel-banner-extra-${i}`);
+                if(painel) {
+                    const localAnuncio = document.getElementById(`localExibicaoBanner_${i}`).value;
+                    if(localAnuncio === filtroLocal) {
+                        painel.style.display = 'block';
+                    } else {
+                        painel.style.display = 'none';
+                    }
+                }
+            }
+            window.alternarSubSidebarAnuncios(true);
+        };
+
+        window.excluirAnuncioGlobal = async function(index) {
+            if(!confirm("Tem certeza que deseja excluir esta publicidade?")) return;
+            try {
+                const docRef = doc(db, "configuracoes", "bannersGlobais");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    let banners = docSnap.data().banners || [];
+                    banners.splice(index, 1);
+                    await setDoc(docRef, { banners: banners, dataAtualizacao: Date.now() });
+                    await window.carregarListaNoticias(); 
+                    window.abrirListaTodasPublicidades(); 
+                }
+            } catch(e) {
+                console.error(e);
+                alert("Erro ao excluir publicidade.");
+            }
+        };
+
+        window.excluirAnuncioNoticia = async function(noticiaId, indexBanner) {
+            if(!confirm("Tem certeza que deseja excluir esta publicidade da matéria?")) return;
+            try {
+                const docRef = doc(db, "noticias", noticiaId);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    let noticia = docSnap.data();
+                    let banners = noticia.banners || [];
+                    banners.splice(indexBanner, 1);
+                    await updateDoc(docRef, { banners: banners });
+                    
+                    if (idEditando === noticiaId) {
+                        window.editarNoticia(noticiaId, true);
+                    }
+                    
+                    await window.carregarListaNoticias(); 
+                    window.abrirListaTodasPublicidades(); 
+                }
+            } catch(e) {
+                console.error(e);
+                alert("Erro ao excluir publicidade.");
+            }
+        };
+
+        window.abrirListaTodasPublicidades = async function() {
+            window.alternarSubSidebarAnuncios(true);
+            document.getElementById('modalFullscreenGerenciarAnuncios').style.display = 'block';
+            sessionStorage.setItem('currentModal', 'listaAnuncios');
+            
+            const container = document.getElementById('lista-anuncios-fullscreen');
+            container.innerHTML = '<p style="color: #666; font-size: 14px;"><i class="fas fa-spinner fa-spin"></i> Buscando todas as publicidades em sua página...</p>';
+            
+            let todosAnuncios = [];
+
+            try {
+                const docRef = doc(db, "configuracoes", "bannersGlobais");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists() && docSnap.data().banners) {
+                    const globais = docSnap.data().banners;
+                    let indexGlobal = 0;
+                    for(let b of globais) {
+                        b.origem = 'Global';
+                        b.indexOriginal = indexGlobal++;
+                        if(b.temMidiaLocal && b.chaveMidiaLocal && !b.bannerImgBase64) {
+                            try {
+                                const idb = await abrirDBMedia();
+                                const tx = idb.transaction("media", "readonly");
+                                const req = tx.objectStore("media").get(b.chaveMidiaLocal);
+                                await new Promise((res) => {
+                                    req.onsuccess = () => { if(req.result) b.bannerImgBase64 = req.result; res(); };
+                                    req.onerror = () => res();
+                                });
+                            } catch(e){}
+                        }
+                        todosAnuncios.push(b);
+                    }
+                }
+            } catch (e) {}
+
+            try {
+                window.listaCompletaNoticias.forEach(noticia => {
+                    if(noticia.banners && noticia.banners.length > 0) {
+                        noticia.banners.forEach((b, idx) => {
+                            b.origem = 'Noticia';
+                            b.indexOriginal = idx; 
+                            b.noticiaTitulo = noticia.titulo || "Matéria em Edição";
+                            b.noticiaId = noticia.id;
+                            todosAnuncios.push(b);
+                        });
+                    }
+                });
+
+                if(todosAnuncios.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 50px 20px; color: #777; background: #fff; border-radius: 8px; border: 1px dashed #ccc; margin-top: 20px;">
+                            <i class="fas fa-photo-video" style="font-size: 40px; margin-bottom: 15px; color: #b0b8c1;"></i>
+                            <h3 style="color: #002a5c;">Sua lista de publicidades está vazia.</h3>
+                            <p style="font-size: 14px; margin-top: 8px;">Você não publicou nenhum anúncio na sua página ainda.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = '';
+                todosAnuncios.forEach((ad) => {
+                    let thumb = '<i class="fas fa-code" style="font-size: 30px; color: #999;"></i>';
+                    if(ad.tipo === 'imagem' && ad.bannerImgBase64) {
+                        if (ad.bannerImgBase64.startsWith('data:video') || ad.bannerImgBase64.includes('video/mp4')) {
+                            thumb = `<video src="${ad.bannerImgBase64}" style="width: 100%; height: 100%; object-fit: contain; background: #000;" muted loop autoplay playsinline></video>`;
+                        } else {
+                            thumb = `<img src="${ad.bannerImgBase64}" style="width: 100%; height: 100%; object-fit: contain;">`;
+                        }
+                    }
+
+                    let localTexto = ad.localExibicao === 'inicio' ? 'Tela Inicial' : 
+                                    (ad.localExibicao === 'ultimas' ? 'Últimas Notícias' : 'Notícia Específica');
+                    
+                    let posText = ad.posicao;
+                    if(ad.posicao === 'flutuante') posText = 'Flutuante na Tela';
+                    if(ad.posicao.startsWith('feed_')) posText = 'Encaixado na Lista (' + ad.posicao.replace('_', ' ') + ')';
+                    if(ad.posicao === 'acima_titulo') posText = 'Acima do Título';
+                    if(ad.posicao === 'abaixo_titulo') posText = 'Abaixo do Título';
+                    if(ad.posicao === 'meio_texto') posText = 'Meio do Texto';
+                    if(ad.posicao === 'fim_texto') posText = 'Fim da Matéria';
+
+                    let extraInfo = ad.origem === 'Noticia' ? `<br><span style="color:#d93025; font-size: 11px; font-weight: bold;"><i class="fas fa-thumbtack"></i> Dentro da Matéria: ${ad.noticiaTitulo}</span>` : '';
+
+                    let onClickEditar = "";
+                    let onClickExcluir = "";
+
+                    if (ad.origem === 'Global') {
+                        onClickEditar = `window.fecharListaAnuncios(); window.filtrarPainelAnuncios('${ad.localExibicao}', null);`;
+                        onClickExcluir = `window.excluirAnuncioGlobal(${ad.indexOriginal})`;
+                    } else {
+                        onClickEditar = `window.fecharListaAnuncios(); window.fecharPainelAnunciosConfig(); window.editarNoticia('${ad.noticiaId}');`;
+                        onClickExcluir = `window.excluirAnuncioNoticia('${ad.noticiaId}', ${ad.indexOriginal})`;
+                    }
+
+                    const div = document.createElement('div');
+                    div.className = 'noticia-item'; 
+                    div.innerHTML = `
+                        <div class="noticia-miniatura" style="background: #e2e8f0;">
+                            ${thumb}
+                        </div>
+                        <div class="noticia-conteudo-info">
+                            <strong style="font-size: 15px; color: #002a5c;"><i class="fas fa-ad"></i> Área: ${localTexto}</strong>
+                            <div class="noticia-meta-tags" style="margin-top: 6px;">
+                                <span><i class="fas fa-crosshairs"></i> ${posText}</span>
+                                <span><i class="fas fa-file-image"></i> Formato: ${ad.formatoBanner || 'Auto'}</span>
+                            </div>
+                            ${extraInfo}
+                            <div class="acoes-btn" style="margin-top: 10px; display: flex; gap: 10px;">
+                                <button type="button" class="btn-editar" style="background: #f9ab00; color: #1a1a1a; border: none; font-weight: bold; padding: 8px 15px;" onclick="${onClickEditar}">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
+                                <button type="button" class="btn-apagar" style="background: #d93025; color: white; border: none; font-weight: bold; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 5px;" onclick="${onClickExcluir}">
+                                    <i class="fas fa-trash-alt"></i> Excluir
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            } catch (e) {
+                console.error(e);
+                container.innerHTML = '<p style="color: #d93025; font-size: 14px;">Erro ao carregar lista de publicidades.</p>';
+            }
+        };
+
+        window.fecharListaAnuncios = function() {
+            document.getElementById('modalFullscreenGerenciarAnuncios').style.display = 'none';
+            sessionStorage.setItem('currentModal', 'painelAnuncios');
+        };
+
+        window.mudarAbaBannerExtra = function(id, tipo, btn) {
+            document.querySelectorAll(`#painel-banner-extra-${id} .ad-tab-btn`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.getElementById(`tipoBannerExtra_${id}`).value = tipo;
+            document.querySelectorAll(`#painel-banner-extra-${id} .ad-tab-content`).forEach(c => c.style.display = 'none');
+            
+            if (tipo === 'codigo') {
+                document.getElementById(`conteudoAdCodigo_${id}`).style.display = 'block';
+            } else {
+                document.getElementById(`conteudoAdImagem_${id}`).style.display = 'block';
+            }
+            window.salvarRascunho();
+        };
+
+        window.removerBannerImgExtra = function(id) {
+            document.getElementById(`bannerImgInputExtra_${id}`).value = "";
+            document.getElementById(`bannerImgBase64Extra_${id}`).value = "";
+            
+            const previewContainer = document.getElementById(`previewContainerBannerExtra_${id}`);
+            if (previewContainer) {
+                previewContainer.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#777;"><i class="fas fa-image" style="margin-right: 6px;"></i> Prévia do Anúncio</div>';
+            }
+            window.salvarRascunho();
+        };
+
+        window.removerPainelExtra = function(idPainel) {
+            const painel = document.getElementById(idPainel);
+            if (painel) painel.remove();
+            window.salvarRascunho();
+        };
+
+        window.adicionarPainelBanner = function(salvo = null) {
+            contBannersExtras++;
+            const id = contBannersExtras;
+            const container = document.getElementById('container-banners-extras');
+
+            const localDefault = (window.filtroAtivoPainel && window.filtroAtivoPainel !== 'vazio') ? window.filtroAtivoPainel : 'inicio';
+
+            const obj = salvo || {
+                tipo: 'imagem', codigoAnuncio: '', bannerImgBase64: '', 
+                formatoBanner: '16/9', bannerLinkUrl: '', localExibicao: localDefault, noticiaAlvo: 'rascunho_atual', posX: 20, posY: 200 + (id * 50), scale: 1,
+                posicao: 'flutuante'
+            };
+
+            window.bannersData[id] = { posX: obj.posX, posY: obj.posY, scale: obj.scale };
+
+            const painel = document.createElement('div');
+            painel.className = 'painel-extra';
+            painel.id = `painel-banner-extra-${id}`;
+
+            if(window.filtroAtivoPainel && window.filtroAtivoPainel !== 'vazio' && obj.localExibicao !== window.filtroAtivoPainel) {
+                painel.style.display = 'none';
+            }
+            
+            let noticiaAlvoReal = obj.noticiaAlvo;
+            if (noticiaAlvoReal === undefined || noticiaAlvoReal === "undefined") {
+                noticiaAlvoReal = 'rascunho_atual';
+            }
+
+            let tituloAlvoVisual = "Matéria Atual em Edição";
+            if(noticiaAlvoReal !== 'rascunho_atual' && window.noticiasAdmin[noticiaAlvoReal]) {
+                tituloAlvoVisual = window.noticiasAdmin[noticiaAlvoReal].titulo || 'Sem Título';
+            } else if (noticiaAlvoReal === 'rascunho_atual') {
+                const titEditando = document.getElementById('titulo').value;
+                if(titEditando) {
+                    tituloAlvoVisual = titEditando;
+                }
+            }
+
+            let displayMateria = obj.localExibicao === 'especifica' ? 'block' : 'none';
+            let displayFlutuante = obj.localExibicao === 'especifica' ? 'none' : 'block';
+            
+            painel.innerHTML = `
+                <button type="button" class="btn-remover-painel-extra" onclick="window.removerPainelExtra('painel-banner-extra-${id}')"><i class="fas fa-times"></i> Remover Publicidade do Editor</button>
+                <div style="font-weight: 800; color: #b07c00; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-ad"></i> Configuração da Publicidade / Banner ${id}</div>
+                
+                <div class="posicao-destaque">
+                    <label><i class="fas fa-crosshairs"></i> POSIÇÃO DO ANÚNCIO (ONDE ELE VAI FICAR?)</label>
+                    <select id="posicaoBanner_${id}" onchange="window.salvarRascunho()" style="width: 100%; padding: 12px; border-radius: 6px; font-size: 14px; background: #fff; margin-top: 5px;">
+                        <option value="flutuante" style="display: ${displayFlutuante};" ${obj.posicao==='flutuante'?'selected':''}>Flutuante / Arrastar Livremente sobre a tela</option>
+                        ${obj.posicao.startsWith('feed_') ? `<option value="${obj.posicao}" style="display: ${displayFlutuante};" selected>Encaixado na Lista (${obj.posicao.replace('_', ' ')})</option>` : ''}
+                        <optgroup label="Posições Dentro da Matéria" id="optgroup-materia-${id}" style="display: ${displayMateria};">
+                            <option value="acima_titulo" ${obj.posicao==='acima_titulo'?'selected':''}>Acima do Título da Matéria</option>
+                            <option value="abaixo_titulo" ${obj.posicao==='abaixo_titulo'?'selected':''}>Abaixo do Título da Matéria</option>
+                            <option value="abaixo_imagem" ${obj.posicao==='abaixo_imagem'?'selected':''}>Logo Abaixo da Foto de Capa</option>
+                            <option value="meio_texto" ${obj.posicao==='meio_texto'?'selected':''}>Bem no Meio da Matéria (Texto)</option>
+                            <option value="fim_texto" ${obj.posicao==='fim_texto'?'selected':''}>No Final da Matéria</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="form-group form-group-local-exibicao" style="margin-bottom: 12px; margin-top:15px;">
+                    <label><i class="fas fa-map-marker-alt"></i> Local de Exibição do Anúncio</label>
+                    <div class="local-tabs" id="botoesLocalBanner_${id}">
+                        <button type="button" class="btn-local ${obj.localExibicao==='inicio'?'active':''}" onclick="window.mudarLocalBanner(${id}, 'inicio', this)">Tela Inicial</button>
+                        <button type="button" class="btn-local ${obj.localExibicao==='ultimas'?'active':''}" onclick="window.mudarLocalBanner(${id}, 'ultimas', this)">Últimas Notícias</button>
+                        <button type="button" class="btn-local ${obj.localExibicao==='especifica'?'active':''}" onclick="window.mudarLocalBanner(${id}, 'especifica', this)">Notícia Específica</button>
+                    </div>
+                </div>
+                <input type="hidden" id="localExibicaoBanner_${id}" value="${obj.localExibicao}">
+                <input type="hidden" id="selectNoticiaEspecifica_${id}" value="${noticiaAlvoReal}">
+
+                <div id="wrapperNoticiaEspecifica_${id}" class="select-materia-visual-wrapper ${obj.localExibicao==='especifica'?'active':''}">
+                    <button type="button" class="btn-abrir-seletor-visual" onclick="window.abrirSeletorMateriaParaBanner(${id})">
+                        <i class="fas fa-hand-pointer"></i> Escolher Matéria no Gerenciador
+                    </button>
+                    <div class="materia-selecionada-badge" id="badgeNoticiaSelecionada_${id}">
+                        <i class="fas fa-thumbtack"></i> Alvo da Publicidade: <span>${tituloAlvoVisual}</span>
+                    </div>
+                </div>
+
+                <div class="ad-tabs" style="margin-top: 10px;">
+                    <button type="button" class="ad-tab-btn ${obj.tipo==='codigo'?'active':''}" onclick="window.mudarAbaBannerExtra(${id}, 'codigo', this)">Código / Script HTML</button>
+                    <button type="button" class="ad-tab-btn ${obj.tipo==='imagem'?'active':''}" onclick="window.mudarAbaBannerExtra(${id}, 'imagem', this)">Imagem / GIF / Vídeo</button>
+                </div>
+                <input type="hidden" id="tipoBannerExtra_${id}" value="${obj.tipo}">
+
+                <div id="conteudoAdCodigo_${id}" style="display: ${obj.tipo==='codigo'?'block':'none'};">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Código do Banner / Anúncio</label>
+                        <textarea id="codigoAnuncioExtra_${id}" rows="2" placeholder="Cole aqui o banner ou anúncio...">${obj.codigoAnuncio}</textarea>
+                    </div>
+                </div>
+
+                <div id="conteudoAdImagem_${id}" style="display: ${obj.tipo==='imagem'?'block':'none'};">
+                    <div class="form-group">
+                        <label>Arquivo de Mídia (Imagem, GIF ou Vídeo)</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="bannerImgInputExtra_${id}" accept="image/*,video/mp4,image/gif">
+                            <button type="button" class="btn-remover-img" onclick="window.removerBannerImgExtra(${id})"><i class="fas fa-trash-alt"></i> Limpar</button>
+                        </div>
+                        <input type="hidden" id="bannerImgBase64Extra_${id}" value="${obj.bannerImgBase64}">
+                    </div>
+
+                    <div style="font-size: 11px; font-weight: 800; color: #555; margin-bottom: 8px; text-align: center; text-transform: uppercase;">PROPORÇÃO DE ASPECTO DA MÍDIA:</div>
+                    <div class="aspect-ratios" id="ratiosBannerExtra_${id}">
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='16/9'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '16/9', this)">16:9</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='9/16'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '9/16', this)">9:16</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='4/3'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '4/3', this)">4:3</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='3/4'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '3/4', this)">3:4</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='1/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '1/1', this)">1:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='3/2'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '3/2', this)">3:2</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2/3'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '2/3', this)">2:3</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='18/9'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '18/9', this)">18:9</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='9/18'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '9/18', this)">9:18</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '2/1', this)">2:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2.35/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '2.35/1', this)">2.35:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='1.85/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '1.85/1', this)">1.85:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='2.39/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '2.39/1', this)">2.39:1</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='128/27'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '128/27', this)">128:27</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='5.8/1'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, '5.8/1', this)">5.8"</button>
+                        <button type="button" class="btn-ratio ${obj.formatoBanner==='auto'?'active':''}" onclick="window.mudarLayoutBannerExtra(${id}, 'auto', this)">Original Livre</button>
+                    </div>
+                    <input type="hidden" id="formatoBannerExtraEscolhido_${id}" value="${obj.formatoBanner}">
+
+                    <div class="preview-container" id="previewContainerBannerExtra_${id}" style="aspect-ratio: ${obj.formatoBanner === 'auto' ? '16/9' : obj.formatoBanner.replace(':', '/')}; margin-top: 15px; border: 1px dashed #b0b8c1; background: #f8f9fa;">
+                        ${obj.bannerImgBase64 
+                            ? (obj.bannerImgBase64.startsWith('data:video') 
+                                ? `<video src="${obj.bannerImgBase64}" style="width: 100%; height: 100%; object-fit: contain; background: #000;" autoplay muted loop playsinline></video>` 
+                                : `<img src="${obj.bannerImgBase64}" style="width: 100%; height: 100%; object-fit: contain;">`)
+                            : '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#777;"><i class="fas fa-image" style="margin-right: 6px;"></i> Prévia do Anúncio</div>'
+                        }
+                    </div>
+
+                    <div class="form-group" style="margin-top: 15px; margin-bottom: 0;">
+                        <label>Link de Destino (Site ou Rede Social) - Adiciona o Botão Saiba Mais no Vídeo</label>
+                        <input type="text" id="bannerLinkUrlExtra_${id}" value="${obj.bannerLinkUrl}" placeholder="https://...">
+                    </div>
+                </div>
+            `;
+            container.appendChild(painel);
+
+            document.getElementById(`bannerImgInputExtra_${id}`).addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const previewContainer = document.getElementById(`previewContainerBannerExtra_${id}`);
+                const fileUrl = URL.createObjectURL(file);
+
+                if (file.type.startsWith('video/')) {
+                    previewContainer.innerHTML = `<video src="${fileUrl}" style="width: 100%; height: 100%; object-fit: contain; background: #000;" autoplay muted loop playsinline></video>`;
+                } else {
+                    previewContainer.innerHTML = `<img src="${fileUrl}" style="width: 100%; height: 100%; object-fit: contain;">`;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    document.getElementById(`bannerImgBase64Extra_${id}`).value = evt.target.result;
+                    window.salvarRascunho();
+                };
+                reader.readAsDataURL(file);
+            });
+        };
+
+        window.mudarLocalBanner = function(id, local, btn) {
+            document.querySelectorAll(`#botoesLocalBanner_${id} .btn-local`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`localExibicaoBanner_${id}`).value = local;
+
+            const wrapper = document.getElementById(`wrapperNoticiaEspecifica_${id}`);
+            if(local === 'especifica') {
+                wrapper.classList.add('active');
+            } else {
+                wrapper.classList.remove('active');
+            }
+
+            const selectPosicao = document.getElementById(`posicaoBanner_${id}`);
+            const optMat = document.getElementById(`optgroup-materia-${id}`);
+            const optFlutuante = selectPosicao.querySelector('option[value="flutuante"]');
+
+            if (local === 'especifica') {
+                if(optFlutuante) optFlutuante.style.display = 'none';
+                if(optMat) optMat.style.display = 'block';
+
+                if (selectPosicao.value === 'flutuante' || selectPosicao.value.startsWith('feed')) {
+                    selectPosicao.value = 'acima_titulo';
+                }
+            } else {
+                if(optFlutuante) optFlutuante.style.display = 'block';
+                if(optMat) optMat.style.display = 'none';
+
+                selectPosicao.value = 'flutuante'; 
+            }
+
+            window.salvarRascunho();
+        };
+
+        window.abrirSeletorMateriaParaBanner = function(idBanner) {
+            idBannerAguardandoSelecao = idBanner;
+            document.getElementById('modalPainelAnunciosConfig').style.display = 'none';
+            window.abrirModalGerenciamento(true); 
+        };
+
+        window.abrirPreviaDosBanners = function() {
+            window.veioDoPainelAnuncios = true;
+            let alvo = 'inicio'; 
+            for(let i=1; i<=contBannersExtras; i++) {
+                let painel = document.getElementById(`painel-banner-extra-${i}`);
+                if(painel && painel.style.display !== 'none') {
+                    let local = document.getElementById(`localExibicaoBanner_${i}`).value;
+                    if(local === 'especifica') {
+                        alvo = document.getElementById(`selectNoticiaEspecifica_${i}`).value;
+                    } else {
+                        alvo = local;
+                    }
+                    break; 
+                }
+            }
+            window.fecharPainelAnunciosConfig();
+            window.abrirPrevia(alvo);
+        };
+
+        window.mudarLayoutBannerExtra = function(id, ratio, btn) {
+            document.querySelectorAll(`#ratiosBannerExtra_${id} .btn-ratio`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`formatoBannerExtraEscolhido_${id}`).value = ratio;
+            
+            const previewContainer = document.getElementById(`previewContainerBannerExtra_${id}`);
+            if (previewContainer) {
+                previewContainer.style.aspectRatio = ratio === 'auto' ? '16/9' : ratio.replace(':', '/');
+            }
+            
+            window.salvarRascunho();
+        };
+
+        window.renderMockupFeed = function(contexto) {
+            let urlReal = contexto === 'ultimas' ? 'https://bucolic-liger-9ff75d.netlify.app/?ultimas=true' : 'https://bucolic-liger-9ff75d.netlify.app/';
+            
+            let feedHtml = `<div style="background: #f0f2f5; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; padding-bottom: 100px;">`;
+            
+            feedHtml += `
+            <div style="background: #002a5c; color: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <i class="fas fa-bars" style="font-size: 20px;"></i>
+                <div style="font-weight: 900; font-size: 19px; letter-spacing: 0.5px;">CG NEWS OFICIAL</div>
+                <i class="fab fa-whatsapp" style="font-size: 22px; color: #25d366;"></i>
+            </div>`;
+
+            feedHtml += `
+            <div style="background: #002a5c; color: white; padding: 12px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; z-index: 20; margin-bottom: 10px;">
+                <div style="font-size: 14px; font-weight: 900; letter-spacing: 1px;"><i class="fas fa-satellite-dish" style="color: #25d366;"></i> SIMULADOR DO SITE OFICIAL</div>
+                <div style="font-size: 11px; font-weight: normal; color: #cbd5e1; margin-top: 4px;">Página simulada a partir do banco de dados para permitir o encaixe de anúncios.</div>
+                <div style="font-size: 11px; margin-top: 4px;"><a href="${urlReal}" target="_blank" style="color: #25d366;">Acessar site real: ${urlReal}</a></div>
+            </div>`;
+
+            let tituloPagina = contexto === 'inicio' ? 'VOLTA AO INÍCIO' : 'ÚLTIMAS NOTÍCIAS';
+            feedHtml += `
+            <div style="background: #fff; padding: 15px 20px; font-weight: 900; font-size: 14px; border-bottom: 1px solid #e1e4e8; color: #002a5c; text-transform: uppercase; margin-bottom: 15px; display:flex; align-items:center; gap:8px;">
+                <i class="fas fa-${contexto === 'inicio' ? 'home' : 'newspaper'}"></i> ${tituloPagina}
+            </div>`;
+
+            let noticiasRender = window.listaCompletaNoticias.slice(0, 15);
+
+            feedHtml += `<div class="zona-drop" data-feed-index="0"></div>`;
+
+            if(noticiasRender.length === 0) {
+                feedHtml += `<div style="padding: 20px; text-align: center; color: #777;">Buscando matérias no banco de dados...</div>`;
+            } else {
+                noticiasRender.forEach((noticia, index) => {
+                    let img = noticia.imagemBase64_1 || noticia.imagem1 || noticia.imagem || noticia.capa || noticia.foto || '';
+                    let cat = noticia.categorias ? noticia.categorias.join(', ') : (noticia.categoria || "Geral");
+                    
+                    feedHtml += `
+                    <div style="background: #fff; margin: 0 15px 15px; border-radius: 8px; display: flex; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e1e4e8;">
+                        <div style="width: 130px; background: #e2e8f0; flex-shrink: 0; display:flex; align-items:center; justify-content:center;">
+                            ${img ? `<img src="${img}" style="width: 100%; height: 100%; object-fit: cover;">` : '<i class="fas fa-image" style="color:#a0aec0; font-size:24px;"></i>'}
+                        </div>
+                        <div style="padding: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div style="font-size: 14px; font-weight: 800; color: #002a5c; margin-bottom: 8px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">${noticia.titulo || 'Matéria sem título'}</div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 10px; font-weight: bold; color: #d93025; text-transform: uppercase;">${cat}</span>
+                                <div style="display:flex; gap: 8px; color: #888;">
+                                    <i class="fab fa-whatsapp"></i>
+                                    <i class="fab fa-facebook"></i>
+                                    <i class="fas fa-share-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                    
+                    feedHtml += `<div class="zona-drop" data-feed-index="${index + 1}"></div>`;
+                });
+            }
+            
+            feedHtml += `</div>`;
+            return feedHtml;
+        };
+
+        window.abrirPrevia = function(contexto = 'rascunho_atual') {
+            const mockupWireframe = document.getElementById('mockupWireframe');
+            const mockupNoticia = document.getElementById('mockupNoticia');
+            const label = document.getElementById('previewContextLabel');
+            const wrapper = document.getElementById('prevConteudoWrapper');
+
+            if (contexto === 'inicio') {
+                label.innerHTML = '<i class="fas fa-home"></i> Visão: Tela Inicial';
+            } else if (contexto === 'ultimas') {
+                label.innerHTML = '<i class="fas fa-newspaper"></i> Visão: Últimas Notícias';
+            } else if (contexto === 'rascunho_atual') {
+                label.innerHTML = '<i class="fas fa-edit"></i> Visão: Rascunho Atual';
+            } else {
+                const item = window.noticiasAdmin[contexto];
+                label.innerHTML = `<i class="fas fa-thumbtack"></i> Visão: ${item ? item.titulo.substring(0, 30) + '...' : 'Notícia Específica'}`;
+            }
+
+            if (contexto === 'inicio' || contexto === 'ultimas') {
+                mockupWireframe.style.display = 'block';
+                mockupNoticia.style.display = 'none';
+                mockupWireframe.innerHTML = window.renderMockupFeed(contexto);
+            } else {
+                mockupWireframe.style.display = 'none';
+                mockupNoticia.style.display = 'block';
+
+                let tTxt, aTxt, txtH, cTxt, credTxt, fontTxt, i1, i2, vArq, lRede, formEsc, formVidEsc;
+
+                if (contexto === 'rascunho_atual' || contexto === 'undefined' || !window.noticiasAdmin[contexto]) {
+                    tTxt = document.getElementById('titulo').value || "Título da Matéria";
+                    aTxt = document.getElementById('autor').value || "Redação";
+                    txtH = quill.root.innerHTML;
+                    if(txtH === '<p><br></p>') txtH = "<p>Corpo da matéria aparecerá aqui...</p>";
+                    const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
+                    cTxt = checkboxes.length > 0 ? checkboxes[0].value : "Geral";
+                    credTxt = document.getElementById('fonteImagem').value ? `Foto: ${document.getElementById('fonteImagem').value}` : "Foto: Reprodução";
+                    fontTxt = document.getElementById('fonteNoticia').value ? `Fonte: ${document.getElementById('fonteNoticia').value}` : "";
+                    i1 = document.getElementById('imagemBase64_1').value;
+                    i2 = document.getElementById('imagemBase64_2').value;
+                    vArq = document.getElementById('videoBase64').value;
+                    lRede = document.getElementById('linkRedeSocial').value;
+                    formEsc = document.getElementById('formatoEscolhido').value;
+                    formVidEsc = document.getElementById('formatoVideoEscolhido').value;
+                } else {
+                    const item = window.noticiasAdmin[contexto];
+                    tTxt = item.titulo || "Sem Título";
+                    aTxt = item.autor || "Redação";
+                    txtH = item.textoRico || item.texto || item.conteudo || "<p>Sem conteúdo.</p>";
+                    cTxt = item.categorias ? item.categorias.join(', ') : (item.categoria || "Geral");
+                    credTxt = item.fonteImagem ? `Foto: ${item.fonteImagem}` : "Foto: Reprodução";
+                    fontTxt = item.fonteNoticia ? `Fonte: ${item.fonteNoticia}` : "";
+                    i1 = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
+                    i2 = item.imagemBase64_2 || item.imagem2 || '';
+                    vArq = item.videoBase64 || item.video || item.linkVideo || '';
+                    lRede = item.linkRedeSocial || '';
+                    formEsc = item.formatoEscolhido || 'auto';
+                    formVidEsc = item.formatoVideoEscolhido || 'auto';
+                }
+
+                let bAcimaTitulo = "";
+                let bAbaixoTitulo = "";
+                let bAbaixoMidia = "";
+                let bFimMateria = "";
+                let bannersMeioTexto = [];
+
+                for(let i=1; i<=contBannersExtras; i++) {
+                    const painel = document.getElementById(`painel-banner-extra-${i}`);
+                    if(painel) {
+                        const localExibicao = document.getElementById(`localExibicaoBanner_${i}`).value;
+                        const noticiaAlvoInput = document.getElementById(`selectNoticiaEspecifica_${i}`);
+                        const noticiaAlvo = noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual';
+
+                        let mostrarBanner = false;
+                        if (contexto === 'rascunho_atual' && localExibicao === 'especifica' && noticiaAlvo === 'rascunho_atual') mostrarBanner = true;
+                        else if (contexto !== 'rascunho_atual' && localExibicao === 'especifica' && noticiaAlvo === contexto) mostrarBanner = true;
+
+                        if (mostrarBanner) {
+                            let b = {
+                                tipo: document.getElementById(`tipoBannerExtra_${i}`).value,
+                                codigoAnuncio: document.getElementById(`codigoAnuncioExtra_${i}`).value,
+                                bannerImgBase64: document.getElementById(`bannerImgBase64Extra_${i}`).value,
+                                formatoBanner: document.getElementById(`formatoBannerExtraEscolhido_${i}`).value,
+                                bannerLinkUrl: document.getElementById(`bannerLinkUrlExtra_${i}`).value,
+                                posicao: document.getElementById(`posicaoBanner_${i}`).value
+                            };
+                            
+                            if (b.posicao === 'abaixo_titulo') bAbaixoTitulo += renderizarBannerHtml(b);
+                            else if (b.posicao === 'abaixo_imagem') bAbaixoMidia += renderizarBannerHtml(b);
+                            else if (b.posicao === 'fim_texto') bFimMateria += renderizarBannerHtml(b);
+                            else if (b.posicao === 'meio_texto') bannersMeioTexto.push(b);
+                            else if (b.posicao === 'acima_titulo') bAcimaTitulo += renderizarBannerHtml(b);
+                        }
+                    }
+                }
+
+                let textoProcessado = "";
+                if (bannersMeioTexto.length > 0) {
+                    let paragrafos = txtH.split(/<\/p>/i);
+                    let bannerAtivo = 0;
+                    let meioExato = Math.floor(paragrafos.length / 2);
+                    if (meioExato === 0) meioExato = 1;
+
+                    for (let i = 0; i < paragrafos.length; i++) {
+                        textoProcessado += paragrafos[i] + (paragrafos[i].trim() !== '' ? '</p>' : '');
+                        if (i === meioExato && bannerAtivo < bannersMeioTexto.length) {
+                            textoProcessado += renderizarBannerHtml(bannersMeioTexto[bannerAtivo]);
+                            bannerAtivo++;
+                        } else if (i > meioExato && (i - meioExato) % 2 === 0 && bannerAtivo < bannersMeioTexto.length) {
+                            textoProcessado += renderizarBannerHtml(bannersMeioTexto[bannerAtivo]);
+                            bannerAtivo++;
+                        }
+                    }
+                } else {
+                    textoProcessado = txtH;
+                }
+
+                let htmlArtigo = `
+                <div style="background: #f0f2f5; width: 100%; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; text-align: left; padding-bottom: 50px;">
+                    
+                    <div style="background: #002a5c; color: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <i class="fas fa-bars" style="font-size: 20px;"></i>
+                        <div style="font-weight: 900; font-size: 19px; letter-spacing: 0.5px;">CG NEWS OFICIAL</div>
+                        <i class="fab fa-whatsapp" style="font-size: 22px; color: #25d366;"></i>
+                    </div>
+
+                    <div style="background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #e1e4e8; color: #002a5c; font-weight: bold; font-size: 14px;">
+                        <i class="fas fa-arrow-left"></i> Voltar ao Início
+                    </div>
+
+                    <div style="max-width: 800px; margin: 0 auto; background: #fff; padding: 25px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); min-height: 80vh;">
+                        ${bAcimaTitulo}
+                        <h1 style="color: #1a1a1a; font-size: 28px; font-weight: 900; margin-bottom: 15px; line-height: 1.25;">${tTxt}</h1>
+                        ${bAbaixoTitulo}
+                        
+                        <div style="font-size: 13px; color: #666; margin-bottom: 15px; display: flex; flex-direction: column; gap: 6px;">
+                            <div><i class="far fa-clock" style="margin-right: 6px; color: #555;"></i> Publicado agora mesmo</div>
+                            <div><i class="far fa-user" style="margin-right: 6px; color: #555;"></i> Por ${aTxt}</div>
+                            <div><i class="far fa-folder" style="margin-right: 6px; color: #555;"></i> ${cTxt}</div>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 25px; border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 12px 0;">
+                            <span style="font-size: 13px; color: #666; font-weight: bold; margin-right: 5px;">Compartilhe:</span>
+                            <span style="background: #25d366; color: white; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 16px;"><i class="fab fa-whatsapp"></i></span>
+                            <span style="background: #3b5998; color: white; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 16px;"><i class="fab fa-facebook-f"></i></span>
+                            <span style="background: #000; color: white; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 16px;"><i class="fab fa-x-twitter"></i></span>
+                            <span style="background: #888; color: white; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 16px;"><i class="far fa-copy"></i></span>
+                        </div>`;
+
+                const formatoImgFinal = (formEsc && formEsc !== 'auto') ? formEsc.replace(':', '/') : 'auto';
+
+                if (i1 || i2) {
+                    let imgHtml = '';
+                    let wrapperStyle = formatoImgFinal === 'auto' ? '' : `aspect-ratio: ${formatoImgFinal}; overflow: hidden;`;
+                    
+                    if (i1 && i2) {
+                        imgHtml = `
+                        <div style="display: flex; width: 100%; ${wrapperStyle}">
+                            <img src="${i1}" style="flex: 1; width: 50%; height: 100%; object-fit: cover; border-right: 2px solid #fff;">
+                            <img src="${i2}" style="flex: 1; width: 50%; height: 100%; object-fit: cover;">
+                        </div>`;
+                    } else if (i1) {
+                        imgHtml = `<img src="${i1}" style="width: 100%; ${formatoImgFinal === 'auto' ? 'height: auto;' : 'height: 100%;'} object-fit: cover;">`;
+                    } else if (i2) {
+                        imgHtml = `<img src="${i2}" style="width: 100%; ${formatoImgFinal === 'auto' ? 'height: auto;' : 'height: 100%;'} object-fit: cover;">`;
+                    }
+                    
+                    htmlArtigo += `
+                        <div style="width: 100%; margin-bottom: 25px; position: relative;">
+                            ${imgHtml}
+                            <div style="position: absolute; bottom: 0px; left: 0px; background: #f8f9fa; color: #444; border-top-right-radius: 6px; font-size: 11px; padding: 6px 10px; font-weight: 600;">${credTxt}</div>
+                        </div>`;
+                }
+
+                htmlArtigo += `
+                        ${bAbaixoMidia}
+                        <div class="preview-body-content" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 18px; line-height: 1.7; color: #222; margin-top: 10px; margin-bottom: 40px;">${textoProcessado}</div>
+                        ${bFimMateria}
+                    </div>
+                </div>`;
+
+                mockupNoticia.innerHTML = htmlArtigo;
+            }
+
+            wrapper.querySelectorAll('.draggable-banner').forEach(el => el.remove());
+
+            for(let i=1; i<=contBannersExtras; i++) {
+                const painel = document.getElementById(`painel-banner-extra-${i}`);
+                if(!painel) continue;
+
+                const localExibicao = document.getElementById(`localExibicaoBanner_${i}`).value;
+                const noticiaAlvoInput = document.getElementById(`selectNoticiaEspecifica_${i}`);
+                const noticiaAlvo = noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual';
+                const posicaoAnuncio = document.getElementById(`posicaoBanner_${i}`).value;
+
+                let isFeed = (contexto === 'inicio' && localExibicao === 'inicio') || (contexto === 'ultimas' && localExibicao === 'ultimas');
+                let isMateria = localExibicao === 'especifica' && (contexto === noticiaAlvo || (contexto === 'rascunho_atual' && noticiaAlvo === 'rascunho_atual'));
+
+                if (!isFeed && !isMateria) continue;
+                if (isMateria && posicaoAnuncio !== 'flutuante') continue; // Matéria renderiza as internas direto no HTML
+
+                const tipo = document.getElementById(`tipoBannerExtra_${i}`).value;
+                const base64 = document.getElementById(`bannerImgBase64Extra_${i}`).value;
+                const code = document.getElementById(`codigoAnuncioExtra_${i}`).value;
+                const link = document.getElementById(`bannerLinkUrlExtra_${i}`).value;
+                const rawRatio = document.getElementById(`formatoBannerExtraEscolhido_${i}`).value;
+                const ratio = rawRatio === 'auto' ? '16/9' : rawRatio.replace(':', '/');
+                const bd = window.bannersData[i] || {posX: 0, posY: 0, scale: 1};
+                bd.idPainel = i;
+
+                let contentHtml = '';
+                if(tipo === 'imagem' && base64) {
+                    if (base64.startsWith('data:video') || base64.includes('video/mp4')) {
+                        let btnSaibaMaisVideo = link ? `<a href="${link}" target="_blank" style="position:absolute; bottom:10px; right:10px; background:#f9ab00; color:#1a1a1a; padding:8px 15px; border-radius:20px; text-decoration:none; font-weight:900; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.5); font-family:sans-serif; font-size:11px; pointer-events:auto; text-transform:uppercase;">Saiba Mais <i class="fas fa-arrow-right"></i></a>` : '';
+                        contentHtml = `
+                            <div style="position:relative; width:100%; height:100%;">
+                                <video src="${base64}" autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: contain; background:#000; pointer-events: none;"></video>
+                                ${btnSaibaMaisVideo}
+                            </div>
+                        `;
+                    } else {
+                        let linkStart = link ? `<a href="${link}" target="_blank" style="display:block; width:100%; height:100%; pointer-events:auto;">` : `<div style="width:100%; height:100%;">`;
+                        let linkEnd = link ? `</a>` : `</div>`;
+                        contentHtml = `
+                            <div style="position:relative; width:100%; height:100%;">
+                                ${linkStart}
+                                    <img src="${base64}" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none;">
+                                ${linkEnd}
+                            </div>
+                        `;
+                    }
+                } else if(tipo === 'codigo' && code) {
+                    contentHtml = `<div style="width:100%; height:100%; overflow:hidden;">${code}</div>`;
+                }
+
+                if(contentHtml) {
+                    const el = document.createElement('div');
+                    el.className = 'draggable-banner';
+                    el.id = `prevBannerDrag_${i}`;
+
+                    el.innerHTML = `
+                        <div class="banner-drag-header"><i class="fas fa-arrows-alt"></i> Arraste p/ Encaixar <button type="button" class="banner-close-btn" onclick="document.getElementById('prevBannerDrag_${i}').style.display='none'" title="Fechar Publicidade">&times;</button></div>
+                        ${contentHtml}
+                        <div class="resize-handle"><i class="fas fa-expand-arrows-alt"></i></div>
+                    `;
+
+                    if (isFeed && posicaoAnuncio.startsWith('feed_')) {
+                        let feedIdx = posicaoAnuncio.split('_')[1];
+                        let targetZone = mockupWireframe.querySelector(`.zona-drop[data-feed-index="${feedIdx}"]`);
+                        if (targetZone) {
+                            el.style.position = 'relative';
+                            el.style.width = '100%';
+                            el.style.transform = `scale(${bd.scale})`;
+                            el.style.transformOrigin = 'top center';
+                            targetZone.appendChild(el);
+                            targetZone.classList.add('tem-anuncio');
+                        } else {
+                            el.style.position = 'absolute';
+                            el.style.width = '300px'; 
+                            el.style.left = `${bd.posX}px`;
+                            el.style.top = `${bd.posY}px`;
+                            wrapper.appendChild(el);
+                        }
+                    } else {
+                        el.style.position = 'absolute';
+                        el.style.width = '300px'; 
+                        el.style.aspectRatio = ratio;
+                        el.style.left = `${bd.posX}px`;
+                        el.style.top = `${bd.posY}px`;
+                        el.style.transform = `scale(${bd.scale})`;
+                        el.style.transformOrigin = 'top left';
+                        wrapper.appendChild(el);
+                    }
+
+                    window.ativarInteracaoBanner(el, bd, wrapper);
+                }
+            }
+
+            document.getElementById('modalPrevia').style.display = 'flex';
+            sessionStorage.setItem('currentModal', 'previa'); 
+            sessionStorage.setItem('contextoPrevia', contexto);
+        };
+
+        window.ativarInteracaoBanner = function(el, dataObj, wrapper) {
+            let isDragging = false;
+            let isResizing = false;
+            let initialDistance = 0;
+            let startScale = dataObj.scale;
+            let startYMouse = 0;
+            let currentDropZone = null;
+            
+            const handle = el.querySelector('.resize-handle');
+            const closeBtn = el.querySelector('.banner-close-btn');
+
+            const startDrag = (e) => {
+                isDragging = true;
+                el.classList.add('draggable-banner-edit-mode');
+                
+                if (el.parentElement.classList.contains('zona-drop')) {
+                    let rect = el.getBoundingClientRect();
+                    let wrapRect = wrapper.getBoundingClientRect();
+                    
+                    el.parentElement.classList.remove('tem-anuncio');
+                    wrapper.appendChild(el);
+                    
+                    el.style.position = 'absolute';
+                    el.style.width = '300px';
+                    
+                    dataObj.posX = rect.left - wrapRect.left + wrapper.scrollLeft;
+                    dataObj.posY = rect.top - wrapRect.top + wrapper.scrollTop;
+                    
+                    el.style.left = dataObj.posX + 'px';
+                    el.style.top = dataObj.posY + 'px';
+                }
+            };
+
+            const handleMove = (clientX, clientY) => {
+                el.style.pointerEvents = 'none'; 
+                let elemBelow = document.elementFromPoint(clientX, clientY);
+                el.style.pointerEvents = 'auto';
+
+                let dropZone = elemBelow ? elemBelow.closest('.zona-drop') : null;
+                
+                if (dropZone !== currentDropZone) {
+                    if (currentDropZone) currentDropZone.classList.remove('arrastando-sobre');
+                    if (dropZone) dropZone.classList.add('arrastando-sobre');
+                    currentDropZone = dropZone;
+                }
+            };
+
+            const handleDrop = () => {
+                if (currentDropZone) {
+                    currentDropZone.classList.remove('arrastando-sobre');
+                    currentDropZone.appendChild(el);
+                    currentDropZone.classList.add('tem-anuncio');
+                    
+                    el.style.position = 'relative';
+                    el.style.left = '0';
+                    el.style.top = '0';
+                    el.style.width = '100%';
+                    el.style.transform = `scale(${dataObj.scale})`;
+                    el.style.transformOrigin = 'top center';
+                    
+                    let feedIndex = currentDropZone.getAttribute('data-feed-index');
+                    dataObj.posicao = `feed_${feedIndex}`;
+                    
+                    let select = document.getElementById(`posicaoBanner_${dataObj.idPainel}`);
+                    if (select) {
+                        let opt = select.querySelector(`option[value="feed_${feedIndex}"]`);
+                        if(!opt) {
+                            opt = document.createElement('option');
+                            opt.value = `feed_${feedIndex}`;
+                            opt.text = `Encaixado na Lista (${feedIndex})`;
+                            select.appendChild(opt);
+                        }
+                        select.value = `feed_${feedIndex}`;
+                    }
+                } else {
+                    el.style.position = 'absolute';
+                    dataObj.posicao = 'flutuante';
+                    let select = document.getElementById(`posicaoBanner_${dataObj.idPainel}`);
+                    if (select) select.value = 'flutuante';
+                }
+                window.salvarRascunho();
+            };
+
+            const endDrag = () => {
+                if(isDragging) handleDrop();
+                isDragging = false;
+                isResizing = false;
+                el.classList.remove('draggable-banner-edit-mode');
+                if (currentDropZone) currentDropZone.classList.remove('arrastando-sobre');
+                currentDropZone = null;
+            };
+
+            el.addEventListener('mousedown', (e) => {
+                if(e.target === handle || handle.contains(e.target) || e.target === closeBtn || closeBtn.contains(e.target)) return;
+                startDrag(e);
+            });
+            
+            handle.addEventListener('mousedown', (e) => {
+                e.stopPropagation();
+                isResizing = true;
+                startYMouse = e.clientY;
+                startScale = dataObj.scale;
+                el.classList.add('draggable-banner-edit-mode');
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if(isDragging) {
+                    dataObj.posX += e.movementX;
+                    dataObj.posY += e.movementY;
+                    el.style.left = dataObj.posX + 'px';
+                    el.style.top = dataObj.posY + 'px';
+                    handleMove(e.clientX, e.clientY);
+                }
+                if(isResizing) {
+                    let dy = e.clientY - startYMouse;
+                    dataObj.scale = Math.max(0.2, startScale + (dy * 0.005));
+                    el.style.transform = `scale(${dataObj.scale})`;
+                }
+            });
+
+            window.addEventListener('mouseup', endDrag);
+
+            let lastTouchX, lastTouchY;
+            
+            el.addEventListener('touchstart', (e) => {
+                if(e.target === closeBtn || closeBtn.contains(e.target)) return;
+                
+                if(e.touches.length === 1) {
+                    if(e.target === handle || handle.contains(e.target)) {
+                        isResizing = true;
+                        startYMouse = e.touches[0].clientY;
+                        startScale = dataObj.scale;
+                        el.classList.add('draggable-banner-edit-mode');
+                    } else {
+                        lastTouchX = e.touches[0].clientX;
+                        lastTouchY = e.touches[0].clientY;
+                        startDrag(e);
+                    }
+                }
+            }, {passive: false});
+
+            el.addEventListener('touchmove', (e) => {
+                if(isDragging && e.touches.length === 1) {
+                    let deltaX = e.touches[0].clientX - lastTouchX;
+                    let deltaY = e.touches[0].clientY - lastTouchY;
+                    dataObj.posX += deltaX;
+                    dataObj.posY += deltaY;
+                    el.style.left = dataObj.posX + 'px';
+                    el.style.top = dataObj.posY + 'px';
+                    lastTouchX = e.touches[0].clientX;
+                    lastTouchY = e.touches[0].clientY;
+                    handleMove(e.touches[0].clientX, e.touches[0].clientY);
+                    e.preventDefault(); 
+                }
+                if(isResizing && e.touches.length === 1) {
+                    let dy = e.touches[0].clientY - startYMouse;
+                    dataObj.scale = Math.max(0.2, startScale + (dy * 0.005));
+                    el.style.transform = `scale(${dataObj.scale})`;
+                    e.preventDefault();
+                }
+            }, {passive: false});
+
+            window.addEventListener('touchend', endDrag);
+        };
+
+        window.cancelarEdicao = function() {
+            idEditando = null;
+            document.getElementById('formNoticia').reset();
+            quill.root.innerHTML = '';
+            document.getElementById('imagemBase64_1').value = '';
+            document.getElementById('imagemBase64_2').value = '';
+            document.getElementById('videoBase64').value = '';
+            document.getElementById('videoPreview').style.display = 'none';
+            document.getElementById('container-imagens-extras').innerHTML = '';
+            document.getElementById('container-videos-extras').innerHTML = '';
+            document.getElementById('container-banners-extras').innerHTML = '';
+            contImagensExtras = 0;
+            contVideosExtras = 0;
+            contBannersExtras = 0;
+            window.bannersData = {};
+            window.atualizarPreviewImagens();
+            window.limparRascunho();
+            document.getElementById('btnSalvar').innerHTML = `<i class="fas fa-paper-plane"></i> Publicar Matéria`;
+            document.getElementById('btnCancelar').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        async function carregarListaNoticias() {
+            try {
+                const q = query(collection(db, "noticias"), orderBy("dataCriacao", "desc"));
+                const querySnapshot = await getDocs(q);
+                window.listaCompletaNoticias = [];
+                window.noticiasAdmin = {};
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    data.id = docSnap.id;
+                    window.listaCompletaNoticias.push(data);
+                    window.noticiasAdmin[data.id] = data;
+                });
+                
+                window.atualizarEstatisticasView();
+            } catch(e) { console.log(e); }
+        }
+
+        window.renderizarListasDeNoticias = async function() {
+            const container = document.getElementById('lista-noticias-fullscreen');
+            container.innerHTML = '<p style="color: #666; font-size: 14px;">Carregando matérias...</p>';
+            
+            try {
+                const querySnapshot = await getDocs(collection(db, "noticias"));
+                
+                window.listaCompletaNoticias = [];
+                window.noticiasAdmin = {};
+                
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    data.id = docSnap.id;
+                    window.listaCompletaNoticias.push(data);
+                    window.noticiasAdmin[data.id] = data;
+                });
+                
+                window.listaCompletaNoticias.sort((a, b) => {
+                    const timeA = a.dataAtualizacao || a.dataCriacao || 0;
+                    const timeB = b.dataAtualizacao || b.dataCriacao || 0;
+                    return timeB - timeA;
+                });
+                
+                container.innerHTML = '';
+                
+                if(window.listaCompletaNoticias.length === 0) {
+                    container.innerHTML = '<p style="color: #666; font-size: 14px;">Nenhuma matéria cadastrada.</p>';
+                    return;
+                }
+
+                window.listaCompletaNoticias.forEach((item) => {
+                    const id = item.id;
+                    const img1 = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
+                    const img2 = item.imagemBase64_2 || item.imagem2 || '';
+                    
+                    let thumbHtml = '';
+                    let classDuasImagens = '';
+
+                    if (img1 && img2) {
+                        thumbHtml = `<img src="${img1}"><img src="${img2}">`;
+                        classDuasImagens = 'duas-imagens';
+                    } else if (img1) {
+                        thumbHtml = `<img src="${img1}">`;
+                    } else if (img2) {
+                        thumbHtml = `<img src="${img2}">`;
+                    } else {
+                        thumbHtml = '<i class="fas fa-image"></i>';
+                    }
+
+                    const cats = item.categorias ? item.categorias.join(', ') : (item.categoria || 'Geral');
+
+                    const div = document.createElement('div');
+                    div.className = 'noticia-item';
+                    
+                    let botoesHtml = '';
+                    const lista = document.getElementById('lista-noticias-fullscreen');
+                    
+                    if(lista.classList.contains('modo-selecao-anuncio')) {
+                        const tituloLimpo = item.titulo 
+                            ? item.titulo.replace(/'/g, "\\'").replace(/"/g, "&quot;") 
+                            : 'Sem Título';
+                            
+                        botoesHtml = `<button type="button" class="btn-selecionar-anuncio" style="display:inline-flex;" onclick="window.selecionarMateriaParaBanner('${id}', '${tituloLimpo}')"><i class="fas fa-bullseye"></i> Escolher esta matéria</button>`;
+                    } else {
+                        botoesHtml = `
+                            <button type="button" class="btn-editar" onclick="window.editarNoticia('${id}')"><i class="fas fa-edit"></i> Editar</button>
+                            <button type="button" class="btn-apagar" onclick="window.apagarNoticia('${id}')"><i class="fas fa-trash-alt"></i> Excluir</button>
+                        `;
+                    }
+
+                    div.innerHTML = `
+                        <div class="noticia-miniatura ${classDuasImagens}">
+                            ${thumbHtml}
+                        </div>
+                        <div class="noticia-conteudo-info">
+                            <strong>${item.titulo || 'Sem Título'}</strong>
+                            <div class="noticia-meta-tags">
+                                <span><i class="fas fa-folder"></i> ${cats}</span>
+                                <span><i class="fas fa-user"></i> ${item.autor || 'Redação'}</span>
+                            </div>
+                            <div class="acoes-btn">
+                                ${botoesHtml}
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            } catch(e) {
+                container.innerHTML = '<p style="color: #d93025; font-size: 14px;">Erro ao carregar matérias do Firebase.</p>';
+                console.error(e);
+            }
+        };
+
+        window.editarNoticia = function(id, silent = false) {
+            const item = window.noticiasAdmin[id];
+            if (!item) return;
+
+            idEditando = id;
+            document.getElementById('titulo').value = item.titulo || '';
+            document.getElementById('autor').value = item.autor || '';
+            document.getElementById('fonteNoticia').value = item.fonteNoticia || '';
+            document.getElementById('linkRedeSocial').value = item.linkRedeSocial || '';
+            document.getElementById('fonteImagem').value = item.fonteImagem || '';
+            document.getElementById('creditosVideo').value = item.creditosVideo || '';
+            
+            quill.root.innerHTML = item.textoRico || item.texto || item.conteudo || '';
+
+            document.querySelectorAll('input[name="categoria"]').forEach(cb => cb.checked = false);
+            if(item.categorias && Array.isArray(item.categorias)) {
+                item.categorias.forEach(cat => {
+                    const cb = document.querySelector(`input[name="categoria"][value="${cat}"]`);
+                    if(cb) cb.checked = true;
+                });
+            } else if (item.categoria) {
+                const cb = document.querySelector(`input[name="categoria"][value="${item.categoria}"]`);
+                if(cb) cb.checked = true;
+            }
+
+            document.getElementById('imagemBase64_1').value = item.imagemBase64_1 || item.imagem1 || item.imagem || item.capa || item.foto || '';
+            document.getElementById('imagemBase64_2').value = item.imagemBase64_2 || item.imagem2 || '';
+            window.atualizarPreviewImagens();
+
+            document.getElementById('videoBase64').value = item.videoBase64 || item.video || item.linkVideo || '';
+            const vPrev = document.getElementById('videoPreview');
+            const currentVideo = document.getElementById('videoBase64').value;
+            if(currentVideo) {
+                vPrev.src = currentVideo;
+                vPrev.style.display = 'block';
+            } else {
+                vPrev.style.display = 'none';
+                vPrev.src = '';
+            }
+
+            document.getElementById('container-imagens-extras').innerHTML = '';
+            contImagensExtras = 0;
+            if(item.imagensExtras && Array.isArray(item.imagensExtras)) {
+                item.imagensExtras.forEach(ie => window.adicionarPainelImagem(ie.ratio, ie.base64, ie.credito));
+            }
+
+            document.getElementById('container-videos-extras').innerHTML = '';
+            contVideosExtras = 0;
+            if(item.videosExtras && Array.isArray(item.videosExtras)) {
+                item.videosExtras.forEach(ve => window.adicionarPainelVideo(ve.ratio, ve.base64, ve.credito));
+            }
+
+            document.getElementById('container-banners-extras').innerHTML = '';
+            contBannersExtras = 0;
+            window.bannersData = {};
+            if(item.banners && Array.isArray(item.banners)) {
+                item.banners.forEach(b => window.adicionarPainelBanner(b));
+            }
+
+            document.getElementById('btnSalvar').innerHTML = `<i class="fas fa-save"></i> Atualizar Matéria`;
+            document.getElementById('btnCancelar').style.display = 'block';
+
+            if (!silent) {
+                window.fecharModalGerenciamento();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        };
+
+        window.apagarNoticia = function(id) {
+            if(confirm("Tem certeza que deseja excluir permanentemente esta matéria?")) {
+                deleteDoc(doc(db, "noticias", id)).then(() => {
+                    alert("Matéria excluída com sucesso!");
+                    window.renderizarListasDeNoticias();
+                    carregarListaNoticias();
+                }).catch(e => alert("Erro ao excluir."));
+            }
+        };
+
+        document.getElementById('formNoticia').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const categorias = Array.from(document.querySelectorAll('input[name="categoria"]:checked')).map(cb => cb.value);
+            if (categorias.length === 0) {
+                alert("⚠️ Selecione pelo menos uma categoria / nicho.");
+                return;
+            }
+
+            const imagensExtrasArray = [];
+            for(let i=1; i<=contImagensExtras; i++) {
+                const b64 = document.getElementById(`imagemBase64Extra_${i}`)?.value;
+                if(b64) {
+                    imagensExtrasArray.push({
+                        base64: b64,
+                        ratio: document.getElementById(`formatoImgExtraEscolhido_${i}`)?.value || '16/9',
+                        credito: document.getElementById(`fonteImagemExtra_${i}`)?.value || ''
+                    });
+                }
+            }
+
+            const videosExtrasArray = [];
+            for(let i=1; i<=contVideosExtras; i++) {
+                const b64 = document.getElementById(`videoBase64Extra_${i}`)?.value;
+                if(b64) {
+                    videosExtrasArray.push({
+                        base64: b64,
+                        ratio: document.getElementById(`formatoVidExtraEscolhido_${i}`)?.value || '16/9',
+                        credito: document.getElementById(`creditosVideoExtra_${i}`)?.value || ''
+                    });
+                }
+            }
+
+            const bannersArray = [];
+            for(let i=1; i<=contBannersExtras; i++) {
+                const painel = document.getElementById(`painel-banner-extra-${i}`);
+                if(painel) {
+                    const noticiaAlvoInput = document.getElementById(`selectNoticiaEspecifica_${i}`);
+                    bannersArray.push({
+                        idPainel: i,
+                        tipo: document.getElementById(`tipoBannerExtra_${i}`).value,
+                        codigoAnuncio: document.getElementById(`codigoAnuncioExtra_${i}`).value,
+                        bannerImgBase64: document.getElementById(`bannerImgBase64Extra_${i}`).value,
+                        formatoBanner: document.getElementById(`formatoBannerExtraEscolhido_${i}`).value,
+                        bannerLinkUrl: document.getElementById(`bannerLinkUrlExtra_${i}`).value,
+                        localExibicao: document.getElementById(`localExibicaoBanner_${i}`).value,
+                        noticiaAlvo: noticiaAlvoInput ? noticiaAlvoInput.value : 'rascunho_atual',
+                        posX: window.bannersData[i]?.posX || 0,
+                        posY: window.bannersData[i]?.posY || 0,
+                        scale: window.bannersData[i]?.scale || 1,
+                        posicao: document.getElementById(`posicaoBanner_${i}`).value
+                    });
+                }
+            }
+
+            const btnSubmit = document.getElementById('btnSalvar');
+            btnSubmit.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Salvando no Firebase...";
+            btnSubmit.disabled = true;
+
+            const noticiaObj = {
+                titulo: document.getElementById('titulo').value,
+                autor: document.getElementById('autor').value,
+                fonteNoticia: document.getElementById('fonteNoticia').value,
+                linkRedeSocial: document.getElementById('linkRedeSocial').value,
+                fonteImagem: document.getElementById('fonteImagem').value,
+                creditosVideo: document.getElementById('creditosVideo').value,
+                textoRico: quill.root.innerHTML,
+                texto: quill.root.innerHTML, 
+                categorias: categorias,
+                categoria: categorias.length > 0 ? categorias[0] : "Geral", 
+                formatoEscolhido: document.getElementById('formatoEscolhido').value,
+                formatoVideoEscolhido: document.getElementById('formatoVideoEscolhido').value,
+                imagemBase64_1: document.getElementById('imagemBase64_1').value,
+                imagem1: document.getElementById('imagemBase64_1').value, 
+                imagemBase64_2: document.getElementById('imagemBase64_2').value,
+                imagem2: document.getElementById('imagemBase64_2').value,
+                videoBase64: document.getElementById('videoBase64').value,
+                video: document.getElementById('videoBase64').value,
+                imagensExtras: imagensExtrasArray,
+                videosExtras: videosExtrasArray,
+                banners: bannersArray,
+                dataAtualizacao: Date.now()
+            };
+
+            try {
+                if (idEditando) {
+                    await updateDoc(doc(db, "noticias", idEditando), noticiaObj);
+                    alert("✅ Matéria atualizada com sucesso!");
+                } else {
+                    noticiaObj.dataCriacao = Date.now();
+                    noticiaObj.visualizacoes = 0;
+                    await addDoc(collection(db, "noticias"), noticiaObj);
+                    alert("✅ Matéria publicada com sucesso!");
+                }
+                window.limparRascunho();
+                window.cancelarEdicao();
+                carregarListaNoticias();
+            } catch (err) {
+                alert("❌ Erro ao salvar a matéria. Verifique sua conexão.");
+            } finally {
+                btnSubmit.innerHTML = `<i class="fas fa-paper-plane"></i> Publicar Matéria`;
+                btnSubmit.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
