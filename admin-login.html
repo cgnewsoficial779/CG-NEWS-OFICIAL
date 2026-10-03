@@ -2,26 +2,285 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acesso Restrito - Redação</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Área Administrativa - News Pro V14.0</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
-        body { background-color: #e2e8f0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: #f0f2f5; padding: 10px; color: #1a1a1a; font-size: 16px; }
+
+        /* TELA DE LOGIN */
+        #loginOverlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #e2e8f0; display: flex; justify-content: center; align-items: center; z-index: 99999; }
         .login-container { background: #1a1a24; padding: 40px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); width: 100%; max-width: 400px; text-align: center; border-top: 6px solid #ff4757; }
         .login-container h2 { color: #ffffff; margin-bottom: 25px; font-weight: 800; font-size: 24px; text-transform: uppercase; }
-        .input-group { margin-bottom: 20px; text-align: left; }
-        .input-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; color: #cbd5e1; }
-        .input-group input { width: 100%; padding: 12px; background-color: #2d2d3a; border: 1px solid #4b4b5c; color: white; border-radius: 6px; font-size: 15px; outline: none; transition: 0.3s; }
-        .input-group input:focus { border-color: #ff4757; box-shadow: 0 0 5px rgba(255, 71, 87, 0.3); }
-        .btn-login { width: 100%; background-color: #11136c; color: white; border: none; padding: 12px; font-size: 16px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        .btn-login:hover { background-color: #0d0f52; }
+        .input-group-login { margin-bottom: 20px; text-align: left; }
+        .input-group-login label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; color: #cbd5e1; }
+        .input-group-login input { width: 100%; padding: 12px; background-color: #2d2d3a; border: 1px solid #4b4b5c; color: white; border-radius: 6px; font-size: 15px; outline: none; }
+        .btn-login-action { width: 100%; background-color: #11136c; color: white; border: none; padding: 12px; font-size: 16px; font-weight: 600; border-radius: 6px; cursor: pointer; margin-top: 10px; }
+        .btn-login-action:hover { background-color: #0d0f52; }
         .alert-msg { margin-bottom: 15px; padding: 10px; border-radius: 5px; font-size: 13px; font-weight: 600; display: none; }
         .alert-error { background-color: #fee2e2; color: #991b1b; }
         .alert-success { background-color: #dcfce7; color: #166534; }
-    </style>
 
-    <script>
+        /* PAINEL ADMINISTRATIVO (OCULTO ATÉ FAZER LOGIN) */
+        #painelConteudo { display: none; }
+
+        .container { width: 100%; max-width: 100%; margin: 0 auto; background: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); position: relative; }
+        @media(min-width: 1024px) { .container { padding: 30px; } }
+        
+        .header-admin { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #002a5c; padding-bottom: 15px; margin-bottom: 20px; }
+        .header-admin h1 { color: #002a5c; font-size: 22px; font-weight: 900; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        
+        .header-actions-right { display: flex; align-items: center; gap: 10px; }
+        .header-admin span.badge-pro { background: #002a5c; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; }
+
+        .btn-menu-hamburguer { background: #002a5c; color: white; border: none; width: 45px; height: 45px; border-radius: 8px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9998; backdrop-filter: blur(3px); }
+        .sidebar-panel { position: fixed; top: 0; right: -420px; width: 100%; max-width: 380px; height: 100%; background: #fff; z-index: 9999; box-shadow: -5px 0 30px rgba(0,0,0,0.15); transition: right 0.35s ease; display: flex; flex-direction: column; }
+        .sidebar-panel.ativo { right: 0; }
+        
+        .sidebar-header { background: #002a5c; color: white; padding: 18px; display: flex; align-items: center; justify-content: space-between; }
+        .sidebar-header h3 { font-size: 16px; font-weight: 800; text-transform: uppercase; margin: 0; }
+        .sidebar-close { background: none; border: none; color: white; font-size: 26px; cursor: pointer; }
+        .sidebar-content { padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 15px; }
+
+        .btn-menu-criar { background: #28a745; color: white; border: none; padding: 16px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; text-transform: uppercase; width: 100%; }
+        .btn-menu-gerenciar { background: #0275d8; color: white; border: none; padding: 16px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; text-transform: uppercase; width: 100%; }
+
+        .section-box { background: #fff; border: 1px solid #d1d9e0; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+        .section-title { font-size: 14px; font-weight: 800; color: #002a5c; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; text-transform: uppercase; }
+
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-weight: 700; margin-bottom: 6px; color: #444; font-size: 12px; text-transform: uppercase; }
+        input[type="text"], select, input[type="file"], textarea { width: 100%; padding: 14px; border: 1px solid #b0b8c1; border-radius: 6px; font-size: 16px; background: #fafbfc; color: #111; }
+        
+        textarea.titulo-textarea { resize: vertical; min-height: 90px; font-size: 19px; font-weight: 900; color: #002a5c; border: 2px solid #002a5c; }
+        input[type="file"] { background: #fff; padding: 10px; border: 1px dashed #b0b8c1; cursor: pointer; }
+
+        .file-input-wrapper { display: flex; gap: 10px; align-items: center; }
+        .file-input-wrapper input[type="file"] { flex: 1; }
+        .btn-remover-img { background: #fff; color: #d93025; border: 1px solid #d93025; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 13px; }
+
+        .ql-container { height: 320px; font-size: 16px; background: #fff; font-family: Georgia, serif; }
+        .ql-toolbar { background: #f8f9fa; }
+
+        .checkbox-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        @media(min-width: 600px) { .checkbox-group { grid-template-columns: repeat(3, 1fr); } }
+        @media(min-width: 900px) { .checkbox-group { grid-template-columns: repeat(4, 1fr); } }
+        .checkbox-item { display: flex; align-items: center; gap: 10px; background: #f8f9fa; border: 1px solid #e1e4e8; padding: 12px; border-radius: 6px; cursor: pointer; }
+        .checkbox-item input { width: 20px; height: 20px; accent-color: #002a5c; }
+        .checkbox-item span { font-size: 13px; font-weight: 700; color: #333; }
+
+        .image-upload-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 12px; }
+        @media(min-width: 600px) { .image-upload-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .aspect-ratios { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; background: #f8f9fa; padding: 12px; border-radius: 8px; border: 1px solid #e1e4e8; justify-content: center; }
+        .btn-ratio { background: #fff; border: 1px solid #b0b8c1; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; color: #555; flex: 1; text-align: center; }
+        .btn-ratio.active { background: #002a5c; color: white; border-color: #002a5c; }
+
+        .preview-container { width: 100%; background: #000; border-radius: 8px; display: flex; overflow: hidden; margin-top: 10px; align-items: stretch; justify-content: center; }
+        .video-preview { width: 100%; border-radius: 8px; display: none; margin-top: 10px; background: #000; aspect-ratio: 16/9; object-fit: contain; }
+
+        .btn-add-painel { background: #f0f2f5; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; text-transform: uppercase; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .botoes-acao-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
+        .btn-submit, .btn-preview { width: 100%; padding: 16px; font-size: 15px; font-weight: 900; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
+        .btn-preview { background-color: #0275d8; color: white; border: none; }
+        .btn-submit { background-color: #002a5c; color: white; border: none; box-shadow: 0 4px 12px rgba(0,42,92,0.25); }
+        .btn-cancelar { background-color: #d93025; color: white; border: none; padding: 14px; width: 100%; font-size: 14px; font-weight: 800; border-radius: 8px; display: none; text-transform: uppercase; }
+
+        /* LISTA DE MATÉRIAS MODAL */
+        .noticia-item { border: 1px solid #d1d9e0; padding: 14px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; gap: 15px; align-items: center; }
+        .noticia-miniatura { width: 110px; height: 90px; border-radius: 8px; background: #ddd; flex-shrink: 0; overflow: hidden; display: flex; }
+        .noticia-miniatura img { width: 100%; height: 100%; object-fit: cover; }
+        .noticia-miniatura.duas-imagens img { width: 50%; height: 100%; object-fit: cover; }
+        .noticia-conteudo-info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .noticia-conteudo-info strong { color: #002a5c; font-size: 15px; font-weight: 800; }
+        .acoes-btn { display: flex; gap: 8px; margin-top: 6px; }
+        .btn-editar, .btn-apagar { padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 800; border: none; }
+        .btn-editar { background: #f8f9fa; color: #002a5c; border: 1px solid #002a5c; }
+        .btn-apagar { background: #fff; color: #d93025; border: 1px solid #d93025; }
+
+        /* MODAIS */
+        .modal-fullscreen-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; }
+        .modal-fullscreen-content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; display: flex; flex-direction: column; }
+        .modal-fs-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #002a5c; color: white; }
+        .modal-fs-body { padding: 20px; overflow-y: auto; flex: 1; background: #f8f9fa; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; }
+        .modal-content { background: #f4f6f9; width: 100vw; height: 100vh; max-width: 900px; max-height: 92vh; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; }
+        .modal-header-top { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #fff; }
+        .btn-voltar-edicao { background: #11136c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 800; cursor: pointer; }
+        .toast-save { position: fixed; bottom: 20px; right: 20px; background: #137333; color: white; padding: 10px 20px; border-radius: 6px; font-size: 12px; font-weight: bold; display: none; z-index: 99999; }
+    </style>
+</head>
+<body>
+
+    <!-- TELA DE LOGIN UNIFICADA -->
+    <div id="loginOverlay">
+        <div class="login-container">
+            <h2>Área Administrativa</h2>
+            <div id="msg-box" class="alert-msg"></div>
+            <form onsubmit="fazerLogin(event)">
+                <div class="input-group-login">
+                    <label>E-mail do Administrador</label>
+                    <input type="email" id="user" placeholder="seu-email@exemplo.com" required>
+                </div>
+                <div class="input-group-login">
+                    <label>Senha</label>
+                    <input type="password" id="pass" placeholder="Digite sua senha" required>
+                </div>
+                <button type="submit" class="btn-login-action">Entrar no Painel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO DO PAINEL DE EDIÇÃO -->
+    <div id="painelConteudo">
+        <div class="container">
+            <div class="header-admin">
+                <h1>NEWS PRO</h1>
+                <div class="header-actions-right">
+                    <span class="badge-pro">V14.0</span>
+                    <button type="button" class="btn-menu-hamburguer" onclick="window.alternarSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-overlay" id="sidebarOverlay" onclick="window.alternarSidebar()"></div>
+            <div class="sidebar-panel" id="sidebarPanel">
+                <div class="sidebar-header">
+                    <h3><i class="fas fa-sliders-h"></i> Menu Rápido</h3>
+                    <button class="sidebar-close" onclick="window.alternarSidebar()">&times;</button>
+                </div>
+                <div class="sidebar-content">
+                    <button type="button" class="btn-menu-criar" onclick="window.novaMateriaPainel()">
+                        <i class="fas fa-plus-circle"></i> Criar Nova Matéria
+                    </button>
+                    <button type="button" class="btn-menu-gerenciar" onclick="window.abrirModalGerenciamento()">
+                        <i class="fas fa-list-ul"></i> Gerenciar Matérias
+                    </button>
+                    <div style="margin-top: auto; text-align: center; color: #a0aec0; font-size: 12px; font-weight: bold;">NEWS PRO V14.0</div>
+                </div>
+            </div>
+
+            <form id="formNoticia">
+                <div class="section-box">
+                    <div class="section-title"><i class="fas fa-tags"></i> Nicho / Categoria</div>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox" name="categoria" value="Polícia"><span>Polícia</span></label>
+                        <label class="checkbox-item"><input type="checkbox" name="categoria" value="Trânsito"><span>Trânsito</span></label>
+                        <label class="checkbox-item"><input type="checkbox" name="categoria" value="Política"><span>Política</span></label>
+                        <label class="checkbox-item"><input type="checkbox" name="categoria" value="Esporte"><span>Esporte</span></label>
+                        <label class="checkbox-item"><input type="checkbox" name="categoria" value="In Memoriam"><span>In Memoriam</span></label>
+                        <label class="checkbox-item"><input type="checkbox" name="categoria" value="Campo Grande"><span>Campo Grande</span></label>
+                        <label class="checkbox-item"><input type="checkbox" name="categoria" value="Mato Grosso do Sul"><span>Mato Grosso do Sul</span></label>
+                        <label class="checkbox-item"><input type="checkbox" name="categoria" value="Brasil"><span>Brasil</span></label>
+                        <label class="checkbox-item"><input type="checkbox" name="categoria" value="Mundo"><span>Mundo</span></label>
+                    </div>
+                </div>
+
+                <div class="section-box" style="border-left: 5px solid #002a5c;">
+                    <div class="section-title"><i class="fas fa-images"></i> 1. Imagem de Capa</div>
+                    <div class="image-upload-grid">
+                        <div class="form-group">
+                            <label>Foto 1 (Principal)</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="imagemInput1" accept="image/*">
+                                <button type="button" class="btn-remover-img" onclick="window.removerImagem(1)"><i class="fas fa-trash-alt"></i> Limpar</button>
+                            </div>
+                            <input type="hidden" id="imagemBase64_1">
+                        </div>
+                        <div class="form-group">
+                            <label>Foto 2 (Opcional)</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="imagemInput2" accept="image/*">
+                                <button type="button" class="btn-remover-img" onclick="window.removerImagem(2)"><i class="fas fa-trash-alt"></i> Limpar</button>
+                            </div>
+                            <input type="hidden" id="imagemBase64_2">
+                        </div>
+                    </div>
+                    <div class="preview-container" id="previewContainerImagens" style="aspect-ratio: 16/9;">
+                        <div class="preview-placeholder" style="color:#777; display:flex; align-items:center; justify-content:center; height:100%;"><i class="fas fa-camera"></i> Nenhuma imagem</div>
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>Crédito da Imagem</label>
+                        <input type="text" id="fonteImagem" placeholder="Ex: Nome do Fotógrafo / Reprodução">
+                    </div>
+                </div>
+
+                <div class="section-box">
+                    <div class="section-title"><i class="fas fa-pen-nib"></i> Redação da Matéria</div>
+                    <div class="form-group">
+                        <label>Título da Matéria (Manchete)</label>
+                        <textarea id="titulo" class="titulo-textarea" placeholder="Digite uma manchete impactante..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Autor / Repórter</label>
+                        <input type="text" id="autor" placeholder="Nome do jornalista">
+                    </div>
+                    <div class="form-group">
+                        <label>Corpo do Texto</label>
+                        <div id="editor-container"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Fonte da Informação</label>
+                        <input type="text" id="fonteNoticia" placeholder="Ex: Polícia Civil">
+                    </div>
+                </div>
+
+                <div class="botoes-acao-container">
+                    <button type="button" class="btn-preview" onclick="window.abrirPrevia()"><i class="fas fa-eye"></i> VER PRÉVIA DA MATÉRIA</button>
+                    <button type="submit" id="btnSalvar" class="btn-submit"><i class="fas fa-paper-plane"></i> PUBLICAR MATÉRIA</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAIS DE PRÉVIA E GERENCIAMENTO -->
+    <div class="toast-save" id="toastSave"><i class="fas fa-cloud-upload-alt"></i> Rascunho salvo!</div>
+    
+    <div class="modal-overlay" id="modalPrevia">
+        <div class="modal-content">
+            <div class="modal-header-top">
+                <span style="font-weight: 800; color: #11136c;">Prévia da Matéria</span>
+                <button class="btn-voltar-edicao" onclick="window.fecharPrevia()">Voltar</button>
+            </div>
+            <div id="mockupNoticia" style="padding: 20px; overflow-y: auto; flex: 1;"></div>
+        </div>
+    </div>
+
+    <div class="modal-fullscreen-overlay" id="modalFullscreenGerenciar">
+        <div class="modal-fullscreen-content">
+            <div class="modal-fs-header">
+                <h2>Gerenciar Matérias</h2>
+                <button onclick="window.fecharModalGerenciamento()" style="background:none;border:none;color:#fff;font-size:24px;cursor:pointer;">&times;</button>
+            </div>
+            <div class="modal-fs-body" id="lista-noticias-fullscreen">Carregando...</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDjl4R4h2An2POmuZgMhAFsLbdhuzauxyY",
+            authDomain: "cgnewsoficial7799.firebaseapp.com",
+            projectId: "cgnewsoficial7799",
+            storageBucket: "cgnewsoficial7799.firebasestorage.app",
+            measurementId: "G-MCQJ63SYP1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // LÓGICA DE LOGIN DIRETO NA MESMA PÁGINA
         window.fazerLogin = function(event) {
             event.preventDefault();
             const email = document.getElementById("user").value.trim();
@@ -29,38 +288,85 @@
             const msgBox = document.getElementById("msg-box");
 
             if (email === "cgnewsoficial@gmail.com" && pass === "@M4x98209980") {
-                msgBox.className = "alert-msg alert-success";
-                msgBox.innerText = "Acesso autorizado! Carregando painel...";
-                msgBox.style.display = "block";
-                
                 sessionStorage.setItem("acesso_cgnews_liberado", "sim");
-                
-                setTimeout(() => {
-                    window.location.href = "painel-secreto.html";
-                }, 1000);
+                document.getElementById("loginOverlay").style.display = "none";
+                document.getElementById("painelConteudo").style.display = "block";
             } else {
                 msgBox.className = "alert-msg alert-error";
                 msgBox.innerText = "Acesso Negado. E-mail ou senha incorretos.";
                 msgBox.style.display = "block";
             }
         };
+
+        // Verifica se já estava logado nesta sessão
+        window.onload = function() {
+            if (sessionStorage.getItem("acesso_cgnews_liberado") === "sim") {
+                document.getElementById("loginOverlay").style.display = "none";
+                document.getElementById("painelConteudo").style.display = "block";
+            }
+        };
+
+        const quill = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Escreva a matéria...',
+            modules: { toolbar: [['bold', 'italic', 'underline'], [{ 'header': [1, 2, false] }], ['link', 'clean']] }
+        });
+
+        window.alternarSidebar = function() {
+            const panel = document.getElementById('sidebarPanel');
+            const overlay = document.getElementById('sidebarOverlay');
+            panel.classList.toggle('ativo');
+            overlay.style.display = panel.classList.contains('ativo') ? 'block' : 'none';
+        };
+
+        window.abrirModalGerenciamento = function() {
+            window.alternarSidebar();
+            document.getElementById('modalFullscreenGerenciar').style.display = 'block';
+            window.renderizarListasDeNoticias();
+        };
+
+        window.fecharModalGerenciamento = function() {
+            document.getElementById('modalFullscreenGerenciar').style.display = 'none';
+        };
+
+        window.novaMateriaPainel = function() {
+            window.alternarSidebar();
+            document.getElementById('formNoticia').reset();
+            quill.root.innerHTML = '';
+        };
+
+        window.abrirPrevia = function() {
+            const mockup = document.getElementById('mockupNoticia');
+            mockup.innerHTML = `<h2>${document.getElementById('titulo').value}</h2><br>${quill.root.innerHTML}`;
+            document.getElementById('modalPrevia').style.display = 'flex';
+        };
+
+        window.fecharPrevia = function() {
+            document.getElementById('modalPrevia').style.display = 'none';
+        };
+
+        // Salvar notícia no Firebase
+        document.getElementById('formNoticia').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnSalvar');
+            btn.innerText = "Publicando...";
+            btn.disabled = true;
+
+            try {
+                await addDoc(collection(db, "noticias"), {
+                    titulo: document.getElementById('titulo').value,
+                    textoRico: quill.root.innerHTML,
+                    autor: document.getElementById('autor').value || "Redação",
+                    dataCriacao: Date.now()
+                });
+                alert("✅ Matéria publicada com sucesso!");
+                window.location.reload();
+            } catch(err) {
+                alert("❌ Erro ao publicar.");
+                btn.innerText = "Publicar Matéria";
+                btn.disabled = false;
+            }
+        });
     </script>
-</head>
-<body>
-    <div class="login-container">
-        <h2>Área Administrativa</h2>
-        <div id="msg-box" class="alert-msg"></div>
-        <form onsubmit="fazerLogin(event)">
-            <div class="input-group">
-                <label>E-mail do Administrador</label>
-                <input type="email" id="user" placeholder="seu-email@exemplo.com" required>
-            </div>
-            <div class="input-group">
-                <label>Senha</label>
-                <input type="password" id="pass" placeholder="Digite sua senha" required>
-            </div>
-            <button type="submit" class="btn-login">Entrar no Painel</button>
-        </form>
-    </div>
 </body>
 </html>
