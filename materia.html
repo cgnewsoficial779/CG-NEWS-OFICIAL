@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- METATAGS DINÂMICAS PARA O CARTÃO DA NOTÍCIA NAS REDES SOCIAIS -->
-    <title id="meta-title">CG NEWS OFICIAL</title>
-    <meta id="og-title" property="og:title" content="CG NEWS OFICIAL">
-    <meta id="og-description" property="og:description" content="Informação em tempo real.">
+    <!-- METATAGS DINÂMICAS PARA REDES SOCIAIS -->
+    <title id="page-title">CG NEWS OFICIAL - Informação em Tempo Real</title>
+    <meta id="og-title" property="og:title" content="CG NEWS OFICIAL - Informação em Tempo Real">
+    <meta id="og-description" property="og:description" content="Acompanhe as últimas notícias com credibilidade e seriedade.">
     <meta id="og-image" property="og:image" content="https://www.cgnewsoficial.com.br/logo.jpg">
     <meta property="og:type" content="article">
     <meta name="twitter:card" content="summary_large_image">
@@ -33,7 +33,7 @@
         <div onclick="window.location.href='index.html'" style="color: #11136c; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 20px;">
             <i class="fas fa-arrow-left"></i> Voltar ao Início
         </div>
-        <div id="conteudo-materia"><p>Carregando matéria...</p></div>
+        <div id="conteudo-materia"><p>A carregar notícia...</p></div>
     </div>
 
     <footer>
@@ -59,7 +59,7 @@
 
         async function carregarDetalheMateria() {
             const urlParams = new URLSearchParams(window.location.search);
-            const idMateria = urlParams.get('id');
+            let idMateria = urlParams.get('id') || urlParams.get('materia');
             const container = document.getElementById("conteudo-materia");
 
             if (!idMateria) {
@@ -77,18 +77,18 @@
                 }
 
                 const item = docSnap.data();
-                const imgCapa = item.imagem1 || item.imagemBase64_1 || "https://www.cgnewsoficial.com.br/logo.jpg";
-                const resumo = item.texto ? item.texto.substring(0, 150) + "..." : item.titulo;
+                const imgCapa = item.imagem1 || item.imagemBase64_1 || item.imagem || item.foto || "https://www.cgnewsoficial.com.br/logo.jpg";
+                const resumo = item.texto ? item.texto.substring(0, 150).replace(/<[^>]*>?/gm, '') + "..." : item.titulo;
 
-                // ATUALIZA AS METATAGS INSTANTANEAMENTE PARA O WHATSAPP E REDES SOCIAIS
-                document.title = item.titulo + " - CG NEWS OFICIAL";
+                // INJETA AS METATAGS DO CARTÃO NAS REDES SOCIAIS
+                document.getElementById("page-title").innerText = item.titulo + " - CG NEWS OFICIAL";
                 document.getElementById("og-title").setAttribute("content", item.titulo);
                 document.getElementById("og-description").setAttribute("content", resumo);
                 document.getElementById("og-image").setAttribute("content", imgCapa);
 
                 let htmlMidia = "";
                 if (imgCapa && imgCapa !== "https://www.cgnewsoficial.com.br/logo.jpg") {
-                    htmlMidia = `<div style="width:100%; max-width:500px; aspect-ratio:16/9; background:#000; border-radius:6px; overflow:hidden; margin-bottom:15px;"><img src="${imgCapa}" style="width:100%; height:100%; object-fit:cover;"></div>`;
+                    htmlMidia = `<div style="width:100%; max-width:600px; aspect-ratio:16/9; background:#000; border-radius:6px; overflow:hidden; margin-bottom:15px;"><img src="${imgCapa}" style="width:100%; height:100%; object-fit:cover;"></div>`;
                 }
 
                 const linkAtual = window.location.href;
@@ -111,7 +111,7 @@
                 `;
 
             } catch(e) {
-                container.innerHTML = "<p>Erro ao carregar a notícia.</p>";
+                container.innerHTML = "<p>Erro ao carregar a notícia do banco de dados.</p>";
             }
         }
 
