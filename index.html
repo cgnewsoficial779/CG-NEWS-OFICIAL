@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- TAGS QUE O NETLIFY VAI SUBSTITUIR AUTOMATICAMENTE NAS REDES SOCIAIS -->
+    <title>CG NEWS OFICIAL - Informação em Tempo Real</title>
+    <meta property="og:title" content="CG NEWS OFICIAL - Informação em Tempo Real">
+    <meta property="og:description" content="Acompanhe as últimas notícias de Campo Grande, Mato Grosso do Sul, Brasil e Mundo com credibilidade e seriedade.">
+    <meta property="og:image" content="https://sua-logo-aqui.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- FIM DAS TAGS -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background-color: #f4f6f9; color: #1a1a1a; overflow-x: hidden; position: relative; }
+        
+        /* CABEÇALHO AZUL PROFISSIONAL */
+        header { 
+            background-color: #11136c; color: white; 
+            padding: 12px 20px; font-size: 20px; font-weight: bold;
+            display: flex; justify-content: space-between; align-items: center;
+            position: relative; z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            width: 100%;
+        }
+        .header-btn { cursor: pointer; font-size: 20px; padding: 8px; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; }
+        .header-btn:hover { opacity: 0.8; }
+        .header-logo { letter-spacing: 0.5px; font-weight: 800; font-size: 18px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+
+        @media (min-width: 768px) {
+            .header-logo { font-size: 20px; }
+            header { padding: 15px 30px; }
+        }
+
+        /* BARRA DE DATA E CLIMA ESTILO GRANDE PORTAL */
+        .sub-header-bar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+        .top-date-text {
+            text-transform: capitalize; 
+            letter-spacing: -0.2px;
+        }
+        .top-social-icon {
+            color: #25d366;
+            font-size: 18px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+        .top-social-icon:hover { transform: scale(1.1); }
+
+        /* BARRA DE BUSCA */
+        #barra-busca, #barra-busca-materia {
+            display: none;
+            background-color: #fff;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0; 
+            z-index: 999;
+        }
+        #input-busca, #input-busca-materia {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 15px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            outline: none;
+            background-color: #f8fafc;
+        }
+        #input-busca:focus, #input-busca-materia:focus { border-color: #11136c; background-color: #fff; }
+        
+        /* MENU LATERAL COMPACTO E ORGANIZADO */
+        .sidebar {
+            height: 100%; width: 280px; position: fixed; z-index: 20000;
+            top: 0; left: -280px; background-color: #fff; overflow-y: auto;
+            transition: 0.3s ease; box-shadow: 4px 0 15px rgba(0,0,0,0.2);
+            display: flex; flex-direction: column;
+        }
+        .sidebar-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; background-color: #11136c; color: white; border-bottom: 2px solid #0a0b45;
+            flex-shrink: 0;
+        }
+        .sidebar-header h3 { font-size: 16px; margin: 0; font-weight: 700; }
+        .sidebar-header i { cursor: pointer; font-size: 20px; padding: 5px; }
+        .sidebar a {
+            padding: 12px 20px; text-decoration: none; font-size: 14px; font-weight: 600;
+            color: #2d3748; display: block; border-bottom: 1px solid #edf2f7;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .sidebar a:hover { background-color: #f7fafc; color: #11136c; padding-left: 25px; }
+
+        /* REDES SOCIAIS NA SIDEBAR (COMPACTAS LOGO ABAIXO) */
+        .sidebar-social-section {
+            padding: 12px 20px 25px 20px;
+            background-color: #f8fafc;
+            border-top: 2px solid #e2e8f0;
+            margin-top: 0; 
+        }
+        .sidebar-social-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #718096;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        .sidebar-social-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .sidebar-social-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 7px 10px;
+            background: white;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #2d3748;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            transition: 0.2s;
+            border: 1px solid #e2e8f0;
+        }
+        .sidebar-social-item:hover {
+            background-color: #11136c;
+            color: white;
+            padding-left: 14px;
+        }
+        .sidebar-social-item i, .sidebar-kwai-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+        .sidebar-kwai-icon {
+            font-weight: 900;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+        }
+        
+        #overlay {
+            position: fixed; display: none; width: 100%; height: 100%;
+            top: 0; left: 0; background-color: rgba(0,0,0,0.6); z-index: 15000; cursor: pointer;
+        }
+
+        .container { max-width: 1150px; margin: 25px auto; padding: 0 15px; min-height: 70vh; }
+        
+        .section-title { 
+            font-size: 18px; color: #11136c; border-left: 4px solid #11136c; 
+            padding-left: 10px; margin: 25px 0 20px 0; display: flex; 
+            justify-content: space-between; align-items: center; 
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; 
+        }
+        .section-title span.ver-todas {
+            font-size: 12px; color: #4a5568; cursor: pointer; text-transform: none; font-weight: 600;
+        }
+        .section-title span.ver-todas:hover { color: #11136c; text-decoration: underline; }
+
+        .empty-msg { font-size: 14px; color: #718096; font-style: italic; margin: 40px 0; text-align: center; }
+
+        /* CATEGORY HOME BLOCK */
+        .category-block {
+            margin-bottom: 40px;
+        }
+        .home-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        .grid-card {
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .grid-card:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+        
+        .grid-img-container {
+            width: 100%;
+            background-color: #f7fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .grid-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .grid-content-wrap {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .grid-cat {
+            color: #e53e3e; 
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .grid-cat span.data-padrao {
+            color: #718096;
+            font-weight: 500;
+            font-size: 10px;
+            text-transform: none;
+        }
+        
+        .grid-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2d3748;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .grid-excerpt {
+            font-size: 13px;
+            color: #4a5568;
+            line-height: 1.45;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .card-share-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid #edf2f7;
+            padding-top: 10px;
+            margin-top: auto;
+        }
+        .card-share-label {
+            font-size: 11px;
+            color: #718096;
+            font-weight: 600;
+        }
+        .card-share-icons {
+            display: flex;
+            gap: 6px;
+        }
+        .card-share-btn {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            color: #4a5568;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+        @media (hover: hover) {
+            .card-share-btn.wa:hover { background: #25d366; color: white; border-color: #25d366; }
+            .card-share-btn.fb:hover { background: #1877f2; color: white; border-color: #1877f2; }
+            .card-share-btn.tw:hover { background: #000000; color: white; border-color: #000000; }
+            .card-share-btn.th:hover { background: #000000; color: white; border-color: #000000; }
+        }
+        .card-share-btn.wa:active { background: #25d366; color: white; border-color: #25d366; }
+        .card-share-btn.fb:active { background: #1877f2; color: white; border-color: #1877f2; }
+        .card-share-btn.tw:active { background: #000000; color: white; border-color: #000000; }
+        .card-share-btn.th:active { background: #000000; color: white; border-color: #000000; }
+
+        @media (min-width: 768px) {
+            .home-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; }
+        }
+
+        @media (min-width: 1024px) {
+            .home-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        /* LISTA DE NOTÍCIAS */
+        .news-list-item {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #fff;
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: 0.2s;
+        }
+        .news-list-item:hover { border-color: #cbd5e0; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        
+        .news-list-image-container {
+            width: 100%;
+            background: #f7fafc;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .news-list-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .news-list-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            flex-grow: 1;
+        }
+        .news-list-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 6px;
+            line-height: 1.35;
+        }
+        .news-list-meta {
+            font-size: 11px;
+            color: #718096;
+            font-weight: 600;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .news-list-excerpt {
+            font-size: 13px;
+            color: #4a5568;
+            line-height: 1.45;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        @media (min-width: 640px) {
+            .news-list-item { flex-direction: row; align-items: center; padding: 16px; gap: 20px; }
+            .news-list-image-container { width: 220px; height: auto; flex-shrink: 0; }
+        }
+
+        /* RANKING MAIS LIDAS */
+        .ranking-list-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #fff;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .ranking-list-item:hover {
+            border-color: #11136c;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            transform: translateX(3px);
+        }
+        .ranking-number-box {
+            font-size: 26px;
+            font-weight: 900;
+            color: #11136c;
+            min-width: 32px;
+            text-align: center;
+            line-height: 1;
+        }
+        .ranking-thumb-container {
+            width: 80px;
+            height: 60px;
+            background: #f7fafc;
+            border-radius: 6px;
+            overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ranking-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .ranking-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-grow: 1;
+        }
+        .ranking-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2d3748;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .ranking-meta {
+            font-size: 10px;
+            color: #718096;
+            font-weight: 600;
+        }
+
+        .section-box-container {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            text-align: left;
+        }
+        .section-box-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: #11136c;
+            text-transform: uppercase;
+            border-bottom: 2px solid #11136c;
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-align: left;
+        }
+
+        .btn-ver-mais {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background-color: #11136c;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .btn-ver-mais:hover {
+            background-color: #0a0b45;
+            transform: translateY(-1px);
+        }
+
+        /* RODAPÉ */
+        footer { 
+            background-color: #11136c; 
+            color: white; 
+            text-align: center; 
+            padding: 35px 20px; 
+            margin-top: 50px; 
+            font-size: 12px; 
+            border-top: 4px solid #0a0b45;
+        }
+        .footer-social-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #cbd5e0;
+        }
+        .social-icons {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .social-icons a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+        
+        /* Cores oficiais ao tocar/clicar em cada rede social no rodapé */
+        .social-icons a[title="WhatsApp"]:active { background: #25d366 !important; }
+        .social-icons a[title="Facebook"]:active { background: #1877f2 !important; }
+        .social-icons a[title="Instagram"]:active { background: #e1306c !important; }
+        .social-icons a[title="X"]:active { background: #000000 !important; }
+        .social-icons a[title="TikTok"]:active { background: #000000 !important; }
+        .social-icons a[title="Kwai"]:active { background: #ff6600 !important; }
+        .social-icons a[title="YouTube"]:active { background: #ff0000 !important; }
+        .social-icons a[title="LinkedIn"]:active { background: #0a66c2 !important; }
+        .social-icons a[title="Threads"]:active { background: #000000 !important; }
+
+        .social-icons i, .kwai-icon { 
+            font-size: 18px; 
+        }
+        .kwai-icon {
+            font-weight: 900;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+        }
+        .footer-copy {
+            color: #a0aec0;
+            font-size: 11px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* TELA DA MATÉRIA COMPLETA */
+        #modal-materia {
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: #f4f6f9; 
+            z-index: 9999; 
+            overflow-y: auto;
+        }
+        .materia-container-box {
+            background: white; 
+            max-width: 850px; 
+            margin: 20px auto; 
+            padding: 20px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); 
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .materia-container-box { margin: 40px auto; padding: 40px; }
+        }
+        
+        /* ESTILOS PARA OS BANNERS INJETADOS NO TEXTO */
+        .banner-injetado-container {
+            margin: 35px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            clear: both;
+        }
+        .banner-injetado-label {
+            font-size: 10px;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .banner-injetado-box {
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #fafbfc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- CONTAINER PARA OS ANÚNCIOS GLOBAIS FLUTUANTES -->
+    <div id="flutuantes-globais-container" style="position: absolute; top: 0; left: 0; width: 100%; pointer-events: none; z-index: 10000; overflow: hidden;"></div>
+
+    <header>
+        <div class="header-btn" onclick="window.abrirMenu()" title="Menu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="header-logo" onclick="window.irParaHome();">CG NEWS OFICIAL</div>
+        <div class="header-btn" onclick="window.toggleBuscaPrincipal()" title="Pesquisar">
+            <i class="fas fa-search"></i>
+        </div>
+    </header>
+
+    <div class="sub-header-bar">
+        <span class="top-date-text" id="data-atual-home"></span>
+        <a href="https://wa.me/556796619364" target="_blank" class="top-social-icon" title="Fale conosco no WhatsApp">
+            <i class="fab fa-whatsapp" style="font-size: 20px;"></i>
+        </a>
+    </div>
+
+    <div id="barra-busca">
+        <input type="text" id="input-busca" placeholder="O que você está procurando? Digite aqui..." onkeyup="window.realizarBuscaPrincipal()">
+    </div>
+
+    <div id="overlay" onclick="window.fecharMenu()"></div>
+
+    <!-- MENU LATERAL COMPACTO E COM REDES SOCIAIS LOGO ABAIXO -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h3>CG NEWS OFICIAL</h3>
+            <i class="fas fa-times" onclick="window.fecharMenu()"></i>
+        </div>
+        <a onclick="window.irParaHome()"><i class="fas fa-home" style="width: 24px; color: #11136c;"></i> Voltar ao Início</a>
+        <a onclick="window.mostrarUltimasNoticias()"><i class="fas fa-newspaper" style="width: 24px; color: #11136c;"></i> Últimas Notícias</a>
+        <a onclick="window.filtrarCategoria('Campo Grande')"><i class="fas fa-city" style="width: 24px; color: #11136c;"></i> Campo Grande</a>
+        <a onclick="window.filtrarCategoria('Mato Grosso do Sul')"><i class="fas fa-map-marked-alt" style="width: 24px; color: #11136c;"></i> Mato Grosso do Sul</a>
+        <a onclick="window.filtrarCategoria('Brasil')"><i class="fas fa-flag" style="width: 24px; color: #11136c;"></i> Brasil</a>
+        <a onclick="window.filtrarCategoria('Mundo')"><i class="fas fa-globe-americas" style="width: 24px; color: #11136c;"></i> Mundo</a>
+        <a onclick="window.filtrarCategoria('Política')"><i class="fas fa-landmark" style="width: 24px; color: #11136c;"></i> Política</a>
+        <a onclick="window.filtrarCategoria('Polícia')"><i class="fas fa-shield-alt" style="width: 24px; color: #11136c;"></i> Polícia</a>
+        <a onclick="window.filtrarCategoria('Trânsito')"><i class="fas fa-car-crash" style="width: 24px; color: #11136c;"></i> Trânsito</a>
+        <a onclick="window.filtrarCategoria('Esporte')"><i class="fas fa-futbol" style="width: 24px; color: #11136c;"></i> Esporte</a>
+        <a onclick="window.filtrarCategoria('In Memoriam')"><i class="fas fa-dove" style="width: 24px; color: #11136c;"></i> In Memoriam</a>
+
+        <div class="sidebar-social-section">
+            <div class="sidebar-social-title">Redes Sociais</div>
+            <div class="sidebar-social-list">
+                <a href="https://wa.me/556796619364" target="_blank" class="sidebar-social-item"><i class="fab fa-whatsapp" style="color: #25d366;"></i> WhatsApp</a>
+                <a href="https://www.facebook.com/share/1Bv1aCaxte/" target="_blank" class="sidebar-social-item"><i class="fab fa-facebook-f" style="color: #1877f2;"></i> Facebook</a>
+                <a href="https://www.instagram.com/cgnews.oficial?igsh=MTU4YmZ5eHhpaXpveQ==" target="_blank" class="sidebar-social-item"><i class="fab fa-instagram" style="color: #e1306c;"></i> Instagram</a>
+                <a href="https://x.com/CGNEWS0FICIAL" target="_blank" class="sidebar-social-item"><i class="fa-brands fa-x-twitter" style="color: #000000;"></i> X (Twitter)</a>
+                <a href="https://www.tiktok.com/@cgnewsoficial?_r=1&_t=ZS-98YsDvVrtFg" target="_blank" class="sidebar-social-item"><i class="fab fa-tiktok" style="color: #000000;"></i> TikTok</a>
+                <a href="https://k.kwai.com/u/@cgnewsoficial/qmEARtCK" target="_blank" class="sidebar-social-item"><span class="sidebar-kwai-icon" style="color: #ff6600;">K</span> Kwai</a>
+                <a href="https://youtube.com/@cgnewsoficial1?si=nrVlHWPdjh5KpcuV" target="_blank" class="sidebar-social-item"><i class="fab fa-youtube" style="color: #ff0000;"></i> YouTube</a>
+                <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="sidebar-social-item"><i class="fab fa-linkedin-in" style="color: #0a66c2;"></i> LinkedIn</a>
+                <a href="https://www.threads.com/@cgnews.oficial" target="_blank" class="sidebar-social-item"><i class="fa-brands fa-threads" style="color: #000000;"></i> Threads</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 id="titulo-principal" class="section-title">Últimas Notícias</h2>
+        <div id="area-noticias"><p class="empty-msg">Carregando notícias...</p></div>
+    </div>
+
+    <footer>
+        <div class="footer-social-title">Nossas Redes Sociais</div>
+        <div class="social-icons">
+            <a href="https://wa.me/556796619364" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.facebook.com/share/1Bv1aCaxte/" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/cgnews.oficial?igsh=MTU4YmZ5eHhpaXpveQ==" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://www.tiktok.com/@cgnewsoficial?_r=1&_t=ZS-98YsDvVrtFg" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="https://k.kwai.com/u/@cgnewsoficial/qmEARtCK" target="_blank" title="Kwai"><span class="kwai-icon">K</span></a>
+            <a href="https://youtube.com/@cgnewsoficial1?si=nrVlHWPdjh5KpcuV" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.threads.com/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
+        </div>
+        <div class="footer-copy">
+            <p>© 2026 CG NEWS OFICIAL - Todos os direitos reservados. Informação em tempo real com credibilidade e seriedade.</p>
+        </div>
+    </footer>
+
+    <div id="modal-materia">
+        <!-- CONTAINER PARA OS ANÚNCIOS FLUTUANTES DENTRO DA MATÉRIA -->
+        <div id="container-flutuantes-materia" style="position: absolute; top:0; left:0; width:100%; pointer-events: none; z-index: 10000; overflow: hidden;"></div>
+
+        <header>
+            <div class="header-btn" onclick="window.abrirMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="header-logo" onclick="window.irParaHome();">CG NEWS OFICIAL</div>
+            <div class="header-btn" onclick="window.toggleBuscaMateria()">
+                <i class="fas fa-search"></i>
+            </div>
+        </header>
+
+        <div class="sub-header-bar">
+            <span class="top-date-text" id="data-atual-materia"></span>
+            <a href="https://wa.me/556796619364" target="_blank" class="top-social-icon" title="WhatsApp">
+                <i class="fab fa-whatsapp" style="font-size: 20px;"></i>
+            </a>
+        </div>
+
+        <div id="barra-busca-materia">
+            <input type="text" id="input-busca-materia" placeholder="Buscar por palavra-chave..." onkeyup="window.realizarBuscaMateria(event)">
+        </div>
+
+        <div class="materia-container-box">
+            <div onclick="window.irParaHome()" style="color: #11136c; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 25px; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s;">
+                <i class="fas fa-arrow-left"></i> Voltar ao Início
+            </div>
+            
+            <div id="conteudo-materia"></div>
+
+            <div class="section-box-container" id="secao-recomendadas" style="display:none;">
+                <div class="section-box-title"><i class="fas fa-thumbs-up" style="color: #11136c;"></i> Recomendações</div>
+                <div id="lista-recomendadas"></div>
+                <button id="btn-ver-mais-recomendadas" class="btn-ver-mais" style="display:none;" onclick="window.expandirRecomendadas()">Ver mais notícias</button>
+            </div>
+
+            <div class="section-box-container" id="secao-mais-lidas-materia" style="display:none;">
+                <div class="section-box-title"><i class="fas fa-fire" style="color: #e53e3e;"></i> Mais Vistas</div>
+                <div id="lista-mais-lidas-materia"></div>
+                <button id="btn-ver-mais-mais-lidas" class="btn-ver-mais" style="display:none;" onclick="window.expandirMaisLidas()">Ver mais notícias</button>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-social-title">Nossas Redes Sociais</div>
+            <div class="social-icons">
+                <a href="https://wa.me/556796619364" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/share/1Bv1aCaxte/" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/cgnews.oficial?igsh=MTU4YmZ5eHhpaXpveQ==" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://x.com/CGNEWS0FICIAL" target="_blank" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="https://www.tiktok.com/@cgnewsoficial?_r=1&_t=ZS-98YsDvVrtFg" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                <a href="https://k.kwai.com/u/@cgnewsoficial/qmEARtCK" target="_blank" title="Kwai"><span class="kwai-icon">K</span></a>
+                <a href="https://youtube.com/@cgnewsoficial1?si=nrVlHWPdjh5KpcuV" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.linkedin.com/in/cg-news-oficial-54029a402?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.threads.com/@cgnews.oficial" target="_blank" title="Threads"><i class="fa-brands fa-threads"></i></a>
+            </div>
+            <div class="footer-copy">
+                <p>© 2026 CG NEWS OFICIAL - Todos os direitos reservados. Informação em tempo real com credibilidade e seriedade.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- MOTOR E SCRIPTS DO SITE (FIREBASE + FUNÇÕES) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDjl4R4h2An2POmuZgMhAFsLbdhuzauxyY",
+            authDomain: "cgnewsoficial7799.firebaseapp.com",
+            projectId: "cgnewsoficial7799",
+            storageBucket: "cgnewsoficial7799.firebasestorage.app",
+            messagingSenderId: "792965935073",
+            appId: "1:792965935073:web:6a43726000feec3b356ca0",
+            measurementId: "G-MCQJ63SYP1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.bancoDeNoticias = []; 
+        window.bannersGlobais = [];
+        window.materiaAtualObj = null;
+        window.limiteRecomendadas = 10;
+        window.limiteMaisLidas = 5;
+
+        const CATEGORIAS_FIXAS = [
+            "Campo Grande", "Mato Grosso do Sul", "Brasil", "Mundo", 
+            "Política", "Polícia", "Trânsito", "Esporte", "In Memoriam"
+        ];
+
+        function atualizarBarraData() {
+            const agora = new Date();
+            const textoData = agora.toLocaleDateString('pt-BR', {
+                weekday: 'long', day: '2-digit', month: 'long', year: 'numeric'
+            }).replace('-feira', '');
+
+            const elHome = document.getElementById("data-atual-home");
+            const elMateria = document.getElementById("data-atual-materia");
+            if (elHome) elHome.innerText = textoData;
+            if (elMateria) elMateria.innerText = textoData;
+        }
+
+        atualizarBarraData();
+
+        function urlSeguraParaGoogleSites(chave, valor = null) {
+            try {
+                const urlObj = new URL(window.location.href);
+                if (valor === null) {
+                    urlObj.searchParams.delete(chave);
+                } else {
+                    urlObj.searchParams.set(chave, valor);
+                }
+                window.history.pushState({}, '', urlObj.toString());
+            } catch(e) {
+                console.warn("Navegação segura ativa.");
+            }
+        }
+
+        function limparUrlTotal() {
+            try {
+                const urlObj = new URL(window.location.href);
+                urlObj.searchParams.delete('materia');
+                urlObj.searchParams.delete('categoria');
+                urlObj.searchParams.delete('ultimas');
+                window.history.pushState({}, '', urlObj.toString());
+            } catch(e) {}
+        }
+
+        function obterUrlImagem(item) {
+            if (!item) return "";
+            const url = item.imagem1 || item.imagem2 || item.imagem || item.foto || item.capa || item.imageUrl || item.urlImagem || item.img || item.url || item.arquivo || item.fotoBase64 || item.imagemBase64 || item.imagemUrl || "";
+            return typeof url === 'string' ? url.trim() : "";
+        }
+
+        function gerarHtmlMidiaCard(item) {
+            const aspectRatioCSS = '4/3'; 
+            
+            const img1 = item.imagem1 ? item.imagem1.trim() : "";
+            const img2 = item.imagem2 ? item.imagem2.trim() : "";
+
+            if (img1 || img2) {
+                let html = `<div style="width: 100%; aspect-ratio: ${aspectRatioCSS}; background: #000; overflow: hidden; display: flex;">`;
+                if (img1 && img2) {
+                    html += `<img src="${img1}" style="flex: 1; width: 50%; height: 100%; object-fit: cover; border-right: 2px solid #fff;">`;
+                    html += `<img src="${img2}" style="flex: 1; width: 50%; height: 100%; object-fit: cover;">`;
+                } else if (img1) {
+                    html += `<img src="${img1}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
+                } else if (img2) {
+                    html += `<img src="${img2}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
+                }
+                html += `</div>`;
+                return html;
+            } else {
+                const imgFallback = obterUrlImagem(item);
+                if (imgFallback) {
+                    return `<div style="width: 100%; aspect-ratio: ${aspectRatioCSS}; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center;"><img src="${imgFallback}" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>`;
+                }
+            }
+            return `<div style="color:#a0aec0; font-size:12px; text-align:center; padding: 20px;">Sem foto</div>`;
+        }
+
+        function converterTimestamp(valor) {
+            if (!valor) return null;
+            if (typeof valor === 'number') return valor;
+            if (typeof valor === 'object') {
+                if (typeof valor.toMillis === 'function') return valor.toMillis();
+                if (typeof valor.toDate === 'function') return valor.toDate().getTime();
+                if (valor.seconds !== undefined) return valor.seconds * 1000;
+                if (valor instanceof Date) return valor.getTime();
+            }
+            if (typeof valor === 'string') {
+                const parsed = Date.parse(valor);
+                if (!isNaN(parsed)) return parsed;
+                const num = Number(valor);
+                if (!isNaN(num)) return num;
+            }
+            return null;
+        }
+
+        function tempoRelativo(timestamp) {
+            if (!timestamp) return "";
+            const ms = converterTimestamp(timestamp);
+            if (!ms) return "";
+            let agora = Date.now();
+            let diffMs = agora - ms;
+            
+            if (diffMs < 0) diffMs = 0;
+            
+            const diffMinutos = Math.floor(diffMs / (1000 * 60));
+            const diffHoras = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            
+            if (diffMinutos < 1) return "Atualizado há 1 minuto";
+            if (diffMinutos < 60) return `Atualizado há ${diffMinutos} ${diffMinutos === 1 ? 'minuto' : 'minutos'}`;
+            if (diffHoras < 24) return `Atualizado há ${diffHoras} ${diffHoras === 1 ? 'hora' : 'horas'}`;
+            if (diffDias < 30) return `Atualizado há ${diffDias} ${diffDias === 1 ? 'dia' : 'dias'}`;
+            
+            const diffMeses = Math.floor(diffDias / 30);
+            if (diffMeses < 12) return `Atualizado há ${diffMeses} ${diffMeses === 1 ? 'mês' : 'meses'}`;
+            
+            const diffAnos = Math.floor(diffDias / 365);
+            return `Atualizado há ${diffAnos} ${diffAnos === 1 ? 'ano' : 'anos'}`;
+        }
+
+        function formatarDataHoraMS(timestamp) {
+            const ms = converterTimestamp(timestamp) || Date.now();
+            const d = new Date(ms);
+            const dataFormatada = d.toLocaleDateString('pt-BR', { timeZone: 'America/Campo_Grande', day: '2-digit', month: '2-digit', year: 'numeric' });
+            const horaFormatada = d.toLocaleTimeString('pt-BR', { timeZone: 'America/Campo_Grande', hour: '2-digit', minute: '2-digit' });
+            return { data: dataFormatada, hora: horaFormatada };
+        }
+
+        function gerarHtmlDatas(item) {
+            let msCriacao = converterTimestamp(item.dataCriacao) || converterTimestamp(item.dataPublicacao) || converterTimestamp(item.criadoEm) || converterTimestamp(item.timestamp);
+            let msAtualizacao = converterTimestamp(item.dataAtualizacao) || converterTimestamp(item.atualizadoEm);
+            
+            if (!msCriacao) { msCriacao = msAtualizacao || Date.now(); }
+            
+            const criacao = formatarDataHoraMS(msCriacao);
+            let html = `Publicado em ${criacao.data} às ${criacao.hora}`;
+            
+            if (msAtualizacao && (msAtualizacao - msCriacao) > 5000) {
+                const relAtualizacao = tempoRelativo(msAtualizacao);
+                if (relAtualizacao) { html += ` • ${relAtualizacao}`; }
+            }
+            return html;
+        }
+
+        window.renderizarBannerHtml = function(b, isFlutuante = false) {
+            if (!b) return "";
+            let conteudoAnuncio = '';
+
+            if (b.tipo === 'codigo' && b.codigoAnuncio) {
+                conteudoAnuncio = b.codigoAnuncio;
+            } else if (b.tipo === 'imagem' && b.bannerImgBase64) {
+                if (b.bannerImgBase64.startsWith('data:video') || b.bannerImgBase64.includes('video/mp4')) {
+                    conteudoAnuncio = `<video src="${b.bannerImgBase64}" style="width: 100%; height: 100%; object-fit: contain; background:#000;" autoplay muted loop playsinline></video>`;
+                } else {
+                    conteudoAnuncio = `<img src="${b.bannerImgBase64}" style="width: 100%; height: 100%; object-fit: contain;">`;
+                }
+                if (b.bannerLinkUrl) {
+                    conteudoAnuncio = `<a href="${b.bannerLinkUrl}" target="_blank" style="display:block; width:100%; height:100%;">${conteudoAnuncio}</a>`;
+                }
+            }
+
+            if (!conteudoAnuncio) return "";
+
+            let formatoCSS = b.formatoBanner && b.formatoBanner !== 'auto' ? b.formatoBanner.replace(':', '/') : 'auto';
+            let cssAspect = formatoCSS !== 'auto' ? `aspect-ratio: ${formatoCSS};` : '';
+
+            if (isFlutuante) {
+                return `
+                    <div class="banner-flutuante" style="position: absolute; left: ${b.posX || 0}px; top: ${b.posY || 0}px; transform: scale(${b.scale || 1}); transform-origin: top left; pointer-events: auto; width: 300px; z-index: 9999;">
+                        <div style="text-align: right; background: rgba(0,0,0,0.5); padding: 2px;">
+                            <button onclick="this.parentElement.parentElement.style.display='none'" style="color:white; background:none; border:none; font-size:16px; cursor:pointer;">&times;</button>
+                        </div>
+                        <div style="background: #fff; width: 100%; border: 1px solid #d1d9e0; box-shadow: 0 4px 12px rgba(0,0,0,0.15); ${cssAspect}">
+                            ${conteudoAnuncio}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="banner-injetado-container">
+                    <div class="banner-injetado-label">- Publicidade -</div>
+                    <div class="banner-injetado-box" style="${cssAspect}">
+                        ${conteudoAnuncio}
+                    </div>
+                </div>
+            `;
+        };
+
+        window.renderizarBannersGlobaisFlutuantes = function(contexto) {
+            const container = document.getElementById("flutuantes-globais-container");
+            if (!container) return;
+            container.innerHTML = "";
+            if (contexto === 'none' || !window.bannersGlobais) return;
+            
+            const flutuantes = window.bannersGlobais.filter(b => b.localExibicao === contexto && b.posicao === 'flutuante');
+            let html = "";
+            flutuantes.forEach(b => { html += window.renderizarBannerHtml(b, true); });
+            container.innerHTML = html;
+        };
+
+        window.abrirMenu = function() {
+            document.getElementById("sidebar").style.left = "0";
+            document.getElementById("overlay").style.display = "block";
+        };
+
+        window.fecharMenu = function() {
+            document.getElementById("sidebar").style.left = "-280px";
+            document.getElementById("overlay").style.display = "none";
+        };
+
+        window.toggleBuscaPrincipal = function() {
+            const barra = document.getElementById("barra-busca");
+            const input = document.getElementById("input-busca");
+            if (barra.style.display === "none" || barra.style.display === "") {
+                barra.style.display = "block";
+                input.focus();
+            } else {
+                barra.style.display = "none";
+                input.value = "";
+                window.irParaHome();
+            }
+        };
+
+        window.toggleBuscaMateria = function() {
+            const barra = document.getElementById("barra-busca-materia");
+            const input = document.getElementById("input-busca-materia");
+            if (barra.style.display === "none" || barra.style.display === "") {
+                barra.style.display = "block";
+                input.focus();
+            } else {
+                barra.style.display = "none";
+                input.value = "";
+            }
+        };
+
+        function criarHtmlGridCard(item) {
+            const htmlData = gerarHtmlDatas(item);
+            const htmlMidia = gerarHtmlMidiaCard(item);
+
+            let catText = "NOTÍCIA";
+            if (item.categorias && item.categorias.length > 0) catText = item.categorias[0];
+            else if (item.categoria) catText = item.categoria;
+
+            const textoResumo = item.texto ? item.texto.substring(0, 110) + "..." : "Clique para ler a matéria completa.";
+
+            const urlBase = window.location.href.split('?')[0]; 
+            const itemUrl = `${urlBase}?materia=${item.idUnico}`;
+            const encTitle = encodeURIComponent(item.titulo);
+            const encUrl = encodeURIComponent(itemUrl);
+
+            const linkWa = `https://api.whatsapp.com/send?text=${encTitle}%20-%20${encUrl}`;
+            const linkFb = `https://www.facebook.com/sharer/sharer.php?u=${encUrl}`;
+            const linkTw = `https://twitter.com/intent/tweet?text=${encTitle}&url=${encUrl}`;
+            const linkTh = `https://threads.net/intent/post?text=${encTitle}%20${encUrl}`;
+
+            return `
+                <div class="grid-card" onclick="window.abrirMateria('${item.idUnico}')">
+                    <div class="grid-img-container">
+                        ${htmlMidia}
+                    </div>
+                    <div class="grid-content-wrap">
+                        <div class="grid-cat">${catText} <span class="data-padrao">${htmlData}</span></div>
+                        <div class="grid-title">${item.titulo}</div>
+                        <div class="grid-excerpt">${textoResumo}</div>
+                        
+                        <div class="card-share-bar" onclick="event.stopPropagation()">
+                            <span class="card-share-label">Compartilhar:</span>
+                            <div class="card-share-icons">
+                                <a href="${linkWa}" target="_blank" class="card-share-btn wa" title="Compartilhar no WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                                <a href="${linkFb}" target="_blank" class="card-share-btn fb" title="Compartilhar no Facebook"><i class="fab fa-facebook-f"></i></a>
+                                <a href="${linkTw}" target="_blank" class="card-share-btn tw" title="Compartilhar no X"><i class="fa-brands fa-x-twitter"></i></a>
+                                <a href="${linkTh}" target="_blank" class="card-share-btn th" title="Compartilhar no Threads"><i class="fa-brands fa-threads"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function criarHtmlListaCard(item) {
+            const htmlData = gerarHtmlDatas(item);
+            const htmlMidia = gerarHtmlMidiaCard(item);
+            const textoResumo = item.texto ? item.texto.substring(0, 110) + "..." : "Clique para ler a matéria completa.";
+
+            const urlBase = window.location.href.split('?')[0]; 
+            const itemUrl = `${urlBase}?materia=${item.idUnico}`;
+            const encTitle = encodeURIComponent(item.titulo);
+            const encUrl = encodeURIComponent(itemUrl);
+
+            const linkWa = `https://api.whatsapp.com/send?text=${encTitle}%20-%20${encUrl}`;
+            const linkFb = `https://www.facebook.com/sharer/sharer.php?u=${encUrl}`;
+            const linkTw = `https://twitter.com/intent/tweet?text=${encTitle}&url=${encUrl}`;
+            const linkTh = `https://threads.net/intent/post?text=${encTitle}%20${encUrl}`;
+
+            return `
+                <div class="news-list-item" onclick="window.abrirMateria('${item.idUnico}')">
+                    <div class="news-list-image-container">
+                        ${htmlMidia}
+                    </div>
+                    <div class="news-list-content">
+                        <div class="news-list-title">${item.titulo}</div>
+                        <div class="news-list-meta">
+                            <span><i class="far fa-clock"></i> ${htmlData}</span>
+                            ${item.autor ? `<span><i class="far fa-user"></i> ${item.autor}</span>` : ""}
+                        </div>
+                        <div class="news-list-excerpt">${textoResumo}</div>
+
+                        <div class="card-share-bar" onclick="event.stopPropagation()">
+                            <span class="card-share-label">Compartilhar:</span>
+                            <div class="card-share-icons">
+                                <a href="${linkWa}" target="_blank" class="card-share-btn wa" title="Compartilhar no WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                                <a href="${linkFb}" target="_blank" class="card-share-btn fb" title="Compartilhar no Facebook"><i class="fab fa-facebook-f"></i></a>
+                                <a href="${linkTw}" target="_blank" class="card-share-btn tw" title="Compartilhar no X"><i class="fa-brands fa-x-twitter"></i></a>
+                                <a href="${linkTh}" target="_blank" class="card-share-btn th" title="Compartilhar no Threads"><i class="fa-brands fa-threads"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.abrirMateria = function(id, salvarHistorico = true) {
+            const item = window.bancoDeNoticias.find(n => n.idUnico === id);
+            if (!item) return;
+            
+            window.renderizarBannersGlobaisFlutuantes('none');
+
+            window.materiaAtualObj = item;
+            window.limiteRecomendadas = 10;
+            window.limiteMaisLidas = 5;
+
+            // Atualiza o título dinamicamente no navegador
+            document.title = item.titulo + " - CG NEWS OFICIAL";
+            
+            localStorage.setItem('ultimaMateriaAberta', id);
+            if (salvarHistorico) { urlSeguraParaGoogleSites('materia', id); }
+
+            const modal = document.getElementById("modal-materia");
+            const conteudo = document.getElementById("conteudo-materia");
+
+            const blocoDatas = gerarHtmlDatas(item);
+            
+            const formato = item.formatoEscolhido || '4/3';
+            const aspectRatioCSS = formato === 'auto' ? 'auto' : formato.replace(':', '/');
+
+            let blocoMidiaPrincipal = "";
+            const img1 = item.imagem1 ? item.imagem1.trim() : "";
+            const img2 = item.imagem2 ? item.imagem2.trim() : "";
+
+            if (img1 || img2) {
+                let cssAspect = formato === 'auto' ? 'auto' : aspectRatioCSS;
+                blocoMidiaPrincipal += `<div style="margin: 20px 0; width: 100%; aspect-ratio: ${cssAspect}; background: #000; border-radius: 6px; overflow: hidden; display: flex;">`;
+                if (img1 && img2) {
+                    blocoMidiaPrincipal += `<img src="${img1}" style="flex: 1; width: 50%; height: 100%; object-fit: cover; border-right: 2px solid #fff;">`;
+                    blocoMidiaPrincipal += `<img src="${img2}" style="flex: 1; width: 50%; height: 100%; object-fit: cover;">`;
+                } else if (img1) {
+                    blocoMidiaPrincipal += `<img src="${img1}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
+                } else if (img2) {
+                    blocoMidiaPrincipal += `<img src="${img2}" style="flex: 1; width: 100%; height: 100%; object-fit: cover;">`;
+                }
+                blocoMidiaPrincipal += `</div>`;
+                blocoMidiaPrincipal += `<div style="font-size: 11px; font-weight: 600; color: #a0aec0; padding: 6px; background: #111; border-radius: 0 0 6px 6px; margin-top: -20px; margin-bottom: 20px;">Foto: ${item.fonteImagem || "Reprodução / Divulgação"}</div>`;
+            } else {
+                const imgFallback = obterUrlImagem(item);
+                if (imgFallback) {
+                    let cssAspect = formato === 'auto' ? 'auto' : aspectRatioCSS;
+                    blocoMidiaPrincipal = `
+                        <div style="margin: 20px 0; width: 100%; aspect-ratio: ${cssAspect}; background: #000; border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                            <img src="${imgFallback}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        </div>
+                        <div style="font-size: 11px; font-weight: 600; color: #a0aec0; padding: 6px; background: #111; border-radius: 0 0 6px 6px; margin-top: -20px; margin-bottom: 20px;">Foto: ${item.fonteImagem || "Reprodução / Divulgação"}</div>
+                    `;
+                }
+            }
+
+            // Injeção de Banners
+            let bannersArtigo = [];
+            if (item.banners && Array.isArray(item.banners)) {
+                bannersArtigo = bannersArtigo.concat(item.banners);
+            }
+            if (window.bannersGlobais && Array.isArray(window.bannersGlobais)) {
+                const globaisEspecificos = window.bannersGlobais.filter(b => b.localExibicao === 'especifica' && b.noticiaAlvo === item.idUnico);
+                bannersArtigo = bannersArtigo.concat(globaisEspecificos);
+            }
+
+            let bAcimaTitulo = ""; let bAbaixoTitulo = ""; let bAbaixoMidia = ""; let bFimMateria = "";
+            let bannersMeioTexto = []; let bFlutuantes = "";
+
+            bannersArtigo.forEach(b => {
+                if (b.posicao === 'abaixo_titulo') bAbaixoTitulo += window.renderizarBannerHtml(b);
+                else if (b.posicao === 'abaixo_imagem') bAbaixoMidia += window.renderizarBannerHtml(b);
+                else if (b.posicao === 'fim_texto') bFimMateria += window.renderizarBannerHtml(b);
+                else if (b.posicao === 'meio_texto') bannersMeioTexto.push(b);
+                else if (b.posicao === 'acima_titulo') bAcimaTitulo += window.renderizarBannerHtml(b);
+                else if (b.posicao === 'flutuante') bFlutuantes += window.renderizarBannerHtml(b, true);
+            });
+
+            const containerFlutuante = document.getElementById("container-flutuantes-materia");
+            if (containerFlutuante) containerFlutuante.innerHTML = bFlutuantes;
+
+            let htmlDoTexto = item.textoRico || item.texto || "<p></p>";
+            let textoProcessado = "";
+
+            if (bannersMeioTexto.length > 0) {
+                let paragrafos = htmlDoTexto.split(/<\/p>/i);
+                let bannerAtivo = 0;
+                let meioExato = Math.floor(paragrafos.length / 2);
+                if (meioExato === 0) meioExato = 1;
+
+                for (let i = 0; i < paragrafos.length; i++) {
+                    textoProcessado += paragrafos[i] + (paragrafos[i].trim() !== '' ? '</p>' : '');
+                    if (i === meioExato && bannerAtivo < bannersMeioTexto.length) {
+                        textoProcessado += window.renderizarBannerHtml(bannersMeioTexto[bannerAtivo]);
+                        bannerAtivo++;
+                    } else if (i > meioExato && (i - meioExato) % 2 === 0 && bannerAtivo < bannersMeioTexto.length) {
+                        textoProcessado += window.renderizarBannerHtml(bannersMeioTexto[bannerAtivo]);
+                        bannerAtivo++;
+                    }
+                }
+            } else {
+                textoProcessado = htmlDoTexto;
+            }
+
+            // REDES SOCIAIS NA MATÉRIA (AGORA APARECE PRIMEIRO)
+            let blocoVideoRedeSocial = "";
+            const urlRede = item.linkRedeSocial ? item.linkRedeSocial.trim() : "";
+
+            if (urlRede !== "") {
+                const url = urlRede;
+                let areaCentralPlayer = "";
+
+                function extrairYtId(link) {
+                    if (link.includes("youtu.be/")) return link.split("youtu.be/")[1]?.split("?")[0];
+                    if (link.includes("shorts/")) return link.split("shorts/")[1]?.split("?")[0];
+                    if (link.includes("watch?v=")) return link.split("watch?v=")[1]?.split("&")[0];
+                    return null;
+                }
+
+                if (url.includes("youtube.com") || url.includes("youtu.be")) {
+                    let ytId = extrairYtId(url);
+                    if (ytId) {
+                        areaCentralPlayer = `
+                            <div style="position: relative; width: 100%; max-width: 800px; margin: 0 auto; aspect-ratio: 16/9; background: #000; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                                <iframe src="https://www.youtube.com/embed/${ytId}" title="Vídeo do YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top:0; left:0; width:100%; height:100%;"></iframe>
+                            </div>
+                        `;
+                    }
+                }
+                else if (url.includes("instagram.com")) {
+                    let cleanIgUrl = url.split("?")[0];
+                    if (!cleanIgUrl.endsWith('/')) cleanIgUrl += '/';
+                    let embedUrl = `https://www.instagram.com${cleanIgUrl.replace("https://www.instagram.com", "")}embed/captioned/`;
+                    areaCentralPlayer = `
+                        <div style="width: 100%; max-width: 540px; margin: 0 auto; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                            <iframe src="${embedUrl}" width="100%" height="750" frameborder="0" scrolling="no" allowtransparency="true" style="border:none; overflow:hidden; background:white;"></iframe>
+                        </div>
+                    `;
+                }
+                else if (url.includes("twitter.com") || url.includes("x.com")) {
+                    let twUrl = url.replace("x.com", "twitter.com").split("?")[0];
+                    areaCentralPlayer = `
+                        <div style="width: 100%; max-width: 550px; margin: 0 auto; display: flex; justify-content: center;">
+                            <blockquote class="twitter-tweet" data-theme="light">
+                                <a href="${twUrl}">Carregando post do X...</a>
+                            </blockquote>
+                        </div>
+                    `;
+                }
+                else if (url.includes("threads.net")) {
+                    let urlObj = new URL(url);
+                    let cleanPath = urlObj.pathname;
+                    if (!cleanPath.endsWith('/')) cleanPath += '/';
+                    let embedUrlTh = `https://www.threads.net${cleanPath}embed/`;
+
+                    areaCentralPlayer = `
+                        <div style="width: 100%; max-width: 550px; margin: 0 auto; background: #fff; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                            <iframe src="${embedUrlTh}" width="100%" height="600" frameborder="0" scrolling="no" allowtransparency="true" style="border:none; overflow:hidden; background:white;"></iframe>
+                        </div>
+                    `;
+                }
+                else if (url.includes("tiktok.com")) {
+                    let videoId = url.split("/video/")[1]?.split("?")[0];
+                    if (videoId) {
+                        areaCentralPlayer = `
+                            <div style="width: 100%; max-width: 325px; margin: 0 auto;">
+                                <blockquote class="tiktok-embed" cite="${url}" data-video-id="${videoId}" style="max-width: 325px; min-width: 325px;">
+                                    <section><a target="_blank" href="${url}">Ver vídeo no TikTok</a></section>
+                                </blockquote>
+                            </div>
+                        `;
+                        if (!document.getElementById("tiktok-embed-script")) {
+                            let scriptTk = document.createElement("script");
+                            scriptTk.id = "tiktok-embed-script";
+                            scriptTk.src = "https://www.tiktok.com/embed.js";
+                            document.body.appendChild(scriptTk);
+                        }
+                    }
+                }
+                else if (url.includes("facebook.com")) {
+                    let encodedFbUrl = encodeURIComponent(url);
+                    areaCentralPlayer = `
+                        <div style="position: relative; width: 100%; background: #fff; display: flex; justify-content: center; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                            <iframe src="https://www.facebook.com/plugins/video.php?height=314&href=${encodedFbUrl}&show_text=false&width=560&t=0" width="100%" height="350" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                        </div>
+                    `;
+                }
+
+                blocoVideoRedeSocial = `<div style="margin: 25px 0;">${areaCentralPlayer}</div>`;
+            }
+
+            // MÍDIAS EXTRAS (AGORA APARECE DEPOIS DA REDE SOCIAL)
+            let blocoMidiasExtras = "";
+            let extras = item.midiasExtras || item.midias || item.imagensExtras || item.galeria || item.imagens || item.arquivosExtras || item.extras || [];
+            
+            if (extras && Array.isArray(extras) && extras.length > 0) {
+                blocoMidiasExtras += `<div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px; margin-bottom: 20px;">`;
+                extras.forEach(extra => {
+                    let urlExtra = "";
+                    let formatoExtra = "auto";
+                    
+                    if (typeof extra === 'string') {
+                        urlExtra = extra;
+                    } else if (typeof extra === 'object') {
+                        urlExtra = extra.imagemBase64 || extra.urlImagem || extra.url || extra.imagem || extra.src || extra.arquivo || extra.img || extra.base64 || extra.foto || "";
+                        formatoExtra = extra.formato || extra.aspectRatio || "auto";
+                    }
+
+                    if (urlExtra) {
+                        let cssAspectExtra = formatoExtra === 'auto' ? 'auto' : formatoExtra.replace(':', '/');
+                        if (urlExtra.startsWith('data:video') || urlExtra.includes('.mp4') || urlExtra.includes('video/mp4')) {
+                            blocoMidiasExtras += `<video src="${urlExtra}" controls style="width: 100%; border-radius: 8px; aspect-ratio: ${cssAspectExtra}; background: #000;"></video>`;
+                        } else {
+                            blocoMidiasExtras += `<img src="${urlExtra}" style="width: 100%; border-radius: 8px; aspect-ratio: ${cssAspectExtra}; object-fit: contain; background: #f7fafc; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">`;
+                        }
+                    }
+                });
+                blocoMidiasExtras += `</div>`;
+            }
+
+            const urlBase = window.location.href.split('?')[0]; 
+            const itemUrl = `${urlBase}?materia=${item.idUnico}`;
+            const encTitle = encodeURIComponent(item.titulo);
+            const encUrl = encodeURIComponent(itemUrl);
+
+            const linkWa = `https://api.whatsapp.com/send?text=${encTitle}%20-%20${encUrl}`;
+            const linkFb = `https://www.facebook.com/sharer/sharer.php?u=${encUrl}`;
+            const linkTw = `https://twitter.com/intent/tweet?text=${encTitle}&url=${encUrl}`;
+            const linkTh = `https://threads.net/intent/post?text=${encTitle}%20${encUrl}`;
+
+            // A MÁGICA DA ORDEM ESTÁ AQUI ABAIXO!
+            conteudo.innerHTML = `
+                ${bAcimaTitulo}
+                <h1 style="color: #1a202c; font-size: 24px; font-weight: 800; line-height: 1.3; margin-bottom: 15px;">${item.titulo}</h1>
+                ${bAbaixoTitulo}
+                
+                <div style="color: #4a5568; font-size: 12px; font-weight: 600; margin-bottom: 15px; display: flex; flex-direction: column; gap: 4px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px;">
+                    <div><i class="far fa-clock"></i> ${blocoDatas}</div>
+                    ${item.autor ? `<div><i class="fas fa-user"></i> Por ${item.autor}</div>` : ""}
+                    ${item.categoria ? `<div><i class="far fa-folder"></i> ${item.categoria}</div>` : ""}
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <span style="font-size: 13px; color: #4a5568; font-weight: 600;">Compartilhe:</span>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                        <a href="${linkWa}" target="_blank" title="WhatsApp" style="background: #25d366; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; text-decoration: none;"><i class="fab fa-whatsapp"></i></a>
+                        <a href="${linkFb}" target="_blank" title="Facebook" style="background: #1877f2; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; text-decoration: none;"><i class="fab fa-facebook-f"></i></a>
+                        <a href="${linkTw}" target="_blank" title="X (Twitter)" style="background: #000000; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; text-decoration: none;"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="${linkTh}" target="_blank" title="Threads" style="background: #000000; color: white; border: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; text-decoration: none;"><i class="fa-brands fa-threads"></i></a>
+                    </div>
+                </div>
+
+                ${blocoMidiaPrincipal}
+                ${bAbaixoMidia}
+                
+                <div style="font-size: 16px; line-height: 1.75; color: #2d3748; margin-top: 15px;">${textoProcessado}</div>
+                
+                ${blocoVideoRedeSocial}
+                
+                ${blocoMidiasExtras}
+
+                ${bFimMateria}
+                
+                <div style="margin-top: 35px; padding-top: 15px; border-top: 1px solid #e2e8f0; display: flex; flex-wrap: wrap; gap: 10px;">
+                    <div style="background: #1a202c; color: white; padding: 6px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; border-radius: 4px;">
+                        <i class="fas fa-tag"></i> ${item.categoria || "GERAL"}
+                    </div>
+                </div>
+            `;
+
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden"; 
+            modal.scrollTo(0, 0);
+            window.scrollTo(0, 0);
+
+            setTimeout(() => {
+                if (window.twttr && window.twttr.widgets) {
+                    window.twttr.widgets.load();
+                } else if (!document.getElementById("twitter-widget-script")) {
+                    let scriptTw = document.createElement("script");
+                    scriptTw.id = "twitter-widget-script";
+                    scriptTw.src = "https://platform.twitter.com/widgets.js";
+                    scriptTw.async = true;
+                    document.body.appendChild(scriptTw);
+                }
+            }, 600);
+
+            window.renderizarRecomendadas();
+            window.renderizarMaisLidasMateria();
+        };
+
+        window.fecharMateria = function() {
+            document.title = "CG NEWS OFICIAL - Informação em Tempo Real";
+            document.getElementById("modal-materia").style.display = "none";
+            document.getElementById("barra-busca-materia").style.display = "none";
+            document.getElementById("input-busca-materia").value = "";
+            document.body.style.overflow = "auto"; 
+
+            localStorage.removeItem('ultimaMateriaAberta');
+            limparUrlTotal();
+        };
+
+        window.irParaHome = function() {
+            fecharMateria();
+            fecharMenu();
+            window.renderizarHomePorCategorias();
+        };
+
+        window.mostrarUltimasNoticias = function() {
+            fecharMateria();
+            fecharMenu();
+            document.getElementById("input-busca").value = "";
+            urlSeguraParaGoogleSites('ultimas', 'true');
+
+            const tituloH2 = document.getElementById("titulo-principal");
+            const container = document.getElementById("area-noticias");
+
+            tituloH2.innerText = "Últimas Notícias";
+            tituloH2.style.display = "block";
+            container.innerHTML = "";
+
+            window.renderizarBannersGlobaisFlutuantes('ultimas');
+
+            if (!window.bancoDeNoticias || window.bancoDeNoticias.length === 0) {
+                container.innerHTML = `<p class="empty-msg">Nenhuma notícia encontrada no momento.</p>`;
+                return;
+            }
+
+            window.bancoDeNoticias.forEach(item => {
+                container.innerHTML += criarHtmlListaCard(item);
+            });
+            window.scrollTo(0, 0);
+        };
+
+        window.addEventListener('popstate', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const materiaId = urlParams.get('materia');
+            const categoriaUrl = urlParams.get('categoria');
+            const ultimasUrl = urlParams.get('ultimas');
+
+            if (!materiaId) {
+                document.title = "CG NEWS OFICIAL - Informação em Tempo Real";
+                document.getElementById("modal-materia").style.display = "none";
+                document.body.style.overflow = "auto";
+                localStorage.removeItem('ultimaMateriaAberta');
+
+                if (ultimasUrl === 'true') {
+                    window.mostrarUltimasNoticias();
+                } else if (categoriaUrl) {
+                    window.filtrarCategoria(categoriaUrl, false);
+                } else {
+                    window.renderizarHomePorCategorias();
+                }
+            }
+        });
+
+        window.renderizarRecomendadas = function() {
+            const secao = document.getElementById("secao-recomendadas");
+            const container = document.getElementById("lista-recomendadas");
+            const btnVerMais = document.getElementById("btn-ver-mais-recomendadas");
+
+            if (!window.materiaAtualObj || !window.bancoDeNoticias) return;
+
+            const itemAtual = window.materiaAtualObj;
+            const categoriaAlvo = itemAtual.categoria || (itemAtual.categorias ? itemAtual.categorias[0] : "");
+
+            const todasDoNicho = window.bancoDeNoticias.filter(n => {
+                if (n.idUnico === itemAtual.idUnico) return false;
+                if (n.categoria && n.categoria === categoriaAlvo) return true;
+                if (n.categorias && Array.isArray(n.categorias) && n.categorias.includes(categoriaAlvo)) return true;
+                return false;
+            });
+
+            if (todasDoNicho.length === 0) {
+                secao.style.display = "none";
+                return;
+            }
+
+            secao.style.display = "block";
+            container.innerHTML = "";
+
+            const exibidas = todasDoNicho.slice(0, window.limiteRecomendadas);
+            exibidas.forEach(item => {
+                container.innerHTML += criarHtmlListaCard(item);
+            });
+
+            if (todasDoNicho.length > window.limiteRecomendadas) {
+                btnVerMais.style.display = "block";
+            } else {
+                btnVerMais.style.display = "none";
+            }
+        }
+
+        window.expandirRecomendadas = function() {
+            window.limiteRecomendadas += 10;
+            window.renderizarRecomendadas();
+        };
+
+        window.renderizarMaisLidasMateria = function() {
+            const secao = document.getElementById("secao-mais-lidas-materia");
+            const container = document.getElementById("lista-mais-lidas-materia");
+            const btnVerMais = document.getElementById("btn-ver-mais-mais-lidas");
+
+            if (!window.bancoDeNoticias || window.bancoDeNoticias.length === 0) {
+                secao.style.display = "none";
+                return;
+            }
+
+            const maisLidasOrdenadas = [...window.bancoDeNoticias].sort((a, b) => {
+                const visA = Number(a.visualizacoes || a.acessos || a.views || 0);
+                const visB = Number(b.visualizacoes || b.acessos || b.views || 0);
+                return visB - visA;
+            });
+
+            secao.style.display = "block";
+            container.innerHTML = "";
+
+            const exibidas = maisLidasOrdenadas.slice(0, window.limiteMaisLidas);
+
+            exibidas.forEach((item, index) => {
+                const numeroRanking = index + 1;
+                const cat = item.categoria || "Geral";
+                const htmlData = gerarHtmlDatas(item);
+                const imgUrl = obterUrlImagem(item);
+
+                container.innerHTML += `
+                    <div class="ranking-list-item" onclick="window.abrirMateria('${item.idUnico}')">
+                        <div class="ranking-number-box">${numeroRanking}</div>
+                        <div class="ranking-thumb-container">
+                            ${imgUrl ? `<img src="${imgUrl}" class="ranking-thumb" alt="Capa">` : `<div style="color:#a0aec0;font-size:10px;text-align:center;">Sem foto</div>`}
+                        </div>
+                        <div class="ranking-info">
+                            <div class="ranking-title">${item.titulo}</div>
+                            <div class="ranking-meta"><i class="fas fa-tag"></i> ${cat} • ${htmlData}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (maisLidasOrdenadas.length > window.limiteMaisLidas) {
+                btnVerMais.style.display = "block";
+            } else {
+                btnVerMais.style.display = "none";
+            }
+        }
+
+        window.expandirMaisLidas = function() {
+            window.limiteMaisLidas += 5;
+            window.renderizarMaisLidasMateria();
+        };
+
+        window.renderizarHomePorCategorias = function() {
+            document.title = "CG NEWS OFICIAL - Informação em Tempo Real";
+            const tituloH2 = document.getElementById("titulo-principal");
+            const container = document.getElementById("area-noticias");
+            
+            tituloH2.style.display = "none";
+            container.innerHTML = "";
+            window.renderizarBannersGlobaisFlutuantes('inicio');
+
+            if (!window.bancoDeNoticias || window.bancoDeNoticias.length === 0) {
+                container.innerHTML = `<p class="empty-msg">Nenhuma notícia encontrada no momento.</p>`;
+                return;
+            }
+
+            let htmlGeral = "";
+            let categoriasEncontradasComConteudo = 0;
+
+            CATEGORIAS_FIXAS.forEach(catNome => {
+                const noticiasDaCategoria = window.bancoDeNoticias.filter(item => {
+                    if (item.categorias && Array.isArray(item.categorias)) {
+                        return item.categorias.includes(catNome);
+                    }
+                    return item.categoria === catNome;
+                });
+
+                if (noticiasDaCategoria.length > 0) {
+                    categoriasEncontradasComConteudo++;
+                    const maxNove = noticiasDaCategoria.slice(0, 9);
+
+                    htmlGeral += `
+                        <div class="category-block">
+                            <div class="section-title">
+                                ${catNome}
+                                <span class="ver-todas" onclick="window.filtrarCategoria('${catNome}')">Ver todas <i class="fas fa-chevron-right" style="font-size:10px;"></i></span>
+                            </div>
+                            <div class="home-grid">
+                    `;
+
+                    maxNove.forEach(item => {
+                        htmlGeral += criarHtmlGridCard(item);
+                    });
+
+                    htmlGeral += `
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            if (categoriasEncontradasComConteudo === 0) {
+                container.innerHTML = `<p class="empty-msg">Nenhuma notícia categorizada encontrada.</p>`;
+            } else {
+                container.innerHTML = htmlGeral;
+            }
+
+            limparUrlTotal();
+            window.scrollTo(0, 0);
+        }
+
+        window.filtrarCategoria = function(categoriaDesejada, salvarHistorico = true) {
+            fecharMateria();
+            fecharMenu();
+            document.getElementById("input-busca").value = ""; 
+            window.renderizarBannersGlobaisFlutuantes('none');
+
+            if (salvarHistorico) { urlSeguraParaGoogleSites('categoria', categoriaDesejada); }
+
+            const tituloH2 = document.getElementById("titulo-principal");
+            const container = document.getElementById("area-noticias");
+
+            tituloH2.innerText = categoriaDesejada;
+            tituloH2.style.display = "block";
+            container.innerHTML = "";
+
+            const listaFiltrada = window.bancoDeNoticias.filter(item => {
+                if (item.categorias && item.categorias.length > 0) {
+                    return item.categorias.includes(categoriaDesejada);
+                }
+                return item.categoria === categoriaDesejada;
+            });
+
+            if (listaFiltrada.length === 0) {
+                container.innerHTML = `<p class="empty-msg">Nenhuma notícia encontrada para: ${categoriaDesejada}</p>`;
+                return;
+            }
+
+            listaFiltrada.forEach(item => {
+                container.innerHTML += criarHtmlListaCard(item);
+            });
+            window.scrollTo(0, 0);
+        };
+
+        window.realizarBuscaPrincipal = function() {
+            const termo = document.getElementById("input-busca").value.toLowerCase().trim();
+            const tituloH2 = document.getElementById("titulo-principal");
+            const container = document.getElementById("area-noticias");
+            window.renderizarBannersGlobaisFlutuantes('none');
+            
+            if (termo === "") {
+                window.renderizarHomePorCategorias();
+                return;
+            }
+
+            tituloH2.innerText = "Resultados da Busca";
+            tituloH2.style.display = "block";
+            container.innerHTML = "";
+
+            const listaFiltrada = window.bancoDeNoticias.filter(item => {
+                const titulo = item.titulo ? item.titulo.toLowerCase() : "";
+                const texto = item.texto ? item.texto.toLowerCase() : "";
+                const categoria = item.categoria ? item.categoria.toLowerCase() : "";
+                const autor = item.autor ? item.autor.toLowerCase() : "";
+                
+                let emCategoriasArray = false;
+                if (item.categorias && Array.isArray(item.categorias)) {
+                    emCategoriasArray = item.categorias.some(c => c.toLowerCase().includes(termo));
+                }
+
+                return titulo.includes(termo) || 
+                       texto.includes(termo) || 
+                       categoria.includes(termo) || 
+                       autor.includes(termo) || 
+                       emCategoriasArray;
+            });
+
+            if (listaFiltrada.length === 0) {
+                container.innerHTML = `<p class="empty-msg">Nenhum resultado encontrado para "${termo}".</p>`;
+                return;
+            }
+
+            listaFiltrada.forEach(item => {
+                container.innerHTML += criarHtmlListaCard(item);
+            });
+        };
+
+        window.realizarBuscaMateria = function(event) {
+            if (event && event.key !== 'Enter') {
+                return;
+            }
+
+            const termo = document.getElementById("input-busca-materia").value.toLowerCase().trim();
+            window.renderizarBannersGlobaisFlutuantes('none');
+            
+            if (termo === "") {
+                fecharMateria();
+                window.renderizarHomePorCategorias();
+                return;
+            }
+
+            const listaFiltrada = window.bancoDeNoticias.filter(item => {
+                const titulo = item.titulo ? item.titulo.toLowerCase() : "";
+                const texto = item.texto ? item.texto.toLowerCase() : "";
+                const categoria = item.categoria ? item.categoria.toLowerCase() : "";
+                const autor = item.autor ? item.autor.toLowerCase() : "";
+                
+                let emCategoriasArray = false;
+                if (item.categorias && Array.isArray(item.categorias)) {
+                    emCategoriasArray = item.categorias.some(c => c.toLowerCase().includes(termo));
+                }
+
+                return titulo.includes(termo) || 
+                       texto.includes(termo) || 
+                       categoria.includes(termo) || 
+                       autor.includes(termo) || 
+                       emCategoriasArray;
+            });
+
+            fecharMateria();
+            document.getElementById("barra-busca").style.display = "block";
+            document.getElementById("input-busca").value = termo;
+            
+            const tituloH2 = document.getElementById("titulo-principal");
+            const container = document.getElementById("area-noticias");
+            tituloH2.innerText = "Resultados da Busca";
+            tituloH2.style.display = "block";
+            container.innerHTML = "";
+
+            if (listaFiltrada.length === 0) {
+                container.innerHTML = `<p class="empty-msg">Nenhum resultado encontrado para "${termo}".</p>`;
+            } else {
+                listaFiltrada.forEach(item => {
+                    container.innerHTML += criarHtmlListaCard(item);
+                });
+            }
+            window.scrollTo(0, 0);
+        };
+
+        async function carregarNoticias() {
+            try {
+                try {
+                    const docRefGlobais = doc(db, "configuracoes", "bannersGlobais");
+                    const docSnapGlobais = await getDoc(docRefGlobais);
+                    if (docSnapGlobais.exists() && docSnapGlobais.data().banners) {
+                        window.bannersGlobais = docSnapGlobais.data().banners;
+                    }
+                } catch(e) {}
+
+                try {
+                    const docRefGoogle = doc(db, "configuracoes", "google");
+                    const docSnapGoogle = await getDoc(docRefGoogle);
+                    if (docSnapGoogle.exists()) {
+                        const dataGoogle = docSnapGoogle.data();
+                        if (dataGoogle.analyticsAtivo && dataGoogle.analytics) {
+                            const gaId = dataGoogle.analytics.trim();
+                            const script1 = document.createElement("script");
+                            script1.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+                            script1.async = true;
+                            document.head.appendChild(script1);
+                            
+                            const script2 = document.createElement("script");
+                            script2.innerHTML = `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${gaId}');`;
+                            document.head.appendChild(script2);
+                        }
+                        if (dataGoogle.adsenseAtivo && dataGoogle.adsense) {
+                            const wrapper = document.createElement("div");
+                            wrapper.innerHTML = dataGoogle.adsense;
+                            Array.from(wrapper.childNodes).forEach(node => {
+                                if (node.tagName === "SCRIPT") {
+                                    const newScript = document.createElement("script");
+                                    Array.from(node.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                                    newScript.innerHTML = node.innerHTML;
+                                    document.head.appendChild(newScript);
+                                }
+                            });
+                        }
+                    }
+                } catch(e) {}
+
+                const q = query(collection(db, "noticias"), orderBy("dataAtualizacao", "desc"));
+                const snapshot = await getDocs(q);
+
+                window.bancoDeNoticias = [];
+
+                snapshot.forEach((docSnap) => {
+                    const item = docSnap.data();
+                    item.idUnico = docSnap.id; 
+                    window.bancoDeNoticias.push(item);
+                });
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const materiaIdUrl = urlParams.get('materia');
+
+                if (materiaIdUrl) {
+                    const existe = window.bancoDeNoticias.find(n => n.idUnico === materiaIdUrl);
+                    if (existe) {
+                        window.abrirMateria(materiaIdUrl, false);
+                        return; 
+                    }
+                }
+
+                const materiaSalva = localStorage.getItem('ultimaMateriaAberta');
+
+                if (materiaSalva && !materiaIdUrl) {
+                    const existe = window.bancoDeNoticias.find(n => n.idUnico === materiaSalva);
+                    if (existe) {
+                        window.abrirMateria(materiaSalva, false);
+                        return;
+                    }
+                }
+
+                window.renderizarHomePorCategorias();
+
+            } catch (erro) {
+                console.error("Erro ao carregar notícias:", erro);
+                document.getElementById("area-noticias").innerHTML = "<p class='empty-msg'>Erro ao carregar as notícias. Tente novamente mais tarde.</p>";
+            }
+        }
+
+        carregarNoticias();
+    </script>
+</body>
+</html>
