@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">CG NEWS OFICIAL - Informação em Tempo Real</title>
 
+    <!-- Meta Tags Open Graph para Redes Sociais e WhatsApp -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="CG NEWS OFICIAL">
+    <meta id="meta-og-title" property="og:title" content="CG NEWS OFICIAL - Informação em Tempo Real">
+    <meta id="meta-og-description" property="og:description" content="Acompanhe as últimas notícias em tempo real.">
+    <meta id="meta-og-image" property="og:image" content="https://www.cgnewsoficial.com.br/logo.jpg">
+    <meta id="meta-og-url" property="og:url" content="">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
@@ -71,21 +79,27 @@
 
                 const item = docSnap.data();
                 const imgCapa = item.imagem1 || item.imagemBase64_1 || item.imagem || item.foto || "https://www.cgnewsoficial.com.br/logo.jpg";
+                const tituloNoticia = item.titulo || "Notícia";
+                const linkAtual = window.location.href;
 
-                document.getElementById("page-title").innerText = (item.titulo || "Notícia") + " - CG NEWS OFICIAL";
+                // Atualiza o título da página e as meta tags dinamicamente para o navegador
+                document.getElementById("page-title").innerText = tituloNoticia + " - CG NEWS OFICIAL";
+                document.getElementById("meta-og-title").setAttribute("content", tituloNoticia);
+                document.getElementById("meta-og-description").setAttribute("content", tituloNoticia + " - Acompanhe no CG NEWS OFICIAL.");
+                document.getElementById("meta-og-image").setAttribute("content", imgCapa);
+                document.getElementById("meta-og-url").setAttribute("content", linkAtual);
 
                 let htmlMidia = "";
                 if (imgCapa && imgCapa !== "https://www.cgnewsoficial.com.br/logo.jpg") {
                     htmlMidia = `<div style="width:100%; max-width:600px; aspect-ratio:16/9; background:#000; border-radius:6px; overflow:hidden; margin-bottom:15px;"><img src="${imgCapa}" style="width:100%; height:100%; object-fit:cover;"></div>`;
                 }
 
-                const linkAtual = window.location.href;
-                const encTitle = encodeURIComponent(item.titulo);
+                const encTitle = encodeURIComponent(tituloNoticia);
                 const encUrl = encodeURIComponent(linkAtual);
                 const linkWa = `https://api.whatsapp.com/send?text=${encTitle}%20-%20${encUrl}`;
 
                 container.innerHTML = `
-                    <h1>${item.titulo}</h1>
+                    <h1>${tituloNoticia}</h1>
                     <div style="color: #4a5568; font-size: 12px; margin-bottom: 15px;">Por ${item.autor || 'Redação'}</div>
                     
                     <div style="margin-bottom: 20px;">
