@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">CG NEWS OFICIAL - Informação em Tempo Real</title>
+
+    <!-- Meta Tags Open Graph fixas para garantir a pré-visualização no WhatsApp e Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="CG NEWS OFICIAL">
+    <meta id="meta-og-title" property="og:title" content="CG NEWS OFICIAL - Informação em Tempo Real">
+    <meta id="meta-og-description" property="og:description" content="Acompanhe as últimas notícias em tempo real.">
+    <!-- Imagem pública padrão para garantir que o WhatsApp exibe sempre uma imagem bonita -->
+    <meta property="og:image" content="https://www.cgnewsoficial.com.br/logo.jpg">
+    <meta id="meta-og-url" property="og:url" content="">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: #f4f6f9; color: #1a1a1a; }
+        header { background-color: #11136c; color: white; padding: 12px 20px; font-size: 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        .header-logo { font-weight: 800; font-size: 18px; cursor: pointer; }
+        .materia-container-box { background: white; max-width: 850px; margin: 20px auto; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border-radius: 8px; border: 1px solid #e2e8f0; }
+        h1 { color: #1a202c; font-size: 24px; font-weight: 800; line-height: 1.3; margin-bottom: 15px; }
+        .texto-corpo { font-size: 16px; line-height: 1.75; color: #2d3748; margin-top: 20px; }
+        footer { background-color: #11136c; color: white; text-align: center; padding: 35px 20px; margin-top: 50px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-logo" onclick="window.location.href='index.html'">CG NEWS OFICIAL</div>
+    </header>
+
+    <div class="materia-container-box">
+        <div onclick="window.location.href='index.html'" style="color: #11136c; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 20px;">
+            <i class="fas fa-arrow-left"></i> Voltar ao Início
+        </div>
+        <div id="conteudo-materia"><p>A carregar notícia...</p></div>
+    </div>
+
+    <footer>
+        <p>© 2026 CG NEWS OFICIAL - Todos os direitos reservados.</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDjl4R4h2An2POmuZgMhAFsLbdhuzauxyY",
+            authDomain: "cgnewsoficial7799.firebaseapp.com",
+            projectId: "cgnewsoficial7799",
+            storageBucket: "cgnewsoficial7799.firebasestorage.app",
+            messagingSenderId: "792965935073",
+            appId: "1:792965935073:web:6a43726000feec3b356ca0",
+            measurementId: "G-MCQJ63SYP1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function carregarDetalheMateria() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let idMateria = urlParams.get('id') || urlParams.get('materia');
+            const container = document.getElementById("conteudo-materia");
+
+            if (!idMateria) {
+                container.innerHTML = "<p>Matéria não encontrada.</p>";
+                return;
+            }
+
+            try {
+                const docRef = doc(db, "noticias", idMateria);
+                const docSnap = await getDoc(docRef);
+
+                if (!docSnap.exists()) {
+                    container.innerHTML = "<p>Esta matéria já não existe ou foi removida.</p>";
+                    return;
+                }
+
+                const item = docSnap.data();
+                const imgCapa = item.imagem1 || item.imagemBase64_1 || item.imagem || item.foto || "https://www.cgnewsoficial.com.br/logo.jpg";
+                const tituloNoticia = item.titulo || "Notícia";
+                const linkAtual = window.location.href;
+
+                // Atualiza o título e a descrição para o navegador
+                document.getElementById("page-title").innerText = tituloNoticia + " - CG NEWS OFICIAL";
+                document.getElementById("meta-og-title").setAttribute("content", tituloNoticia);
+                document.getElementById("meta-og-description").setAttribute("content", tituloNoticia + " - Acompanhe no CG NEWS OFICIAL.");
+                document.getElementById("meta-og-url").setAttribute("content", linkAtual);
+
+                let htmlMidia = "";
+                if (imgCapa) {
+                    htmlMidia = `<div style="width:100%; max-width:600px; aspect-ratio:16/9; background:#000; border-radius:6px; overflow:hidden; margin-bottom:15px;"><img src="${imgCapa}" style="width:100%; height:100%; object-fit:cover;"></div>`;
+                }
+
+                const encTitle = encodeURIComponent(tituloNoticia);
+                const encUrl = encodeURIComponent(linkAtual);
+                const linkWa = `https://api.whatsapp.com/send?text=${encTitle}%20-%20${encUrl}`;
+
+                container.innerHTML = `
+                    <h1>${tituloNoticia}</h1>
+                    <div style="color: #4a5568; font-size: 12px; margin-bottom: 15px;">Por ${item.autor || 'Redação'}</div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <a href="${linkWa}" target="_blank" style="background: #25d366; color: white; padding: 8px 14px; border-radius: 4px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">
+                            <i class="fab fa-whatsapp"></i> Partilhar no WhatsApp
+                        </a>
+                    </div>
+
+                    ${htmlMidia}
+                    <div class="texto-corpo">${item.textoRico || item.texto || ""}</div>
+                `;
+
+            } catch(e) {
+                container.innerHTML = "<p>Erro ao carregar a notícia do banco de dados.</p>";
+            }
+        }
+
+        carregarDetalheMateria();
+    </script>
+</body>
+</html>
