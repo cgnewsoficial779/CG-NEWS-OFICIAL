@@ -56,8 +56,10 @@
             if (senha === "@M4x98209980") {
                 // Guarda a "chave" no navegador
                 sessionStorage.setItem("acesso_cgnews_liberado", "sim");
-                // Abre a porta para o ficheiro com nome secreto
-                window.location.href = "Admin-@M4x982O998O.html";
+                
+                // REDIRECIONA PARA O NOVO NOME DO TEU PAINEL
+                window.location.href = "painel-adm.html";
+                
             } else {
                 document.getElementById("erroMensagem").style.display = "block";
                 document.getElementById("senhaInput").value = "";
