@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CG NEWS ADMIN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body { 
+            background: #f0f2f5; display: flex; justify-content: center; align-items: center; 
+            height: 100vh; margin: 0; font-family: 'Segoe UI', Arial, sans-serif; 
+        }
+        .login-container { 
+            background: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); 
+            width: 100%; max-width: 400px; text-align: center; 
+        }
+        .login-logo { 
+            background: #002a5c; color: white; padding: 15px; border-radius: 8px; 
+            font-size: 24px; font-weight: 900; margin-bottom: 30px; letter-spacing: 1px; 
+        }
+        .form-group { text-align: left; margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: bold; font-size: 13px; color: #444; margin-bottom: 8px; text-transform: uppercase; }
+        .form-group input { 
+            width: 100%; padding: 15px; border: 1px solid #ccc; border-radius: 8px; 
+            font-size: 16px; outline: none; background: #fafbfc; 
+        }
+        .form-group input:focus { border-color: #002a5c; }
+        .btn-login { 
+            width: 100%; background: #002a5c; color: white; border: none; padding: 16px; 
+            border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; 
+            text-transform: uppercase; transition: 0.3s; 
+        }
+        .btn-login:hover { background: #001d40; }
+        .mensagem-erro { color: #d93025; font-size: 14px; font-weight: bold; margin-top: 15px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-logo"><i class="fas fa-lock"></i> CG NEWS ADMIN</div>
+        
+        <div class="form-group">
+            <label>Senha de Acesso</label>
+            <input type="password" id="senhaInput" placeholder="Digita a tua senha...">
+        </div>
+        
+        <button class="btn-login" onclick="fazerLogin()">Entrar no Painel</button>
+        <div id="erroMensagem" class="mensagem-erro"><i class="fas fa-exclamation-triangle"></i> Senha incorreta! Tenta novamente.</div>
+    </div>
+
+    <script>
+        function fazerLogin() {
+            const senha = document.getElementById("senhaInput").value;
+            
+            // A TUA SENHA ESTÁ AQUI
+            if (senha === "@M4x98209980") {
+                // Guarda a "chave" no navegador
+                sessionStorage.setItem("acesso_cgnews_liberado", "sim");
+                // Abre a porta para o ficheiro com nome secreto
+                window.location.href = "Admin-@M4x982O998O.html";
+            } else {
+                document.getElementById("erroMensagem").style.display = "block";
+                document.getElementById("senhaInput").value = "";
+            }
+        }
+
+        // Permitir dar "Enter" no teclado para fazer login
+        document.getElementById("senhaInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                fazerLogin();
+            }
+        });
+    </script>
+</body>
+</html>
